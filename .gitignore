@@ -1,0 +1,66 @@
+# Build outputs
+dist/
+build/
+target/
+bin/
+obj/
+
+# Dependencies
+node_modules/
+vendor/
+.pub-cache/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Language specific
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.pytest_cache/
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Java/Kotlin
+*.class
+*.jar
+*.war
+*.ear
+
+# C#
+*.dll
+*.exe
+*.pdb
+*.cache
+
+# Dart
+.dart_tool/
+.packages
+pubspec.lock
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local 
