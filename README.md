@@ -1,6 +1,6 @@
 # Linksoft SDKs
 
-SDKs oficiais da Linksoft para múltiplas linguagens de programação.
+SDKs oficiais da Linksoft para comunicação com sistemas e serviços em múltiplas linguagens de programação.
 
 [![Release](https://img.shields.io/github/v/release/linksoft-dev/sdks)](https://github.com/linksoft-dev/sdks/releases)
 [![License](https://img.shields.io/github/license/linksoft-dev/sdks)](LICENSE)
@@ -186,13 +186,6 @@ make clean-all
 ## 📄 Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## 🆘 Suporte
-
-- **Documentação**: https://docs.linksoft.com.br
-- **Issues**: https://github.com/linksoft-dev/sdks/issues
-- **Email**: suporte@linksoft.com.br
-- **Website**: https://linksoft.com.br
 
 ## 🏷️ Versões
 
