@@ -1,0 +1,467 @@
+syntax = "proto3";
+
+package tributacao;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/dfe/tributacao";
+
+// Serviço Tributacao com operações CRUD
+service TributacaoService {
+  rpc Create ( CreateTributacaoRequest ) returns ( CreateTributacaoResponse );
+
+  rpc Update ( UpdateTributacaoRequest ) returns ( UpdateTributacaoResponse );
+
+  rpc Delete ( DeleteTributacaoRequest ) returns ( DeleteTributacaoResponse );
+
+  rpc Get ( GetTributacaoRequest ) returns ( GetTributacaoResponse );
+
+  rpc List ( ListTributacaoRequest ) returns ( ListTributacaoResponse );
+
+  rpc Clone ( CloneTributacaoRequest ) returns ( CloneTributacaoResponse );
+
+  // Tabela de classificação tributária, restrita aos códigos válidos para NF-e e NFC-e
+  rpc ListClassificacaoTributaria ( ListClassificacaoTributariaRequest ) returns ( ListClassificacaoTributariaResponse );
+}
+
+// Enum para IcmsCst
+enum IcmsCst {
+  ICMS_CST_00 = 0;
+
+  ICMS_CST_02 = 1;
+
+  ICMS_CST_10 = 2;
+
+  ICMS_CST_15 = 3;
+
+  ICMS_CST_20 = 4;
+
+  ICMS_CST_30 = 5;
+
+  ICMS_CST_40 = 6;
+
+  ICMS_CST_41 = 7;
+
+  ICMS_CST_50 = 8;
+
+  ICMS_CST_51 = 9;
+
+  ICMS_CST_53 = 10;
+
+  ICMS_CST_60 = 11;
+
+  ICMS_CST_61 = 12;
+
+  ICMS_CST_70 = 13;
+
+  ICMS_CST_90 = 14;
+}
+
+// Enum para IsCst - Reforma Tributária 2025
+enum IsCst {
+  IS_CST_UNSPECIFIED = 0;
+
+  IS_CST_00 = 1; // Tributada integralmente
+
+  IS_CST_10 = 2; // Tributada e com cobrança do IS por substituição tributária
+
+  IS_CST_20 = 3; // Com redução de base de cálculo
+
+  IS_CST_30 = 4; // Isenta ou não tributada e com cobrança do IS por substituição tributária
+
+  IS_CST_40 = 5; // Isenta
+
+  IS_CST_41 = 6; // Não tributada
+
+  IS_CST_50 = 7; // Suspensão
+
+  IS_CST_51 = 8; // Diferimento
+
+  IS_CST_60 = 9; // IS cobrado anteriormente por substituição tributária
+
+  IS_CST_70 = 10; // Com redução de base de cálculo e cobrança do IS por substituição tributária
+
+  IS_CST_90 = 11; // Outras
+}
+
+enum PerfilMonofasico {
+  PERFIL_MONOFASICO_UNSPECIFIED = 0; // Sem perfil - Não ha destaque de nenhum dos grupos monofasicos, apenas do total
+
+  PERFIL_MONOFASICO_PADRAO = 1; // gMonoPadrao - Faz o destaque padrao do imposto monofasico
+
+  PERFIL_MONOFASICO_SUBSTITUIDO = 2; // gMonoReten - Quando o emissor é substituído, e quem já reteve foi alguém anterior.
+
+  PERFIL_MONOFASICO_SUBSTITUTO = 3; // gMonoRet - Quando o emissor é o responsável por reter IBS/CBS de terceiros.
+
+  PERFIL_MONOFASICO_DIFERIMENTO = 4; // gMonoDif - Quando há diferimento do IBS/CBS monofásico. o recolhimento ocorrerá em etapa futura
+}
+
+// Dados do Tributacao
+message Tributacao {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string nome = 6;
+
+  string cfopSaida = 7;
+
+  IcmsCst icmsCst = 8;
+
+  // acesso ao dado antigo
+  string icmsCstNormal = 9;
+
+  string icmsOrigem = 10;
+
+  // Configuracao de ICMS
+  string icmsModalidadeCalculo = 11;
+
+  double icmsAliquota = 12;
+
+  double icmsReducaoBase = 13;
+
+  double icmsReducaoBaseInterestadual = 14;
+
+  double icmsCreditoPercentual = 15;
+
+  // ICMS ST - Substituicao tribuaria
+  string icmsStModalidadeCalculo = 16;
+
+  double icmsStAliquota = 17;
+
+  double icmsStMargemValorAdicional = 18;
+
+  double icmsStReducaoBase = 19;
+
+  // IPI
+  string ipiCst = 20;
+
+  double ipiAliquota = 21;
+
+  double ipiReducaoBase = 22;
+
+  string ipiClasseEnquadramento = 23;
+
+  string ipiCodigoEnquadramento = 24;
+
+  string ipiCodigoSeloControle = 25;
+
+  // PIS
+  string pisCst = 26;
+
+  double pisAliquota = 27;
+
+  double pisReducaoBase = 28;
+
+  // PIS ST
+  double pisStAliquota = 29;
+
+  double pisStReducaoBase = 30;
+
+  // COFINS
+  string cofinsCst = 31;
+
+  double cofinsAliquota = 32;
+
+  double cofinsReducaoBase = 33;
+
+  // COFINS ST
+  double cofinsStAliquota = 34;
+
+  double cofinsStReducaoBase = 35;
+
+  // =============================================================================
+  // NOVOS TRIBUTOS DA REFORMA TRIBUTÁRIA 2025
+  // =============================================================================
+  // Dados gerais
+  string ibs_cbs_cst = 36;
+
+  string ibs_cbs_classificacao_tributaria = 37; // Código de Classificação Tributária IBS e CBS
+
+  double ibs_cbs_percentual_reducao_base = 38;
+
+  double fator_conversao_proporcional = 39; // usado para converter a quantidade do item na quantidade esperada para uso no calculo proporcional
+
+  // CBS - Contribuição sobre Bens e Serviços
+  string cbs_cst_normal = 40; // acesso ao dado antigo
+
+  double cbs_aliquota = 41;
+
+  double cbs_aliquota_proporcional = 42; // usada para CSTs de aliquota fixa proporcional adRem
+
+  double cbs_reducao_base = 43;
+
+  // CBS - Campos adicionais para automatização
+  double cbs_diferimento_percentual = 44; // Percentual de diferimento CBS
+
+  double cbs_devolucao_tributos_percentual = 45; // Percentual de devolução de tributos CBS
+
+  double cbs_reducao_aliquota_percentual = 46; // Percentual de redução de alíquota CBS
+
+  // IBS - Imposto sobre Bens e Serviços
+  string ibs_cst_normal = 47; // acesso ao dado antigo
+
+  double ibs_aliquota = 48;
+
+  double ibs_reducao_base = 49;
+
+  // dados monofasicos para ibs e cbs (é cadastrado na tributacao pois este valor depende do cCLassTrib - codigo de classificacao tributaria)
+  double monofasia_ibs_valor_unitario = 50;
+
+  double monofasia_cbs_valor_unitario = 51;
+
+  // perfil monofasico - indica se o emissor apura (contribuinte na cadeia inicial) ou não apura (contribuinte na cadeia final)
+  PerfilMonofasico perfil_monofasico = 52;
+
+  // IBS - Campos adicionais para automatização
+  double ibs_aliquota_uf = 53; // Alíquota IBS estadual
+
+  double ibs_aliquota_uf_proporcional = 54; // usada para CSTs de aliquota fixa proporcional adRem
+
+  double ibs_aliquota_municipio = 55; // Alíquota IBS municipal
+
+  double ibs_aliquota_municipio_proporcional = 56; // usada para CSTs de aliquota fixa proporcional adRem
+
+  double ibs_diferimento_percentual = 57; // Percentual de diferimento IBS
+
+  double ibs_devolucao_tributos_percentual = 58; // Percentual de devolução de tributos IBS
+
+  double ibs_reducao_aliquota_percentual = 59; // Percentual de redução de alíquota IBS
+
+  double ibs_credito_presumido_percentual = 60; // Percentual de crédito presumido IBS
+
+  double ibs_credito_presumido_valor = 61; // Valor do crédito presumido IBS
+
+  // IBS/CBS - Grupo de Tributação Regular (Sombra) - Reforma Tributária 2025
+  string ibs_cbs_trib_regular_cst = 62; // CST da Tributação Regular
+
+  string ibs_cbs_trib_regular_classificacao_tributaria = 63; // Classificação Tributária Regular
+
+  double ibs_cbs_trib_regular_aliquota_cbs = 64; // Alíquota Regular CBS
+
+  double ibs_cbs_trib_regular_aliquota_ibs_uf = 65; // Alíquota Regular IBS UF
+
+  double ibs_cbs_trib_regular_aliquota_ibs_municipio = 66; // Alíquota Regular IBS Município
+
+  // IS - Imposto Seletivo
+  IsCst is_cst = 67;
+
+  string is_cst_normal = 68; // acesso ao dado antigo
+
+  double is_aliquota = 69;
+
+  double is_reducao_base = 70;
+
+  // IS - Campos adicionais para automatização
+  string is_classificacao_tributaria = 71; // Código de Classificação Tributária IS
+
+  double is_aliquota_especifica = 72; // Alíquota específica IS (por valor)
+
+  string is_unidade_tributaria = 73; // Unidade de medida para IS
+
+  double is_quantidade_tributada = 74; // Quantidade tributada IS
+
+  bool is_calculo_por_quantidade = 75; // Indica se o cálculo é por quantidade
+
+  bool is_calculo_por_valor = 76; // Indica se o cálculo é por valor
+
+  // Regime tributário (SIMPLES, NORMAL, REAL, INDIVIDUAL) a que a tributação atende.
+  // Somente leitura: as geradas nascem com o regime delas e as demais assumem o regime
+  // da organização na criação.
+  string regime_tributario = 77;
+
+  // Indica tributação criada ou alterada pelo usuário, e não apenas sugerida pelo
+  // sistema. Somente leitura.
+  bool alterada_pelo_usuario = 78;
+
+  // Código de classificação tributária que a tributação atende. Preenchido no conjunto
+  // compartilhado, que tem uma tributação por código da tabela oficial.
+  string classificacao_tributaria = 79;
+
+  // Marca a tributação do cadastro compartilhado, que a organização usa mas não altera.
+  // Para ajustar, a organização clona e edita a cópia, que passa a ter prioridade.
+  bool padrao = 80;
+
+  // ICMS por UF e por regime, usados quando a mesma tributação atende mais de um estado
+  // ou regime — o caso do cadastro compartilhado. Vazios, valem os campos simples.
+  map<string, IcmsPorUf> icms_por_uf = 81;
+
+  map<string, IcmsPorRegime> icms_por_regime = 82;
+
+  map<string, PisCofinsPorRegime> pis_cofins_por_regime = 83;
+
+  // Informa que a classificação da tributação pode ser usada em NFC-e. Parte da tabela vale
+  // só para NF-e, e a SEFAZ recusa a venda ao consumidor que informe um desses códigos
+  bool permite_nfce = 84;
+
+  // Somente leitura para quem está consultando. Calculado na resposta e nunca gravado: a
+  // mesma tributação é editável para a organização que mantém o cadastro compartilhado
+  bool somente_leitura = 85;
+
+  metadata.BasicFields fields = 86;
+
+  // Texto que sai nas informações complementares da NF-e quando algum item usa esta
+  // tributação, como o dispositivo legal da redução de base ou da substituição tributária
+  string informacoes_complementares = 87;
+}
+
+// ICMS de uma UF: alíquota interna e, quando o estado trata a situação de forma própria,
+// o CST e a redução de base.
+message IcmsPorUf {
+  double aliquota = 1;
+
+  string cst = 2;
+
+  double reducao_base = 3;
+}
+
+// CST do ICMS no regime: os que apuram normalmente usam CST, Simples e MEI usam CSOSN.
+message IcmsPorRegime {
+  string cst = 1;
+}
+
+// PIS e COFINS no regime: cumulativo no Lucro Presumido, não cumulativo no Lucro Real e
+// sem apuração no documento nos regimes que emitem com CSOSN.
+message PisCofinsPorRegime {
+  string cst = 1;
+
+  double pis_aliquota = 2;
+
+  double cofins_aliquota = 3;
+}
+
+// Request e Response para criação de Tributacao
+message CreateTributacaoRequest {
+  Tributacao tributacao = 1;
+}
+
+message CreateTributacaoResponse {
+  Tributacao tributacao = 1;
+}
+
+// Request e Response para atualização de Tributacao
+message UpdateTributacaoRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Tributacao tributacao = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Tributacao
+message UpdateTributacaoResponse {
+  Tributacao tributacao = 1;
+}
+
+// Request e Response para exclusão de Tributacao
+message DeleteTributacaoRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteTributacaoResponse {
+  string id = 1;
+}
+
+// Request para obter um Tributacao por ID
+message GetTributacaoRequest {
+  string id = 1;
+}
+
+// Request para obter um Tributacao por ID
+message GetTributacaoResponse {
+  Tributacao tributacao = 1;
+}
+
+// Request e Response para listagem de Tributacaos
+message ListTributacaoRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListTributacaoResponse {
+  repeated Tributacao tributacaoList = 1;
+
+  string next_page_token = 2;
+}
+
+message CloneTributacaoRequest {
+  string id = 1;
+}
+
+message CloneTributacaoResponse {
+  Tributacao tributacao = 1;
+}
+
+// Classificação tributária do IBS/CBS conforme a tabela oficial da Reforma Tributária
+message ClassificacaoTributaria {
+  string codigo = 1;
+
+  string descricao = 2;
+
+  // Situação tributária (CST) a que o código pertence
+  string cst = 6;
+
+  // Descrição da situação tributária, usada para agrupar os códigos na escolha
+  string cst_descricao = 8;
+
+  // Nome curto publicado na tabela, que identifica o código sem a descrição inteira
+  string nome = 9;
+
+  // Texto do artigo da LC 214/2025 que criou o tratamento, e a referência dele
+  string texto_legal = 10;
+
+  string artigo = 11;
+
+  string link = 12;
+
+  // Percentual de redução da alíquota definido para o código (0 a 100)
+  double reducao_ibs = 3;
+
+  double reducao_cbs = 4;
+
+  // Indica que a operação é tributada e por isso leva as alíquotas do ano
+  bool exige_tributacao = 5;
+
+  // Modelos em que o código pode ser informado. Parte da tabela vale só para NF-e, e a
+  // SEFAZ recusa o documento emitido no outro modelo
+  bool nfe = 13;
+
+  bool nfce = 14;
+}
+
+message ListClassificacaoTributariaRequest {
+}
+
+message ListClassificacaoTributariaResponse {
+  repeated ClassificacaoTributaria classificacoes = 1;
+
+  // Alíquotas vigentes no ano, aplicadas quando a classificação exige tributação
+  double ibs_aliquota_uf = 2;
+
+  double ibs_aliquota_municipio = 3;
+
+  double cbs_aliquota = 4;
+}

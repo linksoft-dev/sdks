@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package endereco.cidade;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/endereco/cidade";
+
+// Dados da Cidade
+message Cidade {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  string nome = 6;
+
+  string uf = 7;
+
+  string cep = 8;
+
+  string codigo = 9;
+}
+
+// Serviço Cidade com operações CRUD
+service CidadeService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+// Request e Response para criação de Cidade
+message CreateRequest {
+  Cidade cidade = 1;
+}
+
+message CreateResponse {
+  Cidade cidade = 1;
+}
+
+// Request e Response para atualização de Cidade
+message UpdateRequest {
+  string id = 1;
+
+  Cidade cidade = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Cidade cidade = 1;
+}
+
+// Request e Response para exclusão de Cidade
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+// Request para obter uma Cidade por ID
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Cidade cidade = 1;
+}
+
+// Request e Response para listagem de Cidades
+message ListRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+
+  string uf = 6; // Filtro específico para Cidade por UF
+}
+
+message ListResponse {
+  repeated Cidade cidade_list = 1;
+
+  string next_page_token = 2;
+}

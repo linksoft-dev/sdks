@@ -1,0 +1,292 @@
+syntax = "proto3";
+
+package fechamentocaixa;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/financeiro/fechamentoCaixa";
+
+// Serviço FechamentoCaixa com operações CRUD
+service FechamentoCaixaService {
+  rpc Create ( CreateFechamentoCaixaRequest ) returns ( CreateFechamentoCaixaResponse );
+
+  rpc Update ( UpdateFechamentoCaixaRequest ) returns ( UpdateFechamentoCaixaResponse );
+
+  rpc Delete ( DeleteFechamentoCaixaRequest ) returns ( DeleteFechamentoCaixaResponse );
+
+  rpc Get ( GetFechamentoCaixaRequest ) returns ( GetFechamentoCaixaResponse );
+
+  rpc List ( ListFechamentoCaixaRequest ) returns ( ListFechamentoCaixaResponse );
+
+  rpc Report ( ReportFechamentoCaixaRequest ) returns ( ReportFechamentoCaixaResponse );
+
+  // Métodos não-CRUD específicos do fechamento de caixa
+  rpc AceitaFechamento ( AceitaFechamentoRequest ) returns ( AceitaFechamentoResponse );
+
+  rpc RejeitaFechamento ( RejeitaFechamentoRequest ) returns ( RejeitaFechamentoResponse );
+
+  rpc FechamentoCaixaRapido ( FechamentoCaixaRapidoRequest ) returns ( FechamentoCaixaRapidoResponse );
+
+  rpc UpdateApuracao ( UpdateApuracaoRequest ) returns ( UpdateApuracaoResponse );
+
+  rpc FechamentoCaixaImprimir ( FechamentoCaixaImprimirRequest ) returns ( FechamentoCaixaImprimirResponse );
+
+  rpc FechamentoCaixaValeDiferenca ( FechamentoCaixaValeDiferencaRequest ) returns ( FechamentoCaixaValeDiferencaResponse );
+}
+
+// Dados do FechamentoCaixa
+message FechamentoCaixa {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  int32 numero = 6; // Numeração do fechamento de caixa gerado automaticamente
+
+  string situacao = 7;
+
+  google.protobuf.Timestamp dataHoraInicial = 8;
+
+  google.protobuf.Timestamp dataHoraFinal = 9;
+
+  bool periodoAutomatico = 10; // indica que o periodo foi determinado pelo sistema
+
+  string caixaId = 11;
+
+  string caixaNome = 12;
+
+  string usuarioCaixaId = 13; // id do usuario vinculado ao caixa
+
+  string usuarioCaixaNome = 14; // nome do usuario vinculado ao caixa
+
+  double diferenca = 15;
+
+  string obs = 16;
+
+  repeated Apuracao valores = 17;
+
+  // Dados de aprovacao do fechamento
+  string aprovador = 18;
+
+  string aprovadorId = 19;
+
+  google.protobuf.Timestamp dataHoraAprovacao = 20;
+
+  // Dados de rejeicao do fechamento (quando situacao = REJEITADO)
+  string motivoRejeicao = 21;
+
+  string rejeitadoPor = 22;
+
+  google.protobuf.Timestamp dataHoraRejeicao = 23;
+}
+
+message Apuracao {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string fechamentoCaixaId = 6; // ID do fechamento de caixa pai
+
+  string tipoPagamento = 7;
+
+  double valorInformado = 8;
+
+  double entrada = 9;
+
+  double saida = 10;
+
+  double valorApurado = 11;
+
+  double diferenca = 12;
+}
+
+// Request e Response para criação de FechamentoCaixa
+message CreateFechamentoCaixaRequest {
+  FechamentoCaixa fechamentoCaixa = 1;
+}
+
+message CreateFechamentoCaixaResponse {
+  FechamentoCaixa fechamentoCaixa = 1;
+}
+
+// Request e Response para atualização de FechamentoCaixa
+message UpdateFechamentoCaixaRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  FechamentoCaixa fechamentoCaixa = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de FechamentoCaixa
+message UpdateFechamentoCaixaResponse {
+  FechamentoCaixa fechamentoCaixa = 1;
+}
+
+// Request e Response para exclusão de FechamentoCaixa
+message DeleteFechamentoCaixaRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteFechamentoCaixaResponse {
+  string id = 1;
+}
+
+// Request para obter um FechamentoCaixa por ID
+message GetFechamentoCaixaRequest {
+  string id = 1;
+}
+
+// Request para obter um FechamentoCaixa por ID
+message GetFechamentoCaixaResponse {
+  FechamentoCaixa fechamentoCaixa = 1;
+}
+
+// Request e Response para listagem de FechamentoCaixas
+message ListFechamentoCaixaRequest {
+  repeated string ids = 1;
+
+  google.protobuf.Timestamp dataHoraInicialGte = 2;
+
+  google.protobuf.Timestamp dataHoraInicialLte = 3;
+
+  google.protobuf.Timestamp dataHoraFinalGte = 4;
+
+  google.protobuf.Timestamp dataHoraFinalLte = 5;
+
+  string caixaId = 6;
+
+  string usuarioCaixaId = 7;
+
+  string situacao = 8;
+
+  uint32 page_size = 9;
+
+  string page_token = 10;
+
+  Filter filter = 11;
+}
+
+message ReportFechamentoCaixaRequest {
+  string tipo_relatorio = 1; // Tipo de relatório
+
+  ListFechamentoCaixaRequest listFechamentoCaixaRequest = 2;
+}
+
+message ReportFechamentoCaixaResponse {
+  report.Response response = 1;
+}
+
+message ListFechamentoCaixaResponse {
+  repeated FechamentoCaixa fechamentoCaixaList = 1;
+
+  string next_page_token = 2;
+}
+
+// Métodos não-CRUD específicos
+
+// AceitaFechamento - Aceitar um fechamento de caixa
+message AceitaFechamentoRequest {
+  string id = 1; // ID do fechamento a ser aceito
+
+  bool realizarSangria = 2; // ao aceitar, retira o dinheiro apurado do caixa do operador
+
+  string caixaDestinoId = 3; // se informado, transfere o valor para este caixa; senão apenas retira (sangria)
+
+  string caixaDestinoNome = 4;
+}
+
+message AceitaFechamentoResponse {
+  FechamentoCaixa fechamentoCaixa = 1;
+}
+
+// RejeitaFechamento - Rejeitar um fechamento de caixa (ex.: valores digitados errados)
+message RejeitaFechamentoRequest {
+  string id = 1; // ID do fechamento a ser rejeitado
+
+  string motivo = 2; // motivo da rejeição
+}
+
+message RejeitaFechamentoResponse {
+  FechamentoCaixa fechamentoCaixa = 1;
+}
+
+// FechamentoCaixaRapido - Criar fechamento rapidamente
+message FechamentoCaixaRapidoRequest {
+  double dinheiro = 1;
+
+  double pix = 2;
+
+  double cartao_credito = 3;
+
+  double cartao_debito = 4;
+
+  double duplicata = 5;
+
+  double cheque = 6;
+}
+
+message FechamentoCaixaRapidoResponse {
+  FechamentoCaixa fechamentoCaixa = 1;
+
+  bool success = 2;
+
+  string message = 3;
+}
+
+message UpdateApuracaoRequest {
+  string fechamentoCaixaId = 1;
+
+  string id = 2;
+
+  Apuracao apuracao = 3;
+
+  metadata.FieldMask update_mask = 4;
+}
+
+message UpdateApuracaoResponse {
+  Apuracao apuracao = 1;
+}
+
+// FechamentoCaixaImprimir - Impressão de fechamento de caixa em HTML (equivalente ao GraphQL)
+message FechamentoCaixaImprimirRequest {
+  string id = 1; // ID do fechamento para imprimir
+}
+
+message FechamentoCaixaImprimirResponse {
+  report.Response response = 1;
+}
+
+// FechamentoCaixaValeDiferenca - Impressão de vale da diferença existente no caixa (equivalente ao GraphQL)
+message FechamentoCaixaValeDiferencaRequest {
+  string id = 1; // ID do fechamento para gerar vale da diferença
+}
+
+message FechamentoCaixaValeDiferencaResponse {
+  report.Response response = 1;
+}

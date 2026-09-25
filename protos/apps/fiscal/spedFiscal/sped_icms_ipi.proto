@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+package spedfiscal;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/fiscal/spedFiscal";
+
+// Serviço SpedFiscal com operações CRUD
+service SpedFiscalService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  // Gera o arquivo SPED fiscal
+  rpc Gera ( GeraRequest ) returns ( GeraResponse );
+
+  // Envia o arquivo SPED por email
+  rpc EnviarEmail ( EnviarEmailRequest ) returns ( EnviarEmailResponse );
+}
+
+// Dados do SpedFiscal
+message SpedFiscal {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  bool auto_create = 6;
+
+  int32 mes = 7;
+
+  int32 ano = 8;
+
+  FinalidadeArquivo finalidade = 9;
+
+  string arquivo_nome = 10;
+
+  string arquivo_file_path = 11; // Filepath do arquivo no FileManager (ex: /sped/SPED_FISCAL_...txt)
+
+  string inventario_id = 12;
+
+  string inventario_nome = 13;
+
+  CriterioInclusaoNf criterio_inclusao_nf = 14; // Critério de inclusão de NFs de entrada no SPED
+
+  SituacaoNfEntrada situacao_nf_entrada = 15; // Situação das NFs de entrada: somente aceitas ou todas
+
+  LeiauteBlocoK leiaute_bloco_k = 16; // Leiaute do bloco K: completo declara a produção do período (K230/K235)
+}
+
+enum FinalidadeArquivo {
+  FINALIDADE_ARQUIVO_UNSPECIFIED = 0;
+
+  FINALIDADE_ARQUIVO_ORIGINAL = 1;
+
+  FINALIDADE_ARQUIVO_RETIFICACAO = 2;
+}
+
+// Critério para inclusão de notas fiscais de entrada no SPED
+enum CriterioInclusaoNf {
+  CRITERIO_INCLUSAO_NF_UNSPECIFIED = 0; // Não definido (usa padrão: aceitação)
+
+  CRITERIO_INCLUSAO_NF_ACEITACAO = 1; // Inclui com base na data de aceitação
+
+  CRITERIO_INCLUSAO_NF_EMISSAO = 2; // Inclui com base na data de emissão
+}
+
+// Situação das notas fiscais de entrada a incluir no SPED
+enum SituacaoNfEntrada {
+  SITUACAO_NF_ENTRADA_UNSPECIFIED = 0; // Não definido (usa padrão: somente aceitas)
+
+  SITUACAO_NF_ENTRADA_ACEITAS = 1; // Somente notas aceitas
+
+  SITUACAO_NF_ENTRADA_TODAS = 2; // Aceitas e não aceitas
+}
+
+// Leiaute adotado no bloco K (registro K010)
+enum LeiauteBlocoK {
+  LEIAUTE_BLOCO_K_UNSPECIFIED = 0; // Não definido (usa padrão: completo quando há produção no período)
+
+  LEIAUTE_BLOCO_K_COMPLETO = 1; // Declara a produção do período nos registros K230/K235
+
+  LEIAUTE_BLOCO_K_SIMPLIFICADO = 2; // Somente os saldos de estoque, sem produção
+}
+
+// Request e Response para criação de SpedFiscal
+message CreateRequest {
+  SpedFiscal sped_fiscal = 1;
+}
+
+message CreateResponse {
+  SpedFiscal sped_fiscal = 1;
+}
+
+// Request e Response para atualização de SpedFiscal
+message UpdateRequest {
+  string id = 1; // ID do SpedFiscal a ser atualizado
+
+  SpedFiscal sped_fiscal = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  SpedFiscal sped_fiscal = 1;
+}
+
+// Request e Response para exclusão de SpedFiscal
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+// Request para obter um SpedFiscal por ID
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  SpedFiscal sped_fiscal = 1;
+}
+
+// Request e Response para listagem de SpedFiscals
+message ListRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListResponse {
+  repeated SpedFiscal sped_fiscal_list = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para geração de arquivo SPED
+message GeraRequest {
+  string id = 1;
+}
+
+message GeraResponse {
+  SpedFiscal sped_fiscal = 1;
+}
+
+// Request e Response para envio de email
+message EnviarEmailRequest {
+  string id = 1;
+
+  string email = 2;
+
+  string nome_destinatario = 3; // Nome do destinatário (contador)
+
+  bool automatico = 4; // Indica se o envio é automático ou manual
+}
+
+message EnviarEmailResponse {
+  SpedFiscal sped_fiscal = 1;
+}

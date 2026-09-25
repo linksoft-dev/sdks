@@ -1,0 +1,232 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/dfe/ncm";
+
+service NcmService {
+  rpc Create ( CreateNcmRequest ) returns ( CreateNcmResponse );
+
+  rpc Update ( UpdateNcmRequest ) returns ( UpdateNcmResponse );
+
+  rpc List ( ListNcmRequest ) returns ( ListNcmResponse );
+
+  rpc Get ( GetNcmRequest ) returns ( GetNcmResponse );
+
+  rpc ImportaTabelaNcm ( ImportaTabelaRequest ) returns ( ImportaTabelaResponse );
+
+  rpc ImportaTabelaIbpt ( ImportaTabelaRequest ) returns ( ImportaTabelaResponse );
+
+  rpc ImportaTabelaCest ( ImportaTabelaRequest ) returns ( ImportaTabelaResponse );
+
+  // Consulta dados de um NCM na API IBPT "De Olho no Imposto".
+  // Usada pelo botão de consulta no cadastro de NCM. Não cadastra nada —
+  // só retorna os dados pra que o frontend popule o form.
+  rpc ConsultarIbpt ( ConsultarIbptRequest ) returns ( ConsultarIbptResponse );
+
+  // Atualiza a tabela compartilhada pela nomenclatura publicada pela Receita.
+  // Não recebe arquivo: a nomenclatura é baixada da fonte oficial.
+  rpc SincronizaTabelaOficial ( SincronizaTabelaOficialRequest ) returns ( SincronizaTabelaOficialResponse );
+}
+
+message CreateNcmRequest {
+  Ncm ncm = 1;
+}
+
+message CreateNcmResponse {
+  Ncm ncm = 1;
+}
+
+message UpdateNcmRequest {
+  string id = 1;
+
+  Ncm ncm = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateNcmResponse {
+  Ncm ncm = 1;
+}
+
+message ListNcmRequest {
+  repeated string ids = 1;
+
+  repeated string ncm = 2;
+
+  string tributacao_id = 3;
+
+  Filter filter = 4;
+
+  // Quando true, a busca por NCMs não encontrados localmente NÃO dispara o
+  // auto-cadastro via IBPT (consulta externa). Default false mantém o
+  // auto-cadastro. Use true em fluxos que só precisam do que já está cadastrado.
+  bool skip_ibpt_auto_register = 5;
+}
+
+message ListNcmResponse {
+  repeated Ncm ncmList = 1;
+}
+
+message GetNcmRequest {
+  string id = 1;
+
+  string codigo = 2;
+}
+
+message GetNcmResponse {
+  Ncm ncm = 1;
+}
+
+// Request e Response para importação de tabelas NCM/IBPT/CEST
+message ImportaTabelaRequest {
+  string file_string = 1;
+}
+
+message ImportaTabelaResponse {
+  string result = 1;
+}
+
+// Request da consulta unitária ao IBPT.
+// UF é opcional: se vazio, o backend usa a UF da empresa do contexto.
+message ConsultarIbptRequest {
+  string codigo = 1;
+
+  string uf = 2;
+}
+
+// Espelha o retorno da API IBPT (/api/v1/produtos).
+// Campos zero/vazios indicam ausência do dado no retorno do IBPT.
+message ConsultarIbptResponse {
+  string codigo = 1;
+
+  string uf = 2;
+
+  string descricao = 3;
+
+  double aliquota_federal = 4; // "Nacional" no retorno IBPT
+
+  double aliquota_federal_importados = 5; // "Importado"
+
+  double aliquota_estadual = 6;
+
+  double aliquota_municipal = 7;
+
+  string tipo = 8; // "produto" geralmente
+
+  google.protobuf.Timestamp vigencia_inicio = 9;
+
+  google.protobuf.Timestamp vigencia_fim = 10;
+
+  string chave = 11; // chave de autenticidade IBPT
+
+  string versao = 12;
+
+  string fonte = 13;
+}
+
+message SincronizaTabelaOficialRequest {
+}
+
+message SincronizaTabelaOficialResponse {
+  // Ato que originou a versão publicada (ex.: "Resolução Gecex nº 812/2025").
+  string ato = 1;
+
+  int32 vigentes_oficiais = 2;
+
+  int32 cadastrados = 3;
+
+  int32 descontinuados = 4;
+
+  int32 reativados = 5;
+
+  int32 atualizados = 6;
+
+  // Texto pronto com o resumo da execução.
+  string resultado = 7;
+}
+
+// Código vigente indicado para uso no lugar de um NCM revogado.
+message NcmSubstituto {
+  string codigo = 1;
+
+  string descricao = 2;
+}
+
+// Status operacional do NCM no sistema.
+// Diferente de fim_virgencia (dado factual do IBPT/SEFAZ), status reflete se o
+// NCM deve ser usado em novas operações fiscais. Apenas a Linksoft (shared tenant)
+// pode alterar manualmente; o sistema marca DESCONTINUADO automaticamente quando
+// a SEFAZ rejeita NFe com "NCM inexistente".
+enum StatusNcm {
+  ATIVO = 0;
+
+  DESCONTINUADO = 1;
+}
+
+message Ncm {
+  string id = 1;
+
+  string descricao = 2;
+
+  string categoria = 3;
+
+  string codigo = 4;
+
+  bool padrao = 5;
+
+  double aliquota_federal_importados = 6;
+
+  double aliquota_federal = 7;
+
+  double aliquota_estadual = 8;
+
+  double aliquota_municipal = 9;
+
+  string tributacao_id = 10;
+
+  string tributacao_nome = 11;
+
+  string codigo_cest = 12;
+
+  string un_trib = 13;
+
+  string un_trib_descricao = 14;
+
+  string ipi = 15;
+
+  string obs = 16;
+
+  google.protobuf.Timestamp inicio_virgencia = 17;
+
+  google.protobuf.Timestamp fim_virgencia = 18;
+
+  google.protobuf.Timestamp gtin_producao = 19;
+
+  google.protobuf.Timestamp gtin_homologacao = 20;
+
+  // true quando o NCM foi cadastrado automaticamente pelo sistema via consulta IBPT.
+  // Permite distinguir cadastros automáticos de manuais para auditoria/revisão.
+  bool cadastrado_automaticamente = 21;
+
+  StatusNcm status = 22;
+
+  // Preenchido quando o código é revogado: códigos vigentes do mesmo
+  // desdobramento na tabela oficial, para orientar a troca no cadastro.
+  repeated NcmSubstituto substitutos = 23;
+
+  // Quando as alíquotas foram buscadas no IBPT pela última vez. Vazio indica
+  // que o código nunca foi consultado — alíquota zerada sem esta data é
+  // ausência de dado, com ela é isenção informada pela fonte.
+  google.protobuf.Timestamp aliquotas_consultadas_em = 24;
+}

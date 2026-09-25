@@ -1,0 +1,284 @@
+syntax = "proto3";
+
+package entradasavulsa;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/estoque/entradasavulsa";
+
+// Serviço EntradasAvulsa com operações CRUD
+service EntradasAvulsaService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc AddProduto ( AddProdutoRequest ) returns ( AddProdutoResponse );
+
+  rpc UpdateProduto ( UpdateProdutoRequest ) returns ( UpdateProdutoResponse );
+
+  rpc DeleteProduto ( DeleteProdutoRequest ) returns ( DeleteProdutoResponse );
+
+  rpc Finaliza ( FinalizaRequest ) returns ( FinalizaResponse );
+
+  rpc Cancela ( CancelaRequest ) returns ( CancelaResponse );
+}
+
+enum Situacao {
+  SITUACAO_NAO_ESPECIFICADA = 0;
+
+  SITUACAO_PENDENTE = 1;
+
+  SITUACAO_FINALIZADA = 2;
+
+  SITUACAO_CANCELADA = 3;
+}
+
+// Informações do fornecedor
+message Pessoa {
+  string id = 1;
+
+  string cpf_cnpj = 2;
+
+  string nome = 3;
+
+  string nome_2 = 4;
+
+  string ie = 5;
+
+  string end_cep = 6;
+
+  string end_endereco = 7;
+
+  string end_numero = 8;
+
+  string end_bairro = 9;
+
+  string end_cidade = 10;
+
+  string end_cidade_cod = 11;
+
+  string end_uf = 12;
+
+  string end_complemento = 13;
+
+  string email = 14;
+
+  string telefone = 15;
+}
+
+// Dados do EntradasAvulsa
+message EntradasAvulsa {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  uint32 numero = 6;
+
+  Pessoa pessoa = 7;
+
+  google.protobuf.Timestamp data_hora_entrada = 8;
+
+  Situacao situacao = 9;
+
+  string motivo_cancelamento = 10;
+
+  google.protobuf.Timestamp data_hora_cancelamento = 11;
+
+  string cancelamento_usuario_id = 12;
+
+  string cancelamento_usuario_nome = 13;
+
+  string obs = 14;
+
+  double total = 15;
+
+  repeated Item produtos = 16;
+}
+
+message Item {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string produto_id = 6;
+
+  string produto_nome = 7;
+
+  string un = 8;
+
+  string servico_nome = 9;
+
+  string servico_id = 10;
+
+  string obs = 11;
+
+  double valor_unitario = 12;
+
+  double quantidade = 13;
+
+  double total = 14;
+
+  string variation_product_id = 15;
+}
+
+// Request e Response para criação de EntradasAvulsa
+message CreateRequest {
+  EntradasAvulsa entradas_avulsa = 1;
+}
+
+message CreateResponse {
+  EntradasAvulsa entradas_avulsa = 1;
+}
+
+// Request e Response para atualização de EntradasAvulsa
+message UpdateRequest {
+  string id = 1;
+
+  EntradasAvulsa entradas_avulsa = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  EntradasAvulsa entradas_avulsa = 1;
+}
+
+// Request e Response para exclusão de EntradasAvulsa
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+// Request para obter um EntradasAvulsa por ID
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  EntradasAvulsa entradas_avulsa = 1;
+}
+
+// Request e Response para listagem de EntradasAvulsas
+message ListRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+
+  google.protobuf.Timestamp created_at_gte = 6;
+
+  google.protobuf.Timestamp created_at_lte = 7;
+
+  google.protobuf.Timestamp data_hora_cancelamento_gte = 8;
+
+  google.protobuf.Timestamp data_hora_cancelamento_lte = 9;
+
+  double total_gte = 10;
+
+  double total_lte = 11;
+
+  string pessoa_id = 12;
+
+  Situacao situacao = 13;
+
+  repeated string situacao_in = 14;
+
+  string produto_id_contem = 15;
+}
+
+message ListResponse {
+  repeated EntradasAvulsa entradas_avulsa_list = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para adicionar produto
+message AddProdutoRequest {
+  string entrada_id = 1;
+
+  Item item = 2;
+}
+
+message AddProdutoResponse {
+  EntradasAvulsa entradas_avulsa = 1;
+}
+
+// Request e Response para atualizar produto
+message UpdateProdutoRequest {
+  string entrada_id = 1;
+
+  string item_id = 2;
+
+  Item item = 3;
+}
+
+message UpdateProdutoResponse {
+  EntradasAvulsa entradas_avulsa = 1;
+}
+
+// Request e Response para deletar produto
+message DeleteProdutoRequest {
+  string entrada_id = 1;
+
+  string item_id = 2;
+}
+
+message DeleteProdutoResponse {
+  EntradasAvulsa entradas_avulsa = 1;
+}
+
+// Request e Response para finalizar entrada
+message FinalizaRequest {
+  string entrada_id = 1;
+}
+
+message FinalizaResponse {
+  EntradasAvulsa entradas_avulsa = 1;
+}
+
+// Request e Response para cancelar entrada
+message CancelaRequest {
+  string entrada_id = 1;
+
+  string motivo = 2;
+}
+
+message CancelaResponse {
+  EntradasAvulsa entradas_avulsa = 1;
+}

@@ -1,0 +1,157 @@
+syntax = "proto3";
+
+package medicao;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/posto/medicao";
+
+// Medições de volume dos tanques de combustível, lançadas à mão ou lidas do medidor.
+service MedicaoService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  // Recebe as leituras do medidor de tanques vindas do agente de automação.
+  rpc Recebe ( RecebeRequest ) returns ( RecebeResponse );
+}
+
+enum Origem {
+  ORIGEM_UNSPECIFIED = 0;
+
+  ORIGEM_MANUAL = 1;
+
+  ORIGEM_AUTOMATICA = 2;
+}
+
+message Medicao {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  metadata.BasicFields fields = 6;
+
+  string tanque_id = 7;
+
+  int32 tanque_numero = 8;
+
+  string produto_id = 9;
+
+  string produto_nome = 10;
+
+  google.protobuf.Timestamp data_hora = 11;
+
+  // Litros de produto.
+  double volume = 12;
+
+  // Litros de água no fundo do tanque.
+  double agua = 13;
+
+  double temperatura = 14;
+
+  // Altura do produto em milímetros.
+  double nivel = 15;
+
+  Origem origem = 16;
+
+  string obs = 17;
+}
+
+message CreateRequest {
+  Medicao medicao = 1;
+}
+
+message CreateResponse {
+  Medicao medicao = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Medicao medicao = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Medicao medicao = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Medicao medicao = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListResponse {
+  repeated Medicao medicao_list = 1;
+
+  string next_page_token = 2;
+}
+
+message LeituraTanque {
+  int32 tanque_numero = 1;
+
+  double volume = 2;
+
+  double agua = 3;
+
+  double temperatura = 4;
+
+  double nivel = 5;
+
+  google.protobuf.Timestamp data_hora = 6;
+}
+
+message RecebeRequest {
+  repeated LeituraTanque leituras = 1;
+}
+
+message RecebeResponse {
+  // Tanques do medidor sem cadastro no sistema.
+  repeated int32 tanques_sem_cadastro = 1;
+}

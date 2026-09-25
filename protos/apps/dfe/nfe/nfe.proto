@@ -1,0 +1,1627 @@
+syntax = "proto3";
+
+package nfe;
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "apps/dfe/emitente/emitente.proto";
+
+import "apps/report/report.proto";
+
+import "apps/dfe/nfe/impostos.proto";
+
+option go_package = "comps/pb/apps/dfe/nfe";
+
+// / Serviço Nfe, operações de crud, emissão, cancelamentos e outros eventos da NFe
+service NfeService {
+  rpc EmitirNfe ( EmitirNfeRequest ) returns ( EmitirNfeResponse );
+
+  rpc ConsultaProtocoloByChave ( ConsultaProtocoloByChaveRequest ) returns ( ConsultaProtocoloByChaveResponse );
+
+  rpc CancelarNfe ( CancelarNfeRequest ) returns ( CancelarNfeResponse );
+
+  rpc GerarDevolucaoNfe ( GerarDevolucaoNfeRequest ) returns ( GerarDevolucaoNfeResponse );
+
+  rpc CancelaOuGeraDevolucao ( CancelaOuGeraDevolucaoRequest ) returns ( CancelaOuGeraDevolucaoResponse );
+
+  rpc Create ( CreateNfeRequest ) returns ( CreateNfeResponse );
+
+  rpc Update ( UpdateNfeRequest ) returns ( UpdateNfeResponse );
+
+  rpc Delete ( DeleteNfeRequest ) returns ( DeleteNfeResponse );
+
+  rpc Get ( GetNfeRequest ) returns ( GetNfeResponse );
+
+  rpc List ( ListNfeRequest ) returns ( ListNfeResponse );
+
+  rpc AddProduto ( AddProdutoRequest ) returns ( AddProdutoResponse );
+
+  rpc UpdateProduto ( UpdateProdutoRequest ) returns ( UpdateProdutoResponse );
+
+  rpc DeleteProduto ( DeleteProdutoRequest ) returns ( DeleteProdutoResponse );
+
+  rpc AddPagamentos ( AddPagamentoRequest ) returns ( AddPagamentoResponse );
+
+  rpc UpdatePagamento ( UpdatePagamentoRequest ) returns ( UpdatePagamentoResponse );
+
+  rpc DeletePagamento ( DeletePagamentoRequest ) returns ( DeletePagamentoResponse );
+
+  rpc AddReferencia ( AddReferenciaRequest ) returns ( AddReferenciaResponse );
+
+  rpc UpdateReferencia ( UpdateReferenciaRequest ) returns ( UpdateReferenciaResponse );
+
+  rpc DeleteReferencia ( DeleteReferenciaRequest ) returns ( DeleteReferenciaResponse );
+
+  rpc AddDuplicata ( AddDuplicataRequest ) returns ( AddDuplicataResponse );
+
+  rpc UpdateDuplicata ( UpdateDuplicataRequest ) returns ( UpdateDuplicataResponse );
+
+  rpc DeleteDuplicata ( DeleteDuplicataRequest ) returns ( DeleteDuplicataResponse );
+
+  rpc AddVolume ( AddVolumeRequest ) returns ( AddVolumeResponse );
+
+  rpc UpdateVolume ( UpdateVolumeRequest ) returns ( UpdateVolumeResponse );
+
+  rpc DeleteVolume ( DeleteVolumeRequest ) returns ( DeleteVolumeResponse );
+
+  rpc Duplica ( DuplicaRequest ) returns ( DuplicaResponse );
+
+  // importa XML das nfe, suporte para arquivo .xml, .zip, rar e .gz, estando ou nao em pastas e subpastas,
+  // o sistema da suporte a vários formatos
+  rpc NfeImportaXml ( NfeImportaXmlRequest ) returns ( NfeImportaXmlResponse );
+
+  rpc NfeEnviaXml ( NfeEnviaXmlRequest ) returns ( NfeEnviaXmlResponse );
+
+  // Envia todos os XML's encontrados dentro do período informado na request
+  rpc EnviaXmlsPeriodo ( EnviaXmlsPeriodoRequest ) returns ( EnviaXmlsPeriodoResponse );
+
+  rpc GerarNFeReimpressao ( GerarNFeReimpressaoRequest ) returns ( GerarNFeReimpressaoResponse );
+
+  rpc NfeRecuperaProtocolo ( NfeRecuperaProtocoloRequest ) returns ( NfeRecuperaProtocoloResponse );
+
+  rpc NfeImportacaoChave ( NfeImportacaoChaveRequest ) returns ( NfeImportacaoChaveResponse );
+
+  rpc Danfe ( DanfeRequest ) returns ( DanfeResponse );
+
+  // GetDownloadLinkXml retorna um link para download do xml da nota fiscal
+  rpc GetDownloadLinkXml ( GetDownloadLinkXmlRequest ) returns ( GetDownloadLinkXmlResponse );
+
+  rpc GetWsStatus ( GetWsStatusRequest ) returns ( GetWsStatusResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc CorrecaoMovimentacao ( CorrecaoMovimentacaoRequest ) returns ( CorrecaoMovimentacaoResponse );
+
+  rpc ExplainRejection ( ExplainRejectionRequest ) returns ( ExplainRejectionResponse );
+}
+
+// Serviço Nfce com operações CRUD
+service NfceService {
+  rpc EmitirNfe ( EmitirNfeRequest ) returns ( EmitirNfeResponse );
+
+  rpc ConsultaProtocoloByChave ( ConsultaProtocoloByChaveRequest ) returns ( ConsultaProtocoloByChaveResponse );
+
+  rpc CancelarNfe ( CancelarNfeRequest ) returns ( CancelarNfeResponse );
+
+  rpc GerarDevolucaoNfe ( GerarDevolucaoNfeRequest ) returns ( GerarDevolucaoNfeResponse );
+
+  rpc CancelaOuGeraDevolucao ( CancelaOuGeraDevolucaoRequest ) returns ( CancelaOuGeraDevolucaoResponse );
+
+  rpc Create ( CreateNfeRequest ) returns ( CreateNfeResponse );
+
+  rpc Update ( UpdateNfeRequest ) returns ( UpdateNfeResponse );
+
+  rpc Delete ( DeleteNfeRequest ) returns ( DeleteNfeResponse );
+
+  rpc Get ( GetNfeRequest ) returns ( GetNfeResponse );
+
+  rpc List ( ListNfeRequest ) returns ( ListNfeResponse );
+
+  rpc AddProduto ( AddProdutoRequest ) returns ( AddProdutoResponse );
+
+  rpc UpdateProduto ( UpdateProdutoRequest ) returns ( UpdateProdutoResponse );
+
+  rpc DeleteProduto ( DeleteProdutoRequest ) returns ( DeleteProdutoResponse );
+
+  rpc AddPagamentos ( AddPagamentoRequest ) returns ( AddPagamentoResponse );
+
+  rpc UpdatePagamento ( UpdatePagamentoRequest ) returns ( UpdatePagamentoResponse );
+
+  rpc DeletePagamento ( DeletePagamentoRequest ) returns ( DeletePagamentoResponse );
+
+  rpc AddReferencia ( AddReferenciaRequest ) returns ( AddReferenciaResponse );
+
+  rpc UpdateReferencia ( UpdateReferenciaRequest ) returns ( UpdateReferenciaResponse );
+
+  rpc DeleteReferencia ( DeleteReferenciaRequest ) returns ( DeleteReferenciaResponse );
+
+  rpc AddDuplicata ( AddDuplicataRequest ) returns ( AddDuplicataResponse );
+
+  rpc UpdateDuplicata ( UpdateDuplicataRequest ) returns ( UpdateDuplicataResponse );
+
+  rpc DeleteDuplicata ( DeleteDuplicataRequest ) returns ( DeleteDuplicataResponse );
+
+  rpc AddVolume ( AddVolumeRequest ) returns ( AddVolumeResponse );
+
+  rpc UpdateVolume ( UpdateVolumeRequest ) returns ( UpdateVolumeResponse );
+
+  rpc DeleteVolume ( DeleteVolumeRequest ) returns ( DeleteVolumeResponse );
+
+  rpc Duplica ( DuplicaRequest ) returns ( DuplicaResponse );
+
+  // importa XML das nfe, suporte para arquivo .xml, .zip, rar e .gz, estando ou nao em pastas e subpastas,
+  // o sistema da suporte a vários formatos
+  rpc NfeImportaXml ( NfeImportaXmlRequest ) returns ( NfeImportaXmlResponse );
+
+  rpc NfeEnviaXml ( NfeEnviaXmlRequest ) returns ( NfeEnviaXmlResponse );
+
+  // Envia todos os XML's encontrados dentro do período informado na request
+  rpc EnviaXmlsPeriodo ( EnviaXmlsPeriodoRequest ) returns ( EnviaXmlsPeriodoResponse );
+
+  rpc GerarNFeReimpressao ( GerarNFeReimpressaoRequest ) returns ( GerarNFeReimpressaoResponse );
+
+  rpc NfeRecuperaProtocolo ( NfeRecuperaProtocoloRequest ) returns ( NfeRecuperaProtocoloResponse );
+
+  rpc NfeImportacaoChave ( NfeImportacaoChaveRequest ) returns ( NfeImportacaoChaveResponse );
+
+  rpc Danfe ( DanfeRequest ) returns ( DanfeResponse );
+
+  // GetDownloadLinkXml retorna um link para download do xml da nota fiscal
+  rpc GetDownloadLinkXml ( GetDownloadLinkXmlRequest ) returns ( GetDownloadLinkXmlResponse );
+
+  rpc GetWsStatus ( GetWsStatusRequest ) returns ( GetWsStatusResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc CorrecaoMovimentacao ( CorrecaoMovimentacaoRequest ) returns ( CorrecaoMovimentacaoResponse );
+
+  rpc ExplainRejection ( ExplainRejectionRequest ) returns ( ExplainRejectionResponse );
+}
+
+// Request e Response para criação de Nfe
+message CreateNfeRequest {
+  Nfe nfe = 1;
+}
+
+message CreateNfeResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para atualização de Nfe
+message UpdateNfeRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Nfe nfe = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Nfe
+message UpdateNfeResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para exclusão de Nfe
+message DeleteNfeRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteNfeResponse {
+  string id = 1;
+}
+
+// Request para obter um Nfe por ID
+message GetNfeRequest {
+  string id = 1;
+}
+
+// Request para obter um Nfe por ID
+message GetNfeResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para listagem de Nfes
+message ListNfeRequest {
+  repeated string ids = 1;
+
+  repeated string chaves = 2;
+
+  repeated string situacoes = 3;
+
+  repeated string in_nfe_origens = 4;
+
+  string formaEmissao = 5;
+
+  google.protobuf.Timestamp dataHoraEmissaoGte = 6;
+
+  google.protobuf.Timestamp dataHoraEmissaoLte = 7;
+
+  google.protobuf.Timestamp entradaDataHoraAceiteRejeicaoGte = 8;
+
+  google.protobuf.Timestamp entradaDataHoraAceiteRejeicaoLte = 9;
+
+  Filter filter = 10;
+
+  repeated Tipo tipos = 11; // Tipo de documento (nfe, nfce, nfeentrada)
+
+  uint32 page_size = 12;
+
+  string page_token = 13;
+
+  string tipoOperacao = 14;
+
+  bool ignorarNotaReimpressao = 15;
+
+  string produtoId = 16; // notas que contem o produto
+
+  string pessoaId = 17; // notas que contem a pessoa
+
+  double totalNotaGte = 18;
+
+  double totalNotaLte = 19;
+
+  double totalIcmsGte = 20;
+
+  double totalIcmsLte = 21;
+
+  double totalIpiGte = 22;
+
+  double totalIpiLte = 23;
+
+  double totalPisGte = 24;
+
+  double totalPisLte = 25;
+
+  double totalCofinsGte = 26;
+
+  double totalCofinsLte = 27;
+
+  repeated string cfops = 28; // que contem os cfops nos produtos
+
+  repeated string cstsIcms = 29; // que contem os csts de icms nos produtos
+
+  repeated string cstsIpi = 30; // que contem os csts de ipi nos produtos
+
+  repeated string cstsPis = 31; // que contem os csts de pis nos produtos
+
+  repeated string cstsCofins = 32; // que contem os csts de cofins nos produtos
+}
+
+message ListNfeResponse {
+  repeated Nfe nfeList = 1;
+
+  string next_page_token = 2;
+}
+
+// Enum para Tipo
+enum Tipo {
+  TIPO_UNSPECIFIED = 0;
+
+  TIPO_NFE = 1; // "nfe"
+
+  TIPO_NFCE = 2; // "nfce"
+
+  TIPO_NFE_ENTRADA = 3; // "nfeentrada"
+
+  TIPO_DFE_ALL = 4;
+}
+
+message Nfe {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  metadata.BasicFields fields = 6;
+
+  string account_id = 7;
+
+  string situacao = 8;
+
+  dfe.Emitente emitente = 9;
+
+  Pessoa pessoa = 10;
+
+  string tipo = 11;
+
+  string tipo_ambiente = 12;
+
+  string tipo_operacao = 13;
+
+  string finalidade_emissao = 14;
+
+  string natureza_operacao = 15;
+
+  string entrada_cadastra_produto_nao_vinculado = 16;
+
+  bool entrada_aplica_calculo_venda_custo = 17;
+
+  string entrada_motivo_rejeicao = 18;
+
+  google.protobuf.Timestamp entrada_data_hora_aceite_rejeicao = 19;
+
+  bool entrada_alteracao_preco = 20;
+
+  int32 numero = 21;
+
+  int32 serie = 22;
+
+  string chave = 23;
+
+  string nfe_origem = 24;
+
+  repeated string nfe_origens = 25;
+
+  string id_devolucao = 26;
+
+  string url_danfe = 27;
+
+  string protocolo = 28;
+
+  google.protobuf.Timestamp data_hora_autorizacao = 29;
+
+  google.protobuf.Timestamp data_hora_emissao = 30;
+
+  google.protobuf.Timestamp data_hora_saida = 31;
+
+  string obs = 32;
+
+  string qrcode = 33;
+
+  bool importada = 34;
+
+  // Campos para cancelamento
+  string protocolo_cancelamento = 35;
+
+  string motivo_cancelamento = 36;
+
+  google.protobuf.Timestamp data_hora_cancelamento = 37;
+
+  string cancelamento_usuario_id = 38;
+
+  string cancelamento_usuario_nome = 39;
+
+  // gravar todos os historicos de operacoes da nota, como envio, rejeicao etc
+  string historico = 40;
+
+  string forma_emissao = 41;
+
+  string forma_emissao_descricao = 42; // NORMAL ou CONTINGENCIA
+
+  // SequenciaEvento é um campo para indentificar a quantidade de envento ja registrado para a NFe, seja cancelamento, envio de CC-e dentre outros,
+  int32 sequencia_evento = 43;
+
+  google.protobuf.Timestamp contingencia_data_hora = 44;
+
+  string contingencia_motivo = 45;
+
+  int32 contingencia_nfe_numero_vinculada = 46;
+
+  int32 contingencia_nfe_serie_vinculada = 47;
+
+  // data e hora de processamento da contingencia com sucesso, para indicar que nao precisa mais verificar quanto a contingencia para essa empresa
+  google.protobuf.Timestamp contingencia_processada_em = 48;
+
+  string xml_autorizacao = 49;
+
+  string xml_cancelamento = 50;
+
+  string xml_cancelamento_evento = 51;
+
+  repeated Rejeicao rejeicoes = 52;
+
+  // Adicione mais campos conforme necessário, baseado nas suas structs
+  // Exemplo para 'Total Icms Credito' e outros campos
+  double total_icms_credito = 53;
+
+  double icms_credito_aliquota = 54;
+
+  // Dados do Transporte
+  string transp_mod_frete = 55;
+
+  // TODO Vai precisar dps bolar um codigo pra recuperar o json desse registro durante a consulta pois os dados no modelo antigo sao soltos
+  TranspDados transporte = 56;
+
+  // precisda dos dados dabaixo para retrocompatibilidade podendo serem removidos posteriormente
+  string transp_id = 57;
+
+  string transp_cpf_cnpj = 58;
+
+  string transp_nome = 59;
+
+  string transp_ie = 60;
+
+  string transp_endereco = 61;
+
+  string transp_municipio = 62;
+
+  string transp_uf = 63;
+
+  string transp_veic_placa = 64;
+
+  string transp_veic_uf = 65;
+
+  string transp_veic_rntc = 66;
+
+  int32 transp_quantidade = 67;
+
+  string transp_especie = 68;
+
+  string transp_marca = 69;
+
+  string transp_numeracao_volumes = 70;
+
+  double transp_peso_liquido = 71;
+
+  double transp_peso_bruto = 72;
+
+  // Valores e totais
+  double valor_seguro = 73; // valor do seguro informado pelo usuario no corpor da nota para ser rateado nos itens não manuais
+
+  double total_seguro = 74; // soma de todos os valores de seguro dos itens
+
+  double valor_frete = 75; // valor do frete informado pelo usuario no corpor da nota para ser rateado nos itens não manuais
+
+  double total_frete = 76; // soma de todos os valores de frete dos itens
+
+  double valor_outras_despesas = 77; // valor das outras despesas informado pelo usuario no corpor da nota para ser rateado nos itens não manuais
+
+  double total_outras_despesas = 78; // soma de todos os valores de outras despesas dos itens
+
+  double desconto_valor = 79;
+
+  double desconto_percentual = 80;
+
+  double subtotal_produtos = 81; // Soma do subtotal dos produtos (usado no danfe ou VProd)
+
+  double total_desconto_produtos = 82; // Somatório de descontos e descontos rateados aplicado aos produtos da nota (usado no danf e VDesc)
+
+  double subtotal = 83;
+
+  double total = 84;
+
+  double total_pago = 85;
+
+  double total_tributos = 86;
+
+  // ICMS
+  // TODO Da mesma forma que o transportador vai precisar de um codigo na consulta pra recuperar
+  bool ibs_cbs_habilitado = 87; // no caso de empresas do simples nacional so deve gerar os novos impostos se estiver habilitado para isso
+
+  Impostos impostos = 88;
+
+  // precisda dos dados dabaixo para retrocompatibilidade podendo serem removidos posteriormente
+  double valor_icms = 89;
+
+  double valor_icms_bc = 90;
+
+  double valor_icms_desoneracao = 91;
+
+  double valor_icms_st = 92;
+
+  double valor_icms_st_bc = 93;
+
+  double valor_ipi = 94;
+
+  double valor_pis = 95;
+
+  double valor_cofins = 96;
+
+  double valor_icms_intere_fcp = 97;
+
+  double valor_icms_intere_destino = 98;
+
+  double valor_icms_intere_origem = 99;
+
+  // Novos campos de totalização da Reforma Tributária 2025 - conforme schema XSD
+  Totais totais = 100;
+
+  repeated ItemModel produtos = 101;
+
+  repeated PagamentoModel pagamentos = 102;
+
+  repeated DuplicataModel duplicatas = 103;
+
+  reserved 104;
+
+  // Volumes transportados (grupo X26 do leiaute): ate 5000 por documento
+  repeated VolumesModel volumes = 105;
+
+  repeated ReferenciaModel referencias = 106;
+
+  repeated Evento eventos = 107;
+
+  // Momento da última consulta da situação do documento no ambiente nacional
+  google.protobuf.Timestamp entrada_data_hora_consulta_sefaz = 108;
+
+  // Tipo de Nota de Débito (tpNFDebito, NT 2025.002): códigos "01" a "08"; exclusivo da finalidade DEB
+  string tipo_nota_debito = 109;
+
+  // Tipo de Nota de Crédito (tpNFCredito, NT 2025.002): códigos "01" a "06"; exclusivo da finalidade CRED
+  string tipo_nota_credito = 110;
+
+  // Chaves de acesso das notas de débito de pagamento antecipado abatidas nesta nota (gPagAntecipado)
+  repeated string pag_antecipado_refs = 111;
+}
+
+message Pessoa {
+  string id = 1;
+
+  string nome = 2;
+
+  string nome2 = 3;
+
+  string cpfCnpj = 4;
+
+  string ie = 5;
+
+  bool contribuinte = 6;
+
+  bool revenda = 7; // operação para revenda: não consumidor final (indFinal=0)
+
+  bool isentoIe = 8; // isento de IE (indIEDest=2), distinto de ausência de inscrição
+
+  string endCep = 9;
+
+  string endEndereco = 10;
+
+  string endNumero = 11;
+
+  string endBairro = 12;
+
+  string endCidade = 13;
+
+  string endCidadeCod = 14;
+
+  string endUf = 15;
+
+  string endComplemento = 16;
+
+  string telefone = 17;
+
+  string email = 18;
+
+  bool enviarNfePorEmail = 19;
+}
+
+message Rejeicao {
+  string id = 1;
+
+  google.protobuf.Timestamp dataHora = 2;
+
+  google.protobuf.Timestamp dataHoraSituacaoDoc = 3;
+
+  string cstat = 4;
+
+  string mensagem = 5;
+}
+
+message TranspDados {
+  string transpId = 1;
+
+  string transpCpfCnpj = 2;
+
+  string transpNome = 3;
+
+  string transpIe = 4;
+
+  string transpEndereco = 5;
+
+  string transpMunicipio = 6;
+
+  string transpUf = 7;
+
+  string transpVeicPlaca = 8;
+
+  string transpVeicUf = 9;
+
+  string transpVeicRntc = 10;
+
+  int32 transpQuantidade = 11;
+
+  string transpEspecie = 12;
+
+  string transpMarca = 13;
+
+  string transpNumeracaoVolumes = 14;
+
+  double transpPesoLiquido = 15;
+
+  double transpPesoBruto = 16;
+}
+
+// Informações do lote vinculado ao item da nota
+message BatchInfo {
+  string id = 1; // ID do lote (referência ao BatchControl)
+
+  string batch_number = 2; // Número do lote (denormalizado)
+
+  google.protobuf.Timestamp expiration_date = 3; // Data de vencimento (denormalizado)
+
+  google.protobuf.Timestamp manufacturing_date = 4; // Data de fabricação (denormalizado)
+
+  int64 quantity = 5; // Quantidade do lote usada neste item
+}
+
+message ItemModel {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string produto_id = 6;
+
+  string produto_nome = 7;
+
+  string produto_nome_nfe = 8;
+
+  string entrada_vinculado_por = 9;
+
+  bool entrada_alteracao_preco = 10;
+
+  string tributacao_id = 11;
+
+  string categoria_id = 12;
+
+  string obs = 13;
+
+  string codigo = 14;
+
+  string codigo_ean = 15;
+
+  double quantidade = 16;
+
+  double fatorConversaoUnidadeTrib = 17; // fator de conversao entre unidade comercial e unidade tributável da NF-e
+
+  double quantidadeTrib = 18; // quantidade tributável
+
+  double conversaoFator = 19;
+
+  double valor_unitario = 20;
+
+  double valorUnitarioTrib = 21;
+
+  double total = 22;
+
+  double subtotal = 23;
+
+  string un = 24;
+
+  string unTrib = 25; // unidade tributável
+
+  double desconto_valor = 26;
+
+  double desconto_percentual = 27;
+
+  double desconto_rateado = 28;
+
+  bool frete_manual = 29;
+
+  double valor_frete = 30;
+
+  double peso_bruto = 31;
+
+  double peso_liquido = 32;
+
+  bool seguro_manual = 33;
+
+  double valor_seguro = 34;
+
+  bool outras_despesas_manual = 35;
+
+  double valor_outras_despesas = 36;
+
+  PostoDados posto = 37;
+
+  // Dados fiscais
+  string cfop = 43;
+
+  string ncm = 44;
+
+  string codigo_cest = 45;
+
+  Impostos impostos = 46;
+
+  string natureza_operacao = 76; // Natureza de operação específica do item (opcional, se não informada usa a do corpo da nota)
+
+  // Como o sistema chegou na natureza do item (CFOP do XML, histórico do fornecedor). Fica vazio
+  // quando o usuário escolheu na mão. Só serve para explicar a marcação automática ao usuário.
+  string entrada_natureza_definida_por = 77;
+
+  // bases para calculo das margens
+  double margemComissao = 47;
+
+  double vendaMargemCusto = 48;
+
+  double vendaPrecoAvistaAnterior = 49;
+
+  double vendaPrecoAprazoAnterior = 50;
+
+  double vendaPrecoAtacadoAnterior = 51;
+
+  // Custos
+  double custo = 52;
+
+  double custoUnitario = 53;
+
+  double custoIcmsAliquota = 54; // aliquota que incidirá no produto no ato da venda
+
+  double custoIcms = 55;
+
+  double custoIpiAliquota = 56; // aliquota que incidirá no produto no ato da venda
+
+  double custoIpi = 57;
+
+  double custoFrete = 58;
+
+  double custoComissao = 59;
+
+  double custoOutrasDespesas = 60;
+
+  double diferencaAliquotaValor = 61;
+
+  double margemLucro = 62;
+
+  double vendaMargemAprazo = 63;
+
+  double vendaMargemAtacado = 64;
+
+  // Preços de venda calculados
+  double vendaPrecoAvista = 65;
+
+  double vendaPrecoAprazo = 66;
+
+  double vendaPrecoAtacado = 67;
+
+  BatchInfo batch = 68; // Dados do lote vinculado a este item
+
+  // Margem percentual de despesas operacionais (estimativa interna sobre o custo unitário).
+  // Diferente de custoOutrasDespesas (campo 60), que é rateio das despesas explícitas da NFe.
+  // Hierarquia no aceite: item > cadastro do produto > config global de Vendas.
+  double margem_outras_despesas = 69;
+
+  // Valor em R$ resultante de margem_outras_despesas × custo_unitario.
+  // Somado a custo_outras_despesas (rateio da NFe) ao compor o custo total.
+  double custo_despesas_operacionais = 70;
+
+  string variation_product_id = 71; // ID do produto-filho da variação (quando o item é de um produto com grade)
+
+  // Flag operacional: quando true, a NFe não deve gerar movimentação de
+  // estoque para este item. Usado quando o estoque já foi tratado pela origem
+  // ou por fluxo específico, evitando dupla baixa em notas de remessa em
+  // comodato (CFOP 5908/6908) e retornos/perdas gerados pela custódia.
+  bool skip_stock_decrease = 72;
+
+  // Referência de qual documento e qual item deste documento originou o ajuste declarado neste item
+  string referencia_id = 73;
+
+  int32 referencia_n_item = 74;
+
+  // Unidade que resulta da conversão de conversaoFator: o item vem na nota em `un` e passa a
+  // valer no estoque em `conversao_un` (ex.: CX com fator 30 vira UN). Vazio mantém `un`.
+  string conversao_un = 75;
+
+  // Autoriza cadastrar este item no estoque quando ele chega ao aceite sem produto vinculado.
+  // Vale em conjunto com entrada_cadastra_produto_nao_vinculado da nota: o item é cadastrado
+  // quando a nota autoriza todos ou quando ele próprio está marcado.
+  bool entrada_cadastra_produto = 78;
+
+  string pedido_compra = 80; // Número do pedido que o destinatário usa para conferir a nota (xPed), até 15 caracteres
+
+  int32 pedido_compra_item = 81; // Número do item nesse pedido (nItemPed)
+}
+
+message PostoDados {
+  string codigoAnp = 1;
+
+  string codigoAnpDescricao = 2;
+
+  string bico = 3;
+
+  string bomba = 4;
+
+  string tanque = 5;
+
+  double percentualGlp = 6;
+
+  double percentualGasNaturalNacional = 7;
+
+  double percentualGasNaturalImportado = 8;
+
+  double valorPartida = 9;
+
+  double encerranteInicial = 10;
+
+  double encerranteFinal = 11;
+
+  double percentualMistBio = 12;
+}
+
+message PagamentoModel {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string formaPagamentoCodigo = 6;
+
+  string formaPagamentoNome = 7;
+
+  string formaPagamentoId = 8;
+
+  string numeroParcelas = 9;
+
+  double valor = 10;
+
+  double valorTroco = 11;
+
+  string cartaoCodigoAutorizacao = 12;
+
+  string cartaoBandeira = 13;
+
+  string cartaoCnpjAdministradora = 14;
+
+  string comprovanteTef = 15;
+}
+
+message DuplicataModel {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string numero = 6;
+
+  double valor = 7;
+
+  google.protobuf.Timestamp vencimento = 8;
+
+  string contaPagarId = 9;
+}
+
+message Evento {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2; // Data de criação
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  // Dados do Evento
+  string codigo = 5; // codigo do evento
+
+  string descricao = 6; // descrição do evento
+
+  // Retorno da SEFAZ
+  string protocolo = 7; // protocolo do evento
+
+  google.protobuf.Timestamp data_hora_evento = 8; // data e hora de processamento do evento na sefaz
+
+  string c_stat = 9; // c_stat do evento
+
+  string mensagem = 10; // mensagem do evento
+
+  // Xmls vinculados ao evento
+  string xml_envio = 11; // xml enviado
+
+  string xml_retorno = 12; // xml de retorno
+}
+
+message VolumesModel {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  int32 quantidade = 6;
+
+  string especie = 7;
+
+  string marca = 8;
+
+  string numeracaoVolumes = 9;
+
+  double pesoLiquido = 10;
+
+  double pesoBruto = 11;
+
+  // Volume montado pelo sistema a partir do peso somado dos itens, e nao informado pelo usuario.
+  // Deixa de valer assim que o volume e alterado
+  bool geradoPeloPesoDaNota = 12;
+}
+
+message ReferenciaModel {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string chave = 6;
+}
+
+message Impostos {
+  ImpostoIcms icms = 1;
+
+  ImpostoIpi ipi = 2;
+
+  ImpostoPis pis = 3;
+
+  ImpostoCofins cofins = 4;
+
+  ImpostoIs is = 5; // Imposto Seletivo - Reforma Tributária 2025
+
+  ImpostoIbsCbs ibsCbs = 6; // IBS e CBS - Reforma Tributária 2025
+
+  AliquotasNacionais aliquotasNacionais = 7;
+}
+
+message ImpostoIcms {
+  // icms
+  string cst = 1;
+
+  double aliquota = 2;
+
+  string origem = 3;
+
+  bool calculo_manual_bc = 4;
+
+  double base_valor = 5;
+
+  double desoneracao = 6;
+
+  double valor = 7;
+
+  double aliquota_monofasica = 8;
+
+  double valor_monofasico = 9;
+
+  double mva = 10;
+
+  string mod_bc = 11;
+
+  double credito_percentual = 12;
+
+  double creditoValor = 13;
+
+  double reducaoBase = 14;
+
+  double reducaoValor = 15;
+
+  // icms ST - substituiacao tributaria
+  bool stRetido = 16; // se marcado, interprete os dados de ICMS ST e FCB como retido
+
+  double stAliquota = 17;
+
+  double stBaseValor = 18;
+
+  double stValor = 19;
+
+  double stReducaoBase = 20;
+
+  string stModBc = 21;
+
+  // icms diferenca insterestadual e fundo de combate a pobreza
+  double ufdestBc = 22;
+
+  double ufdestAliquota = 23;
+
+  double ufdestValor = 24;
+
+  double ufdestRemetenteValor = 25;
+
+  double ufdestFcpAliquota = 26;
+
+  double ufdestFcpValor = 27;
+
+  double ufdestInterestadualAliquota = 28;
+
+  double ufdestInterestadualPartilha = 29;
+
+  // valores usados em Nfe
+  double valorIcmsIntereFcp = 30;
+
+  double valorIcmsIntereDestino = 31;
+
+  double valorIcmsIntereOrigem = 32;
+}
+
+message ImpostoIpi {
+  string cst = 1; // CST - Código de Situação Tributária
+
+  double aliquota = 2; // Alíquota
+
+  double base_valor = 3; // Base de Cálculo do IPI
+
+  double valor = 4; // Valor do IPI
+
+  string codigo_enquadramento = 5; // Código de Enquadramento do IPI
+}
+
+message ImpostoPis {
+  string cst = 1; // CST - Código de Situação Tributária
+
+  double aliquota = 2; // Alíquota
+
+  bool calculo_manual_bc = 3; // Cálculo Manual da Base de Cálculo
+
+  double base_valor = 4; // Base de Cálculo do PIS
+
+  double valor = 5; // Valor do PIS
+
+  double st_aliquota = 6; // Alíquota da Substituição Tributária
+
+  double st_base_valor = 7; // Base de Cálculo da Substituição Tributária
+
+  double st_valor = 8; // Valor da Substituição Tributária
+}
+
+message ImpostoCofins {
+  string cst = 1; // CST - Código de Situação Tributária
+
+  double aliquota = 2; // Alíquota
+
+  bool calculo_manual_bc = 3; // Cálculo Manual da Base de Cálculo
+
+  double base_valor = 4; // Base de Cálculo do COFINS
+
+  double valor = 5; // Valor do COFINS
+
+  double st_aliquota = 6; // Alíquota da Substituição Tributária
+
+  double st_base_valor = 7; // Base de Cálculo da Substituição Tributária
+
+  double st_valor = 8; // Valor da Substituição Tributária
+}
+
+message AliquotasNacionais {
+  double aliquota_federal = 1; // Alíquota Federal
+
+  double aliquota_estadual = 2; // Alíquota Estadual
+
+  double aliquota_municipal = 3; // Alíquota Municipal
+
+  double tributo_federal = 4; // Tributo Federal
+
+  double tributo_estadual = 5; // Tributo Estadual
+
+  double tributo_municipal = 6; // Tributo Municipal
+}
+
+message ItemDevolucao {
+  string id = 1;
+
+  string codigo = 2;
+
+  string produtoNomeNfe = 3;
+
+  double valorUnitario = 4;
+
+  double quantidade = 5;
+
+  double quantidadeDevolver = 6;
+
+  // Unidade em que quantidadeDevolver está expressa. Vazio ou igual à unidade do item de origem
+  // devolve na unidade da nota; igual a conversao_un devolve na unidade convertida, e nesse caso
+  // o teto passa a ser a quantidade convertida e o valor unitário é dividido pelo fator.
+  string un = 7;
+}
+
+// Request e Response para emissão de Nfe que pode não estar salva no banco (O sistema criará o registros caso não existam e sejam autorizadas)
+message EmitirNfeRequest {
+  repeated Nfe Nfes = 1; // dados das Nfes a serem emitidas
+}
+
+message EmitirNfeResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para emissão de Nfe que pode não estar salva no banco (O sistema criará o registros caso seja autorizada)
+message ConsultaProtocoloByChaveRequest {
+  string id = 1;
+
+  Tipo tipo = 2;
+
+  int32 numero = 3;
+
+  string chave = 4;
+}
+
+message ConsultaProtocoloByChaveResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para cancelamento de NF-e
+message CancelarNfeRequest {
+  string id = 1; // ID da NF-e a ser cancelada
+
+  string motivoCancelamento = 2; // Informe o motivo para o cancelamento
+}
+
+message CancelarNfeResponse {
+  Nfe nfe = 1;
+}
+
+message GerarDevolucaoNfeRequest {
+  repeated string ids = 1; // ids das Nfes a serem devolvidas
+
+  repeated ItemDevolucao itens_a_devolver = 2; // ids das Nfes a serem devolvidas
+
+  bool force = 3; // se true, força a geração da devolução mesmo que a Nfe já tenha sido devolvida
+
+  string destinatario_id = 4; // quando informado, sobrepõe o destinatário de origem na nota de devolução
+
+  string devolucao_id = 5; // quando informado, os itens são agregados a esta devolução em digitação em vez de gerar uma nota nova
+}
+
+message GerarDevolucaoNfeResponse {
+  Nfe nfe = 1;
+}
+
+message CancelaOuGeraDevolucaoRequest {
+  string id = 1; // id da Nf-e a serem processada
+
+  string motivo = 2; // motivo do possível cancelamento
+}
+
+message CancelaOuGeraDevolucaoResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para Adicionar produtos na NF-e
+message AddProdutoRequest {
+  string nfeId = 1; // ID da NF-e que receberá o produto
+
+  ItemModel produto = 2; // Dados do produto a ser adicionado
+}
+
+message AddProdutoResponse {
+  Nfe nfe = 1;
+
+  ItemModel produto = 2;
+}
+
+// Request e Response para Atualizar um produto na NF-e
+message UpdateProdutoRequest {
+  string nfeId = 1; // ID da NF-e que possui o produto a ser atualizado
+
+  string id = 2; // Id do Produto a ser atualizado
+
+  ItemModel produto = 3; // Dados do produto a ser atualizado
+}
+
+message UpdateProdutoResponse {
+  ItemModel produto = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Remover um produto da NF-e
+message DeleteProdutoRequest {
+  string nfeId = 1; // ID da NF-e que possui o produto a ser removido
+
+  string id = 2; // Id do produto a ser removido
+}
+
+message DeleteProdutoResponse {
+  string result = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Adicionar pagamentos na NF-e
+message AddPagamentoRequest {
+  string nfeId = 1; // ID da NF-e que receberá os pagamentos
+
+  repeated PagamentoModel pagamentos = 2; // Dados dos pagamentos a serem adicionados
+}
+
+message AddPagamentoResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para Atualizar um pagamento na NF-e
+message UpdatePagamentoRequest {
+  string nfeId = 1; // ID da NF-e que possui o pagamento a ser atualizado
+
+  string id = 2; // Id do pagamento a ser atualizado
+
+  PagamentoModel pagamento = 3; // Dados do pagamento a ser atualizado
+}
+
+message UpdatePagamentoResponse {
+  PagamentoModel pagamento = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Remover um pagamento da NF-e
+message DeletePagamentoRequest {
+  string nfeId = 1; // ID da NF-e que possui o pagamento a ser removido
+
+  string id = 2; // Id do pagamento a ser removido
+}
+
+message DeletePagamentoResponse {
+  string result = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Adicionar referência na NF-e
+message AddReferenciaRequest {
+  string nfeId = 1; // ID da NF-e que receberá a referência
+
+  ReferenciaModel referencia = 2; // Dados do referência
+}
+
+message AddReferenciaResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para Atualizar uma referência na NF-e
+message UpdateReferenciaRequest {
+  string nfeId = 1; // ID da NF-e que possui a referência a ser atualizada
+
+  string id = 2; // Id da referência a ser atualizada
+
+  ReferenciaModel referencia = 3; // Dados da referência a ser atualizada
+}
+
+message UpdateReferenciaResponse {
+  ReferenciaModel referencia = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Remover uma referência da NF-e
+message DeleteReferenciaRequest {
+  string nfeId = 1; // ID da NF-e que possui a referência a ser removida
+
+  string id = 2; // Id da referência a ser removida
+}
+
+message DeleteReferenciaResponse {
+  string result = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Adicionar duplicata na NF-e
+message AddDuplicataRequest {
+  string nfeId = 1; // ID da NF-e que receberá a duplicata
+
+  DuplicataModel duplicata = 2; // Dados da duplicata
+}
+
+message AddDuplicataResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para Atualizar uma duplicata na NF-e
+message UpdateDuplicataRequest {
+  string nfeId = 1; // ID da NF-e que possui a duplicata a ser atualizada
+
+  string id = 2; // Id da duplicata a ser atualizada
+
+  DuplicataModel duplicata = 3; // Dados da duplicata a ser atualizada
+}
+
+message UpdateDuplicataResponse {
+  DuplicataModel duplicata = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Remover uma duplicata da NF-e
+message DeleteDuplicataRequest {
+  string nfeId = 1; // ID da NF-e que possui a duplicata a ser removida
+
+  string id = 2; // Id da duplicata a ser removida
+}
+
+message DeleteDuplicataResponse {
+  string result = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Adicionar volume na NF-e
+message AddVolumeRequest {
+  string nfeId = 1; // ID da NF-e que recebera o volume
+
+  VolumesModel volume = 2; // Dados do volume
+}
+
+message AddVolumeResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para Atualizar um volume na NF-e
+message UpdateVolumeRequest {
+  string nfeId = 1; // ID da NF-e que possui o volume a ser atualizado
+
+  string id = 2; // Id do volume a ser atualizado
+
+  VolumesModel volume = 3; // Dados do volume a ser atualizado
+}
+
+message UpdateVolumeResponse {
+  VolumesModel volume = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para Remover um volume da NF-e
+message DeleteVolumeRequest {
+  string nfeId = 1; // ID da NF-e que possui o volume a ser removido
+
+  string id = 2; // Id do volume a ser removido
+}
+
+message DeleteVolumeResponse {
+  string result = 1;
+
+  Nfe nfe = 2;
+}
+
+// Request e Response para duplicar uma NF-e
+message DuplicaRequest {
+  string id = 1; // ID da NF-e a ser duplicada
+}
+
+message DuplicaResponse {
+  Nfe nfe = 1;
+}
+
+// Request e Response para gerar o danfe da NF-e
+message DanfeRequest {
+  repeated string ids = 1; // ids das notas que deseja gerar o danfe
+
+  DanfeTipo danfe_tipo = 2; // tipo do danfe no retorno
+}
+
+enum DanfeTipo {
+  DANFE_TIPO_UNSPECIFIED = 0;
+
+  DANFE_TIPO_PDF = 1;
+
+  DANFE_TIPO_HTML = 2;
+
+  DANFE_TIPO_REPORT = 3;
+}
+
+message DanfeResponse {
+  DanfeTipo danfe_tipo = 1;
+
+  message DanfeResponseList {
+    uint32 numero = 1;
+
+    uint32 serie = 2;
+
+    string chave = 3;
+
+    string danfe_data = 4; // conteudo do danfe, seja em HTML ou PDF, no caso de report, será retornado os dados para montar o relatório
+
+    string danfe_template = 5; // retorno do template do danfe no caso de report
+
+    string filename = 6; // nome do arquivo do danfe
+  }
+
+  repeated DanfeResponseList danfeResponseList = 2;
+}
+
+message NfeImportaXmlRequest {
+  bytes file = 1;
+
+  string extensao = 2;
+
+  string nome_arquivo = 3;
+
+  bool importa_cliente = 4;
+
+  bool importa_transportador = 5;
+
+  bool importa_produtos = 6;
+
+  bool gera_pedidos = 7;
+}
+
+message NfeImportaXmlResponse {
+  repeated Nfe nfe = 1;
+}
+
+message NfeEnviaXmlRequest {
+  string email = 1; // E-mail para envio (opcional se whatsappNumero estiver preenchido)
+
+  repeated string ids = 2; // IDs das notas para envio
+
+  string tipo_documento = 3; // Tipo do documento (nfe/nfce)
+
+  string whatsapp_numero = 4; // Número do WhatsApp para envio (opcional se email estiver preenchido)
+
+  string whatsapp_nome_destinatario = 5; // Nome do destinatário para WhatsApp (opcional)
+
+  string whatsapp_integration_id = 6; // ID da integração WhatsApp para envio via API (opcional)
+
+  string email_integration_id = 7; // ID da integração de e-mail para envio; vazio usa a resolução padrão do sistema
+
+  // Template aprovado da API oficial; obrigatório quando a conta é oficial e o
+  // destinatário está fora da janela de 24h. Variáveis: nome e link, nesta ordem.
+  string whatsapp_template_name = 8;
+
+  string whatsapp_template_language = 9; // vazio usa pt_BR
+
+  // Modelo de mensagem a usar; vazio usa o modelo padrão do canal.
+  string message_template_id = 10;
+}
+
+message NfeEnviaXmlResponse {
+  string whatsapp_web_message = 1; // mensagem para envio via whatsapp web
+
+  string public_download_link = 2; // link público para download das notas (JWT)
+}
+
+message EnviaXmlsPeriodoRequest {
+  string email = 1;
+
+  google.protobuf.Timestamp dataInicial = 2;
+
+  google.protobuf.Timestamp dataFinal = 3;
+
+  string tipoDocumento = 4;
+}
+
+message EnviaXmlsPeriodoResponse {
+  string status = 1;
+
+  int32 qtdeNfe = 2;
+
+  int32 qtdeNfce = 3;
+
+  int32 qtdeNfeEntrada = 4;
+
+  int32 qtdeInutilizacao = 5;
+
+  int32 qtdeNfse = 6;
+}
+
+message GerarNFeReimpressaoRequest {
+  repeated string ids = 1;
+
+  string pessoaCpfCnpj = 2;
+}
+
+message GerarNFeReimpressaoResponse {
+  string status = 1;
+
+  Nfe nfe = 2; // NF-e de reimpressao de venda gerada
+}
+
+message NfeRecuperaProtocoloRequest {
+  string id = 1;
+
+  string tipoDocumento = 2;
+
+  int32 numero = 3;
+
+  string chave = 4;
+}
+
+message NfeRecuperaProtocoloResponse {
+  Nfe nfe = 1;
+}
+
+message GetDownloadLinkXmlRequest {
+  string id = 1;
+}
+
+message GetDownloadLinkXmlResponse {
+  string url = 1;
+}
+
+message GetWsStatusRequest {
+  string tipo = 1;
+}
+
+message GetWsStatusResponse {
+  bool online = 1;
+}
+
+message NfeImportacaoChaveRequest {
+  string chave = 1;
+}
+
+message NfeImportacaoChaveResponse {
+  Nfe nfe = 1;
+}
+
+message ReportRequest {
+  string tipoRelatorio = 1; // NfeAnnualChartData para dados sintetizados de 12 meses
+
+  ListNfeRequest list_request = 2;
+
+  string mail = 3;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}
+
+message CorrecaoMovimentacaoRequest {
+  repeated string ids = 1; // ids das notas fiscais em que a correção de movimentação será aplicada
+
+  string produto_origem_id = 2; // id do produto de origem
+
+  string produto_origem_nome = 3; // nome do produto de origem
+
+  string produto_destino_id = 4; // id do produto de destino
+
+  string produto_destino_nome = 5; // nome do produto de destino
+}
+
+message CorrecaoMovimentacaoResponse {
+}
+
+message ExplainRejectionRequest {
+  string id = 1;
+}
+
+message ExplainRejectionResponse {
+  // codigo cStat oficial usado como base da explicacao
+  string cstat = 1;
+
+  // mensagem original retornada pelo webservice
+  string original_message = 2;
+
+  // explicacao em linguagem humana do que aconteceu
+  string explanation = 3;
+
+  // passo a passo sugerido para resolver
+  repeated string recommended_actions = 4;
+
+  // info, warning, critical
+  string severity = 5;
+}

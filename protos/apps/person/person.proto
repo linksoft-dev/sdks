@@ -1,0 +1,579 @@
+syntax = "proto3";
+
+package person;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+import "exports/exports.proto";
+
+option go_package = "comps/pb/apps/person";
+
+// Serviço Person com operações CRUD
+service PersonService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc Import ( ImportRequest ) returns ( ImportResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc Export ( ExportPersonsRequest ) returns ( ExportPersonsResponse );
+
+  // Envia um código para o contato provar que o e-mail ou o telefone é dele.
+  rpc SendContactVerification ( SendContactVerificationRequest ) returns ( SendContactVerificationResponse );
+
+  // Confere o código que o contato recebeu e marca o canal como confirmado.
+  rpc ConfirmContactVerification ( ConfirmContactVerificationRequest ) returns ( ConfirmContactVerificationResponse );
+
+  // Registra que alguém da equipe garante o contato, sem passar pelo código.
+  rpc VouchContact ( VouchContactRequest ) returns ( VouchContactResponse );
+
+  rpc BatchUpdate ( BatchUpdateRequest ) returns ( BatchUpdateResponse );
+}
+
+enum PersonStatus {
+  PERSON_STATUS_UNSPECIFIED = 0;
+
+  PERSON_STATUS_ACTIVE = 1;
+
+  PERSON_STATUS_INACTIVE = 2;
+}
+
+// Etiqueta da pessoa. value e o identificador real (ex.: "customer"); color e a
+// cor de exibicao. Mesmo formato denormalizado das tags de pedido.
+message PersonTag {
+  string value = 1;
+
+  string color = 2;
+}
+
+// Dados do Person
+message Person {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  bool resale = 6;
+
+  PersonStatus status = 7;
+
+  repeated PersonTag tags = 8;
+
+  string name = 9;
+
+  string name2 = 10;
+
+  string cpf_cnpj = 11;
+
+  string codigo = 12;
+
+  string pai = 13;
+
+  string mae = 14;
+
+  google.protobuf.Timestamp nascimento = 15;
+
+  string ident = 16;
+
+  bool ident_free = 17; // Empresa isenta de IE. Sem inscrição (não contribuinte) fica falso e ies vazio.
+
+  string obs = 18;
+
+  repeated Address address = 19;
+
+  // IEs por UF (chave = sigla do estado, valor = inscrição estadual).
+  // Fonte de verdade para múltiplas inscrições estaduais de CNPJ.
+  map<string, string> ies = 35;
+
+  repeated Contact contacts = 20;
+
+  repeated Dependent dependents = 21;
+
+  Cliente cliente = 22;
+
+  Vendedor vendedor = 23;
+
+  reserved 24;
+
+  reserved "partnership";
+
+  string grupo_id = 25;
+
+  string grupo_nome = 26;
+
+  string usuario_id = 27;
+
+  string usuario_nome = 28;
+
+  Driver driver = 29;
+
+  Lead lead = 30; // Dados de lead (Person é lead quando tem tag "lead")
+
+  Carrier carrier = 31; // Dados de transportadora (Person é carrier quando tem tag "carrier")
+
+  string specialty = 32;
+
+  string registration_number = 33;
+
+  // Quando true (convênio), a autorização exige carteirinha válida do titular.
+  bool require_valid_carteirinha = 34;
+
+  metadata.BasicFields fields = 36;
+
+  // Foto do profissional. URL publica do arquivo (nao precisa de autenticacao para exibir).
+  string photo_url = 37;
+
+  // Quando true (convênio), os profissionais e servicos entram na pagina publica do portal.
+  bool show_in_portal = 38;
+
+  // Convênio: minutos para pagar a autorização pedida pelo portal; sem pagamento no prazo ela é
+  // cancelada. 0 = 60 minutos.
+  int32 authorization_payment_minutes = 39;
+
+  // Convênio: exige horário na agenda do profissional para pedir a autorização pelo portal.
+  // false = profissional sem agenda aceita o pedido sem horário.
+  bool authorization_requires_schedule = 40;
+}
+
+// Dados de transportadora associados a uma Person.
+// Usado pelo modulo vendas/shipment para integracao com Correios e outros providers.
+message Carrier {
+  string provider_code = 1; // CORREIOS, MANUAL (futuro: LOGGI, MELHOR_ENVIO, UBER_DIRECT)
+
+  string integration_id = 2; // FK logica para apps/integrations (credenciais)
+
+  repeated string services = 3; // Servicos suportados: PAC, SEDEX, etc
+}
+
+// Estágio do lead no funil
+enum LeadStage {
+  LEAD_STAGE_UNSPECIFIED = 0;
+
+  LEAD_STAGE_NEW = 1; // Novo (recém prospectado)
+
+  LEAD_STAGE_CONTACTED = 2; // Contatado
+
+  LEAD_STAGE_QUALIFIED = 3; // Qualificado (SQL)
+
+  LEAD_STAGE_PROPOSAL = 4; // Proposta enviada
+
+  LEAD_STAGE_NEGOTIATION = 5; // Em negociação
+
+  LEAD_STAGE_WON = 6; // Ganho (convertido)
+
+  LEAD_STAGE_LOST = 7; // Perdido/descartado
+}
+
+// Qualificação do lead
+enum LeadQualification {
+  LEAD_QUALIFICATION_UNSPECIFIED = 0;
+
+  LEAD_QUALIFICATION_COLD = 1; // Frio
+
+  LEAD_QUALIFICATION_WARM = 2; // Morno
+
+  LEAD_QUALIFICATION_HOT = 3; // Quente
+}
+
+// Dados estruturados de lead (Person é lead quando tem tag "lead")
+message Lead {
+  string source = 1; // Origem: prospecting, website, referral, import, manual
+
+  string source_provider = 2; // Provider de prospecção: receita_federal, google_places, apollo, hunter
+
+  LeadStage stage = 3;
+
+  LeadQualification qualification = 4;
+
+  int32 score = 5; // Score numérico (0-100)
+
+  string assigned_to_id = 6; // Responsável (vendedor)
+
+  string assigned_to_name = 7;
+
+  double expected_value = 8; // Valor potencial
+
+  google.protobuf.Timestamp expected_close_date = 9;
+
+  string loss_reason = 10; // Motivo da perda (se descartado)
+
+  google.protobuf.Timestamp converted_at = 11; // Quando virou cliente/deal
+
+  string converted_deal_id = 12; // Deal gerado na conversão
+
+  string sector = 13; // Setor/indústria (da prospecção)
+
+  string company_size = 14; // Porte (da prospecção)
+
+  string website = 15; // Site (da prospecção)
+
+  double rating = 16; // Rating Google Places
+
+  string notes = 17; // Notas específicas do lead
+}
+
+message Address {
+  string id = 1; // BaseModel ID
+
+  repeated string types = 2; // Reference of the registered place
+
+  string address = 3;
+
+  string zip_code = 4;
+
+  string number = 5;
+
+  string city = 6;
+
+  string city_code = 7;
+
+  string neighborhood = 8;
+
+  string state = 9;
+
+  // Legado: IE no endereço. Preferir Person.ies (UF -> IE).
+  string state_ident = 10;
+}
+
+// Canal do contato usado na verificação.
+enum ContactChannel {
+  CONTACT_CHANNEL_UNSPECIFIED = 0;
+
+  CONTACT_CHANNEL_EMAIL = 1;
+
+  CONTACT_CHANNEL_PHONE = 2;
+}
+
+message SendContactVerificationRequest {
+  string person_id = 1;
+
+  string contact_id = 2;
+
+  ContactChannel channel = 3;
+}
+
+message SendContactVerificationResponse {
+  string msg = 1;
+
+  // Endereço/número para onde o código foi enviado, já mascarado, para o
+  // operador conferir com a pessoa sem expor o contato inteiro.
+  string sent_to = 2;
+}
+
+message ConfirmContactVerificationRequest {
+  string person_id = 1;
+
+  string contact_id = 2;
+
+  string code = 3;
+}
+
+message ConfirmContactVerificationResponse {
+  string msg = 1;
+
+  Contact contact = 2;
+}
+
+message VouchContactRequest {
+  string person_id = 1;
+
+  string contact_id = 2;
+
+  ContactChannel channel = 3;
+}
+
+message VouchContactResponse {
+  string msg = 1;
+
+  Contact contact = 2;
+}
+
+message Contact {
+  string id = 1; // BaseModel ID
+
+  string name = 2;
+
+  string email = 3;
+
+  string phone = 4;
+
+  bool by_whats_app = 5;
+
+  bool by_sms = 6;
+
+  bool by_email = 7;
+
+  // Momento em que o próprio titular confirmou o contato (respondeu a um código
+  // enviado para ele). Vazio significa apenas "não confirmado", não "inválido".
+  google.protobuf.Timestamp email_verified_at = 8;
+
+  google.protobuf.Timestamp phone_verified_at = 9;
+
+  // Quem da equipe garante o contato por já ter falado com a pessoa. É mais fraco
+  // que a confirmação do titular e não substitui ela.
+  ContactVouch email_vouch = 10;
+
+  ContactVouch phone_vouch = 11;
+
+  // Código pendente do canal em verificação. Nunca sai em resposta da API: quem
+  // dispara o código não pode lê-lo e confirmar sozinho.
+  string verification_code = 12;
+
+  string verification_channel = 13;
+}
+
+// Registro de quem garantiu um contato pela equipe.
+message ContactVouch {
+  google.protobuf.Timestamp at = 1;
+
+  string user_id = 2;
+
+  string user_name = 3;
+}
+
+message Dependent {
+  string id = 1; // BaseModel ID
+
+  string person_id = 2; // Person Id
+
+  string person_name = 3; // Person Name
+}
+
+message Vendedor {
+  float comissao = 1;
+
+  float limite_variacao_preco_min = 2; // Minimum unit price variation limit compared to stock price
+
+  float limite_variacao_preco_max = 3; // Maximum unit price variation limit compared to stock price
+
+  reserved 4;
+
+  reserved "nao_lanca_comissao";
+
+  float desconto_maximo = 5; // Maximum discount percentage allowed for this salesperson; empty falls back to the company limit
+}
+
+message Cliente {
+  string vendedor_id = 1; // Seller linked to this client
+
+  string vendedor_nome = 2; // Seller name linked to this client
+
+  float limite_credito = 3; // Credit limit
+
+  float saldo_devedor = 4; // Outstanding balance
+
+  float credito_disponivel = 5; // Available credit
+}
+
+message Driver {
+  string license_number = 1;
+
+  google.protobuf.Timestamp license_expiration = 2;
+
+  google.protobuf.Timestamp birth_date = 3;
+}
+
+// Request e Response para criação de Person
+message CreateRequest {
+  Person person = 1;
+}
+
+message CreateResponse {
+  Person person = 1;
+}
+
+// Request e Response para atualização de Person
+message UpdateRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Person person = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Person
+message UpdateResponse {
+  Person person = 1;
+}
+
+// Request e Response para exclusão de Person
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+
+  repeated string avisos = 2; // empresas do grupo em que o registro foi mantido, com o motivo
+}
+
+// Request para obter um Person por ID
+message GetRequest {
+  string id = 1;
+}
+
+// Request para obter um Person por ID
+message GetResponse {
+  Person person = 1;
+}
+
+// Request e Response para listagem de Persons
+message ListRequest {
+  repeated string ids = 1;
+
+  repeated string cpf_cnpjs = 2;
+
+  repeated string names = 3;
+
+  google.protobuf.Timestamp created_at_gte = 4;
+
+  google.protobuf.Timestamp created_at_lte = 5;
+
+  float limite_credito_gte = 6;
+
+  float limite_credito_lte = 7;
+
+  string uf = 8;
+
+  string cidade = 9;
+
+  string contact_name = 10;
+
+  string ident = 11;
+
+  string codigo = 12;
+
+  string grupo_id = 13;
+
+  string grupo_nome = 14;
+
+  string tipo = 15;
+
+  uint32 page_size = 16;
+
+  string page_token = 17;
+
+  repeated string users_ids = 18;
+
+  Filter filter = 19;
+
+  string lead_stage = 20; // Filtro por estágio do lead
+
+  string lead_qualification = 21; // Filtro por qualificação do lead
+
+  string lead_source = 22; // Filtro por origem do lead
+
+  // When true, skips the default status=ACTIVE list filter.
+  bool ignore_default_status = 23;
+
+  // Filtra por inscrição estadual (qualquer UF do map ies). Busca "contém".
+  string ie = 24;
+}
+
+message ListResponse {
+  repeated Person person_list = 1;
+
+  string next_page_token = 2;
+}
+
+message ImportRequest {
+  repeated Person persons = 1;
+
+  string file_string = 2;
+
+  string file_name = 3;
+
+  bool cliente = 4;
+
+  bool fornecedor = 5;
+}
+
+message ImportResponse {
+  string result = 1;
+
+  string error = 2;
+
+  int32 success_count = 3;
+
+  int32 failed_count = 4;
+
+  repeated string validation_errors = 5;
+}
+
+message ReportRequest {
+  string tipo_relatorio = 1;
+
+  ListRequest list_request = 2;
+
+  string mail = 3;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}
+
+// Export messages
+message ExportPersonsRequest {
+  exports.ExportFormat format = 1; // JSON or CSV
+
+  Filter filter = 2; // Filters to apply
+
+  bool include_metadata = 3; // Include metadata in export
+
+  bool only_customers = 4; // Export only customers
+
+  bool only_vendors = 5; // Export only vendors
+}
+
+message ExportPersonsResponse {
+  exports.ExportResponse export = 1;
+}
+
+message BatchUpdateFilter {
+  repeated string ids = 1;
+}
+
+message BatchUpdateSeller {
+  string id = 1;
+
+  string name = 2;
+}
+
+message BatchUpdateRequest {
+  BatchUpdateFilter filter = 1;
+
+  BatchUpdateSeller seller = 2;
+}
+
+message BatchUpdateResponse {
+  int32 updated_count = 1;
+
+  string status = 2;
+}

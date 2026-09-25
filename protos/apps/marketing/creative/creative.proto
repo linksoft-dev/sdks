@@ -1,0 +1,134 @@
+syntax = "proto3";
+
+package marketing_creative;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/marketing/creative";
+
+service CreativeService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc ImportCanvaDesign ( ImportCanvaDesignRequest ) returns ( ImportCanvaDesignResponse );
+}
+
+message Creative {
+  string id = 1;
+
+  string name = 2;
+
+  string source = 3;
+
+  repeated string channels = 4;
+
+  google.protobuf.Timestamp created_at = 5;
+
+  google.protobuf.Timestamp updated_at = 6;
+
+  // Conteudo do template
+  string html_content = 7; // HTML final compilado (email)
+
+  string json_content = 8; // Estado do editor GrapeJS (JSON)
+
+  string text_content = 9; // Texto para WhatsApp/SMS
+
+  string template_type = 10; // "email", "whatsapp", "sms"
+
+  string thumbnail_url = 11; // Preview thumbnail
+
+  repeated string variables = 12; // Variaveis detectadas {{xxx}}
+
+  repeated string tags = 13; // Tags livres (ex: "funil:VENDAS", "etapa:NOVO", "follow-up")
+
+  string description = 14; // Para que serve o criativo: objetivo, publico, quando usar
+
+  string created_by = 15; // Nome de quem criou o criativo
+
+  string updated_by = 16; // Nome de quem fez a ultima alteracao
+}
+
+message CreateRequest {
+  Creative creative = 1;
+}
+
+message CreateResponse {
+  Creative creative = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Creative creative = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Creative creative = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Creative creative = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string source = 2;
+
+  string channel = 3;
+
+  Filter filter = 4;
+
+  string template_type = 5;
+
+  repeated string tags = 6; // Filtrar por tags
+}
+
+message ListResponse {
+  repeated Creative creative_list = 1;
+}
+
+message ImportCanvaDesignRequest {
+  string design_id = 1;
+}
+
+message ImportCanvaDesignResponse {
+  string url = 1; // URL publica da imagem exportada do design
+
+  string file_id = 2; // Id do arquivo criado no gerenciador de arquivos
+
+  string title = 3; // Titulo do design na origem
+}

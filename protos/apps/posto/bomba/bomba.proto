@@ -1,0 +1,151 @@
+syntax = "proto3";
+
+package bomba;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/posto/bomba";
+
+// Serviço Bomba com operações CRUD
+service BombaService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+// Dados do Bomba
+message Bomba {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string numero = 6;
+
+  string modelo = 7;
+
+  string num_serie = 8;
+
+  string tipo_medicao = 9; // digital ou analogica
+
+  metadata.BasicFields fields = 10;
+
+  string fabricante = 11;
+
+  repeated Lacre lacres = 12; // Lacres aplicados na bomba
+
+  repeated Intervencao intervencoes = 13; // Intervenções técnicas feitas na bomba
+}
+
+message Lacre {
+  string numero = 1;
+
+  google.protobuf.Timestamp data_aplicacao = 2;
+}
+
+// Intervenção técnica na bomba (reparo, troca de peça, lacração)
+message Intervencao {
+  int32 numero = 1; // Número dado pelo órgão competente; na falta dele, sequencial do posto
+
+  google.protobuf.Timestamp data_hora = 2;
+
+  string motivo = 3;
+
+  string tecnico_nome = 4; // Técnico autorizado pelo INMETRO
+
+  string tecnico_cpf = 5;
+
+  string empresa_cnpj = 6; // Empresa responsável pela manutenção, quando houver
+
+  repeated LeituraIntervencao leituras = 7; // Encerrante de cada bico da bomba antes e depois da intervenção
+}
+
+message LeituraIntervencao {
+  int32 numero_bico = 1;
+
+  double encerrante_antes = 2;
+
+  double encerrante_depois = 3;
+}
+
+// Request e Response para criação de Bomba
+message CreateRequest {
+  Bomba bomba = 1;
+}
+
+message CreateResponse {
+  Bomba bomba = 1;
+}
+
+// Request e Response para atualização de Bomba
+message UpdateRequest {
+  string id = 1;
+
+  Bomba bomba = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Bomba
+message UpdateResponse {
+  Bomba bomba = 1;
+}
+
+// Request e Response para exclusão de Bomba
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+// Request para obter um Bomba por ID
+message GetRequest {
+  string id = 1;
+}
+
+// Response para obter um Bomba por ID
+message GetResponse {
+  Bomba bomba = 1;
+}
+
+// Request e Response para listagem de Bombas
+message ListRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListResponse {
+  repeated Bomba bomba_list = 1;
+
+  string next_page_token = 2;
+}

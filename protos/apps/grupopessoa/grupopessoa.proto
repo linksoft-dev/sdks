@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package grupopessoa;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/grupopessoa";
+
+// Enum para status do grupo de pessoa
+enum GrupoPessoaStatus {
+  GRUPO_PESSOA_STATUS_UNSPECIFIED = 0;
+
+  GRUPO_PESSOA_STATUS_ACTIVE = 1;
+
+  GRUPO_PESSOA_STATUS_INACTIVE = 2;
+
+  GRUPO_PESSOA_STATUS_BLOCKED = 3;
+}
+
+// Dados do GrupoPessoa
+message GrupoPessoa {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  GrupoPessoaStatus status = 6;
+
+  string nome = 7;
+
+  string obs = 8;
+
+  metadata.BasicFields fields = 9;
+}
+
+// Serviço GrupoPessoa com operações CRUD
+service GrupoPessoaService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+// Request e Response para criação de GrupoPessoa
+message CreateRequest {
+  GrupoPessoa grupo_pessoa = 1;
+}
+
+message CreateResponse {
+  GrupoPessoa grupo_pessoa = 1;
+}
+
+// Request e Response para atualização de GrupoPessoa
+message UpdateRequest {
+  string id = 1;
+
+  GrupoPessoa grupo_pessoa = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  GrupoPessoa grupo_pessoa = 1;
+}
+
+// Request e Response para exclusão de GrupoPessoa
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+// Request para obter um GrupoPessoa por ID
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  GrupoPessoa grupo_pessoa = 1;
+}
+
+// Request e Response para listagem de GrupoPessoas
+message ListRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListResponse {
+  repeated GrupoPessoa grupo_pessoa_list = 1;
+
+  string next_page_token = 2;
+}

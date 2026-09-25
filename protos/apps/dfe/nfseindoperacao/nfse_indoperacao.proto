@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package nfseindoperacao;
+
+import "google/api/annotations.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "plugins/validate/validate.proto";
+
+import "common/metadata/metadata.proto";
+
+option go_package = "comps/pb/apps/dfe/nfseindoperacao";
+
+// Serviço de CRUD para os indicadores de operação usado em nota fiscal de serviços
+service IndOperacaoService {
+  rpc Create ( CreateIndOperacaoRequest ) returns ( CreateIndOperacaoResponse );
+
+  rpc Update ( UpdateIndOperacaoRequest ) returns ( UpdateIndOperacaoResponse );
+
+  rpc Delete ( DeleteIndOperacaoRequest ) returns ( DeleteIndOperacaoResponse );
+
+  rpc List ( ListIndOperacaoRequest ) returns ( ListIndOperacaoResponse );
+
+  rpc Get ( GetIndOperacaoRequest ) returns ( GetIndOperacaoResponse );
+
+  rpc Import ( ImportIndOperacaoRequest ) returns ( ImportIndOperacaoResponse );
+}
+
+// Informações do indicador de operação usado na NFS-e
+message IndOperacao {
+  string id = 1;
+
+  metadata.BasicFields fields = 2;
+
+  // Referência legal (ex: "Inc. II", "Inc. III")
+  string art_11 = 3;
+
+  // Tipo de operação
+  string tipo_operacao = 4;
+
+  // Local onde a operação é considerada
+  string local_operacao = 5;
+
+  // Característica do fornecimento
+  string caracteristica_fornecimento = 6;
+
+  // Código único do indicador (ex: "020101", "030101") - campo principal e obrigatório
+  string codigo_indop = 7;
+
+  // Local do fornecimento a ser identificado no Dfe
+  string local_fornecimento_dfe = 8;
+}
+
+// Request e Response para criação de IndOperacao
+message CreateIndOperacaoRequest {
+  IndOperacao ind_operacao = 1;
+}
+
+message CreateIndOperacaoResponse {
+  IndOperacao ind_operacao = 1;
+}
+
+// Request e Response para atualização de IndOperacao
+message UpdateIndOperacaoRequest {
+  string id = 1;
+
+  IndOperacao ind_operacao = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateIndOperacaoResponse {
+  IndOperacao ind_operacao = 1;
+}
+
+// Request e Response para deleção de IndOperacao
+message DeleteIndOperacaoRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteIndOperacaoResponse {
+}
+
+// Request e Response para listagem de IndOperacao
+message ListIndOperacaoRequest {
+  repeated string ids = 1;
+
+  Filter filter = 2;
+}
+
+message ListIndOperacaoResponse {
+  repeated IndOperacao ind_operacao_list = 1;
+}
+
+// Request para obter uma IndOperacao
+message GetIndOperacaoRequest {
+  string id = 1;
+
+  string codigo_indop = 2;
+}
+
+// Response para obter uma IndOperacao
+message GetIndOperacaoResponse {
+  IndOperacao ind_operacao = 1;
+}
+
+// Request e Response para importação de IndOperacao
+message ImportIndOperacaoRequest {
+  string arquivo_base64 = 1;
+}
+
+message ImportIndOperacaoResponse {
+  string result = 1;
+}

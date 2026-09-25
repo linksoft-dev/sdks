@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "apps/vendas/pedido/pedido.proto";
+
+package authorizedsales;
+
+import "plugins/validate/validate.proto";
+
+option go_package = "comps/pb/apps/vendas/authorized-sales";
+
+service AuthorizedSalesService {
+  rpc Create ( pedido.CreatePedidoRequest ) returns ( pedido.CreatePedidoResponse );
+
+  rpc Update ( pedido.UpdatePedidoRequest ) returns ( pedido.UpdatePedidoResponse );
+
+  rpc Delete ( pedido.DeletePedidoRequest ) returns ( pedido.DeletePedidoResponse );
+
+  rpc List ( pedido.ListPedidoRequest ) returns ( pedido.ListPedidoResponse );
+
+  rpc Cancel ( pedido.CancelPedidoRequest ) returns ( pedido.CancelPedidoResponse );
+
+  rpc Clone ( pedido.ClonePedidoRequest ) returns ( pedido.ClonePedidoResponse );
+
+  rpc AddService ( pedido.AddServiceRequest ) returns ( pedido.AddServiceResponse );
+
+  rpc UpdateService ( pedido.UpdateServiceRequest ) returns ( pedido.UpdateServiceResponse );
+
+  rpc DeleteService ( pedido.DeleteServiceRequest ) returns ( pedido.DeleteServiceResponse );
+
+  rpc AddPayment ( pedido.AddPaymentRequest ) returns ( pedido.AddPaymentResponse );
+
+  rpc DeletePayment ( pedido.DeletePaymentRequest ) returns ( pedido.DeletePaymentResponse );
+
+  rpc CancelPayment ( pedido.CancelPaymentRequest ) returns ( pedido.CancelPaymentResponse );
+
+  rpc SendByEmail ( pedido.SendByEmailRequest ) returns ( pedido.SendByEmailResponse );
+
+  rpc Report ( pedido.ReportRequest ) returns ( pedido.ReportResponse );
+
+  rpc DfeDanfe ( pedido.DfeDanfeRequest ) returns ( pedido.DfeDanfeResponse );
+
+  rpc ConfirmOrderReceipt ( pedido.ConfirmOrderReceiptRequest ) returns ( pedido.ConfirmOrderReceiptResponse );
+
+  rpc SincronizaPessoa ( pedido.SincronizaPessoaRequest ) returns ( pedido.SincronizaPessoaResponse );
+
+  rpc Print ( pedido.PrintPedidoRequest ) returns ( pedido.PrintPedidoResponse );
+}

@@ -1,0 +1,164 @@
+syntax = "proto3";
+
+package inutilizacao;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/dfe/inutilizacao";
+
+// Serviço Inutilizacao com operações CRUD
+service InutilizacaoService {
+  rpc Create ( CreateInutilizacaoRequest ) returns ( CreateInutilizacaoResponse );
+
+  rpc Update ( UpdateInutilizacaoRequest ) returns ( UpdateInutilizacaoResponse );
+
+  rpc Delete ( DeleteInutilizacaoRequest ) returns ( DeleteInutilizacaoResponse );
+
+  rpc Get ( GetInutilizacaoRequest ) returns ( GetInutilizacaoResponse );
+
+  rpc List ( ListInutilizacaoRequest ) returns ( ListInutilizacaoResponse );
+
+  rpc Envia ( EnviaInutilizacaoRequest ) returns ( EnviaInutilizacaoResponse );
+}
+
+// Dados do Inutilizacao
+message Inutilizacao {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  // situação ficou como string para manter a compatibilidade com a informacao que esta no banco
+  string situacao = 6;
+
+  string protocolo = 7;
+
+  int32 numeroInicial = 8;
+
+  int32 numeroFinal = 9;
+
+  int32 serie = 10;
+
+  int32 ano = 11;
+
+  string justificativa = 12;
+
+  string tipo = 13;
+
+  string ambiente = 14;
+
+  string xmlAutorizacao = 15;
+
+  google.protobuf.Timestamp dataHoraAutorizacao = 16;
+
+  repeated Rejeicao rejeicoes = 17;
+}
+
+message Rejeicao {
+  string id = 1;
+
+  google.protobuf.Timestamp dataHora = 2;
+
+  google.protobuf.Timestamp dataHoraSituacaoDoc = 3;
+
+  string cstat = 4;
+
+  string mensagem = 5;
+}
+
+// Request e Response para criação de Inutilizacao
+message CreateInutilizacaoRequest {
+  Inutilizacao inutilizacao = 1;
+}
+
+message CreateInutilizacaoResponse {
+  Inutilizacao inutilizacao = 1;
+}
+
+// Request e Response para atualização de Inutilizacao
+message UpdateInutilizacaoRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Inutilizacao inutilizacao = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Inutilizacao
+message UpdateInutilizacaoResponse {
+  Inutilizacao inutilizacao = 1;
+}
+
+// Request e Response para exclusão de Inutilizacao
+message DeleteInutilizacaoRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteInutilizacaoResponse {
+  string id = 1;
+}
+
+// Request para obter um Inutilizacao por ID
+message GetInutilizacaoRequest {
+  string id = 1;
+}
+
+// Request para obter um Inutilizacao por ID
+message GetInutilizacaoResponse {
+  Inutilizacao inutilizacao = 1;
+}
+
+// Request e Response para listagem de Inutilizacaos
+message ListInutilizacaoRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+
+  google.protobuf.Timestamp created_at_gte = 6;
+
+  google.protobuf.Timestamp created_at_lte = 7;
+
+  int32 numero_inicial = 8;
+
+  int32 numero_final = 9;
+
+  repeated string tipo = 10;
+
+  repeated string situacao = 11;
+}
+
+message ListInutilizacaoResponse {
+  repeated Inutilizacao inutilizacaoList = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para envio de Inutilizacao
+message EnviaInutilizacaoRequest {
+  Inutilizacao inutilizacao = 1;
+}
+
+message EnviaInutilizacaoResponse {
+  Inutilizacao inutilizacao = 1;
+}

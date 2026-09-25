@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package crm_pipeline;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/crm/pipeline";
+
+service PipelineService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+message PipelineStage {
+  string id = 1;
+
+  string name = 2;
+
+  int32 position = 3;
+
+  double probability = 4;
+
+  string color = 5;
+
+  string description = 6;
+}
+
+message PipelineLossReason {
+  string id = 1;
+
+  string name = 2;
+
+  string color = 3;
+
+  int32 position = 4;
+}
+
+message Pipeline {
+  string id = 1;
+
+  string name = 2;
+
+  repeated PipelineStage stages = 3;
+
+  google.protobuf.Timestamp created_at = 4;
+
+  google.protobuf.Timestamp updated_at = 5;
+
+  repeated PipelineLossReason loss_reasons = 6;
+
+  string description = 7;
+
+  metadata.BasicFields fields = 8;
+}
+
+message CreateRequest {
+  Pipeline pipeline = 1;
+}
+
+message CreateResponse {
+  Pipeline pipeline = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Pipeline pipeline = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Pipeline pipeline = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Pipeline pipeline = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  Filter filter = 2;
+}
+
+message ListResponse {
+  repeated Pipeline pipeline_list = 1;
+}

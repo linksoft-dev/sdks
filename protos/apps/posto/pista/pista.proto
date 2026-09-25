@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package pista;
+
+import "google/api/annotations.proto";
+
+import "plugins/service/service.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/posto/abastecimento/abastecimento.proto";
+
+option go_package = "comps/pb/apps/posto/pista";
+
+// Pista é o retrato ao vivo dos bicos de um posto, mantido pelo agente de automação
+// pareado com a organização.
+service PistaService {
+  // Estado atual da pista para o caixa: bicos, pendentes e situação do agente.
+  rpc Get ( GetPistaRequest ) returns ( GetPistaResponse );
+
+  // Recebe do agente de automação o estado dos bicos.
+  rpc RecebeEstado ( RecebeEstadoRequest ) returns ( RecebeEstadoResponse );
+
+  // Gera o código que o operador informa no agente de automação, junto com o endereço do sistema.
+  rpc IniciaPareamento ( IniciaPareamentoRequest ) returns ( IniciaPareamentoResponse );
+
+  // Troca o código de pareamento pela credencial do agente. Chamada pelo próprio agente, sem usuário logado.
+  rpc Pareia ( PareiaRequest ) returns ( PareiaResponse );
+
+  // Revoga a credencial do agente de automação.
+  rpc Despareia ( DespareiaRequest ) returns ( DespareiaResponse );
+}
+
+enum EstadoBico {
+  ESTADO_BICO_UNSPECIFIED = 0;
+
+  ESTADO_BICO_LIVRE = 1;
+
+  ESTADO_BICO_ABASTECENDO = 2;
+
+  ESTADO_BICO_INDISPONIVEL = 3;
+}
+
+message BicoEstado {
+  int32 numero = 1;
+
+  string bomba = 2;
+
+  string tanque = 3;
+
+  EstadoBico estado = 4;
+
+  double preco = 5;
+
+  double encerrante = 6;
+
+  double volume_parcial = 7;
+
+  double valor_parcial = 8;
+
+  string produto = 9; // Combustível do bico com o nome que a automação usa
+}
+
+message Pista {
+  string id = 1;
+
+  string marca = 2;
+
+  string versao_agente = 3;
+
+  google.protobuf.Timestamp atualizado_em = 4;
+
+  bool concentrador_conectado = 5;
+
+  string erro = 6;
+
+  repeated BicoEstado bicos = 7;
+
+  // Código de pareamento em aberto e quem o gerou; some quando o agente o troca pela credencial.
+  string codigo_pareamento = 8;
+
+  google.protobuf.Timestamp codigo_expira_em = 9;
+
+  string codigo_usuario_id = 10;
+
+  string codigo_usuario_nome = 11;
+
+  string codigo_org_nome = 12;
+
+  // O concentrador aceita comandos do sistema (troca de preço, pré-determinação, bloqueio).
+  bool aceita_comandos = 13;
+
+  // Tanques configurados no concentrador; vazio quando a automação não informa.
+  repeated TanquePista tanques = 14;
+}
+
+message TanquePista {
+  int32 numero = 1;
+
+  double capacidade = 2; // Capacidade nominal em litros
+}
+
+message GetPistaRequest {
+}
+
+message GetPistaResponse {
+  bool pareado = 1;
+
+  string pareado_por = 2;
+
+  google.protobuf.Timestamp pareado_em = 3;
+
+  // Agente enviou estado há pouco.
+  bool conectado = 4;
+
+  Pista pista = 5;
+
+  repeated abastecimento.Abastecimento pendentes = 6;
+}
+
+message RecebeEstadoRequest {
+  Pista pista = 1;
+}
+
+message RecebeEstadoResponse {
+}
+
+message IniciaPareamentoRequest {
+}
+
+message IniciaPareamentoResponse {
+  string codigo = 1;
+
+  google.protobuf.Timestamp expira_em = 2;
+}
+
+message PareiaRequest {
+  string codigo = 1;
+
+  string nome_maquina = 2;
+
+  string versao_agente = 3;
+}
+
+message PareiaResponse {
+  string api_url = 1;
+
+  string org_id = 2;
+
+  string org_nome = 3;
+
+  string client_id = 4;
+
+  string access_token = 5;
+
+  string refresh_token = 6;
+
+  string grant_id = 7;
+}
+
+message DespareiaRequest {
+}
+
+message DespareiaResponse {
+  int32 revogados = 1;
+}

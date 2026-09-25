@@ -1,0 +1,212 @@
+syntax = "proto3";
+
+package comando;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/posto/comando";
+
+// Comandos do sistema para as bombas da pista, executados pelo agente de automação.
+service ComandoService {
+  rpc Get ( GetComandoRequest ) returns ( GetComandoResponse );
+
+  rpc List ( ListComandoRequest ) returns ( ListComandoResponse );
+
+  // Manda um comando para uma bomba: pré-determinação, autorização, bloqueio, liberação ou parada.
+  // Vale por pouco tempo: se o agente não executar logo, expira.
+  rpc Envia ( EnviaRequest ) returns ( EnviaResponse );
+
+  // Troca o preço à vista e a prazo de um combustível em todos os bicos dele, agora ou na hora
+  // marcada. O cadastro do combustível passa a ter os preços novos quando a bomba confirma a troca.
+  rpc TrocaPreco ( TrocaPrecoRequest ) returns ( TrocaPrecoResponse );
+
+  // Comandos que o agente de automação deve executar agora. Exclusivo do agente pareado.
+  rpc Pendentes ( PendentesRequest ) returns ( PendentesResponse );
+
+  // Resultado da execução de um comando. Exclusivo do agente pareado.
+  rpc Resultado ( ResultadoRequest ) returns ( ResultadoResponse );
+}
+
+enum Tipo {
+  TIPO_UNSPECIFIED = 0;
+
+  // Troca de preço do bico (à vista e a prazo).
+  TIPO_PRECO = 1;
+
+  // Limita o próximo abastecimento do bico a um valor ou a uma quantidade de litros.
+  TIPO_PRE_DETERMINA = 2;
+
+  // Libera a bomba para o próximo abastecimento.
+  TIPO_AUTORIZA = 3;
+
+  // Desativa a bomba: ela não abastece até ser liberada.
+  TIPO_BLOQUEIA = 4;
+
+  // Reativa a bomba desativada.
+  TIPO_LIBERA = 5;
+
+  // Interrompe o abastecimento em andamento.
+  TIPO_PARA = 6;
+}
+
+enum Situacao {
+  SITUACAO_UNSPECIFIED = 0;
+
+  // Aguardando o agente.
+  SITUACAO_PENDENTE = 1;
+
+  // Entregue ao agente, aguardando o resultado.
+  SITUACAO_ENVIADO = 2;
+
+  SITUACAO_EXECUTADO = 3;
+
+  SITUACAO_FALHOU = 4;
+
+  // O agente não executou a tempo.
+  SITUACAO_EXPIRADO = 5;
+}
+
+enum Limite {
+  LIMITE_UNSPECIFIED = 0;
+
+  LIMITE_VALOR = 1;
+
+  LIMITE_LITROS = 2;
+}
+
+message Comando {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  metadata.BasicFields fields = 6;
+
+  Tipo tipo = 7;
+
+  string numero_bomba = 8;
+
+  int32 numero_bico = 9;
+
+  double preco_avista = 10;
+
+  double preco_aprazo = 11;
+
+  Limite limite = 12;
+
+  double limite_valor = 13;
+
+  // Nível de preço do abastecimento pré-determinado: 1 à vista, 2 a prazo.
+  int32 nivel_preco = 14;
+
+  // Quando executar; vazio executa assim que o agente buscar.
+  google.protobuf.Timestamp aplicar_em = 15;
+
+  // Depois disto o comando não é mais executado.
+  google.protobuf.Timestamp expira_em = 16;
+
+  Situacao situacao = 17;
+
+  string erro = 18;
+
+  google.protobuf.Timestamp executado_em = 19;
+
+  // Troca de preço de um combustível: um comando por bico, todos com o mesmo grupo.
+  string grupo_id = 20;
+
+  string produto_id = 21;
+
+  string produto_nome = 22;
+}
+
+message GetComandoRequest {
+  string id = 1;
+}
+
+message GetComandoResponse {
+  Comando comando = 1;
+}
+
+message ListComandoRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListComandoResponse {
+  repeated Comando comando_list = 1;
+
+  string next_page_token = 2;
+}
+
+message EnviaRequest {
+  Tipo tipo = 1;
+
+  string numero_bomba = 2;
+
+  int32 numero_bico = 3;
+
+  Limite limite = 4;
+
+  double limite_valor = 5;
+
+  int32 nivel_preco = 6;
+}
+
+message EnviaResponse {
+  Comando comando = 1;
+}
+
+message TrocaPrecoRequest {
+  string produto_id = 1;
+
+  double preco_avista = 2;
+
+  // Zero usa o preço à vista também a prazo.
+  double preco_aprazo = 3;
+
+  // Vazio troca agora.
+  google.protobuf.Timestamp aplicar_em = 4;
+}
+
+message TrocaPrecoResponse {
+  repeated Comando comandos = 1;
+}
+
+message PendentesRequest {
+}
+
+message PendentesResponse {
+  repeated Comando comandos = 1;
+}
+
+message ResultadoRequest {
+  string id = 1;
+
+  bool executado = 2;
+
+  string erro = 3;
+}
+
+message ResultadoResponse {
+  Comando comando = 1;
+}

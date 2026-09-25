@@ -1,0 +1,335 @@
+syntax = "proto3";
+
+package devolucao;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/vendas/devolucao";
+
+// Serviço Devolucao com operações CRUD
+service DevolucaoService {
+  rpc Create ( CreateDevolucaoRequest ) returns ( CreateDevolucaoResponse );
+
+  rpc Update ( UpdateDevolucaoRequest ) returns ( UpdateDevolucaoResponse );
+
+  rpc Delete ( DeleteDevolucaoRequest ) returns ( DeleteDevolucaoResponse );
+
+  rpc Get ( GetDevolucaoRequest ) returns ( GetDevolucaoResponse );
+
+  rpc List ( ListDevolucaoRequest ) returns ( ListDevolucaoResponse );
+
+  rpc Finaliza ( FinalizaDevolucaoRequest ) returns ( FinalizaDevolucaoResponse );
+
+  rpc GeraNfe ( GeraNfeDevolucaoRequest ) returns ( GeraNfeDevolucaoResponse );
+
+  rpc GeraCartaCredito ( GeraCartaCreditoRequest ) returns ( GeraCartaCreditoResponse );
+
+  rpc Cancela ( CancelaDevolucaoRequest ) returns ( CancelaDevolucaoResponse );
+
+  rpc GeraFromPedido ( GeraFromPedidoRequest ) returns ( GeraFromPedidoResponse );
+
+  rpc ItensPedido ( ItensPedidoRequest ) returns ( ItensPedidoResponse );
+}
+
+enum Operacao {
+  OPERACAO_UNSPECIFIED = 0;
+
+  OPERACAO_SAIDA = 1;
+
+  OPERACAO_ENTRADA = 2;
+}
+
+// Dados do Devolucao
+message Devolucao {
+  string id = 1;
+
+  int32 numero = 2;
+
+  Operacao tipo_operacao = 3;
+
+  string situacao = 4;
+
+  string venda_id = 5;
+
+  string venda_numero = 6;
+
+  google.protobuf.Timestamp data_hora_compra = 7;
+
+  string chave_nfe_origem = 8;
+
+  bool importar_dados_origem = 9;
+
+  Pessoa pessoa = 10;
+
+  string motivo_devolucao = 11;
+
+  string cancelamento_motivo = 12;
+
+  google.protobuf.Timestamp cancelamento_data_hora = 13;
+
+  string obs = 14;
+
+  double total = 15;
+
+  repeated Produto produtos = 16;
+
+  string carta_credito_id = 17;
+
+  int32 carta_credito_numero = 18;
+
+  string nfe_id = 19;
+
+  int32 nfe_numero = 20;
+
+  int32 nfe_serie = 21;
+
+  string nfe_chave = 22;
+
+  string nfe_situacao = 23;
+
+  string url_danfe = 24;
+
+  string url_xml = 25;
+
+  google.protobuf.Timestamp created_at = 26;
+
+  google.protobuf.Timestamp updated_at = 27;
+}
+
+message Pessoa {
+  string id = 1;
+
+  string cpf_cnpj = 2;
+
+  string ie = 3;
+
+  string nome = 4;
+
+  string nome2 = 5;
+
+  string end_cep = 6;
+
+  string end_endereco = 7;
+
+  string end_numero = 8;
+
+  string end_bairro = 9;
+
+  string end_cidade = 10;
+
+  string end_cidade_codigo = 11;
+
+  string end_uf = 12;
+
+  string telefone = 13;
+
+  string email = 14;
+}
+
+message Produto {
+  string id = 1;
+
+  string created_at = 2; // Data de criação
+
+  string updated_at = 3; // Data de atualização
+
+  string user_id = 4; // ID do usuário que realizou a ação
+
+  string user_name = 5; // Nome do usuário que realizou a ação
+
+  string produto_id = 6;
+
+  string produto_nome = 7;
+
+  string codigo = 8;
+
+  string codigo_barra = 9;
+
+  string un = 10;
+
+  string obs = 11;
+
+  double quantidade = 12;
+
+  double valor_unitario = 13;
+
+  double total = 14;
+
+  string variation_product_id = 15; // ID do produto-filho da variação (quando o item é de um produto com grade)
+
+  // ID do item na venda de origem. Preenchido quando a devolução é gerada a partir de um pedido
+  // e é o que permite saber quanto de cada item já foi devolvido.
+  string venda_item_id = 16;
+}
+
+// Request e Response para criação de Devolucao
+message CreateDevolucaoRequest {
+  Devolucao devolucao = 1;
+}
+
+message CreateDevolucaoResponse {
+  Devolucao devolucao = 1;
+}
+
+// Request e Response para atualização de Devolucao
+message UpdateDevolucaoRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Devolucao devolucao = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Devolucao
+message UpdateDevolucaoResponse {
+  Devolucao devolucao = 1;
+}
+
+// Request e Response para exclusão de Devolucao
+message DeleteDevolucaoRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteDevolucaoResponse {
+  string id = 1;
+}
+
+// Request para obter um Devolucao por ID
+message GetDevolucaoRequest {
+  string id = 1;
+}
+
+// Request para obter um Devolucao por ID
+message GetDevolucaoResponse {
+  Devolucao devolucao = 1;
+}
+
+// Request e Response para listagem de Devolucaos
+message ListDevolucaoRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListDevolucaoResponse {
+  repeated Devolucao devolucaoList = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para FinalizaDevolucao
+message FinalizaDevolucaoRequest {
+  string devolucao_id = 1;
+
+  bool gerar_carta_credito = 2;
+}
+
+message FinalizaDevolucaoResponse {
+  Devolucao devolucao = 1;
+}
+
+// Request e Response para GeraNfeDevolucao
+message GeraNfeDevolucaoRequest {
+  string devolucao_id = 1;
+}
+
+message GeraNfeDevolucaoResponse {
+  Devolucao devolucao = 1;
+}
+
+// Request e Response para GeraCartaCredito
+message GeraCartaCreditoRequest {
+  string devolucao_id = 1;
+}
+
+message GeraCartaCreditoResponse {
+  Devolucao devolucao = 1;
+}
+
+// Request e Response para CancelaDevolucao
+message CancelaDevolucaoRequest {
+  string devolucao_id = 1;
+
+  string motivo = 2;
+}
+
+message CancelaDevolucaoResponse {
+  Devolucao devolucao = 1;
+}
+
+message GeraFromPedidoRequest {
+  string pedido_id = 1;
+
+  // Itens e quantidades a devolver. Vazio devolve todo o saldo disponível do pedido.
+  repeated ItemDevolver itens = 2;
+}
+
+message GeraFromPedidoResponse {
+  Devolucao devolucao = 1;
+
+  bool ja_existia = 2;
+}
+
+message ItemDevolver {
+  string venda_item_id = 1;
+
+  double quantidade = 2;
+}
+
+message ItensPedidoRequest {
+  string pedido_id = 1;
+}
+
+message ItensPedidoResponse {
+  repeated ItemPedido itens = 1;
+
+  Pessoa pessoa = 2;
+
+  string chave_nfe_origem = 3;
+
+  string venda_numero = 4;
+
+  // Devolução PENDENTE já existente para o pedido. Quando preenchida, gerar de novo
+  // devolve essa mesma devolução em vez de criar outra.
+  string devolucao_pendente_id = 5;
+
+  int32 devolucao_pendente_numero = 6;
+}
+
+message ItemPedido {
+  string venda_item_id = 1;
+
+  string produto_id = 2;
+
+  string variation_product_id = 3;
+
+  string produto_nome = 4;
+
+  string codigo = 5;
+
+  string un = 6;
+
+  double valor_unitario = 7;
+
+  double quantidade_vendida = 8;
+
+  double quantidade_devolvida = 9;
+
+  double quantidade_disponivel = 10;
+}

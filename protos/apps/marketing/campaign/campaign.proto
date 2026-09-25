@@ -1,0 +1,647 @@
+syntax = "proto3";
+
+package marketing_campaign;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/marketing/campaign";
+
+service CampaignService {
+  // CRUD basico
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc Clone ( CloneRequest ) returns ( CloneResponse );
+
+  // Acoes de campanha
+  rpc Dispatch ( DispatchRequest ) returns ( DispatchResponse );
+
+  rpc Preview ( PreviewRequest ) returns ( PreviewResponse );
+
+  rpc SimulateSend ( SimulateSendRequest ) returns ( SimulateSendResponse );
+
+  rpc SyncStats ( SyncStatsRequest ) returns ( SyncStatsResponse );
+
+  // Dashboard de metricas agregadas
+  rpc Dashboard ( DashboardRequest ) returns ( DashboardResponse );
+
+  // Relatorios
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+}
+
+service CampaignSendService {
+  rpc GetCampaignSend ( GetCampaignSendRequest ) returns ( GetCampaignSendResponse );
+
+  rpc ListCampaignSends ( ListCampaignSendsRequest ) returns ( ListCampaignSendsResponse );
+}
+
+// Status da campanha
+enum CampaignStatus {
+  CAMPAIGN_STATUS_UNSPECIFIED = 0;
+
+  CAMPAIGN_STATUS_DRAFT = 1;
+
+  CAMPAIGN_STATUS_SCHEDULED = 2;
+
+  CAMPAIGN_STATUS_SENDING = 3;
+
+  CAMPAIGN_STATUS_PAUSED = 4;
+
+  CAMPAIGN_STATUS_COMPLETED = 5;
+
+  CAMPAIGN_STATUS_FAILED = 6;
+}
+
+enum CampaignSendStatus {
+  CAMPAIGN_SEND_STATUS_UNSPECIFIED = 0;
+
+  CAMPAIGN_SEND_STATUS_PENDING = 1;
+
+  CAMPAIGN_SEND_STATUS_SENT = 2;
+
+  CAMPAIGN_SEND_STATUS_DELIVERED = 3;
+
+  CAMPAIGN_SEND_STATUS_OPENED = 4;
+
+  CAMPAIGN_SEND_STATUS_CLICKED = 5;
+
+  CAMPAIGN_SEND_STATUS_BOUNCED = 6;
+
+  CAMPAIGN_SEND_STATUS_FAILED = 7;
+
+  CAMPAIGN_SEND_STATUS_UNSUBSCRIBED = 8;
+}
+
+message Campaign {
+  string id = 1;
+
+  string name = 2;
+
+  string segment_id = 3;
+
+  string channel = 4;
+
+  google.protobuf.Timestamp scheduled_at = 5;
+
+  google.protobuf.Timestamp created_at = 6;
+
+  google.protobuf.Timestamp updated_at = 7;
+
+  // Vinculacoes
+  string creative_id = 8;
+
+  string integration_id = 9;
+
+  // Status e controle
+  CampaignStatus status = 10;
+
+  string subject = 11; // Assunto do email
+
+  string sender_name = 12;
+
+  string sender_email = 13;
+
+  // Metricas de envio
+  int32 total_recipients = 14;
+
+  int32 total_sent = 15;
+
+  int32 total_delivered = 16;
+
+  int32 total_bounced = 17;
+
+  int32 total_opened = 18;
+
+  int32 total_clicked = 19;
+
+  int32 total_failed = 20;
+
+  // Timestamps de execucao
+  google.protobuf.Timestamp sent_at = 21;
+
+  google.protobuf.Timestamp completed_at = 22;
+
+  string sent_by = 23;
+
+  string error_message = 24;
+
+  // Campos desnormalizados para listagem
+  string creative_name = 25;
+
+  string segment_name = 26;
+
+  reserved 27, 28, 29, 30;
+
+  reserved "webhook_url", "webhook_method", "webhook_payload_template", "webhook_headers_json";
+
+  // Vinculo com automacao
+  string automation_id = 31;
+
+  string integration_name = 32;
+
+  string sent_by_name = 33;
+
+  string dispatch_mode = 34; // manual | automatic
+
+  bool stats_collection_completed = 35;
+
+  google.protobuf.Timestamp stats_last_sync_at = 36;
+
+  string dispatch_execution_id = 37;
+
+  string dispatch_monitor_url = 38;
+
+  google.protobuf.Timestamp dispatch_started_at = 39;
+
+  google.protobuf.Timestamp dispatch_finished_at = 40;
+
+  int32 dispatch_progress_total = 41;
+
+  int32 dispatch_progress_processed = 42;
+
+  int32 dispatch_progress_sent = 43;
+
+  int32 dispatch_progress_failed = 44;
+
+  string dispatch_last_error = 45;
+
+  // Custo total da campanha (BRL). Usado para calcular ROI a partir das
+  // oportunidades vinculadas (campaign_id).
+  double cost = 46;
+
+  // Numero sequencial por organizacao (exibicao e referencia interna)
+  int32 number = 47;
+
+  // Rastreia abertura e clique do e-mail. Quando ligado, o disparo usa a
+  // primeira imagem http(s) do criativo; se nao houver, injeta um rastreador oculto.
+  bool track_opens = 48;
+
+  int32 total_unsubscribed = 49;
+
+  // Média, em segundos, do tempo até a primeira abertura entre os envios que abriram.
+  int32 avg_time_to_first_open_seconds = 50;
+
+  // Soma de todos os cliques (o mesmo destinatário pode clicar mais de uma vez).
+  int32 total_click_events = 51;
+
+  repeated ClickedLink clicked_links = 52;
+
+  repeated UnsubscribeReasonCount unsubscribe_reasons = 53;
+
+  int32 total_complained = 54;
+
+  // Pasta que organiza a campanha na listagem (módulo folder).
+  string folder_id = 55;
+
+  string folder_name = 56;
+
+  // Soma de todas as aberturas registradas: o mesmo destinatário pode abrir mais
+  // de uma vez. total_opened conta quantos contatos abriram, sem repetir.
+  int32 total_open_events = 58;
+
+  CampaignSettings settings = 57;
+}
+
+// Ajustes opcionais aplicados no momento do disparo. Quando ausente, a campanha
+// usa o comportamento padrão do canal.
+message CampaignSettings {
+  // Nome exibido para o destinatário no campo "Para". Aceita as mesmas
+  // variáveis do criativo ({{nome}}, atributos do contato). Vazio usa o nome
+  // cadastrado do contato.
+  string recipient_name_template = 1;
+
+  // Endereço que recebe as respostas, quando diferente do remetente.
+  string reply_to = 2;
+
+  // Parâmetros UTM anexados aos links do e-mail. Cada campo vazio usa o padrão
+  // (origem da plataforma, canal da campanha e nome da campanha).
+  bool utm_enabled = 3;
+
+  string utm_source = 4;
+
+  string utm_medium = 5;
+
+  string utm_campaign = 6;
+
+  // HTML inserido antes e depois do conteúdo do criativo.
+  string header_html = 7;
+
+  string footer_html = 8;
+
+  // Marcadores livres para organizar e filtrar campanhas.
+  repeated string tags = 9;
+}
+
+message ClickedLink {
+  string url = 1;
+
+  int32 click_count = 2;
+
+  int32 unique_contacts = 3;
+}
+
+message UnsubscribeReasonCount {
+  string reason = 1;
+
+  int32 count = 2;
+}
+
+// --- CRUD Request/Response ---
+
+message CreateRequest {
+  Campaign campaign = 1;
+}
+
+message CreateResponse {
+  Campaign campaign = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Campaign campaign = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Campaign campaign = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Campaign campaign = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string segment_id = 2;
+
+  string folder_id = 9;
+
+  string channel = 3;
+
+  google.protobuf.Timestamp scheduled_at_gte = 4;
+
+  google.protobuf.Timestamp scheduled_at_lte = 5;
+
+  Filter filter = 6;
+
+  CampaignStatus status = 7;
+
+  string creative_id = 8;
+}
+
+message ListResponse {
+  repeated Campaign campaign_list = 1;
+}
+
+message CloneRequest {
+  string id = 1;
+}
+
+message CloneResponse {
+  Campaign campaign = 1;
+}
+
+message CampaignSend {
+  string id = 1;
+
+  string campaign_id = 2;
+
+  string campaign_name = 3;
+
+  string contact_id = 4;
+
+  string contact_name = 5;
+
+  string recipient_value = 6;
+
+  string channel = 7;
+
+  string integration_id = 8;
+
+  string integration_name = 9;
+
+  string dispatch_mode = 10;
+
+  int32 attempt = 11;
+
+  CampaignSendStatus status = 12;
+
+  int32 open_count = 13;
+
+  int32 click_count = 14;
+
+  google.protobuf.Timestamp sent_at = 15;
+
+  google.protobuf.Timestamp delivered_at = 16;
+
+  google.protobuf.Timestamp first_opened_at = 17;
+
+  google.protobuf.Timestamp last_opened_at = 18;
+
+  google.protobuf.Timestamp first_clicked_at = 19;
+
+  google.protobuf.Timestamp last_clicked_at = 20;
+
+  google.protobuf.Timestamp failed_at = 21;
+
+  google.protobuf.Timestamp bounced_at = 22;
+
+  string external_message_id = 23;
+
+  string error_message = 24;
+
+  google.protobuf.Timestamp created_at = 25;
+
+  google.protobuf.Timestamp updated_at = 26;
+
+  bool stats_collection_completed = 27;
+
+  google.protobuf.Timestamp stats_collection_completed_at = 28;
+
+  string stats_collection_reason = 29;
+
+  google.protobuf.Timestamp stats_last_sync_at = 30;
+
+  google.protobuf.Timestamp stats_next_sync_at = 31;
+
+  string stats_sync_error = 32;
+
+  string stats_provider_cursor = 33;
+
+  string stats_last_event_key = 34;
+
+  google.protobuf.Timestamp unsubscribed_at = 35;
+
+  string unsubscribe_token = 36;
+
+  // Segundos entre o envio e a primeira abertura. Zero quando ainda não abriu.
+  int32 time_to_first_open_seconds = 37;
+
+  repeated ClickedLink clicked_links = 38;
+
+  string unsubscribe_reason = 39;
+
+  google.protobuf.Timestamp complained_at = 40;
+
+  // Id da mensagem registrada no envio; os eventos de rastreio chegam por ele.
+  string message_id = 41;
+}
+
+message GetCampaignSendRequest {
+  string id = 1;
+}
+
+message GetCampaignSendResponse {
+  CampaignSend campaign_send = 1;
+}
+
+message ListCampaignSendsRequest {
+  repeated string ids = 1;
+
+  string campaign_id = 2;
+
+  string contact_id = 3;
+
+  string channel = 4;
+
+  CampaignSendStatus status = 5;
+
+  string integration_id = 6;
+
+  google.protobuf.Timestamp sent_at_gte = 7;
+
+  google.protobuf.Timestamp sent_at_lte = 8;
+
+  google.protobuf.Timestamp opened_at_gte = 9;
+
+  google.protobuf.Timestamp opened_at_lte = 10;
+
+  google.protobuf.Timestamp clicked_at_gte = 11;
+
+  google.protobuf.Timestamp clicked_at_lte = 12;
+
+  Filter filter = 13;
+}
+
+message ListCampaignSendsResponse {
+  repeated CampaignSend campaign_send_list = 1;
+}
+
+// --- Dispatch ---
+
+message DispatchRequest {
+  string id = 1;
+
+  bool schedule = 2; // Se true, agenda para scheduled_at; se false, dispara agora
+
+  bool automatic = 3; // Uso interno para indicar disparo executado pelo scheduler
+}
+
+message DispatchResponse {
+  Campaign campaign = 1;
+
+  string message = 2;
+}
+
+message PreviewRequest {
+  // Id da campanha. Quando vazio, creative_id e segment_id sao obrigatorios e o
+  // preview simula o envio do criativo para o segmento informado.
+  string id = 1;
+
+  string contact_id = 2;
+
+  Filter filter = 3;
+
+  string creative_id = 4;
+
+  string segment_id = 5;
+
+  // Conteudo a renderizar no lugar do que esta gravado no criativo, para
+  // pre-visualizar alteracoes ainda nao salvas.
+  string html_content = 6;
+
+  string text_content = 7;
+}
+
+message PreviewContact {
+  string id = 1;
+
+  string name = 2;
+
+  string email = 3;
+
+  string phone = 4;
+
+  string recipient_value = 5;
+}
+
+message PreviewResponse {
+  PreviewContact selected_contact = 1;
+
+  repeated PreviewContact contacts = 2;
+
+  string rendered_subject = 3;
+
+  string rendered_html = 4;
+
+  string rendered_text = 5;
+
+  string recipient_value = 6;
+
+  repeated string missing_variables = 7;
+
+  string channel = 8;
+}
+
+message SimulateSendRequest {
+  // Id da campanha. Quando vazio, creative_id e segment_id sao obrigatorios e o
+  // envio de teste usa o criativo com os contatos do segmento informado.
+  string id = 1;
+
+  string contact_id = 2;
+
+  // E-mail ou telefone que recebe o teste, conforme o canal.
+  string destination = 3;
+
+  string creative_id = 4;
+
+  string segment_id = 5;
+
+  // Conteudo a enviar no lugar do que esta gravado no criativo, para testar
+  // alteracoes ainda nao salvas.
+  string html_content = 6;
+
+  string text_content = 7;
+}
+
+message SimulateSendResponse {
+  string destination = 1;
+
+  string rendered_subject = 2;
+
+  string rendered_html = 3;
+
+  string rendered_text = 4;
+
+  string message = 5;
+}
+
+message SyncStatsRequest {
+  string id = 1;
+
+  bool pending_only = 2;
+}
+
+message SyncStatsResponse {
+  Campaign campaign = 1;
+
+  int32 synced_sends = 2;
+
+  int32 applied_events = 3;
+
+  string message = 4;
+}
+
+// --- Dashboard ---
+
+message DashboardRequest {
+  Filter filter = 1;
+
+  google.protobuf.Timestamp date_from = 2;
+
+  google.protobuf.Timestamp date_to = 3;
+}
+
+message CampaignSummary {
+  string id = 1;
+
+  string name = 2;
+
+  string channel = 3;
+
+  CampaignStatus status = 4;
+
+  int32 total_recipients = 5;
+
+  int32 total_sent = 6;
+
+  int32 total_opened = 7;
+
+  int32 total_clicked = 8;
+
+  google.protobuf.Timestamp sent_at = 9;
+
+  string segment_name = 10;
+}
+
+message StatusCount {
+  CampaignStatus status = 1;
+
+  int32 count = 2;
+}
+
+message DashboardResponse {
+  int32 total_campaigns = 1;
+
+  int32 active_campaigns = 2;
+
+  int32 total_sent = 3;
+
+  int32 total_delivered = 4;
+
+  double avg_open_rate = 5;
+
+  double avg_click_rate = 6;
+
+  repeated CampaignSummary recent_campaigns = 7;
+
+  repeated StatusCount status_distribution = 8;
+}
+
+// --- Relatorios ---
+
+message ReportRequest {
+  ListRequest list_request = 1;
+
+  string tipo_relatorio = 2;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}

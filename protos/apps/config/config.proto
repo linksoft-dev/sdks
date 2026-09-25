@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+package config;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/config";
+
+// Enum para AmbientePadrao
+enum AmbientePadrao {
+  AMBIENTE_PADRAO_UNSPECIFIED = 0;
+
+  AMBIENTE_PADRAO_PRODUCAO = 1;
+
+  AMBIENTE_PADRAO_HOMOLOGACAO = 2;
+}
+
+message Contador {
+  string id = 1;
+
+  string nome = 2;
+
+  string cpf_cnpj = 3;
+
+  string cnpj_escritorio = 4;
+
+  string ie = 5;
+
+  bool isento_ie = 6;
+
+  string end_cep = 7;
+
+  string end_endereco = 8;
+
+  string end_numero = 9;
+
+  string end_bairro = 10;
+
+  string end_cidade = 11;
+
+  string end_cidade_codigo = 12;
+
+  string end_uf = 13;
+
+  string telefone = 14;
+
+  string email = 15;
+
+  bool enviar_nfe_por_email = 16;
+
+  string crc = 17;
+}
+
+message CertificadoModel {
+  string arquivo_nome = 1;
+
+  google.protobuf.Timestamp validade = 2;
+
+  string senha = 3;
+
+  string conteudo_upload = 4;
+
+  string download_link = 5;
+}
+
+message ConfigNfe {
+  string ambiente_padrao = 1;
+
+  int32 serie_padrao = 2;
+
+  google.protobuf.Timestamp data_hora_status = 3;
+
+  google.protobuf.Timestamp entrada_consulta_bloqueada_ate = 4;
+
+  int32 entrada_nsu = 5;
+
+  bool entrada_busca_automatica = 6;
+
+  bool auto_atualiza_preco = 7;
+}
+
+message ConfigNfce {
+  string ambiente_padrao = 1;
+
+  int32 serie_padrao = 2;
+
+  google.protobuf.Timestamp data_hora_status = 3;
+
+  google.protobuf.Timestamp entrada_consulta_bloqueada_ate = 4;
+
+  int32 entrada_nsu = 5;
+
+  bool entrada_busca_automatica = 6;
+
+  bool auto_atualiza_preco = 7;
+
+  string csc = 8;
+
+  int32 token = 9;
+}
+
+message ConfigMdfe {
+  string ambiente_padrao = 1;
+
+  int32 serie_padrao = 2;
+}
+
+message ConfigCte {
+  AmbientePadrao ambiente_padrao = 1;
+
+  int32 serie_padrao = 2;
+
+  int32 serie = 3;
+}
+
+message ConfigNfse {
+  AmbientePadrao ambiente_padrao = 1;
+
+  double iss = 2;
+
+  // Regime de apuração do Simples Nacional (para ME/EPP)
+  // 1 - Regime completo pelo SN
+  // 2 - ISS por fora do SN
+  // 3 - Todos por fora do SN
+  int32 reg_ap_trib_sn = 3;
+
+  bool nfse_auto_emite = 4; // Emitir NFSe automaticamente ao fechar pedido/OS/contrato
+
+  string serie_padrao = 5; // Série padrão para emissão de NFSe (default: "1")
+
+  bool envia_email_automatico = 6; // Enviar email automaticamente após autorização da NFSe (default: true)
+
+  string webservice_usuario = 7; // Usuário de acesso ao webservice de NFSe do município (quando o provedor exige login)
+
+  string webservice_senha = 8; // Senha de acesso ao webservice de NFSe do município (quando o provedor exige login)
+}
+
+message Cnae {
+  string nome = 1;
+
+  string codigo = 2;
+}

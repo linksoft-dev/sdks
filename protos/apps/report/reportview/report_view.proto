@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "plugins/service/service.proto";
+
+import "plugins/validate/validate.proto";
+
+import "common/metadata/metadata.proto";
+
+import "filter/filter.proto";
+
+package reportview;
+
+option go_package = "comps/pb/apps/report/reportview";
+
+service ReportViewService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+}
+
+message ReportView {
+  string id = 1;
+
+  metadata.BasicFields fields = 2;
+
+  string name = 3;
+
+  string description = 4;
+
+  repeated string reports_names = 5;
+}
+
+message CreateRequest {
+  ReportView report_view = 1;
+}
+
+message CreateResponse {
+  ReportView report_view = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  ReportView report_view = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  ReportView report_view = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string name = 2;
+
+  string category = 3;
+
+  Filter filter = 4;
+}
+
+message ListResponse {
+  repeated ReportView report_view_list = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  ReportView report_view = 1;
+}

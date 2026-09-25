@@ -1,0 +1,431 @@
+syntax = "proto3";
+
+package crm_deal;
+
+import "plugins/validate/validate.proto";
+
+import "google/api/annotations.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/message/message.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/crm/deal";
+
+service DealService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc MoveStage ( MoveStageRequest ) returns ( MoveStageResponse );
+
+  rpc CloseDeal ( CloseDealRequest ) returns ( CloseDealResponse );
+
+  rpc AddInteraction ( AddInteractionRequest ) returns ( AddInteractionResponse );
+
+  rpc ListInteractions ( ListInteractionsRequest ) returns ( ListInteractionsResponse );
+
+  rpc ReopenDeal ( ReopenDealRequest ) returns ( ReopenDealResponse );
+
+  rpc ConvertToOrder ( ConvertToOrderRequest ) returns ( ConvertToOrderResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc AiSummarize ( AiSummarizeRequest ) returns ( AiSummarizeResponse );
+
+  rpc AiSuggestNextStep ( AiSuggestNextStepRequest ) returns ( AiSuggestNextStepResponse );
+
+  rpc Dashboard ( DashboardRequest ) returns ( DashboardResponse );
+
+  rpc Forecast ( ForecastRequest ) returns ( ForecastResponse );
+
+  rpc Alerts ( AlertsRequest ) returns ( AlertsResponse );
+
+  rpc PipelineHealth ( PipelineHealthRequest ) returns ( PipelineHealthResponse );
+}
+
+message CreateRequest {
+  apps.message.Message deal = 1;
+}
+
+message CreateResponse {
+  apps.message.Message deal = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  apps.message.Message deal = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  apps.message.Message deal = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  apps.message.Message deal = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string person_id = 2;
+
+  string pipeline_id = 3;
+
+  string stage_id = 4;
+
+  apps.message.DealOutcome outcome = 5;
+
+  string loss_reason_id = 6;
+
+  google.protobuf.Timestamp close_forecast_gte = 7;
+
+  google.protobuf.Timestamp close_forecast_lte = 8;
+
+  Filter filter = 9;
+
+  string campaign_id = 10;
+}
+
+message ListResponse {
+  repeated apps.message.Message deal_list = 1;
+}
+
+message MoveStageRequest {
+  string id = 1;
+
+  string pipeline_id = 2;
+
+  string stage_id = 3;
+}
+
+message MoveStageResponse {
+  apps.message.Message deal = 1;
+}
+
+message CloseDealRequest {
+  string id = 1;
+
+  apps.message.DealOutcome outcome = 2;
+
+  string loss_reason_id = 3;
+
+  string close_notes = 4;
+
+  google.protobuf.Timestamp close_date = 5;
+}
+
+message CloseDealResponse {
+  apps.message.Message deal = 1;
+}
+
+message ReopenDealRequest {
+  string id = 1;
+}
+
+message ReopenDealResponse {
+  apps.message.Message deal = 1;
+}
+
+message ConvertToOrderRequest {
+  string id = 1;
+
+  string tipo = 2; // ped=pedido, orc=orcamento
+}
+
+message ConvertToOrderResponse {
+  string order_id = 1;
+
+  int32 order_number = 2;
+}
+
+message AddInteractionRequest {
+  string deal_id = 1;
+
+  string content = 2;
+
+  bool is_internal = 3;
+
+  repeated apps.message.Attachment attachments = 4;
+}
+
+message AddInteractionResponse {
+  apps.message.Interaction interaction = 1;
+}
+
+message ListInteractionsRequest {
+  string deal_id = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+}
+
+message ListInteractionsResponse {
+  repeated apps.message.Interaction interactions = 1;
+
+  string next_page_token = 2;
+}
+
+message ReportRequest {
+  ListRequest list_request = 1;
+
+  string tipo_relatorio = 2;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}
+
+message AiSummarizeRequest {
+  string id = 1;
+
+  string additional_instructions = 2;
+}
+
+message AiSummarizeResponse {
+  string summary = 1;
+
+  // hot, warm, cold
+  string temperature = 2;
+
+  repeated string highlights = 3;
+
+  repeated string risks = 4;
+}
+
+message AiSuggestNextStepRequest {
+  string id = 1;
+
+  string additional_instructions = 2;
+}
+
+message AiSuggestNextStepResponse {
+  // task, call, email, whatsapp, meeting
+  string activity_type = 1;
+
+  string title = 2;
+
+  int32 due_in_days = 3;
+
+  string message_draft = 4;
+
+  string reasoning = 5;
+}
+
+message DashboardRequest {
+  string campaign_id = 1; // Filtro opcional: limita o dashboard a uma campanha
+}
+
+message ResumoTotais {
+  string nome = 1;
+
+  int32 qtde = 2;
+
+  double total = 3;
+}
+
+message CampaignSummary {
+  string id = 1;
+
+  string name = 2;
+
+  int32 count = 3; // Total de oportunidades vinculadas
+
+  double amount = 4; // Valor total (todas as oportunidades)
+
+  int32 won_count = 5;
+
+  double won_amount = 6;
+
+  int32 lost_count = 7;
+
+  double lost_amount = 8;
+
+  int32 open_count = 9;
+
+  double open_amount = 10;
+
+  double conversion_rate = 11; // Percentual (won_count / (won + lost) * 100)
+
+  double cost = 12; // Custo cadastrado na campanha (BRL)
+
+  double roi = 13; // (won_amount - cost) / cost * 100, 0 quando cost<=0
+}
+
+message ResumoMesAno {
+  string ano_mes = 1;
+
+  ResumoTotais aberto = 2;
+
+  ResumoTotais ganho = 3;
+
+  ResumoTotais perdido = 4;
+
+  repeated ResumoTotais responsaveis = 5;
+
+  repeated ResumoTotais clientes = 6;
+
+  repeated ResumoTotais pipelines = 7;
+
+  repeated ResumoTotais etapas = 8;
+
+  repeated ResumoTotais motivos_perda = 9;
+
+  repeated CampaignSummary campaigns = 10;
+}
+
+message DashboardResponse {
+  repeated ResumoMesAno meses = 1;
+}
+
+message ForecastRequest {
+}
+
+message ForecastItem {
+  string ano_mes = 1;
+
+  double total = 2;
+
+  double ponderado = 3;
+
+  int32 qtde = 4;
+}
+
+message ForecastDeal {
+  string id = 1;
+
+  string nome = 2;
+
+  string cliente = 3;
+
+  double valor = 4;
+
+  double ponderado = 5;
+
+  double probabilidade = 6;
+
+  string etapa = 7;
+
+  string previsao = 8;
+}
+
+message ForecastResponse {
+  double total_ponderado = 1;
+
+  double total_bruto = 2;
+
+  int32 qtde_deals = 3;
+
+  repeated ForecastItem por_mes = 4;
+
+  repeated ForecastDeal top_deals = 5;
+}
+
+message AlertsRequest {
+}
+
+message AlertItem {
+  string deal_id = 1;
+
+  string deal_name = 2;
+
+  string cliente = 3;
+
+  // closing_soon, idle, overdue
+  string tipo = 4;
+
+  string mensagem = 5;
+
+  double valor = 6;
+}
+
+message AlertsResponse {
+  repeated AlertItem alertas = 1;
+
+  int32 total_alertas = 2;
+}
+
+message PipelineHealthRequest {
+}
+
+message AgingBucket {
+  string faixa = 1;
+
+  int32 qtde = 2;
+
+  double total = 3;
+
+  int32 min_dias = 4;
+
+  int32 max_dias = 5;
+}
+
+message StageTime {
+  string stage_id = 1;
+
+  string nome = 2;
+
+  int32 qtde = 3;
+
+  double dias_medios = 4;
+
+  double total = 5;
+
+  double probability = 6;
+
+  double weighted_amount = 7;
+
+  int32 order = 8;
+
+  string pipeline_id = 9;
+
+  string pipeline_name = 10;
+}
+
+message PipelineHealthResponse {
+  repeated AgingBucket aging_buckets = 1;
+
+  repeated StageTime tempo_por_etapa = 2;
+
+  double cycle_time_dias = 3;
+
+  double ticket_medio = 4;
+
+  int32 qtde_ganhos_90d = 5;
+
+  int32 qtde_abertos = 6;
+
+  double valor_abertos = 7;
+
+  double weighted_amount_total = 8;
+}

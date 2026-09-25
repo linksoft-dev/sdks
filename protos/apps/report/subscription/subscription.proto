@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "plugins/service/service.proto";
+
+import "plugins/validate/validate.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "filter/filter.proto";
+
+package subscription;
+
+option go_package = "comps/pb/apps/report/subscription";
+
+service ReportSubscriptionService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+}
+
+message ReportSubscription {
+  string id = 1;
+
+  metadata.BasicFields fields = 2;
+
+  string name = 3;
+
+  string description = 4;
+
+  string report_view_id = 5;
+
+  string user_id = 6; // ID do usuário (se individual)
+
+  string user_group_id = 7; // ID do grupo (se grupo)
+
+  DeliveryChannel delivery_channel = 8;
+
+  repeated string email_addresses = 9;
+
+  Schedule schedule = 10;
+
+  bool enabled = 11;
+
+  google.protobuf.Timestamp last_sent = 12;
+
+  google.protobuf.Timestamp next_send = 13;
+}
+
+message Schedule {
+  ScheduleType type = 1;
+
+  int32 hour = 2;
+
+  int32 day_of_week = 3; // 0=domingo, 6=sábado
+
+  int32 day_of_month = 4;
+
+  string cron_expression = 5;
+}
+
+enum ScheduleType {
+  DAILY = 0;
+
+  WEEKLY = 1;
+
+  MONTHLY = 2;
+
+  CRON = 3;
+}
+
+enum DeliveryChannel {
+  EMAIL = 0;
+
+  WHATSAPP = 1;
+}
+
+message CreateRequest {
+  ReportSubscription report_subscription = 1;
+}
+
+message CreateResponse {
+  ReportSubscription report_subscription = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  ReportSubscription report_subscription = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  ReportSubscription report_subscription = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string name = 2;
+
+  string report_view_id = 3;
+
+  string user_id = 4;
+
+  string user_group_id = 5;
+
+  bool enabled = 6;
+
+  Filter filter = 7;
+}
+
+message ListResponse {
+  repeated ReportSubscription report_subscription_list = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  ReportSubscription report_subscription = 1;
+}

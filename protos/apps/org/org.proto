@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package org;
+
+option go_package = "comps/pb/apps/org";
+
+enum WhiteLabelStatus {
+  WHITE_LABEL_STATUS_UNSPECIFIED = 0;
+
+  WHITE_LABEL_STATUS_INACTIVE = 1;
+
+  WHITE_LABEL_STATUS_PENDING_APPROVAL = 2;
+
+  WHITE_LABEL_STATUS_ACTIVE = 3;
+
+  WHITE_LABEL_STATUS_REJECTED = 4;
+
+  WHITE_LABEL_STATUS_SUSPENDED = 5;
+}
+
+message WhiteLabelConfig {
+  string system_name = 1;
+
+  string logo_url = 2;
+
+  string logo_small_url = 3;
+
+  string domain = 4;
+
+  string site_url = 6;
+
+  WhiteLabelStatus status = 7;
+
+  string favicon_url = 8;
+
+  string footer_text = 9;
+
+  google.protobuf.Timestamp submitted_at = 10; // quando a revenda enviou a configuração atual para aprovação
+
+  string review_note = 11; // observação da última revisão (ex.: motivo da rejeição), visível para a revenda
+
+  repeated WhiteLabelHistoryEntry history = 12; // trilha de envios e decisões, mais recente por último
+}
+
+// Registro de um evento no ciclo de vida do white-label (envio pela revenda ou decisão da Linksoft).
+message WhiteLabelHistoryEntry {
+  google.protobuf.Timestamp at = 1;
+
+  WhiteLabelStatus status = 2; // status resultante deste evento
+
+  string actor_org_id = 3; // org que realizou a ação (a própria revenda no envio; a Linksoft na revisão)
+
+  string actor_name = 4;
+
+  string note = 5; // observação livre (motivo da rejeição/suspensão)
+}
+
+// Detalhe de uma licença/contrato individual
+message LicencaDetalhe {
+  string situacao = 1;
+
+  string numero = 2;
+
+  double total = 3;
+
+  google.protobuf.Timestamp vencimento = 4;
+
+  map<string, bool> modulos = 5;
+
+  string checkoutUrl = 6;
+}
+
+// Dados sobre o licenciamento da empresa
+message Licenciamento {
+  string situacao = 1;
+
+  string numeroSerie = 2;
+
+  double total = 3;
+
+  string licenca = 4;
+
+  map<string, bool> modulos = 5;
+
+  google.protobuf.Timestamp vencimento = 6;
+
+  google.protobuf.Timestamp vencimentoAnterior = 7;
+
+  int32 diasExpirar = 8;
+
+  string checkoutUrl = 9;
+
+  string motivoBloqueio = 10;
+
+  int32 usuariosExtras = 11;
+
+  repeated LicencaDetalhe licencas = 12;
+
+  int32 ai_credits_monthly = 13; // Cota mensal de creditos de IA incluida no plano (0 = sem cota)
+
+  repeated LicencaPlano planos = 14;
+
+  string periodicidade = 15; // Periodicidade da recorrencia do contrato: MENSAL, ANUAL, SEMANAL, DIARIA
+
+  google.protobuf.Timestamp acessoAte = 16; // Ate quando a licenca libera o acesso: vencimento com a carencia e a liberacao manual ja aplicadas
+
+  map<string, int32> quantidades = 17; // Quantidade contratada de cada servico da licenca, pelo codigo do servico
+}
+
+// Plano composto do licenciamento: um serviço/pacote que agrupa vários módulos
+message LicencaPlano {
+  string nome = 1;
+
+  string codigo = 2;
+
+  double valor = 3;
+
+  repeated LicencaPlanoModulo modulos = 4;
+}
+
+message LicencaPlanoModulo {
+  string codigo = 1;
+
+  string nome = 2;
+}

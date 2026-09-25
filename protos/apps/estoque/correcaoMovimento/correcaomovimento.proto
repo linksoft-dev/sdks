@@ -1,0 +1,220 @@
+syntax = "proto3";
+
+package correcaomovimento;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "apps/report/report.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/estoque/correcaoMovimento";
+
+// Serviço CorrecaoMovimento com operações CRUD
+service CorrecaoMovimentoService {
+  rpc Create ( CreateCorrecaoMovimentoRequest ) returns ( CreateCorrecaoMovimentoResponse );
+
+  rpc Update ( UpdateCorrecaoMovimentoRequest ) returns ( UpdateCorrecaoMovimentoResponse );
+
+  rpc Delete ( DeleteCorrecaoMovimentoRequest ) returns ( DeleteCorrecaoMovimentoResponse );
+
+  rpc Get ( GetCorrecaoMovimentoRequest ) returns ( GetCorrecaoMovimentoResponse );
+
+  rpc List ( ListCorrecaoMovimentoRequest ) returns ( ListCorrecaoMovimentoResponse );
+
+  rpc Efetivar ( EfetivarRequest ) returns ( EfetivarResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+}
+
+enum Situacao {
+  SITUACAO_UNSPECIFIED = 0;
+
+  SITUACAO_PENDENTE = 1;
+
+  SITUACAO_EFETIVADA = 2;
+}
+
+message CorrecaoMovimento {
+  metadata.BasicFields fields = 1;
+
+  // Dados do produto
+  string id = 2;
+
+  google.protobuf.Timestamp createdAt = 3;
+
+  google.protobuf.Timestamp updatedAt = 4;
+
+  google.protobuf.Timestamp dataInicial = 5;
+
+  string usuario_id = 6;
+
+  string usuario_nome = 7;
+
+  string usuario_update_id = 8;
+
+  string usuario_update_nome = 9;
+
+  string usuario_efetivar_id = 10;
+
+  string usuario_efetivar_nome = 11;
+
+  string motivo = 12;
+
+  Situacao situacao = 13;
+
+  string estoque_origem_id = 14;
+
+  string estoque_destino_id = 15;
+
+  string produto_origem_id = 16;
+
+  string produto_origem_nome = 17;
+
+  double produto_origem_quantidade_inicial = 18;
+
+  double produto_origem_quantidade_final = 19;
+
+  string produto_destino_id = 20;
+
+  string produto_destino_nome = 21;
+
+  double produto_destino_quantidade_inicial = 22;
+
+  double produto_destino_quantidade_final = 23;
+
+  repeated TipoMovimento tipo_movimento = 24;
+
+  repeated Alteracoes alteracoes = 25; // movimentacoes afetadas movidas da origem para o destino
+
+  string obs = 26;
+}
+
+message TipoMovimento {
+  string nome = 1;
+
+  string descricao = 2;
+}
+
+message Alteracoes {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  double quantidade = 3;
+
+  string referencia = 4; // se é nfe, nfce, pedido, etc
+
+  string tipo = 5; // se é entrada(e) ou saida(s)
+
+  string origem = 6;
+
+  string origem_id = 7;
+
+  string origem_numero = 8;
+
+  string obs = 9;
+
+  string pessoa_id = 10;
+
+  string pessoa_nome = 11;
+}
+
+// Request e Response para criação de Produto
+message CreateCorrecaoMovimentoRequest {
+  CorrecaoMovimento correcaoMovimento = 1;
+}
+
+message CreateCorrecaoMovimentoResponse {
+  CorrecaoMovimento correcaoMovimento = 1;
+}
+
+// Request e Response para atualização de Produto
+message UpdateCorrecaoMovimentoRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  CorrecaoMovimento correcaoMovimento = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Produto
+message UpdateCorrecaoMovimentoResponse {
+  CorrecaoMovimento correcaoMovimento = 1;
+}
+
+// Request e Response para exclusão de Produto
+message DeleteCorrecaoMovimentoRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteCorrecaoMovimentoResponse {
+  string id = 1;
+}
+
+// Request para obter um Produto por ID
+message GetCorrecaoMovimentoRequest {
+  string id = 1;
+}
+
+// Request para obter um Produto por ID
+message GetCorrecaoMovimentoResponse {
+  CorrecaoMovimento correcaoMovimento = 1;
+}
+
+// Request e Response para listagem de Produtos
+message ListCorrecaoMovimentoRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 4;
+
+  google.protobuf.Timestamp createdAtGte = 5;
+
+  google.protobuf.Timestamp createdAtLte = 6;
+
+  repeated Situacao situacao = 7;
+
+  repeated string tipoMovimento = 8;
+}
+
+message ListCorrecaoMovimentoResponse {
+  repeated CorrecaoMovimento correcaoMovimentoList = 1;
+
+  string next_page_token = 2;
+}
+
+message ReportRequest {
+  string tipoRelatorio = 1;
+
+  ListCorrecaoMovimentoRequest listCorrecaoMovimentoRequest = 2;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}
+
+message EfetivarRequest {
+  string id = 1;
+}
+
+message EfetivarResponse {
+  string status = 1;
+
+  string message = 2;
+
+  CorrecaoMovimento correcaoMovimento = 3;
+}

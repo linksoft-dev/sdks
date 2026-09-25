@@ -1,0 +1,200 @@
+syntax = "proto3";
+
+package serial;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/estoque/serial";
+
+// Serviço Serial com operações CRUD
+service SerialService {
+  rpc Create ( CreateSerialRequest ) returns ( CreateSerialResponse );
+
+  rpc Update ( UpdateSerialRequest ) returns ( UpdateSerialResponse );
+
+  rpc Delete ( DeleteSerialRequest ) returns ( DeleteSerialResponse );
+
+  rpc Get ( GetSerialRequest ) returns ( GetSerialResponse );
+
+  rpc List ( ListSerialRequest ) returns ( ListSerialResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+}
+
+// Enum para Status do Número de Série
+enum SerialStatus {
+  SERIAL_STATUS_UNSPECIFIED = 0;
+
+  SERIAL_STATUS_AVAILABLE = 1; // Disponível
+
+  SERIAL_STATUS_SOLD = 2; // Vendido
+
+  SERIAL_STATUS_BLOCKED = 3; // Bloqueado
+
+  SERIAL_STATUS_LOANED = 4; // Em comodato / cedido temporariamente
+
+  SERIAL_STATUS_LOST = 5; // Perdido / extraviado
+
+  SERIAL_STATUS_DAMAGED = 6; // Danificado
+}
+
+// Mensagem principal Serial
+message Serial {
+  string id = 1;
+
+  string account_id = 2;
+
+  string serial_number = 3;
+
+  // Vinculação com produto e estoque
+  string product_id = 4;
+
+  string product_name = 5; // denormalizado
+
+  string stock_id = 6;
+
+  string stock_name = 7; // denormalizado
+
+  // Status
+  SerialStatus status = 8;
+
+  string block_reason = 9;
+
+  // Fornecedor
+  string supplier_id = 10;
+
+  string supplier_name = 11; // denormalizado
+
+  // Datas
+  google.protobuf.Timestamp entry_date = 12;
+
+  google.protobuf.Timestamp exit_date = 13;
+
+  // Observações
+  string notes = 14;
+
+  // Documento da última movimentação deste número de série.
+  string origem = 15;
+
+  string origem_id = 16;
+
+  string origem_numero = 17;
+
+  // Destino da última saída.
+  string pessoa_id = 18;
+
+  string pessoa_nome = 19;
+
+  // Peças ou subequipamentos com número de série próprio.
+  repeated SerialComponent components = 20;
+
+  // Campos de auditoria
+  metadata.BasicFields basic_fields = 100;
+}
+
+message SerialComponent {
+  string description = 1;
+
+  string serial_number = 2;
+}
+
+// Request e Response para CreateSerial
+message CreateSerialRequest {
+  Serial serial = 1;
+}
+
+message CreateSerialResponse {
+  Serial serial = 1;
+}
+
+// Request e Response para UpdateSerial
+message UpdateSerialRequest {
+  string id = 1;
+
+  Serial serial = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateSerialResponse {
+  Serial serial = 1;
+}
+
+// Request e Response para DeleteSerial
+message DeleteSerialRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteSerialResponse {
+  string id = 1;
+}
+
+// Request e Response para GetSerial
+message GetSerialRequest {
+  string id = 1;
+}
+
+message GetSerialResponse {
+  Serial serial = 1;
+}
+
+// Request e Response para ListSerials
+message ListSerialRequest {
+  // IDs para busca direta (padrão CRUD)
+  repeated string ids = 11;
+
+  // Filtros específicos
+  repeated string product_ids = 1;
+
+  repeated string stock_ids = 2;
+
+  repeated SerialStatus statuses = 3;
+
+  string serial_number = 4;
+
+  repeated string supplier_ids = 5;
+
+  // Filtros de data de entrada
+  google.protobuf.Timestamp entry_date_gte = 6;
+
+  google.protobuf.Timestamp entry_date_lte = 7;
+
+  // Filtros de data de criação
+  google.protobuf.Timestamp created_at_gte = 8;
+
+  google.protobuf.Timestamp created_at_lte = 9;
+
+  // Filtro genérico
+  Filter filter = 10;
+}
+
+message ListSerialResponse {
+  repeated Serial serial_list = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para Report
+message ReportRequest {
+  string tipo_relatorio = 1;
+
+  ListSerialRequest list_serial_request = 2;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}

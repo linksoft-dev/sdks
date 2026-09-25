@@ -1,0 +1,924 @@
+syntax = "proto3";
+
+package contas;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "apps/report/report.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/financeiro/contas";
+
+// Serviço Contas com operações CRUD
+service ContasReceberService {
+  rpc Create ( CreateContasRequest ) returns ( CreateContasResponse );
+
+  rpc Update ( UpdateContasRequest ) returns ( UpdateContasResponse );
+
+  rpc Delete ( DeleteContasRequest ) returns ( DeleteContasResponse );
+
+  rpc Get ( GetContasRequest ) returns ( GetContasResponse );
+
+  rpc List ( ListContasRequest ) returns ( ListContasResponse );
+
+  rpc Cancelar ( CancelarRequest ) returns ( CancelarResponse );
+
+  rpc AddPagamento ( AddPagamentoRequest ) returns ( AddPagamentoResponse );
+
+  rpc UpdatePagamento ( UpdatePagamentoRequest ) returns ( UpdatePagamentoResponse );
+
+  rpc DeletePagamento ( DeletePagamentoRequest ) returns ( DeletePagamentoResponse );
+
+  rpc AtualizaComprovante ( AtualizaComprovanteRequest ) returns ( AtualizaComprovanteResponse );
+
+  rpc Import ( ImportRequest ) returns ( ImportResponse );
+
+  rpc AlteracaoConjunta ( AlteracaoConjuntaRequest ) returns ( AlteracaoConjuntaResponse );
+
+  rpc FaturamentoConjunto ( FaturamentoConjuntoRequest ) returns ( FaturamentoConjuntoResponse );
+
+  rpc MesclaContas ( MesclaContasRequest ) returns ( MesclaContasResponse );
+
+  rpc Dashboard ( DashboardRequest ) returns ( DashboardResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc Duplicata ( DuplicataRequest ) returns ( DuplicataResponse );
+
+  rpc Clone ( CloneRequest ) returns ( CloneResponse );
+
+  rpc GetOutstandingBalance ( GetOutstandingBalanceRequest ) returns ( GetOutstandingBalanceResponse );
+
+  rpc Export ( ExportRequest ) returns ( ExportResponse );
+
+  rpc ImprimirRecibo ( ImprimirReciboRequest ) returns ( ImprimirReciboResponse );
+
+  rpc SendPaymentLink ( SendPaymentLinkRequest ) returns ( SendPaymentLinkResponse );
+
+  rpc GeraBoleto ( GeraBoletoRequest ) returns ( GeraBoletoResponse );
+
+  // Junta títulos a receber pendentes, do mesmo cliente e sem pagamento, numa fatura com o
+  // vencimento informado. Os títulos saem da cobrança e voltam se a fatura for cancelada.
+  rpc Fatura ( FaturaRequest ) returns ( FaturaResponse );
+}
+
+message FaturaRequest {
+  repeated string ids = 1;
+
+  google.protobuf.Timestamp vencimento = 2;
+
+  // Descrição da fatura; vazio usa "FATURA".
+  string descricao = 3;
+}
+
+message FaturaResponse {
+  Contas contas = 1;
+}
+
+service ContasPagarService {
+  rpc Create ( CreateContasRequest ) returns ( CreateContasResponse );
+
+  rpc Update ( UpdateContasRequest ) returns ( UpdateContasResponse );
+
+  rpc Delete ( DeleteContasRequest ) returns ( DeleteContasResponse );
+
+  rpc Get ( GetContasRequest ) returns ( GetContasResponse );
+
+  rpc List ( ListContasRequest ) returns ( ListContasResponse );
+
+  rpc Cancelar ( CancelarRequest ) returns ( CancelarResponse );
+
+  rpc AddPagamento ( AddPagamentoRequest ) returns ( AddPagamentoResponse );
+
+  rpc UpdatePagamento ( UpdatePagamentoRequest ) returns ( UpdatePagamentoResponse );
+
+  rpc DeletePagamento ( DeletePagamentoRequest ) returns ( DeletePagamentoResponse );
+
+  rpc AtualizaComprovante ( AtualizaComprovanteRequest ) returns ( AtualizaComprovanteResponse );
+
+  rpc Import ( ImportRequest ) returns ( ImportResponse );
+
+  rpc AlteracaoConjunta ( AlteracaoConjuntaRequest ) returns ( AlteracaoConjuntaResponse );
+
+  rpc FaturamentoConjunto ( FaturamentoConjuntoRequest ) returns ( FaturamentoConjuntoResponse );
+
+  rpc MesclaContas ( MesclaContasRequest ) returns ( MesclaContasResponse );
+
+  rpc Dashboard ( DashboardRequest ) returns ( DashboardResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc Duplicata ( DuplicataRequest ) returns ( DuplicataResponse );
+
+  rpc Clone ( CloneRequest ) returns ( CloneResponse );
+
+  rpc GetOutstandingBalance ( GetOutstandingBalanceRequest ) returns ( GetOutstandingBalanceResponse );
+
+  rpc Export ( ExportRequest ) returns ( ExportResponse );
+
+  rpc ImprimirRecibo ( ImprimirReciboRequest ) returns ( ImprimirReciboResponse );
+}
+
+// esse servico nao é pra ser registrado, apenas para facilitar a implementacao do crud,
+// gerando a interface que é comum entre os servicos de contas receber e pagar
+service ContasService {
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+}
+
+// SendPaymentLink envia o link de pagamento das contas por e-mail ou WhatsApp.
+message GeraBoletoRequest {
+  string id = 1;
+
+  string forma_pagamento_id = 2; // vazio usa a única forma de pagamento de boleto com integração bancária
+}
+
+message GeraBoletoResponse {
+  Contas contas = 1;
+}
+
+message SendPaymentLinkRequest {
+  repeated string ids = 1;
+
+  string email = 2; // opcional: e-mail de destino; vazio usa o e-mail da pessoa da conta
+
+  string channel = 3; // "email" (padrao) ou "whatsapp"
+
+  string email_integration_id = 4; // integracao de e-mail; vazio usa a resolucao padrao do sistema
+
+  // WhatsApp enviado pelo servidor pela integracao informada. Vazio mantem o envio
+  // pelo app local: o servidor so registra a cobranca.
+  string whatsapp_integration_id = 5;
+
+  // Template aprovado da API oficial; obrigatorio quando a conta e oficial e o
+  // destinatario esta fora da janela de 24h. Variaveis: nome e link, nesta ordem.
+  string whatsapp_template_name = 6;
+
+  string whatsapp_template_language = 7; // vazio usa pt_BR
+
+  // Contato de destino por conta, quando editado na tela de envio. Sobrepoe o
+  // contato do cadastro da pessoa.
+  repeated DestinatarioCobranca destinatarios = 8;
+
+  // Modelo de mensagem a usar; vazio usa o modelo padrao do canal.
+  string message_template_id = 9;
+}
+
+// Contato para onde a cobranca de uma conta deve ir.
+message DestinatarioCobranca {
+  string conta_id = 1;
+
+  string nome = 2;
+
+  string email = 3;
+
+  string telefone = 4;
+}
+
+message SendPaymentLinkResponse {
+  repeated Contas contasList = 1;
+
+  // Mensagens prontas para o envio pelo WhatsApp do aparelho, uma por destinatario.
+  // Preenchido so quando o envio nao sai por integracao.
+  repeated WhatsappWebEnvio whatsapp_web = 2;
+}
+
+message WhatsappWebEnvio {
+  string numero = 1;
+
+  string mensagem = 2;
+}
+
+enum Tipo {
+  TIPO_UNSPECIFIED = 0;
+
+  TIPO_PAGAR = 1;
+
+  TIPO_RECEBER = 2;
+}
+
+enum Periodicidade {
+  PERIODICIDADE_UNSPECIFIED = 0;
+
+  PERIODICIDADE_SEMANAL = 1;
+
+  PERIODICIDADE_QUINZENAL = 2;
+
+  PERIODICIDADE_MENSAL = 3;
+
+  PERIODICIDADE_BIMESTRAL = 4;
+
+  PERIODICIDADE_TRIMESTRAL = 5;
+
+  PERIODICIDADE_SEMESTRAL = 6;
+
+  PERIODICIDADE_ANUAL = 7;
+}
+
+// enum Event  {
+//   EVENTS_UNSPECIFIED = 0;
+//   // contas a receber
+//   EVENTS_ON_ACCOUNTS_RECEIVABLE_CREATED = 1;
+//   EVENTS_ON_ACCOUNTS_RECEIVABLE_UPDATED = 2;
+//   EVENTS_ON_ACCOUNTS_RECEIVABLE_DELETED = 3;
+//   EVENTS_ON_ACCOUNTS_RECEIVABLE_PAID = 4;
+//   EVENTS_ON_ACCOUNTS_RECEIVABLE_CANCELED = 5;
+//   EVENTS_ON_ACCOUNTS_RECEIVABLE_ADD_PAYMENT = 6;
+//   EVENTS_ON_ACCOUNTS_RECEIVABLE_UPDATED_PAYMENT = 7;
+//   EVENTS_ON_ACCOUNTS_RECEIVABLE_DELETED_PAYMENT = 8;
+
+//   // contas a pagar
+//   EVENTS_ON_ACCOUNTS_PAYABLE_CREATED = 9;
+//   EVENTS_ON_ACCOUNTS_PAYABLE_UPDATED = 10;
+//   EVENTS_ON_ACCOUNTS_PAYABLE_DELETED = 11;
+//   EVENTS_ON_ACCOUNTS_PAYABLE_PAID = 12;
+//   EVENTS_ON_ACCOUNTS_PAYABLE_CANCELED = 13;
+//   EVENTS_ON_ACCOUNTS_PAYABLE_ADD_PAYMENT = 14;
+//   EVENTS_ON_ACCOUNTS_PAYABLE_UPDATED_PAYMENT = 15;
+//   EVENTS_ON_ACCOUNTS_PAYABLE_DELETED_PAYMENT = 16;
+// }
+
+// Dados do Contas
+message Contas {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3;
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string account_id = 6;
+
+  string situacao = 7;
+
+  google.protobuf.Timestamp importado_em = 8;
+
+  string situacao_dias = 9;
+
+  string tipo = 10;
+
+  string pessoa_id = 11;
+
+  string pessoa_nome = 12;
+
+  string pessoa_cpf_cnpj = 13;
+
+  string pessoa_referencia_id = 14;
+
+  string pessoa_referencia_nome = 15;
+
+  string pessoa_referencia_cpf_cnpj = 16;
+
+  string descricao = 17;
+
+  string plano_conta_id = 18;
+
+  string plano_conta_nome = 19;
+
+  string centro_custo_id = 20;
+
+  string centro_custo_nome = 21;
+
+  double valor = 22;
+
+  bool baixa_automatica = 23;
+
+  bool baixado_sistema = 24;
+
+  FormaPagamentoPadrao forma_pagamento_padrao = 25;
+
+  string parcela = 26;
+
+  int32 parcelas = 27;
+
+  string tipo_moeda = 28;
+
+  double cotacao_moeda = 29;
+
+  double valor_cotacao = 30;
+
+  // juros
+  double juros_dia_valor = 31;
+
+  double juros_dia_percentual = 32;
+
+  int32 juros_dias_apos_vencimento = 33;
+
+  // Multa
+  double multa_dia_valor = 34;
+
+  double multa_dia_percentual = 35;
+
+  int32 multa_dias_apos_vencimento = 36;
+
+  // Desconto
+  double desconto_dia_valor = 37;
+
+  double desconto_dia_percentual = 38;
+
+  google.protobuf.Timestamp desconto_data_ate = 39;
+
+  int32 desconto_dias_ate_vencimento = 40;
+
+  // O que falta pagar hoje: principal menos pagamentos, mais juros e multa do atraso.
+  double divida = 41;
+
+  string motivo_cancelamento = 42;
+
+  string cancelamento_pessoa_id = 43;
+
+  string cancelamento_pessoa = 44;
+
+  google.protobuf.Timestamp cancelamento_data_hora = 45;
+
+  double base_calculo = 46;
+
+  // dados do cheque
+  string cheque_nome_titular = 47;
+
+  string cheque_numero = 48;
+
+  string cheque_agencia = 49;
+
+  string cheque_cc = 50;
+
+  string num_documento = 51;
+
+  double total_pago = 52;
+
+  double taxa_adm = 53;
+
+  double taxa_valor_fixo = 54;
+
+  google.protobuf.Timestamp data_hora_quitacao = 55;
+
+  google.protobuf.Timestamp vencimento = 56;
+
+  google.protobuf.Timestamp date_competence = 57;
+
+  google.protobuf.Timestamp previsao_pagamento = 58;
+
+  string obs = 59;
+
+  repeated Pagamento pagamentos = 60;
+
+  string origem_id = 61;
+
+  string origem = 62;
+
+  map<string, metadata.CustomField> custom_fields = 63;
+
+  // Conta fixa/recorrente
+  Periodicidade periodicidade = 64;
+
+  // Quantidade de períodos a gerar na inclusão (prazo determinado). Ignorado se indeterminada.
+  int32 periodicidade_quantidade = 65;
+
+  // Quando true, o job diário cria a próxima conta após o vencimento da última.
+  bool periodicidade_indeterminada = 66;
+
+  // Taxas de recebimento retidas na fonte (ex.: taxa da adquirente no cartão). O valor da conta
+  // já é líquido dessas taxas; aqui fica o detalhamento de quem retém, o percentual e o valor.
+  repeated Taxa taxas = 67;
+
+  // Dia do vencimento do primeiro período da série. Quando o mês de destino é mais curto,
+  // o vencimento retrai para o último dia dele e volta a este dia no mês seguinte.
+  int32 periodicidade_dia_base = 68;
+
+  // Indica que a próxima conta da série já foi criada.
+  bool periodicidade_proxima_gerada = 69;
+
+  // URL pública para o cliente pagar a conta. Só é preenchida em conta a receber
+  // pendente; somente leitura.
+  string checkout_url = 70;
+
+  // Número sequencial do lançamento, por tipo de conta (pagar/receber). Gerado pelo
+  // sistema na inclusão; somente leitura.
+  int32 numero = 71;
+
+  metadata.BasicFields fields = 72;
+
+  string org_id = 73; // empresa dona do título; preenchido só na visão consolidada do grupo
+
+  string org_nome = 74;
+
+  // Boleto registrado pela integração bancária da forma de pagamento
+  string boleto_url = 75;
+
+  google.protobuf.Timestamp boleto_vencimento = 76;
+
+  // Encargos após o vencimento, como impressos na cobrança: juros ao mês e multa,
+  // em percentual sobre o valor.
+  double juros_mes_percentual = 77;
+
+  double multa_percentual = 78;
+
+  // Juros e multa do atraso até hoje, já somados na dívida; somente leitura.
+  int32 dias_atraso = 79;
+
+  double valor_juros = 80;
+
+  double valor_multa = 81;
+
+  // Fatura que cobra este título; somente leitura.
+  string fatura_id = 82;
+}
+
+// Taxa detalha uma taxa retida sobre o recebimento: quem recebe a taxa, o percentual e o valor.
+message Taxa {
+  string id = 1;
+
+  string pessoa_id = 2;
+
+  string pessoa_nome = 3;
+
+  string pessoa_cpf_cnpj = 4;
+
+  double percentual = 5;
+
+  double valor = 6;
+}
+
+message Pagamento {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3;
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  google.protobuf.Timestamp data_hora = 6; // Data de atualização
+
+  string forma_pagamento_id = 7;
+
+  string forma_pagamento_nome = 8;
+
+  string tipo_pagamento = 9;
+
+  string caixa_id = 10;
+
+  string caixa_nome = 11;
+
+  double valor = 12;
+
+  string identificacao_transacao = 13;
+
+  Comprovante comprovante = 14;
+}
+
+message Comprovante {
+  string base64 = 1;
+
+  string url_download = 2;
+
+  string link_externo = 3;
+
+  string nome_arquivo = 4;
+
+  string extensao_arquivo = 5;
+}
+
+message FormaPagamentoPadrao {
+  string forma_pagamento_id = 1;
+
+  string forma_pagamento_nome = 2;
+
+  string caixa_id = 3; // caixa onde a baixa automática é lançada (opcional)
+
+  string caixa_nome = 4;
+}
+
+// Request e Response para criação de Contas
+message CreateContasRequest {
+  Contas contas = 1;
+}
+
+message CreateContasResponse {
+  Contas contas = 1;
+}
+
+// Request e Response para atualização de Contas
+message UpdateContasRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Contas contas = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Contas
+message UpdateContasResponse {
+  Contas contas = 1;
+}
+
+// Request e Response para exclusão de Contas
+message DeleteContasRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteContasResponse {
+  string id = 1;
+}
+
+// Request para obter um Contas por ID
+message GetContasRequest {
+  string id = 1;
+}
+
+// Request para obter um Contas por ID
+message GetContasResponse {
+  Contas contas = 1;
+}
+
+// Request e Response para listagem de Contass
+message ListContasRequest {
+  Filter filter = 1; // Filtro principal
+
+  repeated Contas contas = 2; // Lista de contas para consultar, basta preenhcer os campos na conta que será aplicado o filtro na mesma
+
+  repeated string situacao = 3; // Situação da conta
+
+  string descricao = 4; // Descrição da conta
+
+  string num_documento = 5; // Número do documento
+
+  string tipo = 6; // Tipo da conta, a pagar ou receber
+
+  google.protobuf.Timestamp emissao_gte = 7; // Data de emissão a partir de
+
+  google.protobuf.Timestamp emissao_lte = 8; // Data de emissão até
+
+  google.protobuf.Timestamp vencimento_gte = 9; // Data de vencimento a partir de
+
+  google.protobuf.Timestamp vencimento_lte = 10; // Data de vencimento até
+
+  google.protobuf.Timestamp quitacao_gte = 11; // Data de quitação a partir de
+
+  google.protobuf.Timestamp quitacao_lte = 12; // Data de quitação até
+
+  repeated string ids = 13; // IDs
+
+  string pessoa_id = 14; // ID da pessoa
+
+  string pessoa_referencia_id = 15; // ID da pessoa referenciada na conta
+
+  string plano_conta_id = 16; // ID do plano de contas
+
+  string centro_custo_id = 17; // ID do centro de custo
+
+  bool somente_com_plano_conta = 18; // Apenas com plano de conta
+
+  bool somente_com_centro_custo = 19; // Apenas com centro de custo
+
+  bool com_baixa_automatica = 20; // Com baixa automática
+
+  bool sem_baixa_automatica = 21; // Sem baixa automática
+
+  repeated string tipo_moeda = 22; // Lista de tipos de moeda
+
+  double total_gte = 23; // Total a partir de
+
+  double total_lte = 24; // Total até
+
+  repeated OrderBy order_by = 25; // Ordenar por
+
+  repeated string order_direction = 26; // Ordenar em ordem ascendente ou descendente
+
+  repeated string origem = 27; // Origem da conta
+
+  repeated string origem_id = 28; // Origem da conta
+
+  bool sem_plano_conta = 29; // Apenas contas sem plano de contas
+}
+
+message ListContasResponse {
+  repeated Contas contas_list = 1;
+
+  string next_page_token = 2;
+}
+
+message CancelarRequest {
+  string id = 1; // ID da conta a ser cancelada
+
+  string origem = 2; // Origem da conta
+
+  string origem_id = 3; // ID da origem da conta
+
+  string motivo = 4; // Motivo do cancelamento
+}
+
+message CancelarResponse {
+  Contas contas = 1;
+}
+
+// Request e Response para adicionar pagamento
+message AddPagamentoRequest {
+  string id = 1; // ID da conta
+
+  Pagamento pagamento = 2; // Dados do pagamento
+}
+
+message AddPagamentoResponse {
+  Contas contas = 1;
+
+  Pagamento pagamento = 2;
+}
+
+// Request e Response para atualizar pagamento
+message UpdatePagamentoRequest {
+  string id = 1; // ID da conta
+
+  string pagamento_id = 2; // ID do pagamento
+
+  Pagamento pagamento = 3; // Dados do pagamento
+}
+
+message UpdatePagamentoResponse {
+  Contas contas = 1;
+
+  Pagamento pagamento = 2;
+}
+
+// Request e Response para excluir pagamento
+message DeletePagamentoRequest {
+  string id = 1; // ID da conta
+
+  string pagamento_id = 2; // ID do pagamento
+}
+
+message DeletePagamentoResponse {
+  Contas contas = 1;
+}
+
+// Request e Response para atualizar comprovante
+message AtualizaComprovanteRequest {
+  string id = 1; // ID da conta
+
+  string pagamento_id = 2; // ID do pagamento
+
+  string base64 = 3; // Comprovante em base64
+}
+
+message AtualizaComprovanteResponse {
+  Contas contas = 1;
+}
+
+// Request e Response para importar contas
+message ImportRequest {
+  string file_content = 1; // Conteúdo do arquivo em base64
+
+  string file_name = 2; // Nome do arquivo
+
+  repeated Contas accounts = 3; // Contas a serem importadas
+
+  bool validate_only = 4; // Apenas validar sem importar
+
+  bool update_if_exists = 5; // Atualizar se já existir
+
+  bool import_account = 6; // Importar conta, as vezes é preciso apenas importar clientes, fornecedores e etc
+
+  bool import_person = 7; // Importar customer se for conta a receber
+
+  bool import_chart_of_accounts = 8; // Importar plano de contas
+
+  bool import_cost_center = 9; // Importar centro de custo
+}
+
+message ImportResponse {
+  string result = 1; // Resultado da importação
+
+  int64 success = 2;
+
+  int64 failed = 3;
+
+  int64 total = 4;
+
+  map<string, ImportErrorGroup> erros_by_category = 5; // Erros agrupados por categoria
+
+  string html_report = 6; // Relatório de importação em HTML
+}
+
+message ImportErrorGroup {
+  repeated ImportError errors = 1;
+}
+
+// Estrutura de erro de importação
+message ImportError {
+  string account = 1; // Identificação da conta com erro
+
+  string reason = 2; // Motivo do erro
+
+  repeated string details = 3; // Detalhes do erro
+}
+
+// Estrutura para alterações conjuntas
+message AlteracaoConjunta {
+  repeated string ids = 1; // IDs das contas a serem alteradas
+
+  string plano_conta_id = 2; // ID do plano de contas
+
+  string plano_conta_nome = 3; // Nome do plano de contas
+
+  string centro_custo_id = 4; // ID do centro de custo
+
+  string centro_custo_nome = 5; // Nome do centro de custo
+
+  bool remover_plano_contas = 6; // Remover plano de contas
+
+  bool remover_centro_custos = 7; // Remover centro de custos
+
+  double valor = 8; // Valor da conta
+
+  bool alterar_tipo_moeda = 9; // Alterar tipo de moeda
+
+  string tipo_moeda = 10; // Tipo de moeda
+
+  bool baixa_automatica = 11; // Baixa automática
+
+  bool nao_baixa_automatica = 12; // Não baixa automática
+
+  google.protobuf.Timestamp vencimento = 13; // Nova data de vencimento
+}
+
+// Request e Response para alterações conjuntas
+message AlteracaoConjuntaRequest {
+  ListContasRequest list_contas_request = 1;
+
+  AlteracaoConjunta alteracao = 2;
+}
+
+message AlteracaoConjuntaResponse {
+  string result = 1; // Resultado da operação
+}
+
+// Request e Response para faturamento conjunto
+message FaturamentoConjuntoRequest {
+  repeated string ids = 1; // IDs das contas a serem faturadas
+
+  string forma_pagamento_id = 2; // ID da forma de pagamento
+
+  string forma_pagamento_nome = 3; // Nome da forma de pagamento
+
+  string caixa_id = 4; // caixa onde a baixa será lançada (opcional)
+
+  string caixa_nome = 5;
+}
+
+message FaturamentoConjuntoResponse {
+  string result = 1; // Resultado da operação
+}
+
+// Request e Response para mesclar contas
+message MesclaContasRequest {
+  repeated string ids = 1; // IDs das contas a serem mescladas
+}
+
+message MesclaContasResponse {
+  string result = 1; // Resultado da operação
+}
+
+// Estruturas para o resumo
+message ResumoPessoa {
+  string pessoa_id = 1;
+
+  string pessoa_nome = 2;
+
+  double total = 3;
+}
+
+message ResumoDados {
+  int32 qtde = 1;
+
+  double total = 2;
+
+  map<string, ResumoPessoa> pessoasMap = 3;
+
+  repeated ResumoPessoa pessoas = 4;
+}
+
+message ResumoMesAno {
+  string mes_ano = 1;
+
+  double receber = 2;
+
+  double pagar = 3;
+}
+
+message ResumoPagarReceber {
+  ResumoDados hoje = 1;
+
+  ResumoDados atrasada = 2;
+}
+
+message ResumoPagoRecebido {
+  ResumoDados hoje = 1;
+}
+
+// Request e Response para dashboard
+message DashboardRequest {
+  // Sem parâmetros
+
+}
+
+message DashboardResponse {
+  ResumoPagarReceber pagar = 1;
+
+  ResumoPagoRecebido pago = 2;
+
+  ResumoPagarReceber receber = 3;
+
+  ResumoPagoRecebido recebido = 4;
+
+  repeated ResumoMesAno pagar_receber_por_mes = 5;
+}
+
+message ReportRequest {
+  Tipo type = 1;
+
+  string tipo_relatorio = 2; // Tipo de relatório
+
+  ListContasRequest list_contas_request = 3;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}
+
+message CloneRequest {
+  string id = 1; // ID da conta a ser clonada
+}
+
+message CloneResponse {
+  string result = 1; // Resultado da operação
+
+  Contas contas = 2; // Conta criada a partir da original
+}
+
+message GetOutstandingBalanceRequest {
+  string pessoa_id = 1; // ID da pessoa
+}
+
+message GetOutstandingBalanceResponse {
+  double saldo = 1; // Saldo da pessoa
+}
+
+// Request e Response para impressão de duplicata
+message DuplicataRequest {
+  repeated string ids = 1; // IDs das contas para impressão de duplicata
+
+  string tipo_relatorio = 2; // Tipo de relatório (opcional)
+}
+
+message DuplicataResponse {
+  report.Response response = 1;
+}
+
+// Export — dispara exportação em segundo plano, resultado notificado via SSE
+message ExportRequest {
+  string format = 1; // "json" ou "csv"
+
+  string type = 2; // "pag" ou "rec"
+
+  bool include_metadata = 3;
+
+  Filter filter = 4; // filtro aplicado aos registros exportados (mesmo formato do List)
+}
+
+message ExportResponse {
+  string status = 1; // "processing"
+
+  string sse_url = 2; // URL SSE para acompanhar o resultado
+}
+
+// Request e Response para impressao de recibo de pagamento.
+// Use ids (um ou mais). pagamento_id e opcional e so vale para uma unica conta.
+// Com varios ids, gera um unico recibo consolidado (mesma pessoa obrigatoria).
+message ImprimirReciboRequest {
+  reserved 1;
+
+  reserved "id";
+
+  string pagamento_id = 2; // ID do pagamento (opcional; so na impressao individual)
+
+  repeated string ids = 3; // IDs das contas (obrigatorio)
+}
+
+message ImprimirReciboResponse {
+  report.Response response = 1;
+}

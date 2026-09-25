@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/common/metadata";
+
+package metadata;
+
+message FieldMask {
+  repeated string paths = 1;
+}
+
+// filtros basicos usados pelos modelos, geralmente comum em quase todos os modelos
+message BasicFields {
+  google.protobuf.Timestamp createdAt = 1;
+
+  google.protobuf.Timestamp updatedAt = 2;
+
+  int32 version = 3;
+
+  google.protobuf.Timestamp deletedAt = 7; // data de exclusão lógica (soft delete)
+
+  repeated ActionModel actions = 8; // ações associadas ao produto
+}
+
+message ActionModel {
+  string id = 1; // ID da ação
+
+  google.protobuf.Timestamp createdAt = 2; // Data de criação
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string type = 5; // Tipo de ação realizada
+
+  string description = 6; // Descrição da ação
+}
+
+enum Boolean {
+  UNSPECIFIED = 0;
+
+  YES = 1;
+
+  NO = 2;
+}
+
+message CustomField {
+  string value = 1;
+
+  string id = 2;
+}

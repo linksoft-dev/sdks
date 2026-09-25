@@ -1,0 +1,1129 @@
+syntax = "proto3";
+
+package produto;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "apps/report/report.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/estoque/movimento/movimentoestoque.proto";
+
+import "apps/estoque/produto/vehicle.proto";
+
+import "exports/exports.proto";
+
+option go_package = "comps/pb/apps/estoque/produto";
+
+// Serviço Produto com operações CRUD
+service ProdutoService {
+  rpc Create ( CreateProdutoRequest ) returns ( CreateProdutoResponse );
+
+  rpc Update ( UpdateProdutoRequest ) returns ( UpdateProdutoResponse );
+
+  rpc Delete ( DeleteProdutoRequest ) returns ( DeleteProdutoResponse );
+
+  rpc Get ( GetProdutoRequest ) returns ( GetProdutoResponse );
+
+  rpc List ( ListProdutoRequest ) returns ( ListProdutoResponse );
+
+  rpc AddMovimentacaoEstoque ( AddMovimentacaoEstoqueRequest ) returns ( AddMovimentacaoEstoqueResponse );
+
+  rpc GetMovimentacaoEstoque ( GetMovimentacaoEstoqueRequest ) returns ( GetMovimentacaoEstoqueResponse );
+
+  rpc GerarArquivoBalanca ( GerarArquivoBalancaRequest ) returns ( GerarArquivoBalancaResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc AjustarEstoque ( AjustarEstoqueRequest ) returns ( AjustarEstoqueResponse );
+
+  rpc ExecutarAlteracoesConjuntas ( AlteracoesConjuntasRequest ) returns ( AlteracoesConjuntasResponse );
+
+  // Métodos relacionados a mídias do produto
+  rpc AddMedia ( AddMediaRequest ) returns ( AddMediaResponse );
+
+  rpc UpdateMedia ( UpdateMediaRequest ) returns ( UpdateMediaResponse );
+
+  rpc DeleteMedia ( DeleteMediaRequest ) returns ( DeleteMediaResponse );
+
+  rpc Import ( ImportProdutoRequest ) returns ( ImportProdutoResponse );
+
+  rpc GetProductsAdditionalData ( GetProductsAdditionalDataRequest ) returns ( GetProductsAdditionalDataResponse );
+
+  rpc CorrecaoMovimentacao ( CorrecaoMovimentacaoRequest ) returns ( CorrecaoMovimentacaoResponse );
+
+  rpc Export ( ExportProductsRequest ) returns ( ExportProductsResponse );
+
+  rpc Clone ( CloneProdutoRequest ) returns ( CloneProdutoResponse );
+
+  // Saldo do mesmo produto nas outras empresas do grupo em que o usuário é membro.
+  rpc GetEstoqueGrupo ( GetEstoqueGrupoRequest ) returns ( GetEstoqueGrupoResponse );
+
+  rpc GenerateSeoMeta ( GenerateSeoMetaRequest ) returns ( GenerateSeoMetaResponse );
+}
+
+enum EcommerceAvailability {
+  ECOMMERCE_AVAILABILITY_CATEGORY = 0; // Herda da categoria (default)
+
+  ECOMMERCE_AVAILABILITY_YES = 1; // Sempre disponível na loja
+
+  ECOMMERCE_AVAILABILITY_NO = 2; // Nunca disponível na loja
+}
+
+enum NegativeStockRule {
+  NEGATIVE_STOCK_RULE_UNSPECIFIED = 0; // Uses global configuration
+
+  NEGATIVE_STOCK_RULE_ALLOW_NEGATIVE_MOVEMENT = 1; // Allows stock to go negative
+
+  NEGATIVE_STOCK_RULE_BLOCK_NEGATIVE_MOVEMENT = 2; // Blocks stock from going negative
+}
+
+enum ProductMediaType {
+  PRODUCT_MEDIA_TYPE_UNSPECIFIED = 0;
+
+  PRODUCT_MEDIA_TYPE_IMAGE = 1;
+
+  PRODUCT_MEDIA_TYPE_VIDEO = 2;
+}
+
+// ProdutoTag - Tag aplicada ao produto, com a cor do cadastro no momento em que
+// foi aplicada.
+message ProdutoTag {
+  string value = 1;
+
+  string color = 2;
+}
+
+message Produto {
+  metadata.BasicFields fields = 1;
+
+  // Dados do produto
+  string id = 2;
+
+  google.protobuf.Timestamp importadoEm = 3;
+
+  string situacao = 4;
+
+  string nome = 5;
+
+  ProductMedia primary_media = 6;
+
+  repeated ProductMedia media = 7;
+
+  string un = 8;
+
+  string unTrib = 9; // unidade tributária usada na NF-e
+
+  // fator usado para converter a unidade comercial em unidade tributável na NF-e
+  // EX: se gravado fatorConversaoUnidade 2 e na quantodade comercial do produto informar 3
+  // a quantidade quantidadeTrib na nota sera 6 (3x2 = 6)
+  double fatorConversaoUnidade = 10;
+
+  bool isFracionavel = 11;
+
+  string descricao = 12;
+
+  string aplicacao = 13; // descricao/instrução de como usar o produto
+
+  string codigoProduto = 14;
+
+  string codigoBarra = 15;
+
+  string codigoReferencia = 16;
+
+  repeated string codes = 76;
+
+  string fabricanteId = 17;
+
+  string fabricanteNome = 18;
+
+  string tributacaoId = 19;
+
+  string tributacaoNome = 20;
+
+  // tributação da NF-e em que o destinatário revende a mercadoria (não é consumidor final); vazia, vale a tributacaoId
+  string tributacaoRevendaId = 224;
+
+  string tributacaoRevendaNome = 225;
+
+  // usado para o calculo da quantidade monofasica da nfe quando informado
+  double fator_conversao_monofasico = 21; // usado para copnverter quantidde do item na quantidade esperada para uso na monofasia
+
+  double fator_conversao_proporcional = 22; // usado para converter a quantidade do item na quantidade esperada para uso no calculo proporcional
+
+  string categoriaId = 23;
+
+  string categoriaNome = 24;
+
+  string segmentoId = 25;
+
+  string segmentoNome = 26;
+
+  string ncm = 27;
+
+  string cest = 28;
+
+  double pesoBruto = 29;
+
+  double pesoLiquido = 30;
+
+  double valorUnitario = 31;
+
+  double precoVendaAprazo = 32;
+
+  double precoVendaAtacado = 33;
+
+  repeated HistoricoPreco historicoPreco = 34;
+
+  double precoComposicao = 35;
+
+  double quantidadeMinima = 36;
+
+  double quantidadeMaxima = 37;
+
+  double quantidadeMinimaVenda = 38;
+
+  double quantidadeVendaMultiplo = 39;
+
+  int32 quantidadeEmbalagem = 40;
+
+  bool bloquearEstoqueNegativo = 41;
+
+  NegativeStockRule negative_stok_rules = 42; // configuração interna do produto para controle de bloqueio de movimento negativo
+
+  double diasGarantiaEmpresa = 43;
+
+  double diasGarantia = 44;
+
+  bool descricaoAdicionalVenda = 45;
+
+  bool composto = 46;
+
+  repeated Composicao composicao = 47;
+
+  // Quantidade que a composição inteira produz, na unidade do produto. Zero significa
+  // que a composição está cadastrada para uma unidade.
+  double rendimento = 86;
+
+  // Classificação livre do produto, do cadastro de tags do tipo PRODUTO. Serve
+  // para agrupar produtos que não compartilham categoria.
+  repeated ProdutoTag tags = 221;
+
+  map<string, Estoque> estoques = 48;
+
+  repeated Estoque estoquesList = 49;
+
+  // Onde o produto fica guardado em cada estoque, uma localização por estoque.
+  repeated ProdutoLocalizacao localizacoes = 222;
+
+  double consultaQuantidade = 50;
+
+  double quantidadeEstoqueTotal = 51;
+
+  double quantidadeImportar = 52;
+
+  string produtoEspecifico = 53;
+
+  // Campos de custos
+  double precoUltimaCompra = 54;
+
+  bool custoManual = 55;
+
+  double precoCusto = 56;
+
+  double custoMedio = 57;
+
+  double custoIcms = 58;
+
+  double custoIpi = 59;
+
+  double custoFrete = 60;
+
+  double custoOutrasDespesas = 61;
+
+  double custoDiferencaAliquota = 62;
+
+  double margemLucro = 63; // Margem de lucro a vista (preco de venda)
+
+  // Margens individuais usadas pela Calculadora de Precos e pelo aceite da NFe de entrada.
+  // Quando preenchidas, tem prioridade sobre os valores configurados em Vendas.
+  double margem_icms = 77;
+
+  double margem_ipi = 78;
+
+  double margem_comissao = 79;
+
+  double custo_comissao = 80;
+
+  double margem_outras_despesas = 81;
+
+  double margem_custo = 82;
+
+  double margem_lucro_aprazo = 83;
+
+  double margem_desconto_atacado = 84;
+
+  // Campos de posto
+  string codigoAnp = 64;
+
+  string codigoAnpDescricao = 65;
+
+  double percentualGlp = 67;
+
+  double percentualGasNaturalNacional = 68;
+
+  double percentualGasNaturalImportado = 69;
+
+  repeated Grade grade = 70;
+
+  string promocao = 71;
+
+  message Ecommerce {
+    string slug = 1;
+
+    EcommerceAvailability availability = 2; // Disponibilidade na loja virtual (substitui available_online)
+
+    bool featured = 3; // Produto em destaque
+
+    string short_description = 4; // Descrição curta para cards
+
+    string full_description = 5; // Descrição completa (HTML/Markdown)
+
+    repeated string tags = 6; // Tags para busca
+
+    repeated string keywords = 7; // Palavras-chave SEO
+
+    string meta_title = 8; // Título SEO
+
+    string meta_description = 9; // Descrição SEO
+
+    int32 display_order = 10; // Ordem de exibição
+
+    string video_url = 11; // URL do vídeo do produto
+
+    repeated ProductHighlight highlights = 12; // Destaques/características
+
+    bool hide_price = 13; // Se true, esconde preço na loja
+
+    string hide_price_message = 14; // Mensagem quando preço oculto (default: "Entre em contato")
+
+    double promotional_price = 15; // Preço promocional (quando menor que valorUnitario = desconto)
+  }
+
+  Ecommerce ecommerce = 72;
+
+  bool has_batch_control = 73; // Controle de lote/vencimento ativado
+
+  // Relacionamento pai-filho reutilizável
+  string parent_product_id = 210;
+
+  string parent_product_name = 211;
+
+  // Controle de Grade/Variação
+  ProductVariationMeta variation = 212;
+
+  map<string, ProductVariation> variations = 213; // Snapshot/meta das variações do produto pai (key = combo de atributos, ex: "VERDE|G")
+
+  double comissao = 214; // Percentual de comissão do produto; quando preenchido, tem prioridade sobre a comissão do vendedor
+
+  // Impressora de produção do item (override). Quando vazio, herda o grupo de
+  // produção da categoria. Usado no roteamento da impressão para cozinha/bar.
+  string impressoraId = 215;
+
+  string impressoraNome = 216;
+
+  // Grupo de produção do item (override da categoria). Ex: "Cozinha", "Bar".
+  string grupoProducao = 217;
+
+  // Quando true, o item não gera ficha de produção (entrega direta).
+  bool naoImprimirProducao = 218;
+
+  // Insumo (matéria-prima): produto usado na produção e não comercializado.
+  // Não aparece para quem lista produtos para venda e não pode ser vendido.
+  bool insumo = 219;
+
+  // Composição fixa: a ficha não é montada item a item na venda. O produto entra
+  // no pedido direto, sem a tela de composição.
+  bool composicaoFixa = 220;
+
+  // Tributação específica deste produto. Campo vazio ou zero significa não informado:
+  // vale o valor da tributação vinculada ao produto, categoria ou organização.
+  message DadosFiscais {
+    string icmsOrigem = 1;
+
+    double icmsReducaoBase = 2;
+
+    double ipiAliquota = 3;
+
+    double icmsStMargemValorAdicional = 4;
+
+    double icmsStAliquota = 5;
+
+    double icmsStReducaoBase = 6;
+  }
+
+  DadosFiscais dadosFiscais = 223;
+
+  // Metadados de variação associados ao produto
+  message ProductVariationMeta {
+    string template_id = 1; // ID do template de grade vinculado
+
+    string template_name = 2; // Nome do template de grade
+
+    bool is_variation_child = 3; // Indica se este produto é um filho de variação
+
+    string variation_key = 4; // Chave única da combinação (ex: "VERDE|G")
+
+    string display_name = 5; // Nome de exibição da variação (ex: "VERDE - G")
+
+    map<string, string> attributes = 6; // Atributos concretos (ex: {"Cor": "VERDE", "Tamanho": "G"})
+
+    bool hidden_from_product_search = 7; // Oculta o produto filho da listagem padrão de produtos
+
+    string sku = 8; // SKU da variação quando tratado como produto filho
+
+    string code = 9; // Código complementar da variação
+  }
+
+  // Snapshot de uma variação vinculada ao produto pai
+  message ProductVariation {
+    string id = 1; // ID do produto filho correspondente
+
+    string sku = 2; // SKU da variação
+
+    string code = 3; // Código opcional da variação
+
+    map<string, string> attributes = 4; // Atributos concretos
+
+    string display_name = 5; // Nome de exibição
+
+    double quantity = 6; // Quantidade total em estoque (snapshot)
+
+    map<string, double> stock_quantities = 7; // Quantidade por estoque (snapshot)
+
+    bool active = 8;
+
+    double valor_unitario = 9; // Preço de venda à vista da variação (snapshot do produto filho)
+
+    double preco_venda_aprazo = 10; // Preço de venda a prazo da variação (snapshot do produto filho)
+
+    double preco_venda_atacado = 11; // Preço de venda atacado da variação (snapshot do produto filho)
+
+    string barcode = 12; // Código de barras/EAN próprio da variação (snapshot do produto filho)
+  }
+
+  bool has_serial_control = 75; // Controle de número de série ativado
+
+  // Destaques/características do produto para ecommerce
+  message ProductHighlight {
+    string icon = 1; // Nome do ícone (ex: "ri-truck-line")
+
+    string title = 2; // Título (ex: "Frete Grátis")
+
+    string description = 3; // Descrição opcional
+  }
+
+  VehicleData vehicle = 74;
+
+  // Comodato: produto cedido em comodato (empréstimo). Quando true, ao adicionar
+  // em pedido/contrato o item entra com valor zero e baixa estoque apenas no primeiro
+  // pedido — recorrências subsequentes não rebaixam.
+  bool comodato = 85;
+
+  // campos provisorios pra manter compatibilidade
+  google.protobuf.Timestamp createdAt = 200; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 205; // Data de alteracao
+
+  string userId = 201; // ID do usuário que realizou a ação
+
+  string userName = 202; // Nome do usuário que realizou a ação
+
+  string type = 203; // Tipo de ação realizada
+
+  string description = 204; // Descrição da ação
+}
+
+// Mensagem para representar uma mídia de produto
+message ProductMedia {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  ProductMediaType media_type = 4;
+
+  string url = 5;
+
+  string file_id = 6;
+
+  string display_name = 7;
+
+  string file_extension = 8;
+
+  // Vínculo opcional da foto a um valor de atributo de grade (ex.: cor=BRANCO).
+  // Vazio = foto geral do produto. Permite à vitrine trocar a imagem ao escolher
+  // o atributo correspondente.
+  string attribute_key = 9;
+
+  string attribute_value = 10;
+}
+
+// HistoricoPreco mensagem
+message HistoricoPreco {
+  string tipo_preco = 1;
+
+  double valor = 2;
+
+  double preco_anterior = 3;
+
+  google.protobuf.Timestamp data = 4;
+
+  string userId = 5;
+
+  string userNome = 6;
+}
+
+// Composicao mensagem
+message Composicao {
+  string id = 1;
+
+  string item_id = 2;
+
+  string tipo = 3;
+
+  string nome = 4;
+
+  double quantidade = 5;
+
+  string un = 6;
+
+  double valor_unitario = 7;
+
+  double total = 8;
+
+  // Perda prevista do item em percentual, aplicada sobre a quantidade necessária.
+  double perda_percentual = 9;
+}
+
+// ProdutoLocalizacao mensagem
+message ProdutoLocalizacao {
+  string estoque_nome = 1; // nome do estoque, igual à chave de estoques
+
+  string localizacao = 2; // identificação do lugar físico, ex: prateleira, rua, gaveta
+}
+
+// Estoque mensagem
+message Estoque {
+  string estoque_id = 1; // ID do cadastro de estoque (ex: "PADRAO")
+
+  string estoque_nome = 2;
+
+  double quantidade = 3;
+
+  google.protobuf.Timestamp createdAt = 4;
+
+  google.protobuf.Timestamp updatedAt = 5;
+
+  string id = 6;
+}
+
+// Grade mensagem
+message Grade {
+  string id = 1;
+
+  string color = 2;
+
+  string size = 3;
+
+  double qtd = 4;
+}
+
+// Request e Response para criação de Produto
+message CreateProdutoRequest {
+  Produto produto = 1;
+}
+
+message CreateProdutoResponse {
+  Produto produto = 1;
+}
+
+// Request e Response para atualização de Produto
+message UpdateProdutoRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Produto produto = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Produto
+message UpdateProdutoResponse {
+  Produto produto = 1;
+}
+
+// Request e Response para exclusão de Produto
+message DeleteProdutoRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteProdutoResponse {
+  string id = 1;
+
+  repeated string avisos = 2; // empresas do grupo em que o registro foi mantido, com o motivo
+}
+
+// Request para obter um Produto por ID
+message GetProdutoRequest {
+  string id = 1;
+}
+
+// Request para obter um Produto por ID
+message GetProdutoResponse {
+  Produto produto = 1;
+}
+
+// Request e Response para listagem de Produtos
+message ListProdutoRequest {
+  repeated string ids = 1;
+
+  repeated string names = 2;
+
+  repeated string eanCodes = 3;
+
+  repeated string productCodes = 4;
+
+  uint32 page_size = 5;
+
+  string page_token = 6;
+
+  repeated Produto produto = 7;
+
+  string codigoReferencia = 8;
+
+  string categoriaNome = 9;
+
+  string categoriaId = 10;
+
+  string fabricanteNome = 11;
+
+  string fabricanteId = 12;
+
+  bool temCategoria = 13;
+
+  bool temFabricante = 14;
+
+  google.protobuf.Timestamp createdAtGte = 15;
+
+  google.protobuf.Timestamp createdAtLte = 16;
+
+  google.protobuf.Timestamp updatedAtGte = 17;
+
+  google.protobuf.Timestamp updatedAtLte = 18;
+
+  double precoCustoGte = 19;
+
+  double precoCustoLte = 20;
+
+  double precoVendaAvistaGte = 21;
+
+  double precoVendaAvistaLte = 22;
+
+  double precoVendaAprazoGte = 23;
+
+  double precoVendaAprazoLte = 24;
+
+  double quantidadeGte = 25;
+
+  double quantidadeLte = 26;
+
+  // Parâmetros adicionais para busca
+  repeated string codigoProduto = 27;
+
+  repeated string codigoBarra = 28;
+
+  repeated string unidade = 29;
+
+  bool ignoreSituacaoPadrao = 30;
+
+  string situacao = 31;
+
+  Filter filter = 32;
+
+  repeated string categoriaIds = 33;
+
+  StockMovement stock_movement = 34; // controle de movimento de estoque
+
+  Rentabilidade rentabilidade = 38; // recorte pela relação entre preço e custo
+
+  string parent_product_id = 35;
+
+  bool include_variation_children = 36;
+
+  // Remove da listagem os produtos marcados como insumo (matéria-prima).
+  // Usado por quem lista para venda, onde o insumo não é comercializável.
+  bool exclude_insumos = 37;
+
+  // Faixa de markup (preço à vista ÷ custo total). 2 = o preço cobre duas vezes
+  // o custo. Zero em qualquer das pontas deixa aquele lado aberto.
+  double markup_gte = 39;
+
+  double markup_lte = 40;
+}
+
+// Recorte da listagem pela relação entre o preço de venda e o custo. Serve para
+// achar o que está errado no preço sem abrir produto por produto.
+enum Rentabilidade {
+  RENTABILIDADE_DEFAULT = 0;
+
+  // Preço à vista menor que o custo: cada venda dá prejuízo.
+  RENTABILIDADE_ABAIXO_DO_CUSTO = 1;
+
+  // Preço igual ao custo: vende sem sobrar nada.
+  RENTABILIDADE_SEM_MARGEM = 2;
+
+  // Sem custo cadastrado — a margem do produto não é calculável.
+  RENTABILIDADE_SEM_CUSTO = 3;
+
+  // Sem preço de venda cadastrado.
+  RENTABILIDADE_SEM_PRECO = 4;
+}
+
+enum StockMovement {
+  STOCK_MOVEMENT_DEFAULT = 0;
+
+  STOCK_MOVEMENT_HAS_MOVIMENT = 1; // produtos que tem movimento
+
+  STOCK_MOVEMENT_HAS_NOT_MOVIMENT = 2; // produtos que nao tem movimento
+
+  STOCK_MOVEMENT_IN_STOCK = 3; // produtos que tem estoque
+
+  STOCK_MOVEMENT_OUT_OF_STOCK = 4; // produtos que nao tem estoque
+
+  STOCK_MOVEMENT_HAS_NO_NF_ENTRADA = 5; // produtos sem entrada via nota fiscal
+
+  STOCK_MOVEMENT_HAS_NF_ENTRADA = 6; // produtos que tem movimento de entrada por nota fiscal
+
+  STOCK_MOVEMENT_NEGATIVE = 7; // produtos com estoque negativo
+
+  STOCK_MOVEMENT_NOT_ZERO = 8; // produtos com estoque diferente de zero (positivo ou negativo)
+}
+
+message ListProdutoResponse {
+  repeated Produto produtoList = 1;
+
+  string next_page_token = 2;
+}
+
+message AddMovimentacaoEstoqueRequest {
+  repeated InputMovimentoEstoque inputMovimento = 1;
+}
+
+message AddMovimentacaoEstoqueResponse {
+  repeated movimentoestoque.MovimentoEstoque movimentoList = 1;
+}
+
+message GetMovimentacaoEstoqueRequest {
+  string produtoId = 1;
+
+  string tipoMovimento = 2;
+
+  string origem = 3;
+
+  Filter filter = 4;
+
+  google.protobuf.Timestamp created_at_gte = 5;
+
+  google.protobuf.Timestamp created_at_lte = 6;
+
+  repeated string produtoIds = 7; // quando informado, busca movimentos de todos esses produtos (ex: produto pai + variações)
+}
+
+message GetMovimentacaoEstoqueResponse {
+  repeated movimentoestoque.MovimentoEstoque movimentoList = 1;
+}
+
+message GerarArquivoBalancaRequest {
+  // Arquivo a gerar: "ITENSMGV.TXT" ou "ITENS.CAD".
+  string formato = 1;
+
+  // Codigo do departamento na balanca (2 digitos). Padrao: "01".
+  // O MGV6 rejeita departamento 0/00.
+  string codigo_departamento = 2;
+
+  // Tipo de venda: "0" peso, "1" unidade, "2" EAN-13. Padrao: "0".
+  string tipo_venda = 3;
+
+  // Dias de validade impressos na etiqueta. Padrao: 0.
+  int32 dias_validade = 4;
+
+  // Se true, imprime data de validade na etiqueta. Padrao: true.
+  bool imprime_data_validade = 5;
+
+  // Se true, imprime data de embalagem na etiqueta. Padrao: true.
+  bool imprime_data_embalagem = 6;
+
+  // Restringe os produtos exportados. Sem filtro, todos os produtos entram no arquivo.
+  Filter filter = 7;
+}
+
+message GerarArquivoBalancaResponse {
+  // Conteúdo do arquivo pedido em formato, em base64.
+  string conteudoArquivo = 1;
+
+  int32 quantidadeProdutos = 2;
+}
+
+message ReportRequest {
+  string tipoRelatorio = 1;
+
+  ListProdutoRequest listProdutoRequest = 2;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}
+
+message AjusteEstoque {
+  string produtoId = 1;
+
+  double quantidade = 2;
+
+  // Quando preenchido, o ajuste é aplicado na variação (produto-filho): a
+  // quantidade desejada e o cálculo do movimento usam o estoque da variação.
+  string variation_product_id = 3;
+}
+
+message AjustarEstoqueRequest {
+  string estoqueId = 2;
+
+  string pessoaId = 4;
+
+  string pessoaNome = 5;
+
+  string origemId = 6;
+
+  string origemNumero = 7;
+
+  repeated AjusteEstoque ajusteEstoque = 8;
+}
+
+message AjustarEstoqueResponse {
+  string status = 1;
+}
+
+message ImportErrorGroup {
+  repeated ImportError errors = 1;
+}
+
+// Estrutura de erro de importação
+message ImportError {
+  string product = 1; // Identificação do produto com erro
+
+  string reason = 2; // Motivo do erro
+
+  repeated string details = 3; // Detalhes do erro
+}
+
+// Estruturas para alterações conjuntas
+message AlteracaoCadastro {
+  string id = 1;
+
+  string nome = 2;
+}
+
+message AlteracoesFiltro {
+  repeated string ids = 1;
+
+  AlteracaoCadastro fabricante = 2;
+
+  AlteracaoCadastro categoria = 3;
+}
+
+message AlteracoesConjuntasRequest {
+  AlteracoesFiltro filtro = 1;
+
+  AlteracaoCadastro fabricante = 2;
+
+  AlteracaoCadastro categoria = 3;
+
+  string unidade = 4;
+
+  bool fracionavel = 5;
+
+  bool naoFracionavel = 6;
+
+  string situacao = 7;
+
+  // Formação de preço aplicada ao conjunto. Sem recalcularPrecos os campos
+  // abaixo apenas atualizam o cadastro, sem mexer nos preços de venda.
+  ReprecificacaoConjunta reprecificacao = 8;
+}
+
+// Reprecificação de vários produtos de uma vez.
+message ReprecificacaoConjunta {
+  // Quando true, os preços de venda são recalculados a partir do custo.
+  bool recalcularPrecos = 1;
+
+  // Percentuais a gravar antes do recálculo. Zero mantém o do produto.
+  double margemLucro = 2;
+
+  double margemCusto = 3;
+
+  double margemComissao = 4;
+
+  double margemOutrasDespesas = 5;
+
+  double margemLucroAprazo = 6;
+
+  double margemDescontoAtacado = 7;
+
+  // Margem desejada sobre o preço de venda. Convertida na margem sobre o custo
+  // equivalente, que é a que o cadastro usa. Ignorada se margemLucro vier.
+  double margemSobreVenda = 8;
+
+  // Reajuste percentual direto sobre o custo de aquisição, para repassar
+  // aumento de fornecedor sem digitar produto a produto.
+  double reajusteCustoPercentual = 9;
+}
+
+message AlteracoesConjuntasResponse {
+  int32 quantidadeAlterada = 1;
+
+  string status = 2;
+
+  // Produtos que ficaram de fora do recálculo por não terem custo de aquisição.
+  repeated string produtosSemCusto = 3;
+}
+
+// Informações do lote para movimentação de estoque
+message BatchInfo {
+  string id = 1; // ID do lote (referência ao BatchControl)
+
+  string batch_number = 2; // Número do lote (para log/rastreabilidade)
+}
+
+// Informações dos números de série para movimentação de estoque
+message SerialInfo {
+  repeated string ids = 1; // IDs dos seriais
+
+  repeated string serial_numbers = 2; // Números de série
+}
+
+message InputMovimentoEstoque {
+  string estoqueNome = 1;
+
+  string produtoId = 2;
+
+  string tipo = 3;
+
+  double quantidade = 4;
+
+  double valorUnitario = 5;
+
+  string origem = 6;
+
+  string origemId = 7;
+
+  string origemNumero = 8;
+
+  string obs = 9;
+
+  string pessoaId = 10;
+
+  string pessoaNome = 11;
+
+  BatchInfo batch = 12; // Dados do lote para baixa
+
+  string variation_product_id = 13; // ID do produto filho da variação (obrigatório se produto usa grade)
+
+  SerialInfo serial = 14; // Dados dos números de série para baixa
+
+  bool comodato = 15; // Quando true, a saída do serial vira comodato e não venda
+
+  // Quando true, o valor unitário do movimento passa a ser o custo do produto no cadastro.
+  bool atualiza_custo = 16;
+}
+
+// Request e Response para adicionar mídia a um produto
+message AddMediaRequest {
+  string produto_id = 1;
+
+  ProductMedia media = 2;
+}
+
+message AddMediaResponse {
+  Produto produto = 1;
+}
+
+// Request e Response para atualizar mídia de um produto
+message UpdateMediaRequest {
+  string produto_id = 1;
+
+  string media_id = 2;
+
+  ProductMedia media = 3;
+}
+
+message UpdateMediaResponse {
+  Produto produto = 1;
+}
+
+// Request e Response para excluir mídia de um produto
+message DeleteMediaRequest {
+  string produto_id = 1;
+
+  string media_id = 2;
+}
+
+message DeleteMediaResponse {
+  Produto produto = 1;
+}
+
+// Request e Response para importação de Produtos (único endpoint: arquivo ou lista)
+message ImportProdutoRequest {
+  repeated Produto produtos = 1;
+
+  string file_string = 2;
+
+  string file_name = 3;
+
+  bool import_categoria = 4;
+
+  bool import_fabricante = 5;
+
+  bool update_if_exists = 6;
+
+  bool validate_only = 7;
+
+  bool overwrite_if_exists = 8;
+
+  // O codigoProduto dos itens desta lista é o código no sistema de quem emitiu o documento — o
+  // fornecedor, numa NF-e de entrada — e não identifica o produto no estoque de quem recebe.
+  // Com isso ligado, esse código não casa produto existente: numeração de terceiro coincide por
+  // acaso com a do estoque e o preço do documento acabava gravado num cadastro sem relação nenhuma.
+  bool codigo_produto_externo = 9;
+}
+
+message ImportProdutoResponse {
+  repeated Produto produtos = 1;
+
+  string result = 2;
+
+  int64 success = 3;
+
+  int64 failed = 4;
+
+  int64 total = 5;
+
+  map<string, ImportErrorGroup> erros_by_category = 6;
+
+  string html_report = 7;
+}
+
+// Request e Response para buscar dados adicionais dos produtos
+message GetProductsAdditionalDataRequest {
+  repeated string product_ids = 1;
+}
+
+message ProductAdditionalData {
+  string product_name = 1;
+
+  string category_id = 2;
+
+  string category_name = 3;
+
+  string manufacturer_id = 4;
+
+  string manufacturer_name = 5;
+}
+
+message GetProductsAdditionalDataResponse {
+  map<string, ProductAdditionalData> additional_data = 1;
+}
+
+message CorrecaoMovimentacaoRequest {
+  string produto_origem_id = 1; // id do produto de origem
+
+  double produto_origem_quantidade = 2; // quantidade final do produto
+
+  string produto_destino_id = 3; // id do produto de destino
+
+  double produto_destino_quantidade = 4; // quantidade final do produto
+
+  string estoque_origem_id = 5; // id do estoque de origem
+
+  string estoque_destino_id = 6; // id do estoque de destino
+
+  repeated movimentoestoque.MovimentoEstoque movimentoList = 7; // movimentacao ajustada
+}
+
+message CorrecaoMovimentacaoResponse {
+}
+
+// Export messages
+message ExportProductsRequest {
+  exports.ExportFormat format = 1; // JSON or CSV
+
+  Filter filter = 2; // Filters to apply
+
+  bool include_metadata = 3; // Include metadata in export
+}
+
+message ExportProductsResponse {
+  exports.ExportResponse export = 1;
+}
+
+message CloneProdutoRequest {
+  string id = 1;
+}
+
+message CloneProdutoResponse {
+  Produto produto = 1;
+}
+
+message GenerateSeoMetaRequest {
+  string id = 1;
+
+  string additional_instructions = 2;
+}
+
+message GenerateSeoMetaResponse {
+  string meta_title = 1;
+
+  string meta_description = 2;
+
+  string slug = 3;
+
+  repeated string keywords = 4;
+}
+
+message GetEstoqueGrupoRequest {
+  string id = 1;
+}
+
+message EstoqueEmpresa {
+  string org_id = 1;
+
+  string org_nome = 2;
+
+  repeated Estoque estoques = 3;
+
+  double quantidade_total = 4;
+}
+
+message GetEstoqueGrupoResponse {
+  repeated EstoqueEmpresa empresas = 1;
+}

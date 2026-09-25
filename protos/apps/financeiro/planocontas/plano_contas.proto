@@ -1,0 +1,153 @@
+syntax = "proto3";
+
+package planocontas;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/financeiro/planocontas";
+
+// Serviço PlanoConta com operações CRUD
+service PlanoContaService {
+  rpc Create ( CreatePlanoContaRequest ) returns ( CreatePlanoContaResponse );
+
+  rpc Update ( UpdatePlanoContaRequest ) returns ( UpdatePlanoContaResponse );
+
+  rpc Delete ( DeletePlanoContaRequest ) returns ( DeletePlanoContaResponse );
+
+  rpc Get ( GetPlanoContaRequest ) returns ( GetPlanoContaResponse );
+
+  rpc List ( ListPlanoContaRequest ) returns ( ListPlanoContaResponse );
+}
+
+// Dados do PlanoConta
+message PlanoConta {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string codigo = 6;
+
+  string nome = 7;
+
+  string tipo = 8;
+
+  bool sistema = 9;
+
+  string parentId = 10;
+
+  string descricao = 11; // Descrição detalhada da conta
+
+  double monthlyBudget = 12; // Orçamento mensal padrão para a categoria (controle financeiro)
+
+  // Substituições de orçamento por mês específico. Quando existe entrada para o mês
+  // em análise, usa esse valor; caso contrário, fallback para monthlyBudget.
+  repeated MonthlyBudgetOverride monthlyBudgets = 13;
+
+  // Comportamento do custo em relação ao volume de vendas. Separa o que
+  // acompanha a venda do que a empresa paga independentemente dela, permitindo
+  // apurar margem de contribuição e ponto de equilíbrio.
+  Natureza natureza = 14;
+
+  metadata.BasicFields fields = 15;
+}
+
+// Comportamento do custo ou da despesa em relação ao volume vendido.
+enum Natureza {
+  // Sem classificação. A conta não entra na margem de contribuição nem no
+  // ponto de equilíbrio, e o demonstrativo informa quanto ficou de fora.
+  NATUREZA_UNSPECIFIED = 0;
+
+  // Acompanha a venda: matéria-prima, comissão, frete de entrega, impostos.
+  NATUREZA_VARIAVEL = 1;
+
+  // Existe mesmo sem venda: aluguel, salário administrativo, energia da sede.
+  NATUREZA_FIXA = 2;
+}
+
+// Substituição de orçamento para um mês específico
+message MonthlyBudgetOverride {
+  string month = 1; // Formato "YYYY-MM"
+
+  double budget = 2; // Orçamento para esse mês específico
+}
+
+// Request e Response para criação de PlanoConta
+message CreatePlanoContaRequest {
+  PlanoConta planoConta = 1;
+}
+
+message CreatePlanoContaResponse {
+  PlanoConta planoConta = 1;
+}
+
+// Request e Response para atualização de PlanoConta
+message UpdatePlanoContaRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  PlanoConta planoConta = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de PlanoConta
+message UpdatePlanoContaResponse {
+  PlanoConta planoConta = 1;
+}
+
+// Request e Response para exclusão de PlanoConta
+message DeletePlanoContaRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeletePlanoContaResponse {
+  string id = 1;
+}
+
+// Request para obter um PlanoConta por ID
+message GetPlanoContaRequest {
+  string id = 1;
+}
+
+// Request para obter um PlanoConta por ID
+message GetPlanoContaResponse {
+  PlanoConta planoConta = 1;
+}
+
+// Request e Response para listagem de PlanoContas
+message ListPlanoContaRequest {
+  repeated string ids = 1;
+
+  PlanoConta planoConta = 2;
+
+  uint32 page_size = 3;
+
+  string page_token = 4;
+
+  Filter filter = 5;
+
+  string tipo = 6;
+}
+
+message ListPlanoContaResponse {
+  repeated PlanoConta planoContaList = 1;
+
+  string next_page_token = 2;
+}

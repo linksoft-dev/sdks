@@ -1,0 +1,170 @@
+syntax = "proto3";
+
+package recibo;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/financeiro/recibo";
+
+// Serviço Recibo com operações CRUD
+service ReciboService {
+  rpc Create ( CreateReciboRequest ) returns ( CreateReciboResponse );
+
+  rpc Update ( UpdateReciboRequest ) returns ( UpdateReciboResponse );
+
+  rpc Delete ( DeleteReciboRequest ) returns ( DeleteReciboResponse );
+
+  rpc Get ( GetReciboRequest ) returns ( GetReciboResponse );
+
+  rpc List ( ListReciboRequest ) returns ( ListReciboResponse );
+
+  rpc Imprimir ( ImprimirReciboRequest ) returns ( ImprimirReciboResponse );
+
+  rpc Import ( ImportRequest ) returns ( ImportResponse );
+
+  rpc Clone ( CloneReciboRequest ) returns ( CloneReciboResponse );
+}
+
+// Dados do Recibo
+message Recibo {
+  google.protobuf.Timestamp createdAt = 1; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 2; // Data de atualização
+
+  string userId = 3; // ID do usuário que realizou a ação
+
+  string userName = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string tipo = 6;
+
+  google.protobuf.Timestamp dataHoraRegistro = 7;
+
+  string tipoDescricao = 8;
+
+  string pessoaNome = 9;
+
+  string pessoaId = 10;
+
+  string pessoaCpfCnpj = 11;
+
+  double valor = 12;
+
+  string recebidoPor = 13;
+
+  string referente = 14;
+
+  metadata.BasicFields fields = 15;
+}
+
+// Request e Response para criação de Recibo
+message CreateReciboRequest {
+  Recibo recibo = 1;
+}
+
+message CreateReciboResponse {
+  Recibo recibo = 1;
+}
+
+// Request e Response para atualização de Recibo
+message UpdateReciboRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Recibo recibo = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Recibo
+message UpdateReciboResponse {
+  Recibo recibo = 1;
+}
+
+// Request e Response para exclusão de Recibo
+message DeleteReciboRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteReciboResponse {
+  string id = 1;
+}
+
+// Request para obter um Recibo por ID
+message GetReciboRequest {
+  string id = 1;
+}
+
+// Request para obter um Recibo por ID
+message GetReciboResponse {
+  Recibo recibo = 1;
+}
+
+// Request e Response para listagem de Recibos
+message ListReciboRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListReciboResponse {
+  repeated Recibo reciboList = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para impressão de Recibo
+message ImprimirReciboRequest {
+  string id = 1;
+}
+
+message ImprimirReciboResponse {
+  report.Response response = 1;
+}
+
+// Request e Response para importação de Recibos
+message ImportRequest {
+  string fileName = 1; // Nome do arquivo (para detectar extensão)
+
+  string fileContent = 2; // Conteúdo (base64 para binários ou string para texto)
+
+  repeated Recibo recibos = 3; // Alternativamente, permitir enviar objetos diretamente
+
+  bool validateOnly = 4; // Se true, apenas valida sem gravar
+}
+
+message ImportResponse {
+  int64 success = 1;
+
+  int64 failed = 2;
+
+  int64 total = 3;
+
+  string htmlReport = 10; // Relatório HTML opcional
+}
+
+message CloneReciboRequest {
+  string id = 1;
+}
+
+message CloneReciboResponse {
+  Recibo recibo = 1;
+}

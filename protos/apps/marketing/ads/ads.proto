@@ -1,0 +1,300 @@
+syntax = "proto3";
+
+package marketing_ads;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/marketing/ads";
+
+// --- Enums ---
+
+enum AdsPlatform {
+  ADS_PLATFORM_UNSPECIFIED = 0;
+
+  ADS_PLATFORM_META = 1;
+
+  ADS_PLATFORM_GOOGLE = 2;
+}
+
+enum AdsCampaignStatus {
+  ADS_CAMPAIGN_STATUS_UNSPECIFIED = 0;
+
+  ADS_CAMPAIGN_STATUS_ACTIVE = 1;
+
+  ADS_CAMPAIGN_STATUS_PAUSED = 2;
+
+  ADS_CAMPAIGN_STATUS_COMPLETED = 3;
+
+  ADS_CAMPAIGN_STATUS_REMOVED = 4;
+
+  ADS_CAMPAIGN_STATUS_ARCHIVED = 5;
+}
+
+// --- Service ---
+
+service AdsCampaignService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  // Sincroniza campanhas e metricas de todas as plataformas conectadas
+  rpc Sync ( SyncRequest ) returns ( SyncResponse );
+
+  // Retorna dados agregados para o dashboard
+  rpc GetDashboard ( GetDashboardRequest ) returns ( GetDashboardResponse );
+
+  // Retorna dados de ROI cruzando ads com vendas
+  rpc GetROI ( GetROIRequest ) returns ( GetROIResponse );
+}
+
+// --- Messages ---
+
+message AdsCampaign {
+  string id = 1;
+
+  AdsPlatform platform = 2;
+
+  string external_id = 3;
+
+  string integration_id = 4;
+
+  string name = 5;
+
+  AdsCampaignStatus status = 6;
+
+  string objective = 7; // Objetivo da campanha (OUTCOME_TRAFFIC, etc.)
+
+  string campaign_type = 8; // Tipo (Search, Display, Shopping — para Google)
+
+  double daily_budget = 9; // Orcamento diario (BRL)
+
+  double lifetime_budget = 10; // Orcamento total (BRL)
+
+  google.protobuf.Timestamp start_date = 11;
+
+  google.protobuf.Timestamp end_date = 12;
+
+  string currency = 13; // Moeda original (USD, BRL)
+
+  google.protobuf.Timestamp last_sync_at = 14;
+
+  // Metricas agregadas (ultimas sincronizadas)
+  int64 total_impressions = 20;
+
+  int64 total_reach = 21;
+
+  int64 total_clicks = 22;
+
+  double total_spend = 23; // Gasto total em BRL
+
+  double ctr = 24;
+
+  double cpc = 25;
+
+  double cpm = 26;
+
+  int64 total_conversions = 27;
+
+  // Metricas diarias
+  repeated AdsCampaignDailyMetric daily_metrics = 30;
+
+  google.protobuf.Timestamp created_at = 100;
+
+  google.protobuf.Timestamp updated_at = 101;
+}
+
+message AdsCampaignDailyMetric {
+  string date = 1; // Formato YYYY-MM-DD
+
+  int64 impressions = 2;
+
+  int64 reach = 3;
+
+  int64 clicks = 4;
+
+  double ctr = 5;
+
+  double cpc = 6;
+
+  double cpm = 7;
+
+  double spend = 8; // Em BRL
+
+  int64 conversions = 9;
+}
+
+// --- CRUD Requests ---
+
+message CreateRequest {
+  AdsCampaign ads_campaign = 1;
+}
+
+message CreateResponse {
+  AdsCampaign ads_campaign = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  AdsCampaign ads_campaign = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  AdsCampaign ads_campaign = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  AdsCampaign ads_campaign = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  AdsPlatform platform = 2;
+
+  AdsCampaignStatus status = 3;
+
+  string date_from = 4; // YYYY-MM-DD
+
+  string date_to = 5; // YYYY-MM-DD
+
+  Filter filter = 10;
+}
+
+message ListResponse {
+  repeated AdsCampaign ads_campaign_list = 1;
+}
+
+// --- Sync ---
+
+message SyncRequest {
+  AdsPlatform platform = 1; // Opcional: sincronizar apenas uma plataforma
+}
+
+message SyncResponse {
+  int32 campaigns_synced = 1;
+
+  int32 campaigns_created = 2;
+
+  int32 campaigns_updated = 3;
+
+  string message = 4;
+}
+
+// --- Dashboard ---
+
+message GetDashboardRequest {
+  string date_from = 1; // YYYY-MM-DD
+
+  string date_to = 2; // YYYY-MM-DD
+}
+
+message GetDashboardResponse {
+  // KPIs consolidados
+  double total_spend = 1; // Gasto total em BRL
+
+  int64 total_impressions = 2;
+
+  int64 total_clicks = 3;
+
+  double avg_ctr = 4;
+
+  double avg_cpc = 5;
+
+  int32 active_campaigns = 6;
+
+  int64 total_conversions = 7;
+
+  // Por plataforma
+  repeated PlatformSpend spend_by_platform = 10;
+
+  // Evolucao diaria
+  repeated DailySpend daily_spend = 11;
+}
+
+message PlatformSpend {
+  AdsPlatform platform = 1;
+
+  double spend = 2;
+
+  int64 impressions = 3;
+
+  int64 clicks = 4;
+
+  int32 campaigns = 5;
+}
+
+message DailySpend {
+  string date = 1;
+
+  double spend = 2;
+
+  int64 impressions = 3;
+
+  int64 clicks = 4;
+}
+
+// --- ROI ---
+
+message GetROIRequest {
+  string date_from = 1; // YYYY-MM-DD
+
+  string date_to = 2; // YYYY-MM-DD
+}
+
+message GetROIResponse {
+  double total_ad_spend = 1; // Gasto total em ads (BRL)
+
+  double total_revenue = 2; // Faturamento total (BRL) — do modulo de Vendas
+
+  double roi_percentage = 3; // (revenue - spend) / spend * 100
+
+  double avg_ticket = 4; // Ticket medio
+
+  int32 total_orders = 5; // Total de pedidos no periodo
+
+  double previous_period_roi = 6; // ROI do periodo anterior para comparacao
+
+  // Evolucao diaria
+  repeated DailyROI daily_roi = 10;
+}
+
+message DailyROI {
+  string date = 1;
+
+  double ad_spend = 2;
+
+  double revenue = 3;
+}

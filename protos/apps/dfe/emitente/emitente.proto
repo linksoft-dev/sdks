@@ -1,0 +1,191 @@
+syntax = "proto3";
+
+package dfe;
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "common/metadata/metadata.proto";
+
+import "filter/filter.proto";
+
+import "apps/config/config.proto";
+
+option go_package = "comps/pb/apps/dfe/emitente";
+
+// Serviço para operações CRUD do Emitente
+service EmitenteService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+// Request e Response para criação de Emitente
+message CreateRequest {
+  Emitente emitente = 1;
+}
+
+message CreateResponse {
+  Emitente emitente = 1;
+}
+
+// Request e Response para atualização de Emitente
+message UpdateRequest {
+  string id = 1;
+
+  Emitente emitente = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Emitente emitente = 1;
+}
+
+// Request e Response para exclusão de Emitente
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+// Request e Response para obter um Emitente por ID
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Emitente emitente = 1;
+}
+
+// Request e Response para listagem de Emitentes
+message ListRequest {
+  repeated string ids = 1;
+
+  repeated string cnpjs = 2;
+
+  repeated string ufs = 3;
+
+  Filter filter = 4;
+
+  uint32 page_size = 5;
+
+  string page_token = 6;
+}
+
+message ListResponse {
+  repeated Emitente emitenteList = 1;
+
+  string next_page_token = 2;
+}
+
+message Emitente {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  string razao_social = 6;
+
+  string nome_fantasia = 7;
+
+  string cnpj = 8;
+
+  string inscricao_estadual = 9;
+
+  string inscricao_municipal = 10;
+
+  string regime_tributario = 11;
+
+  // Endereço
+  string cep = 12;
+
+  string logradouro = 13;
+
+  string numero = 14;
+
+  string complemento = 15;
+
+  string bairro = 16;
+
+  string cidade = 17;
+
+  string codigo_municipio = 18;
+
+  string uf = 19;
+
+  string pais = 20;
+
+  string codigo_pais = 21;
+
+  // Contato
+  string telefone = 22;
+
+  string email = 23;
+
+  // Configurações adicionais
+  bool nfe_habilitado = 24;
+
+  bool nfce_habilitado = 25;
+
+  bool nfse_habilitado = 26;
+
+  bool mdfe_habilitado = 27;
+
+  bool cte_habilitado = 28;
+
+  string logo_base64 = 29;
+
+  string ie = 30;
+
+  // Campos DFE
+  config.Contador contador = 31;
+
+  string cfop = 32;
+
+  string tributacao_nome = 33;
+
+  string tributacao_id = 34;
+
+  double aliq_icms_calc_dif = 35;
+
+  string obs = 36;
+
+  config.CertificadoModel certificado = 37;
+
+  config.ConfigNfe nfe_config = 38;
+
+  config.ConfigNfce nfce_config = 39;
+
+  config.ConfigMdfe mdfe_config = 40;
+
+  config.ConfigNfse nfse_config = 41;
+
+  config.Cnae cnae_principal = 42;
+
+  repeated config.Cnae cnae_secundarios = 43;
+
+  config.ConfigCte cte_config = 44;
+
+  metadata.BasicFields fields = 45;
+}

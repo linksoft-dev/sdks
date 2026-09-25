@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "apps/financeiro/movimentocaixa/movimento_caixa.proto";
+
+package financialcontrol;
+
+option go_package = "comps/pb/apps/financeiro/financialcontrol";
+
+service FinancialControlService {
+  rpc Create ( movimentocaixa.CreateMovimentoCaixaRequest ) returns ( movimentocaixa.CreateMovimentoCaixaResponse );
+
+  rpc Update ( movimentocaixa.UpdateMovimentoCaixaRequest ) returns ( movimentocaixa.UpdateMovimentoCaixaResponse );
+
+  rpc Delete ( movimentocaixa.DeleteMovimentoCaixaRequest ) returns ( movimentocaixa.DeleteMovimentoCaixaResponse );
+
+  rpc Get ( movimentocaixa.GetMovimentoCaixaRequest ) returns ( movimentocaixa.GetMovimentoCaixaResponse );
+
+  rpc List ( movimentocaixa.ListMovimentoCaixaRequest ) returns ( movimentocaixa.ListMovimentoCaixaResponse );
+
+  rpc Report ( movimentocaixa.ReportMovimentoCaixaRequest ) returns ( movimentocaixa.ReportMovimentoCaixaResponse );
+}

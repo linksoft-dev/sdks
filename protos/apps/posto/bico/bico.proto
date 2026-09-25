@@ -1,0 +1,126 @@
+syntax = "proto3";
+
+package bico;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/posto/bico";
+
+// Serviço Bico com operações CRUD
+service BicoService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+// Dados do Bico
+message Bico {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  int32 numero = 6;
+
+  string modelo = 7;
+
+  string produto_id = 8;
+
+  string produto_nome = 9;
+
+  string num_tanque = 10;
+
+  string num_bomba = 11;
+
+  string tipo_preco = 12; // avista ou aprazo
+
+  double preco = 13;
+
+  metadata.BasicFields fields = 14;
+
+  double preco_avista = 15; // preço à vista do produto do bico (somente leitura)
+
+  double preco_aprazo = 16; // preço a prazo do produto do bico; zero quando não tem (somente leitura)
+}
+
+// Request e Response para criação de Bico
+message CreateRequest {
+  Bico bico = 1;
+}
+
+message CreateResponse {
+  Bico bico = 1;
+}
+
+// Request e Response para atualização de Bico
+message UpdateRequest {
+  string id = 1;
+
+  Bico bico = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de Bico
+message UpdateResponse {
+  Bico bico = 1;
+}
+
+// Request e Response para exclusão de Bico
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+// Request para obter um Bico por ID
+message GetRequest {
+  string id = 1;
+}
+
+// Response para obter um Bico por ID
+message GetResponse {
+  Bico bico = 1;
+}
+
+// Request e Response para listagem de Bicos
+message ListRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListResponse {
+  repeated Bico bico_list = 1;
+
+  string next_page_token = 2;
+}

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package imports;
+
+option go_package = "comps/pb/imports";
+
+message ImportResponse {
+  string report_title = 1;
+
+  string result = 2; // Resultado da importação
+
+  int64 success = 3;
+
+  int64 failed = 4;
+
+  int64 total = 5;
+
+  map<string, ImportErrorGroup> erros_by_category = 6; // Erros agrupados por categoria
+
+  string html_report = 7; // Relatório de importação em HTML
+}
+
+message ImportErrorGroup {
+  repeated ImportError errors = 1;
+}
+
+// Estrutura de erro de importação
+message ImportError {
+  string account = 1; // Identificação da conta com erro
+
+  string reason = 2; // Motivo do erro
+
+  repeated string details = 3; // Detalhes do erro
+}

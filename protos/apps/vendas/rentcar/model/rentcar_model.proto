@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+import "plugins/validate/validate.proto";
+
+import "google/protobuf/timestamp.proto";
+
+package rentcarmodel;
+
+option go_package = "comps/pb/apps/vendas/rentcar/model";
+
+// Reservation contém apenas campos específicos de aluguel de carro.
+// Campos comuns como cliente, valores e status estão em Pedido.
+message Reservation {
+  // Número da reserva
+  string reservation_number = 1;
+
+  // Referência da reserva
+  string reference = 2;
+
+  // Datas e horários
+  google.protobuf.Timestamp start_date = 3;
+
+  google.protobuf.Timestamp end_date = 4;
+
+  string pickup_time = 5;
+
+  string return_time = 6;
+
+  string pickup_location = 7;
+
+  string return_location = 8;
+
+  // Dados específicos do cliente para aluguel (licença, etc)
+  string customer_license_num = 9;
+
+  google.protobuf.Timestamp customer_license_exp = 10;
+
+  google.protobuf.Timestamp customer_date_of_birth = 11;
+
+  // Dados do veículo
+  string vehicle_id = 12;
+
+  string vehicle_make = 13;
+
+  string vehicle_model = 14;
+
+  int32 vehicle_year = 15;
+
+  string vehicle_type = 16;
+
+  string vehicle_license_plate = 17;
+
+  string vehicle_vin = 18;
+
+  int32 vehicle_odometer = 19;
+
+  string vehicle_fuel_level = 20;
+
+  // Extras e cobranças adicionais específicas de aluguel
+  repeated Extra extras = 21;
+
+  repeated Charge charges = 22;
+
+  // Campos de integração com HQ Rental
+  string hq_rental_id = 23;
+
+  google.protobuf.Timestamp last_sync_at = 24;
+}
+
+message Extra {
+  string id = 1;
+
+  string name = 2;
+
+  string description = 3;
+
+  double price = 4;
+
+  int32 quantity = 5;
+
+  double total_amount = 6;
+}
+
+message Charge {
+  string id = 1;
+
+  string name = 2;
+
+  string description = 3;
+
+  double amount = 4;
+
+  string type = 5;
+
+  google.protobuf.Timestamp created_at = 6;
+}

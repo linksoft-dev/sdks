@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package marketing_automation;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/marketing/automation";
+
+service AutomationService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  // Gera/sincroniza campanhas a partir dos passos da automação
+  rpc GenerateCampaigns ( GenerateCampaignsRequest ) returns ( GenerateCampaignsResponse );
+}
+
+message AutomationStep {
+  string id = 1;
+
+  string type = 2;
+
+  string configuration = 3;
+
+  string campaign_id = 4; // ID da campanha gerada (idempotencia)
+}
+
+message Automation {
+  string id = 1;
+
+  string name = 2;
+
+  repeated AutomationStep steps = 3;
+
+  google.protobuf.Timestamp created_at = 4;
+
+  google.protobuf.Timestamp updated_at = 5;
+
+  google.protobuf.Timestamp start_at = 6; // Data/hora de inicio da automação
+
+  string segment_id = 7; // Segmento alvo
+
+  string integration_id = 8; // Integracao para envios
+
+  string status = 9; // draft, active, paused
+
+  string segment_name = 10; // Desnormalizado para listagem
+}
+
+message CreateRequest {
+  Automation automation = 1;
+}
+
+message CreateResponse {
+  Automation automation = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Automation automation = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Automation automation = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Automation automation = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string step_type = 2;
+
+  Filter filter = 3;
+}
+
+message ListResponse {
+  repeated Automation automation_list = 1;
+}
+
+// --- GenerateCampaigns ---
+
+message GenerateCampaignsRequest {
+  string id = 1; // ID da automação
+}
+
+message GenerateCampaignsResponse {
+  Automation automation = 1; // Automação atualizada com campaign_ids nos steps
+
+  int32 campaigns_created = 2;
+
+  int32 campaigns_updated = 3;
+
+  string message = 4;
+}

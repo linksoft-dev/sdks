@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package productioncost;
+
+import "google/api/annotations.proto";
+
+import "google/api/resource.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+option go_package = "comps/pb/apps/production/productioncost";
+
+service ProductionCostService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+}
+
+message CreateRequest {
+  ProductionCost production_cost = 1;
+}
+
+message CreateResponse {
+  ProductionCost production_cost = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  ProductionCost production_cost = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  ProductionCost production_cost = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  bool only_active = 2;
+
+  bool only_default = 3;
+
+  Filter filter = 4;
+}
+
+message ListResponse {
+  repeated ProductionCost production_cost_list = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  ProductionCost production_cost = 1;
+}
+
+// ProductionCost - Custo que se repete nas produções (energia, embalagem,
+// terceirização). O cadastro evita digitar os mesmos lançamentos a cada ordem.
+message ProductionCost {
+  string id = 1;
+
+  metadata.BasicFields fields = 2;
+
+  string name = 3;
+
+  string description = 4;
+
+  // Valor sugerido. O da ordem é editável: aqui fica o que costuma valer.
+  double value = 5;
+
+  // FIXED: valor por ordem, não importa quanto foi produzido.
+  // PER_UNIT: valor por unidade produzida, multiplicado na hora de lançar.
+  string type = 6;
+
+  // Entra sozinho na ordem nova. Sem isso, o custo fica disponível para quem
+  // quiser escolher, mas não é lançado por conta própria.
+  bool apply_by_default = 7;
+
+  bool active = 8;
+
+  // Perfil de produção: as categorias de produto em que este custo se aplica.
+  // Vazio = vale para qualquer produto.
+  repeated string category_ids = 9;
+
+  repeated string category_names = 10;
+
+  // Perfil por tag: o custo vale para o produto que tenha qualquer uma destas
+  // tags, direto nele ou na categoria dele. Combina com as categorias acima —
+  // basta um dos dois casar.
+  repeated string tag_names = 11;
+}

@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package crm_activity;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/crm/activity";
+
+service ActivityService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+enum ActivityType {
+  ACTIVITY_TYPE_UNSPECIFIED = 0;
+
+  ACTIVITY_TYPE_TASK = 1;
+
+  ACTIVITY_TYPE_CALL = 2;
+
+  ACTIVITY_TYPE_EMAIL = 3;
+
+  ACTIVITY_TYPE_WHATSAPP = 4;
+
+  ACTIVITY_TYPE_MEETING = 5;
+}
+
+message Activity {
+  string id = 1;
+
+  string deal_id = 2;
+
+  ActivityType type = 3;
+
+  string title = 4;
+
+  google.protobuf.Timestamp due_at = 5;
+
+  google.protobuf.Timestamp completed_at = 6;
+
+  google.protobuf.Timestamp created_at = 7;
+
+  google.protobuf.Timestamp updated_at = 8;
+
+  string person_id = 9;
+}
+
+message CreateRequest {
+  Activity activity = 1;
+}
+
+message CreateResponse {
+  Activity activity = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Activity activity = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Activity activity = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Activity activity = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string deal_id = 2;
+
+  ActivityType type = 3;
+
+  google.protobuf.Timestamp due_at_gte = 4;
+
+  google.protobuf.Timestamp due_at_lte = 5;
+
+  Filter filter = 6;
+
+  string person_id = 7;
+}
+
+message ListResponse {
+  repeated Activity activity_list = 1;
+}

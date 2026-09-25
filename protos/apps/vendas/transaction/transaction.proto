@@ -1,0 +1,565 @@
+syntax = "proto3";
+
+package checkout;
+
+import "plugins/service/service.proto";
+
+import "plugins/validate/validate.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/api/annotations.proto";
+
+import "google/api/resource.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/vendas/pedido/pedido.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/vendas/checkout";
+
+// Transaction service - Responsável por processar pagamentos online
+service TransactionService {
+  // Cria uma nova transação
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  // Atualiza uma transação existente
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  // Remove uma transação
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  // Lista transações com filtros
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  // Obtém uma transação específica
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  // Cancela uma transação
+  rpc Cancel ( CancelRequest ) returns ( CancelResponse );
+
+  // Sincroniza o status de uma transação com o gateway
+  rpc Sync ( SyncRequest ) returns ( SyncResponse );
+
+  // Gera relatórios de transações
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc ApproveManualReview ( ApproveManualReviewRequest ) returns ( ApproveManualReviewResponse );
+
+  rpc RejectManualReview ( RejectManualReviewRequest ) returns ( RejectManualReviewResponse );
+
+  // Confirma o pagamento de uma transação de homologação sem consultar o gateway
+  rpc SimulatePayment ( SimulatePaymentRequest ) returns ( SimulatePaymentResponse );
+}
+
+enum TransactionStatus {
+  TRANSACTION_STATUS_UNSPECIFIED = 0;
+
+  TRANSACTION_STATUS_AUTHORIZED = 1;
+
+  TRANSACTION_STATUS_PENDING = 2;
+
+  TRANSACTION_STATUS_FAIL = 3;
+
+  TRANSACTION_STATUS_CANCELLED = 4;
+
+  TRANSACTION_STATUS_REFUNDED = 5;
+
+  TRANSACTION_STATUS_PENDING_ANTIFRAUD = 6;
+
+  TRANSACTION_STATUS_PENDING_MANUAL_REVIEW = 7;
+}
+
+enum TransactionType {
+  TRANSACTION_TYPE_UNSPECIFIED = 0;
+
+  TRANSACTION_TYPE_CARD = 1;
+
+  TRANSACTION_TYPE_BOLETO = 2;
+
+  TRANSACTION_TYPE_PIX = 3;
+}
+
+enum Gateway {
+  GATEWAY_UNSPECIFIED = 0;
+
+  GATEWAY_PAGHIPER = 1;
+
+  GATEWAY_PAGARME = 2;
+
+  GATEWAY_MERCADOPAGO = 3;
+
+  GATEWAY_BRAZILPAYS = 4;
+
+  GATEWAY_GERENCIANET = 5;
+
+  GATEWAY_CIELO = 6;
+
+  GATEWAY_SICREDI = 7;
+
+  GATEWAY_STRIPE = 8;
+
+  GATEWAY_ASAAS = 9;
+
+  GATEWAY_BB = 10;
+
+  GATEWAY_BANCO_CORA = 11;
+
+  GATEWAY_BRADESCO = 12;
+
+  GATEWAY_C6BANK = 13;
+
+  GATEWAY_TRANSFEERA = 14;
+
+  GATEWAY_SICOOB = 15;
+
+  GATEWAY_INTER = 16;
+
+  GATEWAY_REDE = 17;
+}
+
+enum ReportType {
+  REPORT_TYPE_UNSPECIFIED = 0;
+
+  REPORT_TYPE_LIST = 1; // Lista básica de transações
+}
+
+message Transaction {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 3; // Data de atualização
+
+  string user_id = 4; // ID do usuário que realizou a ação
+
+  string user_name = 5; // Nome do usuário que realizou a ação
+
+  TransactionStatus status = 6;
+
+  int32 number = 7; // Número sequencial da transação
+
+  TransactionType payment_type = 8;
+
+  string payment_method_id = 9;
+
+  string payment_method_name = 10;
+
+  Gateway payment_gateway = 11;
+
+  string transaction_id = 12;
+
+  string autorization_code = 13;
+
+  string nsu = 14;
+
+  string gateway_code = 15;
+
+  string tid = 16;
+
+  string return_code = 17;
+
+  string transaction_return = 18;
+
+  string origin_description = 19;
+
+  string origin_id = 20;
+
+  string origin_number = 21;
+
+  google.protobuf.Timestamp due_date = 22;
+
+  string url = 23;
+
+  google.protobuf.Timestamp confirmation_date_time = 24;
+
+  google.protobuf.Timestamp gateway_response_date_time = 25;
+
+  double gateway_response_time = 26;
+
+  Currency currency = 27;
+
+  double currency_rate = 28;
+
+  BoletoDetails boleto_details = 29;
+
+  CardDetails card_details = 30;
+
+  PixDetails pix_details = 31;
+
+  CancelDetails cancel_details = 32;
+
+  double value = 33;
+
+  int32 installments = 34;
+
+  repeated TransactionHistory history = 35;
+
+  bool timeout = 36;
+
+  Contact contact = 37; // Dados da pessoa da transação
+
+  FraudAnalysis fraud_analysis = 38;
+
+  ManualReview manual_review = 39;
+
+  // Cobrança gerada em ambiente de homologação do gateway: não movimenta
+  // dinheiro real e não notifica o cliente
+  bool test_environment = 40;
+}
+
+enum Currency {
+  CURRENCY_UNSPECIFIED = 0;
+
+  CURRENCY_BRL = 1;
+
+  CURRENCY_USD = 2;
+
+  CURRENCY_EUR = 3;
+
+  CURRENCY_GBP = 4;
+}
+
+enum SyncTrigger {
+  SYNC_TRIGGER_UNSPECIFIED = 0;
+
+  SYNC_TRIGGER_MANUAL = 1; // Sincronização manual pelo usuário
+
+  SYNC_TRIGGER_WEBHOOK = 2; // Sincronização via webhook
+
+  SYNC_TRIGGER_SYSTEM = 3; // Sincronização automática pelo sistema
+
+  SYNC_TRIGGER_ANTIFRAUD = 4; // Atualização disparada pelo fluxo antifraude
+
+  SYNC_TRIGGER_MANUAL_REVIEW = 5; // Atualização disparada por revisão manual
+}
+
+enum FraudDecisionStatus {
+  FRAUD_DECISION_STATUS_UNSPECIFIED = 0;
+
+  FRAUD_DECISION_STATUS_APPROVED = 1;
+
+  FRAUD_DECISION_STATUS_DENIED = 2;
+
+  FRAUD_DECISION_STATUS_REVIEW = 3;
+
+  FRAUD_DECISION_STATUS_PENDING = 4;
+
+  FRAUD_DECISION_STATUS_ERROR = 5;
+}
+
+enum ManualReviewStatus {
+  MANUAL_REVIEW_STATUS_UNSPECIFIED = 0;
+
+  MANUAL_REVIEW_STATUS_PENDING = 1;
+
+  MANUAL_REVIEW_STATUS_APPROVED = 2;
+
+  MANUAL_REVIEW_STATUS_DENIED = 3;
+}
+
+message TransactionHistory {
+  string id = 1;
+
+  string user_id = 2;
+
+  string user_name = 3;
+
+  TransactionStatus status = 4;
+
+  google.protobuf.Timestamp date_time = 5;
+
+  double response_time = 6;
+
+  string description = 7;
+
+  SyncTrigger sync_trigger = 8; // Origem da sincronização (manual, webhook ou sistema)
+}
+
+message FraudAnalysis {
+  string integration_id = 1;
+
+  string integration_name = 2;
+
+  string provider = 3;
+
+  FraudDecisionStatus status = 4;
+
+  string score = 5;
+
+  string recommendation = 6;
+
+  string transaction_reference = 7;
+
+  string reason = 8;
+
+  string raw_response = 9;
+
+  google.protobuf.Timestamp requested_at = 10;
+
+  google.protobuf.Timestamp responded_at = 11;
+}
+
+message ManualReview {
+  bool required = 1;
+
+  ManualReviewStatus status = 2;
+
+  string reviewed_by_user_id = 3;
+
+  string reviewed_by_user_name = 4;
+
+  google.protobuf.Timestamp reviewed_at = 5;
+
+  string reason = 6;
+}
+
+message CancelDetails {
+  string code = 1; // id da transação cancelada
+
+  string user_id = 2; // id do usuário que cancelou a transação
+
+  string user_name = 3; // nome do usuário que cancelou a transação
+
+  string reason = 4; // motivo do cancelamento
+
+  google.protobuf.Timestamp date_time = 5;
+}
+
+message BoletoDetails {
+  string our_number = 1;
+
+  string document_number = 2;
+
+  string instruction = 4;
+
+  string bank = 5;
+
+  string agency = 6;
+
+  string account = 7;
+
+  string account_type = 8;
+
+  string account_digit = 9;
+
+  string account_name = 10;
+}
+
+message CardDetails {
+  string name_on_bill = 1;
+
+  string name = 2;
+
+  string expiration = 3;
+
+  string last4_digits = 4;
+
+  string number = 5;
+
+  string cvc = 6;
+
+  string year = 7;
+
+  string month = 8;
+
+  string brand = 9;
+
+  string token = 10;
+}
+
+message PixDetails {
+  string qr_code_base64 = 1;
+
+  string qr_code_string = 2;
+
+  string id = 3;
+
+  string url = 4;
+}
+
+message Contact {
+  string id = 1;
+
+  string document_number = 3; // cpfCnpj
+
+  string name = 5;
+
+  string user_id = 7;
+
+  string user_name = 8;
+
+  string address_name = 10; // endNome
+
+  string zip_code = 11; // endCep
+
+  string address = 12; // endEndereco
+
+  string number = 13; // endNumero
+
+  string district = 14; // endBairro
+
+  string city = 15; // endCidade
+
+  string city_code = 16; // endCidadeCodigo
+
+  string state = 17; // endUf
+
+  string phone = 18;
+
+  string email = 19;
+
+  string birth_date = 20; // dataNascimento
+
+  string gender = 21; // genero
+
+  string address_id = 22; // id do endereço
+}
+
+// Mensagens CRUD para Transaction
+message CreateRequest {
+  Transaction transaction = 1;
+}
+
+message CreateResponse {
+  Transaction transaction = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Transaction transaction = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Transaction transaction = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Transaction transaction = 1;
+}
+
+// Novos RPCs para gerenciar transações
+
+message ListRequest {
+  repeated string ids = 1;
+
+  TransactionStatus status = 2;
+
+  TransactionType payment_type = 3;
+
+  string origin_id = 4;
+
+  string origin_number = 5;
+
+  string origin_description = 6;
+
+  string transaction_id = 7;
+
+  string payment_gateway = 8;
+
+  Filter filter = 9;
+}
+
+message ListResponse {
+  repeated Transaction transaction_list = 1;
+}
+
+message CancelRequest {
+  string id = 1;
+
+  string origin_id = 2;
+
+  string transaction_id = 3;
+
+  string reason = 4;
+
+  bool cancel_order_payment = 5;
+}
+
+message CancelResponse {
+  TransactionStatus status = 1;
+
+  string message = 2;
+
+  pedido.Pedido order = 3;
+}
+
+message SyncRequest {
+  string id = 1;
+
+  string origin_id = 2;
+
+  string transaction_id = 3;
+
+  string additional_details = 4;
+
+  SyncTrigger sync_trigger = 5; // Origem da sincronização (manual, webhook ou sistema)
+}
+
+message SyncResponse {
+  TransactionStatus status = 1;
+
+  string message = 2;
+}
+
+message ApproveManualReviewRequest {
+  string id = 1;
+
+  string reason = 2;
+}
+
+message ApproveManualReviewResponse {
+  Transaction transaction = 1;
+}
+
+message RejectManualReviewRequest {
+  string id = 1;
+
+  string reason = 2;
+}
+
+message RejectManualReviewResponse {
+  Transaction transaction = 1;
+}
+
+message SimulatePaymentRequest {
+  string id = 1;
+}
+
+message SimulatePaymentResponse {
+  Transaction transaction = 1;
+}
+
+message ReportRequest {
+  ListRequest list_request = 1;
+
+  ReportType report_type = 2;
+
+  string tipo_relatorio = 3; // Nome do template .mrt (para futuro)
+
+  string send_by_email = 4; // Email para envio (para futuro)
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}

@@ -1,0 +1,409 @@
+syntax = "proto3";
+
+package apps.message;
+
+option go_package = "comps/pb/apps/message";
+
+import "google/protobuf/timestamp.proto";
+
+import "plugins/service/service.proto";
+
+enum MessageType {
+  MESSAGE_TYPE_UNSPECIFIED = 0;
+
+  MESSAGE_TYPE_CHAT = 1;
+
+  MESSAGE_TYPE_TICKET = 2;
+
+  MESSAGE_TYPE_ARTICLE = 3;
+
+  MESSAGE_TYPE_KNOWLEDGE_BASE = 4;
+
+  MESSAGE_TYPE_TRANSACTIONAL = 5;
+
+  MESSAGE_TYPE_NOTIFICATION = 6;
+
+  MESSAGE_TYPE_DEAL = 7;
+
+  MESSAGE_TYPE_CAMPAIGN = 8;
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+
+  STATUS_OPEN = 1;
+
+  STATUS_CLOSED = 2;
+
+  STATUS_PENDING = 3;
+
+  STATUS_RESOLVED = 4;
+
+  STATUS_DRAFT = 5;
+
+  STATUS_PUBLISHED = 6;
+
+  STATUS_ARCHIVED = 7;
+
+  STATUS_SENT = 8; // aceita pelo provedor do canal
+
+  STATUS_DELIVERED = 9; // entrega confirmada pelo canal
+
+  STATUS_READ = 10; // leitura confirmada ou abertura estimada
+
+  STATUS_CLICKED = 11; // destinatario clicou em um link da mensagem
+
+  STATUS_FAILED = 12; // nao entregue (rejeitada, devolvida ou marcada como spam)
+}
+
+enum TrackingEventType {
+  TRACKING_EVENT_TYPE_UNSPECIFIED = 0;
+
+  TRACKING_EVENT_TYPE_SENT = 1;
+
+  TRACKING_EVENT_TYPE_DELIVERED = 2;
+
+  TRACKING_EVENT_TYPE_OPENED = 3; // abertura estimada (pixel); quem bloqueia imagem nunca conta
+
+  TRACKING_EVENT_TYPE_READ = 4; // leitura confirmada pelo canal
+
+  TRACKING_EVENT_TYPE_CLICKED = 5;
+
+  TRACKING_EVENT_TYPE_BOUNCED = 6; // devolvida (destinatario invalido ou caixa recusou)
+
+  TRACKING_EVENT_TYPE_COMPLAINED = 7; // destinatario marcou como spam
+
+  TRACKING_EVENT_TYPE_FAILED = 8; // falha no envio ou na entrega
+}
+
+// Evento do ciclo de vida de um envio, na ordem em que aconteceu.
+message TrackingEvent {
+  TrackingEventType type = 1;
+
+  google.protobuf.Timestamp occurred_at = 2;
+
+  string source = 3; // quem informou: provedor (mailgun, ses...), canal (whatsapp) ou pixel/link
+
+  string detail = 4; // motivo da falha ou informacao adicional do provedor
+
+  string url = 5; // link clicado, quando o evento e' de clique
+
+  string recipient = 6;
+
+  string external_event_id = 7; // id do evento no provedor, usado para nao contar duas vezes
+}
+
+enum Priority {
+  PRIORITY_UNSPECIFIED = 0;
+
+  PRIORITY_LOW = 1;
+
+  PRIORITY_MEDIUM = 2;
+
+  PRIORITY_HIGH = 3;
+
+  PRIORITY_URGENT = 4;
+}
+
+enum AccessLevel {
+  ACCESS_LEVEL_UNSPECIFIED = 0;
+
+  ACCESS_LEVEL_NO_ACCESS = 1; // Sem acesso
+
+  ACCESS_LEVEL_READ = 2; // Pode ler
+
+  ACCESS_LEVEL_WRITE = 3; // Pode ler e escrever
+
+  ACCESS_LEVEL_ADMIN = 4; // Acesso total incluindo configurações
+}
+
+enum DealOutcome {
+  DEAL_OUTCOME_UNSPECIFIED = 0;
+
+  DEAL_OUTCOME_OPEN = 1;
+
+  DEAL_OUTCOME_CONCLUDED = 2;
+
+  DEAL_OUTCOME_LOST = 3;
+}
+
+enum ChangeType {
+  CHANGE_TYPE_UNSPECIFIED = 0;
+
+  CHANGE_TYPE_FIELD_UPDATED = 1;
+
+  CHANGE_TYPE_STATUS_CHANGED = 2;
+
+  CHANGE_TYPE_PRIORITY_CHANGED = 3;
+
+  CHANGE_TYPE_ASSIGNMENT_CHANGED = 4;
+
+  CHANGE_TYPE_TAG_ADDED = 5;
+
+  CHANGE_TYPE_TAG_REMOVED = 6;
+
+  CHANGE_TYPE_PARTICIPANT_ADDED = 7;
+
+  CHANGE_TYPE_PARTICIPANT_REMOVED = 8;
+}
+
+message FieldChange {
+  string field_name = 1;
+
+  string old_value = 2;
+
+  string new_value = 3;
+}
+
+message ChangeHistory {
+  string id = 1;
+
+  string message_id = 2;
+
+  string user_id = 3;
+
+  ChangeType change_type = 4;
+
+  google.protobuf.Timestamp created_at = 5;
+
+  string description = 6;
+
+  repeated FieldChange field_changes = 7;
+}
+
+enum Channel {
+  CHANNEL_UNSPECIFIED = 0;
+
+  CHANNEL_WHATSAPP = 1;
+
+  CHANNEL_TELEGRAM = 2;
+
+  CHANNEL_WEB = 3;
+
+  CHANNEL_EMAIL = 4;
+
+  CHANNEL_PHONE = 5;
+
+  CHANNEL_SMS = 6;
+
+  CHANNEL_FACEBOOK = 7;
+
+  CHANNEL_INSTAGRAM = 8;
+
+  CHANNEL_X = 9;
+
+  CHANNEL_SYSTEM = 10; // Atendimento aberto pela propria interface do sistema (ticket interno)
+}
+
+message Message {
+  string id = 1;
+
+  MessageType type = 2;
+
+  string title = 3;
+
+  string content = 4;
+
+  string creator_id = 5;
+
+  string creator_name = 6;
+
+  repeated string participant_ids = 7;
+
+  Status status = 8;
+
+  Priority priority = 9;
+
+  repeated string tags = 10;
+
+  Channel channel = 11; // whatsapp, web, email, etc
+
+  string integration_id = 12; // ID da integração a ser usada para envio
+
+  repeated Interaction interactions = 13;
+
+  google.protobuf.Timestamp created_at = 14;
+
+  google.protobuf.Timestamp updated_at = 15;
+
+  google.protobuf.Timestamp resolved_at = 16;
+
+  map<string, AccessLevel> role_access = 17; // Mapa de role -> nível de acesso
+
+  // Campos específicos por tipo
+  oneof type_specific_data {
+    TicketData ticket_data = 18;
+
+    ChatData chat_data = 19;
+
+    ArticleData article_data = 20;
+
+    KnowledgeBaseData knowledge_base_data = 21;
+
+    DealData deal_data = 28;
+  }
+
+  // Novos campos
+  repeated ChangeHistory change_history = 22;
+
+  repeated string starred_by = 23;
+
+  repeated string liked_by = 24;
+
+  int32 stars_count = 25;
+
+  int32 likes_count = 26;
+
+  map<string, string> custom_fields = 27; // Campos customizados que podem ser adicionados dinamicamente
+
+  string integration_name = 29; // Nome amigavel da integração usada para envio
+
+  string external_message_id = 30; // Id da mensagem no provedor do canal, preenchido no envio
+
+  repeated TrackingEvent tracking_events = 31; // Historico do envio: enviado, entregue, lido, clicado, falhou
+}
+
+message Interaction {
+  string id = 1;
+
+  string message_id = 2;
+
+  string author_id = 3;
+
+  string content = 4;
+
+  bool is_system = 5; // Para mensagens automáticas do sistema
+
+  repeated Attachment attachments = 6;
+
+  google.protobuf.Timestamp created_at = 7;
+
+  google.protobuf.Timestamp updated_at = 8;
+
+  Channel channel = 9; // Canal usado para esta interação (whatsapp, email, web, etc)
+
+  map<string, AccessLevel> role_access = 10; // Mapa de role -> nível de acesso
+
+  map<string, string> channel_metadata = 11; // Metadados específicos do canal (IDs externos, configs, etc)
+
+  bool is_bot = 12; // Agente de IA gerou a interacao (US5, FR-035)
+
+  string reply_to_interaction_id = 13; // Interação do mesmo message que esta responde/cita
+
+  ReplyPreview reply_preview = 14; // Snapshot da interação citada (render sem lookup)
+
+  bool deleted = 15; // Apagada: conteúdo e anexos removidos, registro preservado
+}
+
+// Snapshot da interação citada em uma resposta
+message ReplyPreview {
+  string interaction_id = 1;
+
+  string author_name = 2;
+
+  string content = 3; // trecho inicial do conteúdo citado
+
+  Channel channel = 4;
+}
+
+message Attachment {
+  string id = 1;
+
+  string name = 3;
+
+  string file_id = 4;
+
+  bytes data = 5;
+
+  string format = 6;
+
+  int64 size = 7;
+
+  string url = 8;
+}
+
+message TicketData {
+  string department = 1;
+
+  string category = 2;
+
+  string assigned_to = 3;
+
+  repeated string cc = 4;
+
+  repeated string bcc = 5;
+
+  string source = 6; // email, form, phone, etc
+}
+
+message DealData {
+  string person_id = 1;
+
+  string person_name = 2;
+
+  string pipeline_id = 3;
+
+  string pipeline_name = 4;
+
+  string stage_id = 5;
+
+  string stage_name = 6;
+
+  double amount = 7;
+
+  google.protobuf.Timestamp close_forecast = 8;
+
+  string responsible_id = 9;
+
+  string responsible_name = 10;
+
+  DealOutcome outcome = 11;
+
+  string loss_reason_id = 12;
+
+  string loss_reason_name = 13;
+
+  string currency = 14; // Código ISO 4217 da moeda (ex: BRL, USD, EUR). Padrão: BRL
+
+  string campaign_id = 15; // ID da campanha de marketing de origem
+
+  string campaign_name = 16; // Nome desnormalizado da campanha
+
+  double probability = 17; // Probabilidade da etapa atual (desnormalizada do pipeline)
+
+  google.protobuf.Timestamp stage_entered_at = 18; // Quando a oportunidade entrou na etapa atual
+
+  int32 sequence = 19; // Número sequencial da oportunidade dentro da organização (exibido como #1234)
+}
+
+message ChatData {
+  bool is_group = 1;
+
+  Channel platform = 2; // whatsapp, telegram, web, etc
+
+  bool is_bot_enabled = 3;
+}
+
+message ArticleData {
+  string author_name = 1;
+
+  repeated string categories = 2;
+
+  string slug = 3;
+
+  bool is_featured = 4;
+
+  google.protobuf.Timestamp published_at = 5;
+}
+
+message KnowledgeBaseData {
+  string category = 1;
+
+  repeated string related_articles = 2;
+
+  int32 helpful_count = 3;
+
+  int32 not_helpful_count = 4;
+
+  string version = 5;
+}

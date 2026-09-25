@@ -1,0 +1,278 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "plugins/service/service.proto";
+
+import "plugins/validate/validate.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/api/resource.proto";
+
+import "apps/datasource/datasource.proto";
+
+package report;
+
+option go_package = "comps/pb/apps/report";
+
+service ReportService {
+  rpc Create ( CreateReportRequest ) returns ( CreateReportResponse );
+
+  rpc Update ( UpdateReportRequest ) returns ( UpdateReportResponse );
+
+  rpc Delete ( DeleteReportRequest ) returns ( DeleteReportResponse );
+
+  rpc List ( ListReportRequest ) returns ( ListReportResponse );
+
+  rpc Get ( GetReportRequest ) returns ( GetReportResponse );
+
+  // Gera um relatorio com saida para varios formatos
+  rpc GenerateReport ( GenerateReportRequest ) returns ( GenerateReportResponse );
+
+  // Envia um relatório por email
+  rpc SendByEmail ( SendByEmailRequest ) returns ( SendByEmailResponse );
+
+  rpc SetDefaultReport ( SetDefaultReportRequest ) returns ( SetDefaultReportResponse );
+}
+
+// response of all report request, given many types of report output
+message Response {
+  string id = 1;
+
+  string pdf_base64 = 2;
+
+  string html_content = 3;
+
+  string template = 4; // template do relatório
+
+  string data = 5; // dados do relatório separados, para caso do gerador ser do tipo frontend
+}
+
+enum Format {
+  WEBVIEW = 0;
+
+  PDF = 1;
+}
+
+message CreateReportRequest {
+  Report report = 1;
+}
+
+message CreateReportResponse {
+  Report report = 1;
+}
+
+message UpdateReportRequest {
+  string id = 1;
+
+  Report report = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateReportResponse {
+  Report report = 1;
+}
+
+message DeleteReportRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteReportResponse {
+}
+
+message ListReportRequest {
+  repeated string ids = 1;
+
+  string nome = 2;
+
+  string modulo = 3;
+
+  ReportType tipo = 4;
+
+  bool padraoSistema = 5;
+
+  bool analytic = 6;
+
+  Filter filter = 7;
+}
+
+message ListReportResponse {
+  repeated Report reportList = 1;
+}
+
+message GetReportRequest {
+  string id = 1;
+
+  string report_name = 2;
+}
+
+message GetReportResponse {
+  Report report = 1;
+}
+
+message GenerateReportRequest {
+  string report_name = 1;
+
+  string data = 2;
+
+  // dados do arquivo de saida com a extensao, ex: /tmp/test.pdf, baseado na extensao do arquivo de saida desejado
+  // o sistema gerará no formato da extensao
+  string output_file = 3;
+}
+
+message GenerateReportResponse {
+  // report format specified in the request
+  string format = 1;
+
+  // report output, if the requested format is HTML, this will be HTML, any other file type such as PDF, this field will be in base64
+  string result = 2;
+}
+
+message SendByEmailRequest {
+  string from_email = 1;
+
+  string from_name = 2;
+
+  repeated string to = 3;
+
+  string subject = 4;
+
+  string body = 5;
+
+  string report_id = 6;
+
+  string report_name = 7;
+
+  string report_module = 8;
+
+  // dados do relatório para ser renderizado e enviado por email
+  string report_data = 9;
+
+  repeated Format formats = 10;
+
+  // Campos para envio direto do arquivo já gerado pelo frontend (Stimulsoft)
+  // Se attachment_data estiver preenchido, usa o arquivo diretamente sem gerar no backend
+  string attachment_data = 11; // dados do arquivo em base64
+
+  string attachment_name = 12; // nome do arquivo (ex: "relatorio.pdf")
+
+  string attachment_format = 13; // formato/extensão (ex: "pdf", "xlsx")
+}
+
+message SendByEmailResponse {
+  string result = 1;
+}
+
+message SetDefaultReportRequest {
+  string module = 1;
+
+  string id = 2;
+}
+
+message SetDefaultReportResponse {
+  string result = 1;
+}
+
+enum FrameworkType {
+  FRAMEWORK_TYPE_STIMULSOFT = 0;
+
+  FRAMEWORK_TYPE_HTML = 1;
+
+  FRAMEWORK_TYPE_POWER_BI = 2;
+}
+
+enum ReportType {
+  UNSPECIFIED = 0;
+
+  REPORT = 1;
+
+  DASHBOARD = 2;
+}
+
+enum ReportFormat {
+  REPORT_FORMAT_UNSPECIFIED = 0;
+
+  REPORT_FORMAT_PDF = 1;
+
+  REPORT_FORMAT_EXCEL = 2;
+
+  REPORT_FORMAT_WORD = 3;
+
+  REPORT_FORMAT_HTML = 4;
+
+  REPORT_FORMAT_PPT = 5;
+
+  REPORT_FORMAT_RTF = 6;
+
+  REPORT_FORMAT_ODT = 7;
+
+  REPORT_FORMAT_ODS = 8;
+
+  REPORT_FORMAT_PNG = 9;
+
+  REPORT_FORMAT_JPEG = 10;
+
+  REPORT_FORMAT_TEXT = 11;
+
+  REPORT_FORMAT_CSV = 12;
+}
+
+message Report {
+  string id = 1;
+
+  metadata.BasicFields fields = 2;
+
+  ReportType tipo = 3;
+
+  string categoria = 4;
+
+  string modulo = 5; // nome do modulo do relatorio
+
+  string nome = 6;
+
+  string descricao = 7;
+
+  string subTitle = 8;
+
+  // indica que o relatório é um relatório de análise, esses relatorios aparecem no modulo de relatorios
+  // é preciso isso para diferenciar relatorios analiticos com relatórios de processos(exemplo impressao de danfe, impressao de recibos)
+  bool analytic = 9;
+
+  string template = 10;
+
+  // exemplo de dados para que seja usado durante o desenvolvimento do relatório, esse dados deve contar
+  // uma amostra completa com todos os campos que é usado no relatório
+  string dadosExemplo = 11;
+
+  FrameworkType framework = 12;
+
+  // indica que o relatório é padrao e não pode ser alterado, somente pela empresa desenvolvedora
+  bool padraoSistema = 13;
+
+  // indica que o relatório é o padrao da empresa para esse tipo "nome" do relatório, o relatório padrão é o
+  // primiero relatório a ser exibido no sistema, caso não tenha sido definido, o primeiro da lista fica sendo o
+  // padrão a ser mostrado.
+  // não pode haver dois registros com esse campo sendo "true" para o mesmo tipo/nome de relatório
+  bool padrao = 14;
+
+  // esse campo guarda a URL para requisicao dos dados para mostrar o relatório/dashboard
+  datasource.DataSource datasource = 15;
+
+  Filter filter = 16;
+
+  bool autoFilter = 17;
+
+  repeated string allowedModules = 18; // modulos que tem acesso ao relatorio
+
+  // prioridade para ordenação do relatório (1 = mais prioritário, 0 = sem prioridade - ordenação alfabética)
+  int32 priority = 19;
+
+  // prioridade para ordenação da categoria no menu de relatórios (1 = mais prioritário, 0 = sem prioridade)
+  int32 category_priority = 20;
+}

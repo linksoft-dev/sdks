@@ -1,0 +1,581 @@
+syntax = "proto3";
+
+package shipment;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/vendas/shipment";
+
+// Servico Shipment com operacoes CRUD: agrupa pedidos para uma rota/destino,
+// com peso consolidado, faturamento em lote e prestacao de contas.
+service ShipmentService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  // Operacoes especificas do shipment
+  rpc AddOrders ( AddOrdersRequest ) returns ( AddOrdersResponse );
+
+  rpc RemoveOrders ( RemoveOrdersRequest ) returns ( RemoveOrdersResponse );
+
+  rpc CutProduct ( CutProductRequest ) returns ( CutProductResponse );
+
+  rpc Print ( PrintRequest ) returns ( PrintResponse );
+
+  rpc PrintOrders ( PrintOrdersRequest ) returns ( PrintOrdersResponse );
+
+  rpc SynchronizeOrder ( SynchronizeOrderRequest ) returns ( SynchronizeOrderResponse );
+
+  // Fatura todos os pedidos elegiveis do shipment (pedidos PENDENTES com pagamento LANCADO)
+  rpc InvoiceOrders ( InvoiceOrdersRequest ) returns ( InvoiceOrdersResponse );
+
+  // Gera relatorio de prestacao de contas do shipment (vendas por forma de pagamento)
+  rpc SettlementReport ( SettlementReportRequest ) returns ( SettlementReportResponse );
+
+  // Transicoes do ciclo de expedicao (F1)
+  rpc Check ( CheckRequest ) returns ( CheckResponse );
+
+  rpc StartTransit ( StartTransitRequest ) returns ( StartTransitResponse );
+
+  rpc Complete ( CompleteRequest ) returns ( CompleteResponse );
+
+  rpc CancelDispatch ( CancelDispatchRequest ) returns ( CancelDispatchResponse );
+
+  rpc UpdateOrderDeliveryStatus ( UpdateOrderDeliveryStatusRequest ) returns ( UpdateOrderDeliveryStatusResponse );
+
+  rpc MyShipments ( MyShipmentsRequest ) returns ( MyShipmentsResponse );
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+
+  OPEN = 1;
+
+  CONCLUDED = 2;
+
+  CANCELLED = 3;
+}
+
+// Tipos de operacao de expedicao (F1)
+enum ShipmentType {
+  SHIPMENT_TYPE_UNSPECIFIED = 0;
+
+  DELIVERY = 1; // Delivery curto (motoboy proprio, loja virtual)
+
+  LONG_HAUL = 2; // Entrega longa (transportadora externa)
+
+  PICKUP = 3; // Retirada no local
+}
+
+// Maquina de estados do despacho do shipment (F1)
+enum DispatchStatus {
+  DISPATCH_STATUS_UNSPECIFIED = 0;
+
+  DRAFT = 1; // Rascunho
+
+  CHECKED = 2; // Conferido
+
+  IN_TRANSIT = 3; // Em rota
+
+  COMPLETED = 4; // Finalizado
+
+  CANCELLED_DISPATCH = 5; // Cancelado (despacho)
+}
+
+// Maquina de estados de entrega por pedido (F1)
+enum OrderDeliveryStatus {
+  ORDER_DELIVERY_STATUS_UNSPECIFIED = 0;
+
+  PENDING = 1;
+
+  OUT_FOR_DELIVERY = 2;
+
+  DELIVERED = 3;
+
+  DELIVERY_FAILED = 4;
+
+  RETURNED = 5;
+}
+
+// Dados do Shipment
+message Shipment {
+  google.protobuf.Timestamp created_at = 1; // Data de criacao
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualizacao
+
+  string user_id = 3; // ID do usuario que realizou a acao
+
+  string user_name = 4; // Nome do usuario que realizou a acao
+
+  string id = 5;
+
+  Status status = 6;
+
+  string driver_id = 7;
+
+  string driver_name = 8;
+
+  metadata.BasicFields fields = 9;
+
+  int32 number = 10;
+
+  string destination = 11;
+
+  double total = 12;
+
+  repeated ShipmentOrder orders = 13;
+
+  repeated ShipmentItem items = 14;
+
+  string notes = 15;
+
+  double gross_weight = 16; // Peso bruto total (soma dos pesos dos produtos)
+
+  // Campos da expedicao (F1)
+  ShipmentType type = 17;
+
+  DispatchStatus dispatch_status = 18;
+
+  string carrier_person_id = 19; // FK logica para Person com sub-message Carrier (F5)
+
+  string carrier_name = 20;
+
+  string vehicle_plate = 21;
+
+  string vehicle_id = 28; // FK opcional para fleet.Vehicle (frota propria); placa livre se vazio
+
+  string vehicle_nickname = 29; // Cache de fleet.Vehicle.nickname para exibicao
+
+  google.protobuf.Timestamp expected_delivery = 22;
+
+  google.protobuf.Timestamp dispatched_at = 23;
+
+  google.protobuf.Timestamp completed_at = 24;
+
+  string external_shipment_code = 25; // Codigo retornado pelo provider externo (Correios, etc)
+
+  string tracking_code = 26; // Codigo publico de rastreio do shipment
+
+  repeated string route = 27; // IDs dos pedidos em ordem de entrega
+}
+
+message ShipmentOrder {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2; // Data de criacao
+
+  google.protobuf.Timestamp updated_at = 3; // Data de atualizacao
+
+  string user_id = 4; // ID do usuario que realizou a acao
+
+  string user_name = 5; // Nome do usuario que realizou a acao
+
+  string order_id = 7;
+
+  int32 order_number = 8;
+
+  string order_status = 9;
+
+  double order_products_total = 10;
+
+  double order_total = 11;
+
+  int32 items_count = 12; // Quantidade de itens do pedido
+
+  // Campos da expedicao por pedido (F1)
+  OrderDeliveryStatus delivery_status = 13;
+
+  google.protobuf.Timestamp dispatched_at = 14;
+
+  google.protobuf.Timestamp delivered_at = 15;
+
+  string recipient_name = 16;
+
+  string recipient_document = 17;
+
+  string proof_photo_url = 18;
+
+  string signature_url = 19;
+
+  GeoLocation delivery_location = 20;
+
+  string delivery_notes = 21;
+
+  string order_tracking_code = 22; // Codigo publico unico (gerado por apps/sequencial)
+
+  repeated DeliveryAttempt attempts = 23;
+
+  // Itens e quantidades do pedido expedidos NESTE shipment. O saldo a expedir
+  // de um item é a quantidade no pedido menos a soma em shipments não cancelados.
+  repeated ShipmentOrderItem items = 24;
+}
+
+// ShipmentOrderItem - Item de um pedido com a quantidade expedida neste shipment
+message ShipmentOrderItem {
+  string id = 1;
+
+  string order_item_id = 2; // id do item (produto) dentro do pedido
+
+  string product_id = 3;
+
+  string product_name = 4;
+
+  string product_unit = 5;
+
+  string code = 6;
+
+  double quantity = 7;
+
+  double unit_price = 8;
+
+  double total = 9;
+
+  // Lotes/ordens de produção de origem da quantidade expedida (rastreabilidade).
+  repeated ShipmentOrderItemBatch batches = 10;
+}
+
+// ShipmentOrderItemBatch - Origem de produção de uma quantidade expedida
+message ShipmentOrderItemBatch {
+  string batch_code = 1;
+
+  double quantity = 2;
+
+  string production_order_id = 3;
+
+  uint32 production_order_number = 4;
+}
+
+// Tentativa de entrega registrada quando ha falha (F1)
+message DeliveryAttempt {
+  google.protobuf.Timestamp attempted_at = 1;
+
+  string failure_reason = 2;
+
+  string photo_url = 3;
+}
+
+// Geolocalizacao com timestamp de captura (F1, F3)
+message GeoLocation {
+  double latitude = 1;
+
+  double longitude = 2;
+
+  google.protobuf.Timestamp captured_at = 3;
+}
+
+message ShipmentItem {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2; // Data de criacao
+
+  google.protobuf.Timestamp updated_at = 3; // Data de atualizacao
+
+  string user_id = 4; // ID do usuario que realizou a acao
+
+  string user_name = 5; // Nome do usuario que realizou a acao
+
+  string code = 6;
+
+  string product_id = 7;
+
+  string product_name = 8;
+
+  string product_unit = 9;
+
+  double unit_weight = 10;
+
+  double gross_weight = 11;
+
+  double quantity = 12;
+
+  double total = 13;
+}
+
+// Request e Response para criacao de Shipment
+message CreateRequest {
+  Shipment shipment = 1;
+}
+
+message CreateResponse {
+  Shipment shipment = 1;
+}
+
+// Request e Response para atualizacao de Shipment
+message UpdateRequest {
+  string id = 1; // ID do Shipment a ser atualizado
+
+  Shipment shipment = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Shipment shipment = 1;
+}
+
+// Request e Response para exclusao de Shipment
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+// Request para obter um Shipment por ID
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Shipment shipment = 1;
+}
+
+// Request e Response para listagem de Shipments
+message ListRequest {
+  repeated string ids = 1;
+
+  repeated string orders_ids = 2;
+
+  uint32 page_size = 3;
+
+  string page_token = 4;
+
+  Filter filter = 5;
+}
+
+message ListResponse {
+  repeated Shipment shipmentList = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para adicionar pedidos ao shipment
+message AddOrdersRequest {
+  string id = 1; // ID do shipment
+
+  repeated string orders_ids = 2; // IDs dos pedidos a serem adicionados
+
+  // Quantidades por item do pedido. Vazio: entram todos os itens com o saldo
+  // disponível a expedir de cada um.
+  repeated AddOrderItemInput items = 3;
+}
+
+// AddOrderItemInput - Quantidade de um item de pedido a expedir neste shipment
+message AddOrderItemInput {
+  string order_id = 1;
+
+  string order_item_id = 2; // id do item (produto) dentro do pedido
+
+  double quantity = 3;
+}
+
+message AddOrdersResponse {
+  Shipment shipment = 1;
+}
+
+// Request e Response para remover pedidos do shipment
+message RemoveOrdersRequest {
+  string id = 1; // ID do shipment
+
+  repeated string orders_ids = 2; // IDs dos pedidos a serem removidos
+}
+
+message RemoveOrdersResponse {
+  Shipment shipment = 1;
+}
+
+// Request e Response para cortar produto do shipment
+message CutProductRequest {
+  string id = 1; // ID do shipment
+
+  string product_id = 2; // ID do produto
+
+  double quantity = 3; // Quantidade a ser cortada
+}
+
+message CutProductResponse {
+  Shipment shipment = 1;
+}
+
+// Request e Response para imprimir shipment
+message PrintRequest {
+  repeated string ids = 1; // IDs dos shipments a serem impressos
+}
+
+message PrintResponse {
+  string id = 1;
+
+  string html_content = 2;
+
+  string template = 3;
+
+  string data = 4;
+}
+
+// Request e Response para imprimir pedidos do shipment
+message PrintOrdersRequest {
+  repeated string ids = 1; // IDs dos shipments
+}
+
+message PrintOrdersResponse {
+  string id = 1;
+
+  string html_content = 2;
+
+  string template = 3;
+
+  string data = 4;
+}
+
+message SynchronizeOrderRequest {
+  string id = 1;
+}
+
+message SynchronizeOrderResponse {
+  Shipment shipment = 1;
+}
+
+// Request e Response para faturar pedidos
+message InvoiceOrdersRequest {
+  string id = 1; // ID do shipment
+}
+
+message InvoiceOrdersResponse {
+  Shipment shipment = 1;
+
+  int32 invoiced_orders = 2; // Quantidade de pedidos faturados com sucesso
+
+  int32 failed_orders = 3; // Quantidade de pedidos com erro
+
+  repeated InvoiceOrderResult results = 4; // Resultado detalhado por pedido
+}
+
+message InvoiceOrderResult {
+  string order_id = 1;
+
+  int32 order_number = 2;
+
+  bool success = 3;
+
+  string message = 4; // Mensagem de erro ou sucesso
+
+  bool pending_payment = 5; // Pedido ainda sem forma de pagamento: precisa passar pelo recebimento
+
+  string person_name = 6; // Cliente do pedido
+
+  double balance = 7; // Saldo a receber do pedido
+}
+
+// Request e Response para prestacao de contas do shipment
+message SettlementReportRequest {
+  string id = 1; // ID do shipment
+
+  bool detailed = 2; // true = detalhado, false = resumido
+}
+
+message SettlementReportResponse {
+  report.Response response = 1;
+}
+
+// ----- Transicoes de despacho (F1) -----
+
+message CheckRequest {
+  string id = 1;
+}
+
+message CheckResponse {
+  Shipment shipment = 1;
+}
+
+message StartTransitRequest {
+  string id = 1;
+}
+
+message StartTransitResponse {
+  Shipment shipment = 1;
+}
+
+message CompleteRequest {
+  string id = 1;
+}
+
+message CompleteResponse {
+  Shipment shipment = 1;
+}
+
+message CancelDispatchRequest {
+  string id = 1;
+
+  string reason = 2;
+}
+
+message CancelDispatchResponse {
+  Shipment shipment = 1;
+}
+
+// Atualiza status de entrega de um pedido especifico (admin ou PWA do motorista)
+message UpdateOrderDeliveryStatusRequest {
+  string shipment_id = 1;
+
+  string order_id = 2;
+
+  OrderDeliveryStatus new_status = 3;
+
+  // Campos opcionais conforme exigencia do ShipmentConfig (F2)
+  string recipient_name = 10;
+
+  string recipient_document = 11;
+
+  string proof_photo_url = 12;
+
+  string signature_url = 13;
+
+  GeoLocation delivery_location = 14;
+
+  string delivery_notes = 15;
+
+  // Apenas para DELIVERY_FAILED
+  string failure_reason = 20;
+
+  string failure_photo_url = 21;
+}
+
+message UpdateOrderDeliveryStatusResponse {
+  Shipment shipment = 1;
+}
+
+// PWA do motorista: lista shipments atribuidos ao usuario logado (F3)
+message MyShipmentsRequest {
+  repeated DispatchStatus dispatch_statuses = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+}
+
+message MyShipmentsResponse {
+  repeated Shipment shipmentList = 1;
+
+  string next_page_token = 2;
+}

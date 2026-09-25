@@ -1,0 +1,2530 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "apps/report/report.proto";
+
+import "apps/vendas/rentcar/model/rentcar_model.proto";
+
+import "apps/vendas/pedido/pedido_otica.proto";
+
+import "apps/vendas/pedido/pedido_mesa.proto";
+
+import "apps/filemanager/filemanager.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "imports/imports.proto";
+
+import "exports/exports.proto";
+
+package pedido;
+
+option go_package = "comps/pb/apps/vendas/pedido";
+
+// services
+service PedidoService {
+  rpc Create ( CreatePedidoRequest ) returns ( CreatePedidoResponse );
+
+  rpc CreateValidated ( CreatePedidoRequest ) returns ( CreatePedidoResponse );
+
+  rpc Update ( UpdatePedidoRequest ) returns ( UpdatePedidoResponse );
+
+  rpc SetAcompanhamento ( SetAcompanhamentoRequest ) returns ( SetAcompanhamentoResponse );
+
+  // Reordena os itens do documento: os ids vêm na ordem final e precisam ser exatamente
+  // os itens atuais. A nota fiscal sai na ordem do documento.
+  rpc ReorderItems ( ReorderItemsRequest ) returns ( ReorderItemsResponse );
+
+  rpc Delete ( DeletePedidoRequest ) returns ( DeletePedidoResponse );
+
+  rpc Get ( GetPedidoRequest ) returns ( GetPedidoResponse );
+
+  rpc List ( ListPedidoRequest ) returns ( ListPedidoResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc Print ( PrintPedidoRequest ) returns ( PrintPedidoResponse );
+
+  rpc GenerateFromOrcamento ( GenerateFromOrcamentoRequest ) returns ( GenerateFromOrcamentoResponse );
+
+  rpc Cancel ( CancelPedidoRequest ) returns ( CancelPedidoResponse );
+
+  rpc Clone ( ClonePedidoRequest ) returns ( ClonePedidoResponse );
+
+  rpc AddProduct ( AddProductRequest ) returns ( AddProductResponse );
+
+  rpc UpdateProduct ( UpdateProductRequest ) returns ( UpdateProductResponse );
+
+  rpc DeleteProduct ( DeleteProductRequest ) returns ( DeleteProductResponse );
+
+  rpc AddService ( AddServiceRequest ) returns ( AddServiceResponse );
+
+  rpc UpdateService ( UpdateServiceRequest ) returns ( UpdateServiceResponse );
+
+  rpc DeleteService ( DeleteServiceRequest ) returns ( DeleteServiceResponse );
+
+  rpc AddPayment ( AddPaymentRequest ) returns ( AddPaymentResponse );
+
+  rpc DeletePayment ( DeletePaymentRequest ) returns ( DeletePaymentResponse );
+
+  rpc CancelPayment ( CancelPaymentRequest ) returns ( CancelPaymentResponse );
+
+  // Efetiva pagamentos com status LANCADO, realizando lancamentos financeiros e fechando o pedido
+  rpc EffectuatePayments ( EffectuatePaymentsRequest ) returns ( EffectuatePaymentsResponse );
+
+  rpc SendByEmail ( SendByEmailRequest ) returns ( SendByEmailResponse );
+
+  // Retorna o PDF do pedido em base64 para a página pública de download (acesso via token)
+  rpc DownloadPdfPublico ( DownloadPdfPublicoRequest ) returns ( DownloadPdfPublicoResponse );
+
+  rpc AplicaTabelaPreco ( AplicaTabelaPrecoRequest ) returns ( AplicaTabelaPrecoResponse );
+
+  rpc DfeDanfe ( DfeDanfeRequest ) returns ( DfeDanfeResponse );
+
+  rpc Import ( ImportRequest ) returns ( ImportResponse );
+
+  // Cria pedidos mesclados com base nas IDs recebidas
+  rpc MesclaPedidos ( MesclaPedidosRequest ) returns ( MesclaPedidosResponse );
+
+  // Vincula um novo pedido à mesclagem já criada
+  rpc AddPedidoVinculado ( AddPedidoVinculadoRequest ) returns ( AddPedidoVinculadoResponse );
+
+  // Delete um dos pedidos da mesclagem
+  rpc DeletePedidoVinculado ( DeletePedidoVinculadoRequest ) returns ( DeletePedidoVinculadoResponse );
+
+  // Envia uma nota fiscal de acordo com as configurações de integração
+  rpc EnviaNFe ( EnviaNFeRequest ) returns ( EnviaNFeResponse );
+
+  // Sincroniza o pedido com o estado atual da NF vinculada
+  rpc SincronizaNFe ( SincronizaNFeRequest ) returns ( SincronizaNFeResponse );
+
+  // Sincroniza os dados desnormalizados da pessoa (e vinculos) a partir do cadastro.
+  // Persiste via DAO para permitir atualizacao mesmo com pedido FECHADO/CANCELADO.
+  rpc SincronizaPessoa ( SincronizaPessoaRequest ) returns ( SincronizaPessoaResponse );
+
+  // Permite vincular uma NF ao pedido manualmente
+  rpc VinculaNFManual ( VinculoNfManualRequest ) returns ( VinculoNfManualResponse );
+
+  rpc SendPaymentLink ( SendPaymentLinkRequest ) returns ( SendPaymentLinkResponse );
+
+  rpc CorrecaoMovimentacao ( CorrecaoMovimentacaoRequest ) returns ( CorrecaoMovimentacaoResponse );
+
+  rpc ConfirmOrderReceipt ( ConfirmOrderReceiptRequest ) returns ( ConfirmOrderReceiptResponse );
+
+  // Adiciona múltiplos arquivos ao pedido, delegando criação ao FileManager
+  rpc AddFiles ( AddFilesRequest ) returns ( AddFilesResponse );
+
+  // Remove arquivos do pedido e do FileManager
+  rpc RemoveFiles ( RemoveFilesRequest ) returns ( RemoveFilesResponse );
+
+  // Aprova ou recusa um arquivo do pedido que está aguardando moderação
+  rpc SetFileApproval ( SetFileApprovalRequest ) returns ( SetFileApprovalResponse );
+
+  rpc Export ( ExportOrdersRequest ) returns ( ExportOrdersResponse );
+
+  // Envia email solicitando avaliacao dos produtos do pedido
+  rpc SendReviewEmail ( SendReviewEmailRequest ) returns ( SendReviewEmailResponse );
+
+  // Recalcula a comissao de todos os itens do pedido com base no percentual atual do vendedor/tecnico
+  rpc RecalcularComissao ( RecalcularComissaoRequest ) returns ( RecalcularComissaoResponse );
+
+  // Agrupa os itens ainda não enviados por impressora de produção e devolve os
+  // jobs de impressão (cozinha/bar), marcando os itens como enviados.
+  rpc EnviarProducao ( EnviarProducaoRequest ) returns ( EnviarProducaoResponse );
+
+  // Grava a confirmação de impressão (ou erro) de cada item após o transporte
+  // (Linker/plugin) retornar.
+  rpc ConfirmarImpressaoProducao ( ConfirmarImpressaoProducaoRequest ) returns ( ConfirmarImpressaoProducaoResponse );
+
+  // Marca itens como entregues (com data/hora) para cálculo do tempo de preparo.
+  rpc MarcarItemEntregue ( MarcarItemEntregueRequest ) returns ( MarcarItemEntregueResponse );
+
+  // Produtos para inserção rápida no PDV: mais vendidos e últimos lançados.
+  rpc GetQuickProdutos ( GetQuickProdutosRequest ) returns ( GetQuickProdutosResponse );
+
+  // Soma o que cada vendedor realizou no período, para quem acompanha meta. A base diz o que
+  // conta: o valor do documento na data dele, ou o valor pago em cada pagamento, na data do
+  // pagamento — nesse caso um documento parcialmente pago entra pelo que já foi pago.
+  rpc ResumoVendasPorVendedor ( ResumoVendasPorVendedorRequest ) returns ( ResumoVendasPorVendedorResponse );
+}
+
+message GetQuickProdutosRequest {
+  int32 dias = 1; // janela de apuração (default 30)
+
+  int32 limit = 2; // top-N por lista (default 12)
+}
+
+message QuickProduto {
+  string produtoId = 1;
+
+  string nome = 2;
+
+  string codigo = 3;
+
+  string un = 4;
+
+  double valorUnitario = 5;
+
+  string categoriaId = 6;
+
+  string categoriaNome = 7;
+
+  string imagemUrl = 8; // Imagem do produto; vazio quando não há imagem disponível
+}
+
+message GetQuickProdutosResponse {
+  repeated QuickProduto maisVendidos = 1;
+
+  repeated QuickProduto recentes = 2;
+}
+
+message EnviarProducaoRequest {
+  string pedidoId = 1;
+
+  // Quando true, reemite itens já enviados (reimpressão de rodada).
+  bool reimprimir = 2;
+
+  // Quando preenchido, limita a operação a estes itens (ex.: reimprimir um item).
+  repeated string itemIds = 3;
+}
+
+message ImpressoraProducao {
+  string id = 1;
+
+  string nome = 2;
+
+  string tipoConexao = 3;
+
+  string host = 4;
+
+  uint32 porta = 5;
+
+  uint32 modelo = 6;
+
+  string grupo = 7;
+}
+
+message ProducaoItem {
+  string itemId = 1;
+
+  string nome = 2;
+
+  double quantidade = 3;
+
+  string un = 4;
+
+  string obs = 5;
+}
+
+message ProducaoJob {
+  ImpressoraProducao impressora = 1;
+
+  string mesaCartao = 2;
+
+  string setor = 3;
+
+  string dataHora = 4;
+
+  repeated ProducaoItem itens = 5;
+}
+
+message EnviarProducaoResponse {
+  repeated ProducaoJob jobs = 1;
+}
+
+message ConfirmacaoImpressaoItem {
+  string itemId = 1;
+
+  bool impresso = 2;
+
+  string erro = 3;
+}
+
+message ConfirmarImpressaoProducaoRequest {
+  string pedidoId = 1;
+
+  repeated ConfirmacaoImpressaoItem itens = 2;
+}
+
+message ConfirmarImpressaoProducaoResponse {
+}
+
+message MarcarItemEntregueRequest {
+  string pedidoId = 1;
+
+  repeated string itemIds = 2;
+
+  bool entregue = 3;
+}
+
+message MarcarItemEntregueResponse {
+}
+
+message CreatePedidoRequest {
+  Pedido pedido = 1;
+}
+
+message CreatePedidoResponse {
+  Pedido pedido = 1;
+}
+
+message UpdatePedidoRequest {
+  string id = 1;
+
+  Pedido pedido = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdatePedidoResponse {
+  Pedido pedido = 1;
+}
+
+message DeletePedidoRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeletePedidoResponse {
+}
+
+message ListPedidoRequest {
+  repeated string ids = 1;
+
+  string nome = 2;
+
+  Pedido pedido = 3;
+
+  metadata.Boolean merged = 4;
+
+  metadata.Boolean seller_only = 5;
+
+  string seller_id = 6;
+
+  metadata.Boolean generated_nfe = 7;
+
+  metadata.Boolean generated_nfce = 8;
+
+  string nfe_id = 9;
+
+  string nfce_id = 10;
+
+  string nfse_id = 11;
+
+  string person_id = 12;
+
+  string contract_number = 13;
+
+  repeated string types = 14;
+
+  repeated string status = 15;
+
+  repeated string products_id = 16;
+
+  repeated string payment_method_id = 17;
+
+  google.protobuf.Timestamp due_date_gte = 18;
+
+  google.protobuf.Timestamp due_date_lte = 19;
+
+  google.protobuf.Timestamp created_at_gte = 20;
+
+  google.protobuf.Timestamp created_at_lte = 21;
+
+  google.protobuf.Timestamp closeDateGte = 22;
+
+  google.protobuf.Timestamp closeDateLte = 23;
+
+  google.protobuf.Timestamp deliveryDateGte = 24;
+
+  google.protobuf.Timestamp deliveryDateLte = 25;
+
+  google.protobuf.Timestamp recurrenceDateGte = 26;
+
+  google.protobuf.Timestamp recurrenceDateLte = 27;
+
+  google.protobuf.Timestamp dataHoraRegistroGte = 28;
+
+  google.protobuf.Timestamp dataHoraRegistroLte = 29;
+
+  double totalGte = 30;
+
+  double totalLte = 31;
+
+  string payment_id = 32;
+
+  Filter filter = 33;
+
+  repeated string currency = 34;
+
+  string categoryId = 35;
+
+  string recurrence_type = 36;
+
+  int32 recurrence_increment = 37;
+
+  string contract_type = 38;
+
+  string source = 39;
+
+  string source_id = 40;
+}
+
+message CancelPedidoRequest {
+  string id = 1;
+
+  string reason = 2;
+}
+
+message CancelPedidoResponse {
+  Pedido pedido = 1;
+}
+
+message ClonePedidoRequest {
+  string id = 1;
+
+  string reason = 2;
+
+  // Quando true, produtos/serviços recebem o valor unitário atual do cadastro.
+  // Quando false, preserva os valores do pedido origem.
+  bool use_current_prices = 3;
+}
+
+message ClonePedidoResponse {
+  Pedido pedido = 1;
+}
+
+message ConfirmOrderReceiptRequest {
+  string id = 1;
+}
+
+message ConfirmOrderReceiptResponse {
+  Pedido pedido = 1;
+}
+
+enum RespostaCliente {
+  RESPOSTA_CLIENTE_UNSPECIFIED = 0;
+
+  RESPOSTA_CLIENTE_APROVADO = 1;
+
+  RESPOSTA_CLIENTE_AJUSTE = 2; // Pediu mudança no orçamento
+
+  RESPOSTA_CLIENTE_CONVERSA = 3; // Pediu para conversar com a empresa
+
+  RESPOSTA_CLIENTE_RECUSADO = 4; // Não vai seguir com o orçamento
+
+  RESPOSTA_CLIENTE_MAIS_PRAZO = 5; // Pediu mais prazo de validade
+}
+
+// Request para adicionar múltiplos arquivos a um pedido
+message AddFilesRequest {
+  string id = 1; // ID do pedido
+
+  // Arquivos a serem criados no FileManager; base64_content/path são usados pelo serviço de arquivos
+  repeated filemanager.File files = 2;
+
+  bool skip_upload = 3; // Se true, não faz upload para a nuvem, apenas cria a referência (útil para migrações onde o arquivo já existe)
+}
+
+// Response com o pedido atualizado contendo apenas referências essenciais aos arquivos
+message AddFilesResponse {
+  Pedido pedido = 1;
+}
+
+// Request para remover arquivos de um pedido
+message RemoveFilesRequest {
+  string id = 1; // ID do pedido
+
+  repeated string file_ids = 2; // IDs dos arquivos a remover (opcional)
+
+  repeated string paths = 3; // Paths dos arquivos a remover (opcional)
+}
+
+message RemoveFilesResponse {
+  Pedido pedido = 1;
+}
+
+// Request para aprovar ou recusar um arquivo do pedido
+message SetFileApprovalRequest {
+  string id = 1; // ID do pedido
+
+  string file_id = 2; // ID do arquivo dentro do pedido
+
+  filemanager.FileApprovalStatus status = 3;
+
+  string note = 4; // motivo, obrigatório ao recusar
+}
+
+message SetFileApprovalResponse {
+  Pedido pedido = 1;
+}
+
+message ExportOrdersRequest {
+  exports.ExportFormat format = 1;
+
+  Filter filter = 2;
+
+  string type = 3;
+
+  bool include_metadata = 4;
+}
+
+message ExportOrdersResponse {
+  exports.ExportResponse export = 1;
+}
+
+message SendReviewEmailRequest {
+  string id = 1; // ID do pedido
+}
+
+message SendReviewEmailResponse {
+  int32 sent_count = 1; // Quantidade de emails enviados
+}
+
+message GetPedidoRequest {
+  string id = 1;
+}
+
+message GetPedidoResponse {
+  Pedido pedido = 1;
+}
+
+message GenerateFromOrcamentoRequest {
+  string id = 1;
+
+  TipoMovimentacao type = 2;
+
+  // Números de série da venda gerada. Cada item usa o id do produto no orçamento.
+  repeated OrcamentoItemSerial itens_serial = 3;
+}
+
+message OrcamentoItemSerial {
+  string orcamento_produto_id = 1;
+
+  SerialInfo serial = 2;
+}
+
+message GenerateFromOrcamentoResponse {
+  Pedido pedido = 1;
+}
+
+message ListPedidoResponse {
+  repeated Pedido pedidoList = 1;
+}
+
+message AddProductRequest {
+  string parentId = 1; // ID do Pedido ao qual o produto será adicionado
+
+  TipoMovimentacao type = 2; // Tipo do produto
+
+  string productId = 3; // ID do Produto a ser adicionado
+
+  Produto product = 4; // Dados do produto a ser adicionado
+}
+
+message AddProductResponse {
+  Pedido pedido = 1;
+
+  Produto product = 2;
+}
+
+message UpdateProductRequest {
+  string parentId = 1;
+
+  string productId = 2;
+
+  Produto product = 3;
+}
+
+message UpdateProductResponse {
+  Pedido pedido = 1;
+
+  Produto product = 2;
+}
+
+message DeleteProductRequest {
+  string parentId = 1;
+
+  string productId = 2;
+}
+
+message DeleteProductResponse {
+  Pedido pedido = 1;
+}
+
+message AddServiceRequest {
+  string parentId = 1; // ID do Pedido ao qual o serviço será adicionado
+
+  TipoMovimentacao type = 2; // Tipo do serviço
+
+  string serviceId = 3; // ID do Serviço a ser adicionado
+
+  Servico service = 4; // Dados do serviço a ser adicionado
+}
+
+message AddServiceResponse {
+  Pedido pedido = 1;
+
+  Servico service = 2;
+}
+
+message UpdateServiceRequest {
+  string parentId = 1;
+
+  string serviceId = 2;
+
+  Servico service = 3;
+}
+
+message UpdateServiceResponse {
+  Pedido pedido = 1;
+
+  Servico service = 2;
+}
+
+message DeleteServiceRequest {
+  string parentId = 1;
+
+  string serviceId = 2;
+
+  double quantity = 3;
+}
+
+message DeleteServiceResponse {
+  Pedido pedido = 1;
+}
+
+message AddPaymentRequest {
+  string parentId = 1;
+
+  repeated Pagamento payments = 2;
+
+  bool skip_financial_postings = 3; // Se true, pagamento fica com status LANCADO (sem lancamentos financeiros)
+
+  // Recebimento de vários pedidos de uma vez (alternativa ao parentId). Com mais de um id,
+  // os pagamentos devem quitar o saldo total dos pedidos (não há pagamento parcial),
+  // dinheiro pode gerar troco e os pagamentos são rateados entre os pedidos.
+  repeated string parent_ids = 4;
+}
+
+message AddPaymentResponse {
+  Pedido pedido = 1;
+
+  Pagamento pagamento = 2;
+
+  repeated Pedido pedidos = 3; // preenchido no recebimento de vários pedidos (parent_ids)
+
+  double troco = 4; // troco total do recebimento de vários pedidos (dinheiro acima do saldo)
+}
+
+message DeletePaymentRequest {
+  string parentId = 1;
+
+  string paymentId = 2;
+}
+
+message DeletePaymentResponse {
+  Pedido pedido = 1;
+}
+
+message CancelPaymentRequest {
+  string parentId = 1;
+
+  string paymentId = 2;
+
+  string paymentOnlineId = 3;
+
+  string reason = 4;
+
+  bool cancelOrder = 5; // indica que é uma request de cancelamento de pedido completo
+}
+
+message CancelPaymentResponse {
+  Pedido pedido = 1;
+}
+
+message EffectuatePaymentsRequest {
+  string parent_id = 1; // ID do pedido
+}
+
+message EffectuatePaymentsResponse {
+  Pedido pedido = 1;
+}
+
+message SendByEmailRequest {
+  string pedidoId = 1;
+
+  string destEmail = 2; // E-mail para envio (opcional se whatsappNumero estiver preenchido)
+
+  string email_integration_id = 3; // ID da integração de e-mail para envio; vazio usa a resolução padrão do sistema
+
+  string whatsapp_numero = 4; // Número do WhatsApp para envio (opcional se destEmail estiver preenchido)
+
+  string whatsapp_nome_destinatario = 5; // Nome do destinatário para WhatsApp (opcional)
+
+  string whatsapp_integration_id = 6; // ID da integração WhatsApp para envio via API (opcional)
+
+  // Modelo de mensagem a usar; vazio usa o modelo padrão do canal.
+  string message_template_id = 7;
+}
+
+message SendByEmailResponse {
+  string result = 1;
+
+  string whatsapp_web_message = 2; // mensagem para envio via whatsapp web (fallback quando não há integração)
+
+  string public_download_link = 3; // link público para download do pedido (JWT)
+}
+
+message SendReminderRequest {
+  string id = 1; // id do orçamento
+}
+
+message SendReminderResponse {
+  PedidoEvent event = 1; // lembrete registrado no histórico do orçamento
+
+  repeated string falhas = 2; // canais que não saíram, com o motivo
+}
+
+message DownloadPdfPublicoRequest {
+  string id = 1;
+}
+
+message DownloadPdfPublicoResponse {
+  string filename = 1;
+
+  string pdf_base64 = 2;
+}
+
+message AplicaTabelaPrecoRequest {
+  string pedidoId = 1;
+
+  string tabelaPreco = 2;
+}
+
+message AplicaTabelaPrecoResponse {
+  Pedido pedido = 1;
+}
+
+message RecalcularComissaoRequest {
+  repeated string ids = 1; // ids dos pedidos a recalcular (1 ou varios)
+
+  bool sobrescrever_manuais = 2; // quando true, recalcula tambem itens com comissao definida manualmente
+
+  bool incluir_fechados = 3; // quando true, recalcula tambem pedidos fechados (ressincroniza Contas a Pagar; ignora se a comissao ja foi paga)
+}
+
+message RecalcularComissaoResponse {
+  repeated Pedido pedidos = 1; // pedidos efetivamente recalculados
+
+  int32 recalculados = 2; // quantidade recalculada
+
+  int32 ignorados = 3; // quantidade ignorada (ex.: pedido nao pendente)
+}
+
+message Billing {
+  bool enabled = 1 [deprecated = true]; // a cobrança automática é definida pelo plano de cobrança, não pelo documento
+
+  string billing_plan_id = 2 [deprecated = true];
+
+  string billing_plan_name = 3 [deprecated = true];
+
+  google.protobuf.Timestamp next_billing_date = 4;
+
+  // O historico de envios vive no modulo apps/vendas/billing. Os campos
+  // abaixo sao denormalizados aqui para suportar a regra de envio automatico
+  // (limite de cobrancas e calculo da proxima data) sem precisar listar
+  // todos os registros de cobranca a cada execucao do job.
+  int32 billings_count = 6;
+
+  google.protobuf.Timestamp last_billing_date = 7;
+
+  // Envia a cobrança automática também pelo WhatsApp do cliente, além do e-mail.
+  bool send_whatsapp = 8;
+
+  // Conta de WhatsApp usada no envio; vazia usa a conta padrão da organização.
+  string whatsapp_integration_id = 9;
+}
+
+enum ReportType {
+  // Reports
+  REPORT_TYPE_UNSPECIFIED = 0;
+
+  REPORT_TYPE_ORDER_SUMMARY = 1;
+
+  REPORT_TYPE_ORDER_SMALL_SUMMARY = 2;
+
+  REPORT_TYPE_PAYMENT_BY_ACQUIRER_SUMMARY = 3;
+
+  REPORT_TYPE_PAYMENT_BY_ACQUIRER_DETAIL = 4;
+
+  REPORT_TYPE_GROUP_BY_PAYMENT_METHOD_SUMMARY = 5;
+
+  REPORT_TYPE_GROUP_BY_PAYMENT_METHOD_DETAIL = 6;
+
+  REPORT_TYPE_GROUP_BY_DATE = 7;
+
+  REPORT_TYPE_GROUP_BY_PERSON = 8;
+
+  REPORT_TYPE_GROUP_BY_PRODUCT = 9;
+
+  REPORT_TYPE_GROUP_BY_SERVICE = 10;
+
+  REPORT_TYPE_GROUP_BY_CATEGORY = 11;
+
+  REPORT_TYPE_GROUP_BY_MANUFACTURER = 12;
+
+  REPORT_TYPE_GROUP_BY_SELLER_COMMISSION = 13;
+
+  REPORT_TYPE_SALES_SUMMARY = 14;
+
+  REPORT_TYPE_SALES_DETAIL = 15;
+
+  REPORT_TYPE_SALES_BY_PRODUCT = 16;
+
+  REPORT_TYPE_SALES_BY_SERVICE = 17;
+
+  REPORT_TYPE_SALES_BY_CATEGORY = 18;
+
+  REPORT_TYPE_SALES_FOR_DELIVERY = 19;
+
+  REPORT_TYPE_COMMISSION_BY_SELLER = 20;
+
+  REPORT_TYPE_GROUP_BY_SELLER = 21;
+
+  REPORT_TYPE_GROUP_BY_TECHNICAL_SERVICE = 22;
+
+  REPORT_TYPE_YEAR_MONTH = 23;
+
+  REPORT_TYPE_PROD_SERV_MOST_SOLD = 24;
+
+  REPORT_TYPE_PROD_MOST_PROFITABLE = 25;
+
+  REPORT_TYPE_SALES_BY_SELLER_UNIT_PRICE_DIFFERENCE = 26;
+
+  // Dashboards
+  REPORT_TYPE_DASHBOARD_SALES_SUMMARY = 27;
+
+  REPORT_TYPE_DASHBOARD_SALES_TOP5 = 28;
+
+  REPORT_TYPE_DASHBOARD_SALES_BY_REGION = 29;
+
+  REPORT_TYPE_DASHBOARD_SALES_KPI = 30;
+
+  REPORT_TYPE_ABC_CURVE_BY_PERSON = 31;
+}
+
+message ReportRequest {
+  ListPedidoRequest list_request = 1;
+
+  ReportType reportType = 2;
+
+  string tipoRelatorio = 3;
+
+  string sendByEmail = 4;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}
+
+enum TipoMovimentacao {
+  TIPO_UNSPECIFIED = 0;
+
+  TIPO_ALL = 1;
+
+  TIPO_PEDIDO = 2;
+
+  TIPO_ORCAMENTO = 3;
+
+  TIPO_OS = 4;
+
+  TIPO_AUTHORIZATION = 5;
+
+  TIPO_CART = 7;
+
+  TIPO_CONTRACTSALES = 8;
+
+  TIPO_CONTRACT = 9;
+
+  TIPO_RENT_CAR = 10;
+}
+
+enum RecurrenceType {
+  RECURRENCE_TYPE_UNSPECIFIED = 0;
+
+  DAILY = 1;
+
+  WEEKLY = 2;
+
+  MONTHLY = 3;
+
+  YEARLY = 4;
+}
+
+// Origem do pedido
+enum Origin {
+  ORIGIN_MARKETPLACE = 0; // Marketplace (ex: Mercado Livre)
+
+  ORIGIN_ONLINE_STORE = 1; // Loja Virtual / E-commerce
+
+  ORIGIN_EXTERNAL_SALESMAN = 2; // Vendedor Externo
+
+  ORIGIN_GENERAL = 3; // Geral
+}
+
+// Mensagem que representa a origem do pedido
+message OriginInfo {
+  string name = 1; // Nome da origem
+
+  string id = 2; // ID da origem
+
+  string reference_number = 3; // Número de referência do processo que originou o pedido (ex: número do pedido no Mercado Livre)
+
+  Origin origin_type = 4; // Tipo da origem do pedido
+}
+
+message OrderTag {
+  string value = 1;
+
+  string color = 2;
+}
+
+// Snapshot do status de acompanhamento (catálogo apps/vendas/acompanhamento)
+// aplicado ao documento. No máximo um por documento.
+message OrderAcompanhamento {
+  string id = 1;
+
+  string code = 2;
+
+  string name = 3;
+
+  string color = 4;
+}
+
+message SetAcompanhamentoRequest {
+  string id = 1; // id do pedido
+
+  string acompanhamento_id = 2; // id do registro no catálogo
+
+  string code = 3; // alternativa ao id: code do registro (resolvido pelo tipo do documento)
+}
+
+message SetAcompanhamentoResponse {
+  OrderAcompanhamento acompanhamento = 1;
+}
+
+message Pedido {
+  google.protobuf.Timestamp createdAt = 1;
+
+  google.protobuf.Timestamp updatedAt = 2;
+
+  string userId = 3;
+
+  string userName = 4;
+
+  string id = 5;
+
+  string account_id = 6;
+
+  metadata.BasicFields fields = 7;
+
+  string origem = 8;
+
+  string origemId = 9;
+
+  string tipo = 10;
+
+  string situacao = 11;
+
+  repeated OrderTag tags = 12;
+
+  // Codigo ISO da moeda exibida ao cliente no momento da finalizacao
+  // (ex.: "USD"). Vazio ou "BRL" indica pedido finalizado na moeda base,
+  // sem conversao de exibicao. valorTotal permanece sempre na moeda base
+  // para preservar a integridade fiscal de NFe/NFCe.
+  string tipoMoeda = 13;
+
+  // Cotacao aplicada no momento da finalizacao. Imutavel apos a criacao
+  // do pedido. Valor 0 indica pedido legado ou finalizado sem snapshot de
+  // conversao. Para reconstruir o valor exibido ao cliente, usar:
+  // valorTotal * tipoMoedaCotacao.
+  double tipoMoedaCotacao = 14;
+
+  string tabelaPreco = 15;
+
+  google.protobuf.Timestamp importadoEm = 16;
+
+  Pessoa pessoa = 17;
+
+  Pessoa vendedor = 18;
+
+  int32 numero = 19;
+
+  google.protobuf.Timestamp dataHoraRegistro = 20;
+
+  google.protobuf.Timestamp dataHoraFechamento = 21;
+
+  google.protobuf.Timestamp previsaoEntrega = 22;
+
+  string previsaoEntregaDescricao = 23;
+
+  google.protobuf.Timestamp dataHoraInicio = 24;
+
+  google.protobuf.Timestamp dataHoraEntrega = 25;
+
+  string tempoDecorrido = 26;
+
+  double descontoValor = 27;
+
+  double acrescimoValor = 28;
+
+  double valorSubtotal = 29;
+
+  double valorTotalServico = 30;
+
+  double valorTotalProduto = 31;
+
+  double valorTotal = 32;
+
+  double valorTotalPago = 33;
+
+  double cashbackValor = 34;
+
+  double comissaoValor = 35;
+
+  // NF-e vinculada
+  int32 nfeNumero = 36;
+
+  string nfeUrlDanfe = 37;
+
+  string nfeChave = 38;
+
+  int32 nfeSerie = 39;
+
+  string nfeId = 40;
+
+  string nfeSituacao = 41;
+
+  string nfe_forma_emissao = 42;
+
+  google.protobuf.Timestamp nfeDataHoraEmissao = 110;
+
+  // NFC-e vinculada
+  int32 nfceNumero = 43;
+
+  string nfceUrlDanfe = 44;
+
+  string nfceUrlXml = 45;
+
+  int32 nfceSerie = 46;
+
+  string nfceChave = 47;
+
+  string nfceId = 48;
+
+  string nfceSituacao = 49;
+
+  string nfce_forma_emissao = 50;
+
+  google.protobuf.Timestamp nfceDataHoraEmissao = 111;
+
+  // NFS-e vinculada
+  string nfseUrlDanfe = 51;
+
+  string nfseChave = 52;
+
+  string nfseNumero = 53;
+
+  string nfseSituacao = 54;
+
+  string obs = 55;
+
+  // condicaoPagamentoNome/Id removidos
+  string cancelamentoMotivo = 56;
+
+  string cancelamentoUsuarioId = 57;
+
+  string cancelamentoUsuarioNome = 58;
+
+  google.protobuf.Timestamp cancelamentoDataHora = 59;
+
+  repeated Produto produtos = 60;
+
+  repeated Servico servicos = 61;
+
+  repeated Pagamento pagamentos = 62;
+
+  TransactionsOnline transactions_online = 63;
+
+  string mesclagemId = 64;
+
+  repeated PedidoVinculado pedidosVinculados = 65;
+
+  DescontoAplicadosModel descontoAplicado = 66;
+
+  string descontoAplicadosCaption = 67;
+
+  CashbackAplicadosModel cashbackAplicado = 68;
+
+  string cashbackAplicadosCaption = 69;
+
+  LicenciamentoModel licenciamento = 70;
+
+  bool consiguinacao = 71;
+
+  bool importado = 72;
+
+  OrdemServico os = 73;
+
+  Otica otica = 74;
+
+  Partnership partnership = 75;
+
+  repeated CuponsSorteio cuponsSorteios = 76;
+
+  string convertedBy = 77;
+
+  rentcarmodel.Reservation rentCar = 78;
+
+  Contract contract = 79;
+
+  repeated filemanager.File files = 80; // Arquivos associados ao pedido
+
+  ConfirmationOrderReceipt confirmation_receipt = 81;
+
+  OriginInfo origin = 82; // Informações da origem do pedido (nome, id, reference_number e origin_type)
+
+  Billing billing = 83;
+
+  DeliveryInfo delivery = 84; // Informações de entrega (ecommerce)
+
+  CheckoutPaymentSelection checkout_payment_selection = 85; // Forma de pagamento escolhida no checkout, inclusive offline
+
+  Dfe dfe = 94; // Documentos fiscais (NFe, NFCe, NFSe)
+
+  ConsumptionControl consumption_control = 95; // Dados da mesa/cartao de consumo
+
+  repeated PedidoEvent events = 96; // Historico de eventos do pedido
+
+  // Garantia aplicada ao pedido/OS como um todo. Quando > 0, sobrepoe a garantia
+  // individual dos itens: dataFimGarantia e calculada como dataHoraFechamento + diasGarantia.
+  // Valor 0 deixa cada item usar sua propria garantia (snapshot do produto/servico).
+  double diasGarantia = 97;
+
+  google.protobuf.Timestamp dataFimGarantia = 98; // Data calculada no fechamento quando diasGarantia > 0
+
+  Warranty warranty = 99; // Resumo agregado de garantia ativa do pedido (preenchido no fechamento)
+
+  // Demais contratos com o mesmo número, empilhados na visão consolidada da
+  // listagem (somente leitura, preenchido em runtime; não é persistido).
+  repeated Pedido recorrencias = 100;
+
+  // Devolução gerada a partir deste pedido (módulo vendas/devolucao).
+  string devolucao_id = 101;
+
+  int32 devolucao_numero = 102;
+
+  // Endpoints avisados quando a situação do pedido muda.
+  repeated PedidoWebhook webhooks = 103;
+
+  // Identificador do pedido no sistema de quem o originou. Usado para não criar
+  // pedido duplicado quando a mesma origem pede o checkout de novo.
+  string external_reference = 104;
+
+  reserved 105, 106, 107;
+
+  // Status de acompanhamento atual do documento (snapshot do catálogo).
+  OrderAcompanhamento acompanhamento = 108;
+
+  // Cupom informado pelo comprador. Diferente de descontoAplicado, o cupom só entra
+  // na venda quando o código é digitado, e é revalidado a cada alteração dos itens.
+  CupomAplicadoModel cupomAplicado = 109;
+
+  string org_id = 112; // empresa dona do documento; preenchido só na visão consolidada do grupo
+
+  string org_nome = 113;
+
+  double divida = 114; // quanto falta pagar: total menos o pago, zero quando não está pendente
+
+  // Prazo até quando a proposta vale. Depois dele o documento continua pendente, mas
+  // os preços e condições deixam de estar garantidos.
+  google.protobuf.Timestamp validade = 115;
+
+  // Texto pronto do prazo de validade ("Vence em 3 dias", "Vencido há 5 dias"), derivado
+  // na leitura. Somente saída.
+  string validadeDescricao = 116;
+
+  // QR code impresso no documento com o link público dele. Nasce com a configuração da
+  // empresa e pode ser mudado no documento. Ausente: vale a configuração da empresa.
+  QrCodeDocumento qr_code_documento = 117;
+
+  // Número que o cliente deu a esta compra no sistema dele (o pedido de compra dele), até 15
+  // caracteres. Sai em cada item da NF-e gerada deste documento (xPed); vazio, sai o número
+  // do documento.
+  string pedido_compra = 118;
+
+  // Horário reservado na agenda para este documento (autorização pedida pelo portal). Confirmado
+  // quando o documento é pago; liberado quando é cancelado ou excluído.
+  string agenda_event_id = 119;
+
+  // Orçamento no follow-up: o cliente recebe os lembretes de validade (com o lembrete ligado na
+  // configuração de vendas). Liga no envio pelo sistema e desliga quando o cliente responde.
+  bool lembrete_cliente = 120;
+
+  // Resposta do cliente pelo link que ainda vale para o orçamento. Sai daqui quando a empresa muda
+  // a etapa; o pedido de ajuste, de conversa e de mais prazo sai também quando ela reenvia.
+  RespostaCliente resposta_cliente = 121;
+
+  // Veículo de frota conveniada abastecido nesta venda, com o km e o motorista informados na pista.
+  string posto_veiculo_id = 122;
+
+  string posto_placa = 123;
+
+  double posto_km = 124;
+
+  string posto_motorista_nome = 125;
+}
+
+message QrCodeDocumento {
+  bool ativo = 1; // Imprime o QR code e aceita o link
+
+  int32 dias_validade = 2; // Validade do link, contada da impressão. Zero: não expira
+}
+
+// PedidoWebhook registra um endpoint externo a ser avisado quando a situação do
+// pedido muda. A notificação diz apenas o que aconteceu e com qual pedido: o
+// consumidor consulta o pedido para obter os dados antes de agir sobre eles.
+message PedidoWebhook {
+  string id = 1;
+
+  // Endereço HTTPS que recebe a notificação.
+  string url = 2;
+
+  // Situações que disparam a notificação (FECHADO, CANCELADO). Vazio = todas.
+  repeated string events = 3;
+
+  // Segredo usado para assinar o corpo em X-Sigeflex-Signature (HMAC-SHA256).
+  // Nunca é devolvido em leitura.
+  string secret = 4;
+
+  google.protobuf.Timestamp last_attempt_at = 6;
+
+  // Situação da última tentativa de entrega: PENDENTE, ENTREGUE ou FALHOU.
+  string last_status = 7;
+
+  string last_error = 8;
+
+  int32 attempts = 9;
+}
+
+// TipoGarantia identifica a origem da garantia copiada no item do pedido/OS.
+// UNSPECIFIED cobre item sem garantia, garantia digitada manualmente ou legado
+// sem o campo preenchido.
+enum TipoGarantia {
+  TIPO_GARANTIA_UNSPECIFIED = 0;
+
+  TIPO_GARANTIA_EMPRESA = 1;
+
+  TIPO_GARANTIA_FORNECEDOR = 2;
+}
+
+// Warranty resume a garantia ativa do pedido num formato direto pra consulta
+// (sem precisar varrer os itens). Preenchido no fechamento a partir da garantia
+// do pedido e/ou dos itens.
+message Warranty {
+  google.protobuf.Timestamp active_until = 1; // Maior data de fim de garantia entre o pedido e seus itens
+
+  int32 items_count = 2; // Quantidade de itens cobertos por garantia
+
+  double value = 3; // Valor total coberto por garantia
+}
+
+message OnlineTransactionLink {
+  string id = 1;
+
+  string url = 2;
+
+  string description = 3;
+
+  repeated PaymentMethod payment_methods = 4;
+
+  int32 max_installments = 5;
+
+  google.protobuf.Timestamp preferred_due_date = 6;
+
+  google.protobuf.Timestamp payment_link_expiration_date = 7;
+}
+
+message TransactionsOnline {
+  string checkout_url = 1;
+
+  int32 max_installments = 2;
+
+  google.protobuf.Timestamp preferred_due_date = 3;
+
+  google.protobuf.Timestamp payment_link_expiration_date = 4;
+
+  repeated PaymentMethod payment_methods = 5;
+
+  repeated OnlineTransactionLink links = 6;
+}
+
+message PaymentMethod {
+  string payment_method_id = 1;
+
+  string payment_method_name = 2;
+}
+
+enum CheckoutPaymentChargeMode {
+  CHECKOUT_PAYMENT_CHARGE_MODE_UNSPECIFIED = 0;
+
+  CHECKOUT_PAYMENT_CHARGE_MODE_ONLINE = 1;
+
+  CHECKOUT_PAYMENT_CHARGE_MODE_OFFLINE = 2;
+}
+
+enum CheckoutPaymentContext {
+  CHECKOUT_PAYMENT_CONTEXT_UNSPECIFIED = 0;
+
+  CHECKOUT_PAYMENT_CONTEXT_ANY = 1;
+
+  CHECKOUT_PAYMENT_CONTEXT_PICKUP = 2;
+
+  CHECKOUT_PAYMENT_CONTEXT_DELIVERY = 3;
+}
+
+message CheckoutPaymentSelection {
+  string payment_method_id = 1;
+
+  string payment_method_name = 2;
+
+  string payment_type = 3;
+
+  CheckoutPaymentChargeMode charge_mode = 4;
+
+  CheckoutPaymentContext context = 5;
+
+  google.protobuf.Timestamp selected_at = 6;
+
+  string note = 7;
+}
+
+message OrdemServico {
+  string situacao = 1;
+
+  string numeroSerie = 2;
+
+  string chassi = 3;
+
+  string km = 4;
+
+  string tipoObjetoId = 5;
+
+  string tipoObjetoNome = 6;
+
+  string marcaId = 7;
+
+  string marcaNome = 8;
+
+  string modelo = 9;
+
+  string defeitoReclamado = 10;
+
+  string acessorios = 11;
+
+  string parecerTecnico = 12;
+
+  // Responsável técnico da ordem como um todo. Serviços lançados sem responsável
+  // próprio herdam este; os que já têm responsável definido permanecem intactos.
+  string responsavelTecnicoId = 13;
+
+  string responsavelTecnicoNome = 14;
+
+  // Anotações de uso interno da oficina. Não sai em documento entregue ao cliente.
+  string observacoes_internas = 15;
+
+  // Quem custeia o reparo quando o equipamento está coberto por garantia de fábrica.
+  string garantidor_id = 16;
+
+  string garantidor_nome = 17;
+
+  string garantidor_senha = 18; // Autorização informada pelo garantidor para o atendimento
+
+  string nf_venda_numero = 19; // Nota fiscal da venda original do equipamento
+
+  string certificado_garantia_numero = 20;
+
+  google.protobuf.Timestamp data_compra = 21;
+
+  string revendedor = 22;
+
+  // Nota fiscal de entrada/remessa que acompanhou o equipamento.
+  string nf_entrada_numero = 23;
+
+  double nf_entrada_valor = 24;
+
+  string nf_entrada_emissor_id = 25;
+
+  string nf_entrada_emissor_nome = 26;
+
+  // Ordem de serviço aberta no parceiro ou no fabricante para o mesmo atendimento.
+  string os_terceiros_numero = 27;
+
+  string os_fabricante_numero = 28;
+
+  string os_terceiros_emissor_id = 29;
+
+  string os_terceiros_emissor_nome = 30;
+}
+
+message Contract {
+  string number = 1;
+
+  ContractType type = 2;
+
+  RecurrenceType recurrence_type = 3;
+
+  int32 recurrence_increment = 4;
+
+  google.protobuf.Timestamp recurrence_due_date = 5;
+
+  ContractStatus status = 6;
+
+  string block_reason = 7 [deprecated = true]; // Substituído por status_reason
+
+  LastAccess last_access = 8; // Último acesso (migrado de LicenciamentoModel)
+
+  string recurrence_created_id = 10; // ID do contrato de recorrência criado
+
+  string recurrence_created_number = 11; // Número do contrato de recorrência criado
+
+  google.protobuf.Timestamp start_date = 12; // Data de início do contrato: fixada na criação do contrato original e copiada em cada recorrência (a cadeia inteira compartilha a mesma data)
+
+  bool courtesy = 13; // Contrato de bonificação/cortesia: fica fora das métricas de receita e carteira; herdado pelas renovações
+
+  int32 renewal_number = 14; // Número da renovação na cadeia do contrato: 0 no contrato original, incrementado a cada renovação gerada
+
+  int32 grace_period_days = 15; // Dias de carência após o vencimento em que a licença do contrato permanece liberada antes do bloqueio; herdado pelas renovações
+
+  bool auto_renew_disabled = 16; // Quando true, o contrato só é renovado manualmente: a geração automática do próximo ciclo perto do vencimento não acontece. Padrão (false) mantém a renovação automática; herdado pelas renovações
+
+  string status_reason = 17; // Motivo informado na última mudança de status (suspensão, cancelamento, reativação)
+
+  google.protobuf.Timestamp released_at = 18; // Ciclo liberado sem pagamento: passa a valer nesta data mesmo com a parcela em aberto. Vazio = só vale depois de quitada
+
+  int32 trial_days = 19; // Duração total do período de avaliação, em dias corridos a partir da criação do contrato. Zero usa a duração padrão
+
+  google.protobuf.Timestamp previous_due_date = 20; // Vencimento do ciclo anterior: até quando o cliente estava coberto quando esta parcela nasceu, e portanto o prazo para pagá-la. Vazio na primeira parcela da cadeia, em que o prazo é o próprio recurrence_due_date
+
+  google.protobuf.Timestamp released_until = 21; // Prazo da liberação sem pagamento: até esta data o ciclo cobre o cliente mesmo já vencido. Vazio = a liberação vale só até o vencimento do ciclo
+
+  google.protobuf.Timestamp trial_ends_at = 22; // Fim do período de avaliação. Vazio nos contratos anteriores ao campo, em que o prazo é a criação somada a trial_days
+
+  double full_period_total = 23; // Valor do ciclo por um período inteiro, preenchido só quando esta parcela cobre uma fração do período e por isso foi cobrada proporcionalmente. Zero = a parcela cobre o período cheio e o total dela já é o valor do período
+
+  message LastAccess {
+    google.protobuf.Timestamp last_date = 1;
+
+    string user_name = 2;
+  }
+}
+
+enum ContractType {
+  CONTRACT_TYPE_UNSPECIFIED = 0;
+
+  CONTRACT_TYPE_PRE_PAID = 1;
+
+  CONTRACT_TYPE_POST_PAID = 2;
+}
+
+enum ContractStatus {
+  CONTRACT_STATUS_UNSPECIFIED = 0; // contrato sem status gravado; equivale a ACTIVE
+
+  CONTRACT_STATUS_ACTIVE = 1;
+
+  CONTRACT_STATUS_INACTIVE = 2 [deprecated = true];
+
+  CONTRACT_STATUS_CANCELED = 3;
+
+  // Situação de atraso do contrato é derivada do vencimento das parcelas, não do status.
+  CONTRACT_STATUS_BLOCKED = 4 [deprecated = true];
+
+  CONTRACT_STATUS_TRIAL = 5; // contrato em período de avaliação; vira ACTIVE no primeiro pagamento
+
+  CONTRACT_STATUS_SUSPENDED = 6; // atendimento interrompido; o contrato segue existindo e não gera novas parcelas
+
+  CONTRACT_STATUS_TRIAL_EXPIRED = 7; // avaliação encerrada sem pagamento; não gera parcela nova nem entra na cobrança automática
+}
+
+// Informações do lote vinculado ao item
+message BatchInfo {
+  string id = 1; // ID do lote (referência ao BatchControl)
+
+  string batch_number = 2; // Número do lote (denormalizado)
+
+  google.protobuf.Timestamp expiration_date = 3; // Data de vencimento (denormalizado)
+
+  google.protobuf.Timestamp manufacturing_date = 4; // Data de fabricação (denormalizado)
+
+  int64 quantity = 5; // Quantidade do lote usada neste item
+}
+
+// Informações dos números de série vinculados ao item
+message SerialInfo {
+  repeated string ids = 1; // IDs dos seriais (referência ao SerialControl)
+
+  repeated string serial_numbers = 2; // Números de série (denormalizados)
+}
+
+message Produto {
+  string id = 1;
+
+  google.protobuf.Timestamp createdAt = 2; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 3; // Data de atualização
+
+  string userId = 4; // ID do usuário que realizou a ação
+
+  string userName = 5; // Nome do usuário que realizou a ação
+
+  string tipo = 6;
+
+  string nome = 7;
+
+  string descricao = 8;
+
+  string produtoId = 9;
+
+  string pedidoId = 10;
+
+  string pedidoProdutoId = 11;
+
+  string codigo = 12;
+
+  string un = 13;
+
+  string codigoAnp = 14;
+
+  string codigoAnpDescricao = 15;
+
+  string postoNumBico = 16;
+
+  string postoNumBomba = 17;
+
+  string postoNumTanque = 18;
+
+  double postoEncerranteInicial = 19;
+
+  double postoEncerranteFinal = 20;
+
+  repeated string postoAbastecimentoIds = 71; // Abastecimento da pista vendido no item
+
+  string postoFrentistaId = 72; // Pessoa do frentista que atendeu o abastecimento
+
+  string postoFrentistaNome = 73;
+
+  string ncm = 21;
+
+  // Descrição adicional do item. Sai no campo infAdProd da NF-e, abaixo da descrição
+  // do produto no DANFE.
+  string obs = 22;
+
+  string vendedorId = 23;
+
+  string vendedorNome = 24;
+
+  double comissaoValor = 25;
+
+  double comissaoPercentual = 26;
+
+  double comprimento = 27;
+
+  double largura = 28;
+
+  double medida = 29;
+
+  double profundidade = 30;
+
+  double quantidade = 31;
+
+  string tabelaPreco = 32;
+
+  double valorUnitario = 33;
+
+  double diferencaValorVenda = 34;
+
+  double valorUnitarioOriginal = 35;
+
+  double custoUnitario = 36;
+
+  double lucroBrutoUnitario = 37;
+
+  double lucroLiquidoUnitario = 38;
+
+  double descontoValor = 39;
+
+  DescontoAplicadosModel descontoAplicado = 40;
+
+  double acrescimoValor = 41;
+
+  double valorSubtotal = 42;
+
+  double valorTotal = 43;
+
+  double ValorCompra = 44;
+
+  double descontoRateado = 45;
+
+  double pesoUnitario = 46;
+
+  bool composto = 47;
+
+  string compostoString = 48;
+
+  repeated Produto composicao = 49;
+
+  string color = 50;
+
+  string size = 51;
+
+  string referencia = 52;
+
+  BatchInfo batch = 53; // Dados do lote vinculado a este item
+
+  google.protobuf.Timestamp review_date = 54; // Data em que o cliente avaliou este produto
+
+  string variation_product_id = 55;
+
+  SerialInfo serial = 56; // Dados dos números de série vinculados a este item
+
+  double diasGarantia = 57; // Snapshot dos dias de garantia do produto no momento do fechamento
+
+  google.protobuf.Timestamp dataFimGarantia = 58; // Data calculada (dataHoraFechamento + diasGarantia) no fechamento
+
+  bool comissao_manual = 59; // Quando true, o percentual de comissão foi definido manualmente e não deve ser sobrescrito pelo padrão do vendedor
+
+  // Origem da garantia aplicada no item (snapshot do cadastro: empresa ou fornecedor).
+  TipoGarantia tipoGarantia = 64;
+
+  // Comodato — bem cedido em empréstimo durante a vigência do contrato.
+  // Quando true: valorUnitario/totais são forçados a zero, mas o item gera baixa
+  // de estoque apenas no primeiro pedido. Fluxos derivados (como recorrência)
+  // passam a usar stock_decrease_applied + skip_stock_decrease para evitar rebaixa.
+  bool comodato = 60;
+
+  // Valor de mercado/reposição do bem em comodato. Não soma no total do pedido,
+  // usado para o termo de comodato e cobrança em caso de perda/dano.
+  double valor_reposicao = 61;
+
+  // Flag canônica de estado: true indica que a baixa de estoque deste item já
+  // foi efetivada com sucesso pela origem responsável.
+  bool stock_decrease_applied = 62;
+
+  // Flag operacional de fluxo derivado: quando true, o pedido deve pular a
+  // geração da baixa para este item no contexto atual. Controle interno.
+  bool skip_stock_decrease = 63;
+
+  ItemProducao producao = 65; // Ciclo de vida da impressão de produção e entrega do item (controle de consumo)
+
+  string imagemUrl = 66; // Imagem do produto no momento do lançamento; vazio quando não há imagem disponível
+
+  // Item vendido pelo preço promocional do cadastro do produto (bloco ecommerce). Marca
+  // que o preço já vem com desconto, para promoção do cadastro de descontos não incidir
+  // de novo sobre ele.
+  bool precoPromocionalAplicado = 67;
+
+  int32 numero_item = 68; // posição do item no documento, a partir de 1; derivado, não persistido
+
+  // Observação livre do item no documento. Não vai para a nota fiscal.
+  string observacao = 69;
+
+  // Número do item no pedido do cliente (nItemPed da NF-e). Zero usa a posição do item no
+  // documento.
+  int32 pedido_compra_item = 70;
+}
+
+// Ciclo de vida do item na produção (cozinha/bar): envio, confirmação de
+// impressão e entrega, com timestamps para cálculo de tempo de preparo.
+message ItemProducao {
+  bool enviado = 1;
+
+  google.protobuf.Timestamp dataHoraEnvio = 2;
+
+  string impressoraId = 3;
+
+  string impressoraNome = 4;
+
+  bool impresso = 5;
+
+  google.protobuf.Timestamp dataHoraImpressao = 6;
+
+  string erroImpressao = 7;
+
+  bool entregue = 8;
+
+  google.protobuf.Timestamp dataHoraEntrega = 9;
+}
+
+message Servico {
+  string id = 1;
+
+  google.protobuf.Timestamp createdAt = 2; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 3; // Data de atualização
+
+  string userId = 4; // ID do usuário que realizou a ação
+
+  string userName = 5; // Nome do usuário que realizou a ação
+
+  string pedidoId = 6;
+
+  string servicoId = 7;
+
+  string servicoNome = 8;
+
+  string codigo = 9;
+
+  string un = 10;
+
+  // Descrição adicional do item. Sai no campo infAdProd da NF-e, abaixo da descrição
+  // do produto no DANFE.
+  string obs = 11;
+
+  string tecnicoId = 12;
+
+  string tecnicoNome = 13;
+
+  double comissaoValor = 14;
+
+  double comissaoPercentual = 15;
+
+  double repasseValor = 16; // repasse quando uma venda é feita por convenio
+
+  double quantidade = 17;
+
+  double valorUnitario = 18;
+
+  double custo = 19;
+
+  double lucroBruto = 20;
+
+  double lucroLiquido = 21;
+
+  double descontoValor = 22;
+
+  DescontoAplicadosModel descontoAplicado = 23;
+
+  double descontoRateado = 24;
+
+  double acrescimoValor = 25;
+
+  double subtotal = 26;
+
+  double total = 27;
+
+  string compostoId = 28;
+
+  bool is_recurring = 29; // True if this is a recurring service, false if manual/one-time for this contract
+
+  bool composto = 30;
+
+  repeated ComposicaoServico composicao = 31;
+
+  double diasGarantia = 32; // Snapshot dos dias de garantia do servico no momento do fechamento
+
+  google.protobuf.Timestamp dataFimGarantia = 33; // Data calculada (dataHoraFechamento + diasGarantia) no fechamento
+
+  bool comissao_manual = 34; // Quando true, o percentual de comissão foi definido manualmente e não deve ser sobrescrito pelo padrão do técnico
+
+  ServicoCategoria categoria = 35; // Natureza do item lançado como serviço. Não altera o cálculo: serve para separar os subtotais do documento
+
+  google.protobuf.Timestamp hora_inicio = 36; // Início da execução do serviço
+
+  google.protobuf.Timestamp hora_fim = 37; // Fim da execução do serviço
+
+  int32 numero_item = 38; // posição do item no documento, a partir de 1; derivado, não persistido
+
+  // Observação livre do item no documento. Não vai para a nota fiscal.
+  string observacao = 39;
+}
+
+// Natureza do item lançado como serviço, para separar mão de obra dos demais
+// custos que compõem o documento.
+enum ServicoCategoria {
+  SERVICO_CATEGORIA_UNSPECIFIED = 0; // mão de obra
+
+  SERVICO_CATEGORIA_DESLOCAMENTO = 1;
+
+  SERVICO_CATEGORIA_TERCEIROS = 2;
+
+  SERVICO_CATEGORIA_OUTROS = 3;
+}
+
+message ComposicaoServico {
+  string id = 1;
+
+  string item_id = 2;
+
+  string tipo = 3;
+
+  string nome = 4;
+
+  double quantidade = 5;
+
+  string un = 6;
+
+  double valor_unitario = 7;
+
+  double total = 8;
+
+  string codigo = 9;
+}
+
+message Pagamento {
+  string id = 1;
+
+  google.protobuf.Timestamp createdAt = 2; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 3; // Data de atualização
+
+  string userId = 4; // ID do usuário que realizou a ação
+
+  string userName = 5; // Nome do usuário que realizou a ação
+
+  string situacao = 6;
+
+  string userUpdateId = 7;
+
+  string userUpdateNome = 8;
+
+  string formaPagamentoId = 9;
+
+  string formaPagamentoNome = 10;
+
+  string pagamentoOnlineId = 11;
+
+  string tipoPagamento = 12;
+
+  bool usarCarteiraCashback = 13;
+
+  bool avista = 14;
+
+  double valorPago = 15;
+
+  double valorLiquido = 16;
+
+  string cartaCreditoId = 17; // identificação da carta de credito para usar seu valor para pagamento ou estorno
+
+  string cartaoComprovante = 18;
+
+  string cartaoCodigoAutorizacao = 19;
+
+  string cartaoRedeAdquirente = 20;
+
+  string cartaoRedeAdquirenteCnpj = 21;
+
+  string cartaoNomeCartaoAdministradora = 22;
+
+  string moedaTipoRecebimento = 23; // Assumindo que currency.Code é um enum ou tipo importado em seu projeto
+
+  double moedaCotacao = 24;
+
+  double valorTipoMoeda = 25;
+
+  double adquirenteValorReceber = 26;
+
+  double adquirenteTaxaValor = 27;
+
+  double adquirenteTaxaPercentual = 28;
+
+  double adquirenteTaxaFixaValor = 29;
+
+  string caixaNome = 30;
+
+  string caixaId = 31;
+
+  int32 numeroParcelas = 32;
+
+  repeated Parcelas parcelas = 33;
+
+  google.protobuf.Timestamp dataHoraCancelamento = 34;
+
+  string motivoCancelamento = 35;
+
+  string transactionNumber = 36;
+
+  string transactionId = 37;
+
+  enum paymentOrigin {
+    PAYMENT_ORIGIN_UNSPECIFIED = 0;
+
+    PAYMENT_ORIGIN_ONLINE = 1;
+
+    PAYMENT_ORIGIN_OFFLINE = 2;
+  }
+
+  paymentOrigin origin = 38;
+}
+
+message Parcelas {
+  string id = 1;
+
+  string parcela = 2;
+
+  double valor = 3;
+
+  double valorTipoMoeda = 4;
+
+  double taxaAdm = 5;
+
+  double taxaAdmValor = 6;
+
+  double taxaValorFixo = 7;
+
+  double taxaAntecipacao = 8;
+
+  double taxaAntecipacaoValor = 9;
+
+  double adquirenteValorReceber = 10;
+
+  google.protobuf.Timestamp vencimento = 11;
+
+  Pagamento pedidoPagamento = 12;
+}
+
+message Pessoa {
+  string id = 1;
+
+  bool revenda = 2;
+
+  string cpfCnpj = 3;
+
+  string ie = 4;
+
+  string nome = 5;
+
+  string nome2 = 6;
+
+  string usuarioId = 7;
+
+  string usuarioNome = 8;
+
+  double comissao = 9;
+
+  // endereço
+  string endId = 10; // id do endereço da pessoa usado na venda
+
+  string endNome = 11;
+
+  string endCep = 12;
+
+  string endEndereco = 13;
+
+  string endNumero = 14;
+
+  string endBairro = 15;
+
+  string endCidade = 16;
+
+  string endCidadeCodigo = 17;
+
+  string endUf = 18;
+
+  string endComplemento = 19;
+
+  // contatos
+  string telefone = 20;
+
+  string email = 21;
+
+  // outros dados
+  string dataNascimento = 22;
+
+  string genero = 23;
+
+  double desconto_maximo = 24; // percentual maximo de desconto do vendedor, copiado do cadastro
+}
+
+message Dfe {
+  Nfe nfe = 1;
+
+  Nfce nfce = 2;
+
+  Nfse nfse = 3;
+}
+
+// mostra os dados da NFE relacionada ao pedido
+message Nfe {
+  string id = 1;
+
+  string tipo = 2;
+
+  string situacao = 3;
+
+  string chave = 4;
+
+  string url_danfe = 5;
+
+  int32 serie = 6;
+
+  int32 numero = 7;
+
+  string forma_emissao = 8;
+
+  google.protobuf.Timestamp dataHoraEmissao = 9;
+}
+
+// mostra os dados da NFC-e relacionada ao pedido
+message Nfce {
+  int32 nfce_numero = 1;
+
+  string nfce_url_danfe = 2;
+
+  string nfce_url_xml = 3;
+
+  int32 nfce_serie = 4;
+
+  string nfce_chave = 5;
+
+  string nfce_id = 6;
+
+  string nfce_situacao = 7;
+
+  string nfce_forma_emissao = 8;
+}
+
+// mostra os dados da NFS-e relacionada ao pedido
+message Nfse {
+  string id = 1;
+
+  string situacao = 2;
+
+  string numero = 3;
+
+  string chave = 4;
+
+  string codigo_verificacao = 5;
+
+  string url_danfse = 6;
+
+  bool nfse_auto_emite = 7; // Emitir NFSe automaticamente ao fechar
+}
+
+message LicenciamentoModel {
+  // TipoContrato
+  string tipoContrato = 1;
+
+  string numeroSerie = 2;
+
+  string codigoAutorizacao = 3;
+
+  string motivoBloqueio = 4;
+
+  UltimoAcesso ultimoAcesso = 5;
+
+  message UltimoAcesso {
+    google.protobuf.Timestamp lastDate = 1;
+
+    string userName = 2;
+  }
+}
+
+message PedidoVinculado {
+  string id = 1;
+
+  string pedidoId = 2;
+
+  int32 numero = 3;
+
+  double total = 4;
+
+  string tipo = 5;
+
+  string clienteNome = 6; // cliente do pedido vinculado, que não é necessariamente o da fatura que o agrupa
+
+  string clienteCpfCnpj = 7;
+
+  string origemNumero = 8; // número do documento que originou o pedido vinculado, para conferência com quem o emitiu
+
+  google.protobuf.Timestamp data = 9; // data do pedido vinculado
+}
+
+message DescontoAplicadosModel {
+  string id = 1;
+
+  google.protobuf.Timestamp createdAt = 2; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 3; // Data de atualização
+
+  string userId = 4; // ID do usuário que realizou a ação
+
+  string userName = 5; // Nome do usuário que realizou a ação
+
+  string descontoId = 6;
+
+  string descontoNome = 7;
+
+  double valor = 8;
+
+  // Quanto a promoção concedeu em cada item. Vazio quando ela incide sobre a venda inteira.
+  // É o que permite separar a promoção do desconto digitado no item.
+  repeated DescontoItemAplicado itens = 9;
+}
+
+message CupomAplicadoModel {
+  string cupomId = 1;
+
+  string codigo = 2;
+
+  double valor = 3; // Valor total concedido pelo cupom nesta venda
+
+  bool cumulativo = 4; // Cópia da regra do cadastro no momento da aplicação
+
+  google.protobuf.Timestamp aplicadoEm = 5;
+
+  // Quanto o cupom concedeu em cada item. Vazio quando o desconto incide sobre a venda
+  // inteira. Permite desfazer exatamente o que foi concedido antes de recalcular.
+  repeated DescontoItemAplicado itens = 6;
+}
+
+// DescontoItemAplicado registra quanto um desconto concedeu em cada item. Serve à promoção
+// e ao cupom: os dois precisam saber o que concederam para desfazer no recálculo e para
+// separar o que é desconto de cadastro do que o operador digitou.
+message DescontoItemAplicado {
+  string itemId = 1;
+
+  bool servico = 2; // Distingue item de serviço de item de produto
+
+  double valor = 3;
+}
+
+message CashbackAplicadosModel {
+  string id = 1;
+
+  google.protobuf.Timestamp createdAt = 2; // Data de criação
+
+  google.protobuf.Timestamp updatedAt = 3; // Data de atualização
+
+  string userId = 4; // ID do usuário que realizou a ação
+
+  string userName = 5; // Nome do usuário que realizou a ação
+
+  string cashbackId = 6;
+
+  string cashbackNome = 7;
+
+  double valor = 8;
+}
+
+message Partnership {
+  string partnership_id = 1;
+
+  string partnership_name = 2;
+
+  string titular_id = 3;
+
+  string titular_name = 4;
+
+  string dependent_id = 5;
+
+  string dependent_name = 6;
+}
+
+// dados de confirmação do recebimento do pedido
+message ConfirmationOrderReceipt {
+  google.protobuf.Timestamp date_time = 1; // data/hora de confirmação do recebimento do pedido
+
+  string user_id = 2; // id do usuario que confirmou o recebimento do pedido
+
+  string user_name = 3; // nome do usuario que confirmou o recebimento do pedido
+
+  string url = 4; // url do serviço de confirmação do recebimento do pedido
+}
+
+message CuponsSorteio {
+  string id = 1;
+
+  string cupomId = 2;
+}
+
+enum DanfeFormat {
+  DANFE_FORMAT_UNSPECIFIED = 0;
+
+  DANFE_FORMAT_PDF = 1;
+
+  DANFE_FORMAT_REPORT = 2;
+
+  DANFE_FORMAT_HTML = 3;
+}
+
+message DfeDanfeRequest {
+  string id = 1;
+
+  string tipo = 2;
+
+  DanfeFormat format = 3;
+}
+
+message DfeDanfeResponse {
+  report.Response response = 1;
+}
+
+message ImportRequest {
+  string data = 1; // Conteúdo dos dados em base64 (arquivo ou API)
+
+  string file_name = 2; // Nome do arquivo ou origem dos dados
+
+  repeated Pedido orders = 3; // Pedidos a serem importados, no formato de lista e pedidos normal
+
+  bool validate_only = 4; // Apenas validar sem importar
+
+  bool import_pedido = 5; // Importar pedidos
+
+  bool update_if_exists = 6; // Atualizar se já existir
+
+  bool import_cliente = 7; // Importar clientes
+
+  bool import_vendedor = 8; // Importar vendedores
+
+  bool import_produto = 9; // Importar produtos
+
+  bool import_servico = 10; // Importar serviços
+
+  bool import_formas_pagamento = 11; // Importar formas de pagamento
+
+  bool import_conta = 12; // Importar contas a receber e a pagar
+
+  string mapping_id = 13; // ID do mapeamento de importação a ser utilizado
+
+  bool overwrite_existing_fields = 14; // Se true (e update_if_exists): sobrescreve campos existentes; se false: preenche apenas campos vazios
+}
+
+message ImportResponse {
+  imports.ImportResponse report = 1;
+}
+
+// Definições de mensagens para os novos métodos RPC
+
+// SendPaymentLink - Send payment link
+message SendPaymentLinkRequest {
+  repeated string ids = 1;
+
+  repeated Pedido pedidos = 2;
+
+  string email = 3; // opcional: e-mail para envio do link; quando vazio usa o e-mail do pedido
+
+  // canal usado para o envio: "email" (padrao) ou "whatsapp". Quando whatsapp,
+  // o backend nao dispara o e-mail; envia pela integracao informada em
+  // whatsapp_integration_id (vazio = envio no client via wa.me) e registra a
+  // cobranca no modulo vendas/billing com o canal correto.
+  string channel = 4;
+
+  string email_integration_id = 5; // integração de e-mail para o envio; vazio usa a resolução padrão do sistema
+
+  string billing_plan_id = 6; // plano de cobrança que originou o envio; vazio = disparo manual
+
+  string billing_plan_name = 7;
+
+  // WhatsApp enviado pelo servidor pela integração informada (API oficial ou por QR code).
+  // Vazio mantém o envio pelo app local: o servidor só registra a cobrança.
+  string whatsapp_integration_id = 10;
+
+  // Template aprovado da API oficial; obrigatório quando a conta é oficial e o
+  // destinatário está fora da janela de 24h. Variáveis: nome e link, nesta ordem.
+  string whatsapp_template_name = 11;
+
+  string whatsapp_template_language = 12; // vazio usa pt_BR
+
+  // Modelo de mensagem a usar; vazio usa o modelo padrão do canal.
+  string message_template_id = 13;
+}
+
+message SendPaymentLinkResponse {
+  repeated Pedido pedidos = 1;
+
+  // Mensagens prontas para o envio pelo WhatsApp do aparelho, uma por destinatário.
+  // Preenchido só quando o envio não sai por integração.
+  repeated WhatsappWebEnvio whatsapp_web = 2;
+}
+
+message WhatsappWebEnvio {
+  string numero = 1;
+
+  string mensagem = 2;
+}
+
+// MesclaPedidos - Criar pedidos mesclados
+message MesclaPedidosRequest {
+  string tipo = 1; // tipo de registro
+
+  repeated string ids = 2; // IDs dos pedidos a serem mesclados
+
+  string pessoaId = 3; // ID para gerar pedido mesclado de todos os pedidos desta pessoa
+
+  string vendedorId = 4; // ID para gerar pedido mesclado de todos os pedidos deste vendedor
+}
+
+message MesclaPedidosResponse {
+  Pedido pedido = 1;
+}
+
+// AddPedidoVinculado - Vincular pedido à mesclagem
+message AddPedidoVinculadoRequest {
+  string id = 1; // Id do pedido (mesclagem)
+
+  PedidoVinculado pedido_vinculado = 2;
+}
+
+message AddPedidoVinculadoResponse {
+  Pedido pedido = 1;
+}
+
+// DeletePedidoVinculado - Deleter pedido da mesclagem
+message DeletePedidoVinculadoRequest {
+  string id = 1; // Id do pedido (mesclagem)
+
+  string pedidoVinculadoId = 2; // Id do pedido a ser removido da mesclagem
+}
+
+message DeletePedidoVinculadoResponse {
+  Pedido pedido = 1;
+}
+
+// EnviaNFe - Enviar nota fiscal
+message EnviaNFeRequest {
+  repeated string ids = 1; // IDs dos pedidos selecionados
+
+  string tipo = 2; // Nfe ou Nfc-e
+
+  string pessoaId = 3; // Pessoa para emissão
+
+  bool apenas_gerar = 4; // Se true, apenas gera a NF sem enviar para autorização
+}
+
+message EnviaNFeResponse {
+  Pedido pedido = 1;
+}
+
+// SincronizaNFe - Sincronizar estado da nota fiscal
+message SincronizaNFeRequest {
+  string id = 1; // ID do pedido selecionado
+}
+
+message SincronizaNFeResponse {
+  Pedido pedido = 1;
+}
+
+// SincronizaPessoa - Atualiza dados da pessoa no pedido a partir do cadastro
+message SincronizaPessoaRequest {
+  string id = 1;
+}
+
+message SincronizaPessoaResponse {
+  Pedido pedido = 1;
+}
+
+// VinculaNFManual - Vincular NF manualmente
+message VinculoNfManualRequest {
+  string id = 1; // ID do pedido selecionado
+
+  string nfeId = 2; // ID da nota fiscal
+
+  string nfeTipo = 3; // Tipo da nota fiscal
+}
+
+message VinculoNfManualResponse {
+  Pedido pedido = 1;
+}
+
+// Request e Response para impressão de Pedido
+message PrintPedidoRequest {
+  repeated string ids = 1; // IDs dos pedidos a serem impressos
+
+  string modelo = 2; // Modelo de impressão a ser utilizado
+
+  bool mostra_composicao = 3; // Mostrar composição dos produtos
+
+  bool mostra_medidas = 4; // Mostrar medidas dos produtos
+
+  bool incluir_imagens = 5; // Embutir as imagens anexadas ao documento, e não apenas a mais recente
+}
+
+message PrintPedidoResponse {
+  report.Response response = 1; // Resposta do relatório gerado;
+}
+
+message CorrecaoMovimentacaoRequest {
+  repeated string ids = 1; // ids dos pedidos em que a correção de movimentação será aplicada
+
+  string produto_origem_id = 2; // id do produto de origem
+
+  string produto_origem_nome = 3; // nome do produto de origem
+
+  string produto_destino_id = 4; // id do produto de destino
+
+  string produto_destino_nome = 5; // nome do produto de destino
+}
+
+message CorrecaoMovimentacaoResponse {
+}
+
+// ===== INFORMAÇÕES DE ENTREGA (ECOMMERCE) =====
+
+// Informações de entrega do pedido para ecommerce
+message DeliveryInfo {
+  DeliveryMethod delivery_method = 1; // Método de entrega
+
+  string delivery_zone_id = 2; // ID da zona de entrega
+
+  string delivery_zone_name = 3; // Nome da zona de entrega
+
+  double shipping_fee = 4; // Valor do frete
+
+  int32 estimated_days = 5; // Dias estimados para entrega
+
+  google.protobuf.Timestamp estimated_delivery_date = 6; // Data estimada de entrega
+
+  string tracking_code = 7; // Código de rastreio
+
+  string tracking_url = 8; // URL de rastreio
+
+  string carrier_name = 9; // Nome da transportadora
+
+  string carrier_service = 10; // Serviço (ex: "SEDEX", "PAC")
+
+  string delivery_instructions = 11; // Instruções de entrega
+
+  repeated DeliveryStatusHistory status_history = 12; // Histórico de status
+
+  // Endereço de entrega (pode ser diferente do endereço do cliente)
+  DeliveryAddress address = 13;
+
+  // Para retirada na loja
+  string pickup_location_id = 14; // ID do local de retirada
+
+  string pickup_location_name = 15; // Nome do local
+
+  google.protobuf.Timestamp pickup_scheduled_date = 16; // Data agendada para retirada
+}
+
+// Métodos de entrega
+enum DeliveryMethod {
+  DELIVERY_METHOD_UNSPECIFIED = 0;
+
+  DELIVERY_METHOD_STANDARD = 1; // Entrega padrão
+
+  DELIVERY_METHOD_EXPRESS = 2; // Entrega expressa
+
+  DELIVERY_METHOD_PICKUP = 3; // Retirada na loja
+
+  DELIVERY_METHOD_CORREIOS_PAC = 4; // PAC (Correios)
+
+  DELIVERY_METHOD_CORREIOS_SEDEX = 5; // SEDEX (Correios)
+
+  DELIVERY_METHOD_CORREIOS_SEDEX10 = 6; // SEDEX 10 (Correios)
+
+  DELIVERY_METHOD_CUSTOM = 7; // Personalizado
+}
+
+// Histórico de status de entrega
+message DeliveryStatusHistory {
+  string status = 1; // Status (ex: "SHIPPED", "IN_TRANSIT", "DELIVERED")
+
+  string description = 2; // Descrição
+
+  google.protobuf.Timestamp timestamp = 3; // Data/hora
+
+  string location = 4; // Localização
+}
+
+// Endereço de entrega
+message DeliveryAddress {
+  string recipient_name = 1; // Nome do destinatário
+
+  string cep = 2; // CEP
+
+  string street = 3; // Rua/Logradouro
+
+  string number = 4; // Número
+
+  string complement = 5; // Complemento
+
+  string neighborhood = 6; // Bairro
+
+  string city = 7; // Cidade
+
+  string city_code = 8; // Código IBGE da cidade
+
+  string state = 9; // Estado (UF)
+
+  string phone = 10; // Telefone
+
+  string reference = 11; // Ponto de referência
+}
+
+message ReorderItemsRequest {
+  string id = 1;
+
+  repeated string produto_ids = 2; // vazio mantém a ordem dos produtos
+
+  repeated string servico_ids = 3; // vazio mantém a ordem dos serviços
+}
+
+message ReorderItemsResponse {
+  Pedido pedido = 1;
+}
+
+// Base de apuração do realizado do vendedor.
+enum BaseApuracao {
+  // Valor total do documento fechado, na data do documento.
+  BASE_APURACAO_DOCUMENTO = 0;
+
+  // Valor de cada pagamento efetivado, na data do pagamento. Documento parcialmente pago
+  // entra pelo valor já pago.
+  BASE_APURACAO_PAGAMENTO = 1;
+}
+
+// Faixa de datas nomeada: a resposta traz um total por faixa, em uma única consulta.
+message FaixaResumoVendas {
+  string chave = 1;
+
+  google.protobuf.Timestamp inicio = 2;
+
+  google.protobuf.Timestamp fim = 3;
+}
+
+message ResumoVendasPorVendedorRequest {
+  repeated string seller_ids = 1;
+
+  repeated FaixaResumoVendas faixas = 2;
+
+  // Tipos de documento que contam (ped, os, TIPO_CONTRACT). Vazio conta venda e OS.
+  repeated string types = 3;
+
+  BaseApuracao base = 4;
+}
+
+message TotalVendasVendedor {
+  string seller_id = 1;
+
+  string chave = 2;
+
+  double valor = 3;
+
+  int32 quantidade = 4;
+}
+
+message ResumoVendasPorVendedorResponse {
+  repeated TotalVendasVendedor totais = 1;
+}

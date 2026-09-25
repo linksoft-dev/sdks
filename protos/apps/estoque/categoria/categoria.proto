@@ -1,0 +1,139 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/api/resource.proto";
+
+option go_package = "comps/pb/apps/estoque/categoria";
+
+service CategoriaService {
+  rpc Create ( CreateCategoriaRequest ) returns ( CreateCategoriaResponse );
+
+  rpc Update ( UpdateCategoriaRequest ) returns ( UpdateCategoriaResponse );
+
+  rpc Delete ( DeleteCategoriaRequest ) returns ( DeleteCategoriaResponse );
+
+  rpc List ( ListCategoriaRequest ) returns ( ListCategoriaResponse );
+
+  rpc Get ( GetCategoriaRequest ) returns ( GetCategoriaResponse );
+}
+
+message CreateCategoriaRequest {
+  Categoria categoria = 1;
+}
+
+message CreateCategoriaResponse {
+  Categoria categoria = 1;
+}
+
+message UpdateCategoriaRequest {
+  string id = 1;
+
+  Categoria categoria = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateCategoriaResponse {
+  Categoria categoria = 1;
+}
+
+message DeleteCategoriaRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteCategoriaResponse {
+  repeated string avisos = 1; // empresas do grupo em que o registro foi mantido, com o motivo
+}
+
+message ListCategoriaRequest {
+  repeated string ids = 1;
+
+  string nome = 2;
+
+  Filter filter = 4;
+}
+
+message ListCategoriaResponse {
+  repeated Categoria categoriaList = 1;
+}
+
+message GetCategoriaRequest {
+  string id = 1;
+}
+
+message GetCategoriaResponse {
+  Categoria categoria = 1;
+}
+
+message Categoria {
+  string id = 1;
+
+  string nome = 2;
+
+  string tributacaoId = 3;
+
+  string tributacaoNome = 4;
+
+  // tributação da NF-e em que o destinatário revende a mercadoria (não é consumidor final); vazia, vale a tributacaoId
+  string tributacaoRevendaId = 19;
+
+  string tributacaoRevendaNome = 20;
+
+  string ncm = 5;
+
+  double quantidadeMinima = 6;
+
+  double quantidadeMaxima = 7;
+
+  double margemLucroPadrao = 8;
+
+  // products count of current category
+  uint32 productsCount = 9;
+
+  bool ecommerce_available = 10; // Disponibilizar produtos da categoria na loja virtual
+
+  string image_url = 11; // Imagem da categoria para exibicao na loja virtual
+
+  // Codigo opcional da categoria, definido pelo usuario.
+  // Uso principal: ordenar a listagem de categorias na loja virtual
+  // em uma sequencia controlada (ex: 010, 020, 030 — permite reorganizar
+  // sem renomear). Unico por org.
+  string code = 12;
+
+  // Slug amigavel para URLs publicas da loja virtual.
+  string slug = 13;
+
+  // Grupo de produção padrão dos produtos da categoria (ex: "Cozinha", "Bar").
+  // Define para qual impressora os itens são roteados na impressão de produção.
+  string grupoProducao = 14;
+
+  // Impressora de produção padrão da categoria (atalho para o caso de uma área só).
+  string impressoraId = 15;
+
+  string impressoraNome = 16;
+
+  // Classificação livre da categoria, do mesmo cadastro de tags do produto
+  // (tipo PRODUTO). Vale para todos os produtos da categoria.
+  repeated CategoriaTag tags = 17;
+
+  metadata.BasicFields fields = 18;
+}
+
+// CategoriaTag - Tag aplicada à categoria, com a cor do cadastro no momento em
+// que foi aplicada.
+message CategoriaTag {
+  string value = 1;
+
+  string color = 2;
+}

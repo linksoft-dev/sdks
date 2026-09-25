@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package pedido;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/vendas/pedido";
+
+// Status da mesa/cartao
+enum ConsumptionStatus {
+  CONSUMPTION_STATUS_UNSPECIFIED = 0;
+
+  CONSUMPTION_STATUS_FREE = 1; // Livre - disponivel para uso
+
+  CONSUMPTION_STATUS_OCCUPIED = 2; // Ocupada - com pedido em andamento
+
+  CONSUMPTION_STATUS_RESERVED = 3; // Reservada
+
+  CONSUMPTION_STATUS_BLOCKED = 4; // Bloqueada (manutencao, etc)
+
+  CONSUMPTION_STATUS_CLOSING = 5; // Fechamento - cliente pediu a conta
+}
+
+// Controle de consumo - mesa ou cartao de consumo
+message ConsumptionControl {
+  string type = 1; // "table" ou "consumption_card"
+
+  int32 number = 2; // numero da mesa/cartao
+
+  string sector = 3; // setor (ex: "salao", "terraco")
+
+  string sector_name = 4; // nome do setor para exibicao
+
+  string display_name = 5; // nome para exibicao (ex: "Mesa 15 - Salao")
+
+  google.protobuf.Timestamp opened_at = 6; // horario de abertura
+
+  string elapsed_time = 7; // tempo decorrido formatado
+
+  ConsumptionStatus status = 8; // status da mesa
+
+  string reservation_id = 9; // ID da reserva (quando originado de reserva)
+
+  int32 guests_count = 10; // quantidade de pessoas na mesa
+
+  bool closing_requested = 11; // flag se o fechamento foi solicitado
+
+  string nfc_uid = 12; // UID do cartão NFC pareado (bipar cartão)
+
+  google.protobuf.Timestamp released_at = 13; // quando a mesa/cartao foi liberado; preenchido = vinculo apenas historico, a mesa esta livre
+}
+
+// Tipo de evento do pedido de mesa
+enum PedidoEventType {
+  PEDIDO_EVENT_TYPE_UNSPECIFIED = 0;
+
+  PEDIDO_EVENT_TYPE_CREATED = 1; // Pedido criado
+
+  PEDIDO_EVENT_TYPE_TABLE_TRANSFER = 2; // Transferencia de mesa
+
+  PEDIDO_EVENT_TYPE_REQUEST_CLOSING = 3; // Solicitacao de fechamento
+
+  PEDIDO_EVENT_TYPE_FROM_RESERVATION = 4; // Criado a partir de reserva
+
+  PEDIDO_EVENT_TYPE_TABLE_RELEASED = 5; // Mesa liberada (manual ou automático); pedido segue pendente
+
+  PEDIDO_EVENT_TYPE_TABLE_REASSIGNED = 6; // Mesa reocupada apos liberacao
+
+  PEDIDO_EVENT_TYPE_STAGE_CHANGED = 7; // Etapa do documento alterada
+
+  PEDIDO_EVENT_TYPE_SENT_TO_CUSTOMER = 8; // Documento enviado ao cliente por e-mail ou WhatsApp
+
+  PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED = 9; // Cliente abriu o documento pelo link
+
+  PEDIDO_EVENT_TYPE_REMINDER_SENT = 10; // Lembrete automático enviado ao cliente
+
+  PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE = 11; // Cliente respondeu pelo link do documento
+}
+
+// Evento/historico do pedido de mesa
+message PedidoEvent {
+  string id = 1; // ID unico do evento
+
+  google.protobuf.Timestamp created_at = 2; // Data/hora do evento
+
+  PedidoEventType type = 3; // Tipo do evento
+
+  string description = 4; // Descricao do evento
+
+  string details = 5; // Detalhes adicionais (JSON)
+}

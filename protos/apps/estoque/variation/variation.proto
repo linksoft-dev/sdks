@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package variation;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+option go_package = "comps/pb/apps/estoque/variation";
+
+service VariationService {
+  rpc Create ( CreateVariationRequest ) returns ( CreateVariationResponse );
+
+  rpc Update ( UpdateVariationRequest ) returns ( UpdateVariationResponse );
+
+  rpc Delete ( DeleteVariationRequest ) returns ( DeleteVariationResponse );
+
+  rpc Get ( GetVariationRequest ) returns ( GetVariationResponse );
+
+  rpc List ( ListVariationRequest ) returns ( ListVariationResponse );
+}
+
+message Variation {
+  metadata.BasicFields fields = 1;
+
+  string id = 2;
+
+  string name = 3;
+
+  map<string, VariationAttributeValues> attributes = 4;
+
+  bool active = 5;
+}
+
+message VariationAttributeValues {
+  repeated string values = 1;
+
+  int32 order = 2;
+}
+
+message CreateVariationRequest {
+  Variation variation = 1;
+}
+
+message CreateVariationResponse {
+  Variation variation = 1;
+}
+
+message UpdateVariationRequest {
+  string id = 1;
+
+  Variation variation = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateVariationResponse {
+  Variation variation = 1;
+}
+
+message DeleteVariationRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteVariationResponse {
+  string id = 1;
+}
+
+message GetVariationRequest {
+  string id = 1;
+}
+
+message GetVariationResponse {
+  Variation variation = 1;
+}
+
+message ListVariationRequest {
+  repeated string ids = 1;
+
+  repeated string names = 2;
+
+  bool active = 3;
+
+  Filter filter = 4;
+
+  uint32 page_size = 5;
+
+  string page_token = 6;
+}
+
+message ListVariationResponse {
+  repeated Variation variation_list = 1;
+
+  string next_page_token = 2;
+}

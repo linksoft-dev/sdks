@@ -1,0 +1,695 @@
+syntax = "proto3";
+
+package social_post;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/social_post";
+
+// Servico SocialPost para gerenciamento de posts em redes sociais
+service SocialPostService {
+  // CRUD basico
+  rpc Create ( CreateSocialPostRequest ) returns ( CreateSocialPostResponse );
+
+  rpc Update ( UpdateSocialPostRequest ) returns ( UpdateSocialPostResponse );
+
+  rpc Delete ( DeleteSocialPostRequest ) returns ( DeleteSocialPostResponse );
+
+  rpc Get ( GetSocialPostRequest ) returns ( GetSocialPostResponse );
+
+  rpc List ( ListSocialPostRequest ) returns ( ListSocialPostResponse );
+
+  // Gerenciamento de publicacoes dentro do post
+  rpc AddPublication ( AddPublicationRequest ) returns ( AddPublicationResponse );
+
+  rpc UpdatePublication ( UpdatePublicationRequest ) returns ( UpdatePublicationResponse );
+
+  rpc RemovePublication ( RemovePublicationRequest ) returns ( RemovePublicationResponse );
+
+  // Acoes de publicacao
+  rpc PublishNow ( PublishNowRequest ) returns ( PublishNowResponse );
+
+  rpc CancelPublication ( CancelPublicationRequest ) returns ( CancelPublicationResponse );
+
+  rpc Unpublish ( UnpublishRequest ) returns ( UnpublishResponse );
+
+  // Revisao do post: aprova para publicacao ou devolve pedindo ajustes
+  rpc Review ( ReviewSocialPostRequest ) returns ( ReviewSocialPostResponse );
+
+  // Listar contas conectadas (do modulo integrations)
+  rpc ListConnectedAccounts ( ListConnectedAccountsRequest ) returns ( ListConnectedAccountsResponse );
+
+  // Gerar post usando IA (OpenAI)
+  rpc GenerateAIPost ( GenerateAIPostRequest ) returns ( GenerateAIPostResponse );
+
+  // Gerar multiplos posts usando um Agente de IA
+  rpc GenerateBatchAIPosts ( GenerateBatchAIPostsRequest ) returns ( GenerateBatchAIPostsResponse );
+
+  // Sincronizar metricas de um post com as redes sociais
+  rpc SyncMetrics ( SyncMetricsRequest ) returns ( SyncMetricsResponse );
+
+  // Relatorios
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+}
+
+// Redes sociais suportadas
+enum SocialNetwork {
+  SOCIAL_NETWORK_UNSPECIFIED = 0;
+
+  SOCIAL_NETWORK_INSTAGRAM = 1;
+
+  SOCIAL_NETWORK_FACEBOOK = 2;
+
+  SOCIAL_NETWORK_X = 3;
+
+  SOCIAL_NETWORK_LINKEDIN = 4;
+
+  SOCIAL_NETWORK_TIKTOK = 5;
+
+  SOCIAL_NETWORK_THREADS = 6;
+}
+
+// Status geral do post
+enum PostStatus {
+  POST_STATUS_UNSPECIFIED = 0;
+
+  POST_STATUS_DRAFT = 1; // Rascunho (nenhuma publicacao ativa)
+
+  POST_STATUS_SCHEDULED = 2; // Tem publicacoes agendadas
+
+  POST_STATUS_PARTIALLY_PUBLISHED = 3; // Algumas publicadas, outras pendentes
+
+  POST_STATUS_PUBLISHED = 4; // Todas as publicacoes concluidas
+
+  POST_STATUS_FAILED = 5; // Todas falharam
+}
+
+// Status de uma publicacao individual
+enum PublicationStatus {
+  PUBLICATION_STATUS_UNSPECIFIED = 0;
+
+  PUBLICATION_STATUS_DRAFT = 1; // Rascunho
+
+  PUBLICATION_STATUS_SCHEDULED = 2; // Agendado
+
+  PUBLICATION_STATUS_PUBLISHING = 3; // Publicando
+
+  PUBLICATION_STATUS_PUBLISHED = 4; // Publicado com sucesso
+
+  PUBLICATION_STATUS_FAILED = 5; // Falhou
+
+  PUBLICATION_STATUS_CANCELLED = 6; // Cancelado pelo usuario
+
+  PUBLICATION_STATUS_REMOVED = 7; // Post removido externamente da rede social
+
+  PUBLICATION_STATUS_UNPUBLISHED = 8; // Despublicado: o post foi apagado da rede social a pedido
+}
+
+// Situacao da revisao do post
+enum ApprovalStatus {
+  APPROVAL_STATUS_UNSPECIFIED = 0;
+
+  APPROVAL_STATUS_PENDING = 1; // Aguardando aprovacao
+
+  APPROVAL_STATUS_APPROVED = 2; // Aprovado: liberado para publicar
+
+  APPROVAL_STATUS_CHANGES_REQUESTED = 3; // Devolvido: precisa de ajustes
+}
+
+// Tipo de midia
+enum MediaType {
+  MEDIA_TYPE_UNSPECIFIED = 0;
+
+  MEDIA_TYPE_IMAGE = 1;
+
+  MEDIA_TYPE_VIDEO = 2;
+}
+
+// Midia do post (imagem ou video)
+message Media {
+  string id = 1;
+
+  string file_id = 2; // ID do arquivo no filemanager
+
+  string url = 3; // URL do arquivo
+
+  MediaType type = 4; // IMAGE, VIDEO
+
+  int32 position = 5; // Ordem no carrossel (1, 2, 3...)
+
+  string thumbnail_url = 6; // Thumbnail para videos
+
+  string alt_text = 7; // Texto alternativo (acessibilidade)
+
+  string file_name = 8; // Nome do arquivo
+
+  int64 file_size = 9; // Tamanho em bytes
+
+  string media_origin = 10; // Origem da midia: "upload", "ai_generated", "canva_import", "canva_edit"
+
+  string canva_design_id = 11; // ID do design no Canva (para sincronizacao e re-exportacao)
+
+  string canva_export_url = 12; // URL da ultima exportacao do Canva (temporaria, 24h)
+}
+
+// Publicacao individual em uma rede social
+message Publication {
+  string id = 1;
+
+  // Rede social e conta
+  SocialNetwork network = 2; // INSTAGRAM, FACEBOOK, X
+
+  string integration_id = 3; // ID da integracao (conta conectada)
+
+  string account_name = 4; // Nome da conta para display (@sigeflex)
+
+  string account_avatar = 5; // Avatar da conta
+
+  // Agendamento
+  google.protobuf.Timestamp scheduled_at = 6; // Data/hora para publicar
+
+  bool publish_now = 7; // Publicar imediatamente (ignora scheduled_at)
+
+  // Status da publicacao
+  PublicationStatus status = 8;
+
+  string external_post_id = 9; // ID do post na rede social apos publicar
+
+  string external_url = 10; // URL do post publicado
+
+  string error_message = 11; // Mensagem de erro se falhou
+
+  google.protobuf.Timestamp published_at = 12;
+
+  // Conteudo customizado por rede (opcional - se vazio, usa do post pai)
+  string custom_content = 13; // Legenda customizada para esta rede
+
+  repeated string custom_hashtags = 14; // Hashtags customizadas para esta rede
+
+  // Controle
+  google.protobuf.Timestamp created_at = 15;
+
+  google.protobuf.Timestamp updated_at = 16;
+
+  // Metricas de engajamento (preenchidas via sync com API da rede)
+  int32 likes = 17; // Curtidas / Reactions
+
+  int32 comments_count = 18; // Comentarios
+
+  int32 shares = 19; // Compartilhamentos / Retweets
+
+  int32 impressions = 20; // Quantas vezes o conteudo foi exibido, contando repeticoes
+
+  int32 saves = 21; // Salvamentos (Instagram)
+
+  int32 clicks = 22; // Clicks no link
+
+  google.protobuf.Timestamp metrics_updated_at = 23; // Ultima atualizacao das metricas
+
+  int32 reach = 34; // Contas unicas alcancadas
+
+  int32 views = 35; // Visualizacoes de video / reproducoes
+
+  int32 profile_visits = 36; // Visitas ao perfil geradas pelo conteudo
+
+  int32 follows = 37; // Novos seguidores atribuidos ao conteudo
+
+  int32 video_watch_time_seconds = 38; // Tempo total assistido, em segundos
+
+  // Vinculo opcional com impulsionamento / Ads
+  string ads_campaign_id = 24; // Campanha paga associada a esta publicacao/conteudo
+
+  string ads_campaign_name = 25; // Nome para exibicao
+
+  double paid_spend = 26; // Investimento pago atribuido a esta publicacao
+
+  int32 paid_impressions = 27; // Impressoes pagas
+
+  int32 paid_clicks = 28; // Cliques pagos
+
+  int32 paid_conversions = 29; // Conversoes pagas
+
+  double paid_revenue = 30; // Receita atribuida ao conteudo impulsionado
+
+  double paid_roi = 31; // ROI percentual do impulsionamento
+
+  string boost_source = 32; // Origem do boost: meta_ads, google_ads, manual etc.
+
+  string publish_origin = 33; // Como a publicacao foi efetivada: "manual" ou "agendado"
+}
+
+// Post em rede social
+message SocialPost {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  // Conteudo do post (compartilhado entre todas as publicacoes)
+  string content = 4; // Texto/legenda do post (limite Facebook)
+
+  repeated string hashtags = 5; // Hashtags separadas para facil edicao
+
+  repeated Media medias = 6; // Lista de midias (carrossel)
+
+  // Lista de publicacoes agendadas (cada uma com rede + horario proprio)
+  repeated Publication publications = 7;
+
+  // Status geral do post
+  PostStatus status = 8;
+
+  // Metadados
+  string title = 9; // Titulo interno para identificacao
+
+  string created_by = 10; // Usuario que criou
+
+  string updated_by = 11; // Usuario que atualizou
+
+  // Engajamento total (soma de likes+comments+shares de todas as publicacoes)
+  int32 total_interactions = 12;
+
+  // Tags para categorizar o tipo de postagem (ex: "promocao", "institucional", "lancamento")
+  repeated string tags = 13;
+
+  // Informacoes do criador
+  string created_by_name = 14; // Nome do usuario que criou (preenchido automatico)
+
+  // Informacoes de IA (quando o conteudo foi gerado ou co-autorado por IA)
+  bool ai_generated = 15; // Se o conteudo foi gerado/co-autorado por IA
+
+  string ai_provider = 16; // Provider usado (ex: "OpenAI", "Anthropic", "Google Gemini")
+
+  string ai_model = 17; // Modelo usado (ex: "gpt-4o-mini", "claude-sonnet-4-20250514")
+
+  // Idioma do post (padrao: pt-BR)
+  string language = 18;
+
+  // Numero sequencial por organizacao (exibicao e referencia interna)
+  int32 number = 19;
+
+  // Inteligencia centrada em posts
+  string intelligence_goal = 20; // Objetivo dominante para score: engajamento, trafego ou conversao
+
+  int32 total_impressions = 21; // Soma das impressoes organicas
+
+  int32 total_clicks = 22; // Soma dos cliques organicos
+
+  int32 total_saves = 23; // Soma dos salvamentos organicos
+
+  double engagement_rate = 24; // Taxa de engajamento percentual
+
+  double click_through_rate = 25; // CTR percentual
+
+  double intelligence_score = 26; // Score consolidado de 0 a 100
+
+  string performance_level = 27; // Ruim, Regular, Bom, Excelente
+
+  string score_summary = 28; // Resumo executivo do desempenho
+
+  repeated string score_reasons = 29; // Motivos principais do score/ranking
+
+  repeated string recommendations = 30; // Recomendacoes objetivas para o proximo post
+
+  double total_paid_spend = 31; // Investimento pago agregado
+
+  int32 total_paid_impressions = 32; // Impressoes pagas agregadas
+
+  int32 total_paid_clicks = 33; // Cliques pagos agregados
+
+  int32 total_paid_conversions = 34; // Conversoes pagas agregadas
+
+  double total_paid_revenue = 35; // Receita paga atribuida
+
+  double paid_roi = 36; // ROI pago percentual agregado
+
+  google.protobuf.Timestamp first_published_at = 37; // Data/hora da primeira publicacao efetivada
+
+  string publish_origin = 38; // "manual" quando alguma publicacao foi efetivada manualmente; senao "agendado"
+
+  // Proximo agendamento do post: a publicacao pendente mais proxima; quando nao
+  // ha pendente, o agendamento mais antigo entre as ja encerradas. Derivado das
+  // publicacoes, so na leitura.
+  google.protobuf.Timestamp next_scheduled_at = 43;
+
+  // Revisao: post so e publicado depois de aprovado
+  ApprovalStatus approval_status = 39; // Somente leitura: definido pela rpc Review
+
+  string approval_by = 40; // E-mail de quem revisou
+
+  string approval_by_name = 41; // Nome de quem revisou
+
+  google.protobuf.Timestamp approval_at = 42; // Data/hora da revisao
+
+  string approval_note = 44; // O que precisa ser ajustado
+
+  int32 total_reach = 45; // Soma do alcance organico
+
+  int32 total_views = 46; // Soma das visualizacoes de video
+
+  int32 total_follows = 47; // Soma dos novos seguidores atribuidos ao conteudo
+}
+
+// Conta conectada (retornada do modulo integrations)
+message ConnectedAccount {
+  string integration_id = 1; // ID da integracao
+
+  SocialNetwork network = 2; // Tipo de rede social
+
+  string account_name = 3; // Nome da conta (@sigeflex, Pagina XYZ)
+
+  string account_id = 4; // ID da conta na rede social
+
+  string avatar_url = 5; // URL do avatar
+
+  bool is_active = 6; // Se a integracao esta ativa
+}
+
+// ========== Requests e Responses ==========
+
+// Create
+message CreateSocialPostRequest {
+  SocialPost social_post = 1;
+}
+
+message CreateSocialPostResponse {
+  SocialPost social_post = 1;
+}
+
+// Update
+message UpdateSocialPostRequest {
+  string id = 1;
+
+  SocialPost social_post = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateSocialPostResponse {
+  SocialPost social_post = 1;
+}
+
+// Delete
+message DeleteSocialPostRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteSocialPostResponse {
+  string id = 1;
+}
+
+// Get
+message GetSocialPostRequest {
+  string id = 1;
+}
+
+message GetSocialPostResponse {
+  SocialPost social_post = 1;
+}
+
+// List
+message ListSocialPostRequest {
+  repeated string ids = 1;
+
+  PostStatus status = 2;
+
+  SocialNetwork network = 3;
+
+  google.protobuf.Timestamp scheduled_from = 4;
+
+  google.protobuf.Timestamp scheduled_to = 5;
+
+  Filter filter = 6;
+}
+
+message ListSocialPostResponse {
+  repeated SocialPost social_post_list = 1;
+
+  string next_page_token = 2;
+}
+
+// Add Publication
+message AddPublicationRequest {
+  string post_id = 1;
+
+  Publication publication = 2;
+}
+
+message AddPublicationResponse {
+  SocialPost social_post = 1;
+}
+
+// Update Publication
+message UpdatePublicationRequest {
+  string post_id = 1;
+
+  string publication_id = 2;
+
+  Publication publication = 3;
+}
+
+message UpdatePublicationResponse {
+  SocialPost social_post = 1;
+}
+
+// Remove Publication
+message RemovePublicationRequest {
+  string post_id = 1;
+
+  string publication_id = 2;
+}
+
+message RemovePublicationResponse {
+  SocialPost social_post = 1;
+}
+
+// Publish Now
+message PublishNowRequest {
+  string post_id = 1;
+
+  string publication_id = 2;
+}
+
+message PublishNowResponse {
+  SocialPost social_post = 1;
+
+  Publication publication = 2;
+}
+
+// Cancel Publication
+message CancelPublicationRequest {
+  string post_id = 1;
+
+  string publication_id = 2;
+}
+
+message CancelPublicationResponse {
+  SocialPost social_post = 1;
+}
+
+// Unpublish: apaga da rede social um post ja publicado
+message UnpublishRequest {
+  string post_id = 1;
+
+  string publication_id = 2;
+}
+
+message UnpublishResponse {
+  SocialPost social_post = 1;
+
+  Publication publication = 2;
+}
+
+// Review
+message ReviewSocialPostRequest {
+  string id = 1;
+
+  ApprovalStatus status = 2; // APPROVED libera a publicacao; CHANGES_REQUESTED devolve para ajuste
+
+  string note = 3; // O que precisa ser ajustado
+}
+
+message ReviewSocialPostResponse {
+  SocialPost social_post = 1;
+}
+
+// List Connected Accounts
+message ListConnectedAccountsRequest {
+  SocialNetwork network = 1; // Filtrar por rede (opcional)
+}
+
+message ListConnectedAccountsResponse {
+  repeated ConnectedAccount accounts = 1;
+}
+
+// Generate AI Post
+message GenerateAIPostRequest {
+  string area_of_operation = 1; // Ex: Restaurante, Clinica Odontologica, Loja de Roupas
+
+  string objective = 2; // Ex: Engajamento, Conversao, Venda, Autoridade
+
+  string target_audience = 3; // Publico-alvo
+
+  string tone = 4; // Ex: Formal, Descontraido, Tecnico, Inspirador
+
+  SocialNetwork platform = 5; // Plataforma principal do post
+
+  string size = 6; // Ex: Curto, Medio, Longo
+
+  bool include_emojis = 7; // Incluir emojis no texto
+
+  bool include_hashtags = 8; // Gerar hashtags
+
+  int32 hashtags_count = 9; // Quantidade sugerida de hashtags
+
+  repeated string keywords = 10; // Palavras-chave que devem ser consideradas
+
+  string language = 11; // Idioma do post (pt-BR, en-US, etc)
+
+  string call_to_action = 12; // CTA desejada
+
+  string additional_instructions = 13; // Instrucoes livres adicionais
+
+  string product_or_service = 14; // Produto/servico principal
+
+  bool generate_image = 15; // Se true, tambem gera imagem para o post
+
+  string image_style = 16; // Estilo visual da imagem (realista, ilustracao, minimalista, etc)
+
+  string integration_id = 17; // ID da integracao de IA a usar (se vazio, usa a primeira disponivel)
+
+  string model = 18; // Modelo especifico (ex: "gpt-4o", "claude-sonnet-4-20250514")
+
+  string intelligence_goal = 19; // Objetivo priorizado pelo motor de score
+
+  double intelligence_score = 20; // Score do post de referencia em edicao
+
+  string performance_level = 21; // Nivel do post atual
+
+  repeated string score_reasons = 22; // Motivos do score a considerar na geracao
+
+  repeated string recommendations = 23; // Recomendacoes de melhoria para o proximo conteudo
+
+  string score_summary = 24; // Resumo executivo do desempenho atual
+
+  repeated SocialNetwork platforms = 25; // Redes de destino; o texto gerado cabe no menor limite de caracteres entre elas
+}
+
+message GenerateAIPostResponse {
+  string content = 1; // Conteudo principal do post
+
+  repeated string hashtags = 2; // Hashtags separadas
+
+  string image_base64 = 3; // Imagem em base64 (sem prefixo data:)
+
+  string image_mime_type = 4; // MIME type da imagem (ex: image/png)
+}
+
+// Generate Batch AI Posts (via Agente de IA)
+message GenerateBatchAIPostsRequest {
+  string agent_id = 1; // ID do agente de IA a utilizar
+
+  int32 post_count = 2; // Quantidade de posts a gerar (1-10)
+
+  string area_of_operation = 3; // Ex: Restaurante, Clinica Odontologica
+
+  string objective = 4; // Ex: Engajamento, Conversao, Venda
+
+  string target_audience = 5; // Publico-alvo
+
+  string tone = 6; // Ex: Formal, Descontraido, Tecnico
+
+  SocialNetwork platform = 7; // Plataforma principal
+
+  string size = 8; // Ex: Curto, Medio, Longo
+
+  bool include_emojis = 9; // Incluir emojis
+
+  bool include_hashtags = 10; // Gerar hashtags
+
+  int32 hashtags_count = 11; // Quantidade de hashtags
+
+  repeated string keywords = 12; // Palavras-chave
+
+  string language = 13; // Idioma (pt-BR, en-US)
+
+  string call_to_action = 14; // CTA desejada
+
+  string additional_instructions = 15; // Instrucoes adicionais
+
+  string product_or_service = 16; // Produto/servico principal
+
+  bool generate_image = 17; // Gerar imagem para os posts
+
+  string image_style = 18; // Estilo visual da imagem
+
+  string integration_id = 19; // ID da integracao de IA a usar
+
+  string model = 20; // Modelo especifico
+
+  string intelligence_goal = 21; // Objetivo priorizado pelo motor de score
+
+  double intelligence_score = 22; // Score do post atual / benchmark
+
+  string performance_level = 23; // Nivel atual do benchmark
+
+  repeated string score_reasons = 24; // Motivos do score a considerar na geracao
+
+  repeated string recommendations = 25; // Recomendacoes para guiar novos posts
+
+  string score_summary = 26; // Resumo executivo do benchmark analisado
+
+  repeated SocialNetwork platforms = 27; // Redes de destino; o texto gerado cabe no menor limite de caracteres entre elas
+}
+
+// Post gerado pelo agente
+message GeneratedPost {
+  string content = 1; // Texto do post
+
+  repeated string hashtags = 2; // Hashtags
+
+  string image_base64 = 3; // Imagem em base64
+
+  string image_mime_type = 4; // MIME type da imagem
+
+  string recommended_network = 5; // Rede social recomendada para esse post
+}
+
+message GenerateBatchAIPostsResponse {
+  repeated GeneratedPost posts = 1; // Posts gerados
+}
+
+// Sync Metrics
+message SyncMetricsRequest {
+  string post_id = 1;
+}
+
+message SyncMetricsResponse {
+  SocialPost social_post = 1;
+}
+
+// --- Relatorios ---
+
+message ReportRequest {
+  ListSocialPostRequest list_request = 1;
+
+  string tipo_relatorio = 2;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}

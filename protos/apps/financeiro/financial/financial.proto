@@ -1,0 +1,174 @@
+syntax = "proto3";
+
+package financial;
+
+import "google/protobuf/timestamp.proto";
+
+import "google/api/annotations.proto";
+
+import "filter/filter.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/financeiro/financial";
+
+// DRE (Demonstração do Resultado do Exercício) montado sobre a hierarquia do
+// plano de contas da organização.
+service FinancialService {
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+}
+
+enum ReportType {
+  REPORT_TYPE_UNSPECIFIED = 0;
+
+  REPORT_TYPE_DRE = 1;
+
+  REPORT_TYPE_ACCOUNTS_AND_CASH = 2;
+}
+
+// Momento em que a receita e a despesa são reconhecidas.
+enum Regime {
+  // Reconhece pela data de competência do lançamento.
+  REGIME_COMPETENCIA = 0;
+
+  // Reconhece pela data em que o dinheiro entrou ou saiu.
+  REGIME_CAIXA = 1;
+}
+
+message ReportRequest {
+  Filter filter = 3;
+
+  ReportType report_type = 7;
+
+  // Quando preenchido, a resposta traz os lançamentos que compõem esta conta
+  // em vez do demonstrativo.
+  string chart_of_account_id = 9;
+
+  // Lucro desejado no período. Quando preenchido, a análise gerencial devolve o
+  // faturamento necessário para alcançá-lo.
+  double meta_lucro = 10;
+
+  // Empresas do grupo a apurar. Vazio apura só a organização da sessão; com mais
+  // de uma, a resposta traz o demonstrativo de cada empresa e o total consolidado.
+  repeated string org_ids = 11;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+
+  Dre dre = 2; // demonstrativo da organização, ou o total do grupo quando há empresas
+
+  repeated Entry entries = 3;
+
+  repeated DreEmpresa empresas = 4; // um demonstrativo por empresa, na visão do grupo
+}
+
+message DreEmpresa {
+  string org_id = 1;
+
+  string org_nome = 2;
+
+  Dre dre = 3;
+}
+
+// Natureza da linha no demonstrativo.
+enum Type {
+  TYPE_UNSPECIFIED = 0;
+
+  TYPE_REVENUE = 1;
+
+  TYPE_EXPENSE = 2;
+}
+
+message Dre {
+  google.protobuf.Timestamp date_initial = 7;
+
+  google.protobuf.Timestamp date_final = 8;
+
+  Regime regime = 9;
+
+  string currency_type = 10;
+
+  // Linhas já na ordem de exibição do demonstrativo.
+  repeated Item items = 11;
+
+  // Ressalvas sobre a apuração: dados ausentes ou fora da estrutura esperada.
+  repeated string warnings = 12;
+
+  // Leitura gerencial do período: quanto sobra de cada venda depois do que
+  // varia com ela, e quanto é preciso faturar para cobrir os custos fixos.
+  AnaliseGerencial analise = 13;
+}
+
+message AnaliseGerencial {
+  double receita = 1;
+
+  double custosVariaveis = 2;
+
+  double margemContribuicao = 3;
+
+  // Margem de contribuição sobre a receita, em percentual.
+  double margemContribuicaoPercentual = 4;
+
+  double custosFixos = 5;
+
+  // Faturamento necessário para o resultado ficar em zero.
+  double pontoEquilibrio = 6;
+
+  // Quanto a receita do período supera o ponto de equilíbrio, em percentual.
+  // Negativo indica faturamento abaixo do necessário para cobrir os fixos.
+  double margemSeguranca = 7;
+
+  // Despesas sem natureza definida, que ficaram fora da separação.
+  double naoClassificado = 8;
+
+  // Lucro desejado informado na consulta.
+  double metaLucro = 9;
+
+  // Faturamento necessário para cobrir os fixos e ainda alcançar a meta de lucro.
+  double pontoEquilibrioMeta = 10;
+}
+
+message Item {
+  string id = 1;
+
+  string chart_of_account_id = 2;
+
+  string chart_of_account_name = 3;
+
+  string chart_of_account_code = 4;
+
+  Type type = 7;
+
+  double budgeted = 8;
+
+  double realized = 9;
+
+  // Profundidade da conta na hierarquia, para indentação.
+  int32 level = 12;
+
+  string parent_id = 13;
+
+  // Linha calculada a partir das demais, não uma conta de lançamento.
+  bool total = 14;
+
+  // Quantidade de lançamentos que compõem o valor.
+  int64 count = 15;
+}
+
+// Lançamento que compõe uma linha do demonstrativo.
+message Entry {
+  google.protobuf.Timestamp date = 1;
+
+  string description = 2;
+
+  string person_name = 3;
+
+  string document = 4;
+
+  string source = 5;
+
+  string source_id = 6;
+
+  double value = 7;
+}

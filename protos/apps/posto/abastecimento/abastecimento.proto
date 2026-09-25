@@ -1,0 +1,264 @@
+syntax = "proto3";
+
+package abastecimento;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/posto/abastecimento";
+
+// Abastecimentos registrados pela automação de pista. O registro é um fato da bomba:
+// nasce pelo agente de automação e só muda de situação pelo caixa.
+service AbastecimentoService {
+  rpc Get ( GetAbastecimentoRequest ) returns ( GetAbastecimentoResponse );
+
+  rpc List ( ListAbastecimentoRequest ) returns ( ListAbastecimentoResponse );
+
+  // Recebe um lote de abastecimentos concluídos vindos do agente de automação.
+  // Idempotente pela origem: o mesmo abastecimento recebido de novo é aceito sem regravar.
+  rpc Recebe ( RecebeRequest ) returns ( RecebeResponse );
+
+  // Reserva o abastecimento para a venda que está aberta neste caixa.
+  rpc Reserva ( ReservaRequest ) returns ( ReservaResponse );
+
+  // Registra o abastecimento como aferição de bico: o combustível voltou ao tanque, não há venda.
+  rpc Afericao ( AfericaoRequest ) returns ( AfericaoResponse );
+
+  // Quadro por bico do período: encerrantes, litros vendidos, aferições e diferenças.
+  rpc ResumoPorBico ( ResumoPorBicoRequest ) returns ( ResumoPorBicoResponse );
+}
+
+enum Situacao {
+  SITUACAO_UNSPECIFIED = 0;
+
+  // Concluído na bomba e ainda sem venda.
+  SITUACAO_PENDENTE = 1;
+
+  // Reservado por um caixa e incluído numa venda aberta.
+  SITUACAO_EM_VENDA = 2;
+
+  // A venda foi fechada.
+  SITUACAO_VENDIDO = 3;
+
+  // Aferição de bico: volume devolvido ao tanque, sem venda.
+  SITUACAO_AFERICAO = 4;
+}
+
+enum Tipo {
+  TIPO_UNSPECIFIED = 0;
+
+  TIPO_NORMAL = 1;
+
+  // A própria automação classificou como teste/aferição.
+  TIPO_AFERICAO = 2;
+
+  // Gerado pela automação a partir da diferença de encerrante (bomba operou sem comunicação).
+  TIPO_OFFLINE = 3;
+}
+
+message Abastecimento {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  metadata.BasicFields fields = 6;
+
+  // Identificação única do abastecimento na automação (marca + id na automação).
+  string origem_id = 7;
+
+  string marca = 8;
+
+  int32 num_bico = 9;
+
+  string num_bomba = 10;
+
+  string num_tanque = 11;
+
+  string produto_id = 12;
+
+  string produto_nome = 13;
+
+  string codigo_anp = 14;
+
+  double volume = 15;
+
+  double preco_unitario = 16;
+
+  double valor_total = 17;
+
+  double encerrante_inicial = 18;
+
+  double encerrante_final = 19;
+
+  // Momento em que a bomba concluiu o abastecimento.
+  google.protobuf.Timestamp data_hora = 20;
+
+  Situacao situacao = 21;
+
+  Tipo tipo = 22;
+
+  string pedido_id = 23;
+
+  int32 pedido_numero = 24;
+
+  string reserva_user_id = 25;
+
+  string reserva_user_name = 26;
+
+  google.protobuf.Timestamp reserva_em = 27;
+
+  // Motivo pelo qual o abastecimento não pode ir para a venda (ex.: bico sem cadastro).
+  string bloqueio = 28;
+
+  // Identificação do frentista informada pela automação quando ele se identifica na bomba.
+  string frentista_codigo = 29;
+
+  // Pessoa do frentista que recebeu o abastecimento.
+  string frentista_id = 30;
+
+  string frentista_nome = 31;
+
+  // Nível de preço em que a bomba cobrou: 1 à vista, 2 a prazo.
+  int32 nivel_preco = 32;
+
+  // Tag do veículo lida na bomba.
+  string veiculo_tag = 33;
+
+  // Veículo de frota identificado pela tag; somente leitura.
+  string posto_veiculo_id = 34;
+
+  string posto_placa = 35;
+}
+
+message GetAbastecimentoRequest {
+  string id = 1;
+}
+
+message GetAbastecimentoResponse {
+  Abastecimento abastecimento = 1;
+}
+
+message ListAbastecimentoRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListAbastecimentoResponse {
+  repeated Abastecimento abastecimento_list = 1;
+
+  string next_page_token = 2;
+}
+
+message RecebeRequest {
+  string marca = 1;
+
+  repeated Abastecimento abastecimentos = 2;
+}
+
+message Recusa {
+  string origem_id = 1;
+
+  string motivo = 2;
+}
+
+message RecebeResponse {
+  // Origens que o sistema guardou (ou já tinha): a automação pode dar baixa nelas.
+  repeated string aceitos = 1;
+
+  repeated Recusa recusas = 2;
+}
+
+message ReservaRequest {
+  string id = 1;
+
+  // Pessoa do frentista identificado no caixa. Não substitui o frentista informado pela bomba.
+  string frentista_id = 2;
+}
+
+message ReservaResponse {
+  Abastecimento abastecimento = 1;
+}
+
+message AfericaoRequest {
+  string id = 1;
+}
+
+message AfericaoResponse {
+  Abastecimento abastecimento = 1;
+}
+
+message ResumoPorBicoRequest {
+  google.protobuf.Timestamp data_hora_inicial = 1;
+
+  google.protobuf.Timestamp data_hora_final = 2;
+}
+
+message Salto {
+  google.protobuf.Timestamp data_hora = 1;
+
+  double encerrante_final_anterior = 2;
+
+  double encerrante_inicial = 3;
+
+  double litros = 4;
+}
+
+message ResumoBico {
+  int32 num_bico = 1;
+
+  string num_bomba = 2;
+
+  string num_tanque = 3;
+
+  string produto_id = 4;
+
+  string produto_nome = 5;
+
+  double encerrante_inicial = 6;
+
+  double encerrante_final = 7;
+
+  double litros_encerrante = 8;
+
+  double litros_vendidos = 9;
+
+  double litros_afericao = 10;
+
+  double litros_pendentes = 11;
+
+  double litros_em_venda = 12;
+
+  double diferenca = 13;
+
+  double valor_vendido = 14;
+
+  int32 quantidade = 15;
+
+  repeated Salto saltos = 16;
+}
+
+message ResumoPorBicoResponse {
+  repeated ResumoBico bicos = 1;
+
+  repeated string avisos = 2;
+}

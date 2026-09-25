@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "plugins/validate/validate.proto";
+
+import "apps/vendas/pedido/pedido.proto";
+
+package ordemservico;
+
+option go_package = "comps/pb/apps/vendas/ordemservico";
+
+service OrdemServicoService {
+  rpc Create ( pedido.CreatePedidoRequest ) returns ( pedido.CreatePedidoResponse );
+
+  rpc Update ( pedido.UpdatePedidoRequest ) returns ( pedido.UpdatePedidoResponse );
+
+  rpc ReorderItems ( pedido.ReorderItemsRequest ) returns ( pedido.ReorderItemsResponse );
+
+  rpc SetAcompanhamento ( pedido.SetAcompanhamentoRequest ) returns ( pedido.SetAcompanhamentoResponse );
+
+  rpc Delete ( pedido.DeletePedidoRequest ) returns ( pedido.DeletePedidoResponse );
+
+  rpc Get ( pedido.GetPedidoRequest ) returns ( pedido.GetPedidoResponse );
+
+  rpc List ( pedido.ListPedidoRequest ) returns ( pedido.ListPedidoResponse );
+
+  rpc Print ( pedido.PrintPedidoRequest ) returns ( pedido.PrintPedidoResponse );
+
+  rpc Cancel ( pedido.CancelPedidoRequest ) returns ( pedido.CancelPedidoResponse );
+
+  rpc Clone ( pedido.ClonePedidoRequest ) returns ( pedido.ClonePedidoResponse );
+
+  rpc AddProduct ( pedido.AddProductRequest ) returns ( pedido.AddProductResponse );
+
+  rpc UpdateProduct ( pedido.UpdateProductRequest ) returns ( pedido.UpdateProductResponse );
+
+  rpc DeleteProduct ( pedido.DeleteProductRequest ) returns ( pedido.DeleteProductResponse );
+
+  rpc AddService ( pedido.AddServiceRequest ) returns ( pedido.AddServiceResponse );
+
+  rpc UpdateService ( pedido.UpdateServiceRequest ) returns ( pedido.UpdateServiceResponse );
+
+  rpc DeleteService ( pedido.DeleteServiceRequest ) returns ( pedido.DeleteServiceResponse );
+
+  rpc AddPayment ( pedido.AddPaymentRequest ) returns ( pedido.AddPaymentResponse );
+
+  rpc DeletePayment ( pedido.DeletePaymentRequest ) returns ( pedido.DeletePaymentResponse );
+
+  rpc CancelPayment ( pedido.CancelPaymentRequest ) returns ( pedido.CancelPaymentResponse );
+
+  rpc SendByEmail ( pedido.SendByEmailRequest ) returns ( pedido.SendByEmailResponse );
+
+  rpc Report ( pedido.ReportRequest ) returns ( pedido.ReportResponse );
+
+  rpc AplicaTabelaPreco ( pedido.AplicaTabelaPrecoRequest ) returns ( pedido.AplicaTabelaPrecoResponse );
+
+  rpc DfeDanfe ( pedido.DfeDanfeRequest ) returns ( pedido.DfeDanfeResponse );
+
+  // Cria pedidos mesclados com base nas IDs recebidas
+  rpc MesclaPedidos ( pedido.MesclaPedidosRequest ) returns ( pedido.MesclaPedidosResponse );
+
+  // Vincula um novo pedido à mesclagem já criada
+  rpc AddPedidoVinculado ( pedido.AddPedidoVinculadoRequest ) returns ( pedido.AddPedidoVinculadoResponse );
+
+  // Delete um dos pedidos da mesclagem
+  rpc DeletePedidoVinculado ( pedido.DeletePedidoVinculadoRequest ) returns ( pedido.DeletePedidoVinculadoResponse );
+
+  // Envia uma nota fiscal de acordo com as configurações de integração
+  rpc EnviaNFe ( pedido.EnviaNFeRequest ) returns ( pedido.EnviaNFeResponse );
+
+  // Sincroniza o pedido com o estado atual da NF vinculada
+  rpc SincronizaNFe ( pedido.SincronizaNFeRequest ) returns ( pedido.SincronizaNFeResponse );
+
+  rpc SincronizaPessoa ( pedido.SincronizaPessoaRequest ) returns ( pedido.SincronizaPessoaResponse );
+
+  // Permite vincular uma NF ao pedido manualmente
+  rpc VinculaNFManual ( pedido.VinculoNfManualRequest ) returns ( pedido.VinculoNfManualResponse );
+
+  rpc SendPaymentLink ( pedido.SendPaymentLinkRequest ) returns ( pedido.SendPaymentLinkResponse );
+
+  rpc GetUltimaOsPorNumeroSerie ( GetUltimaOsPorNumeroSerieRequest ) returns ( GetUltimaOsPorNumeroSerieResponse );
+
+  // Historico compacto de OS de um equipamento (numero de serie/placa),
+  // ordenado por data de fechamento decrescente.
+  rpc HistoricoEquipamento ( HistoricoEquipamentoRequest ) returns ( HistoricoEquipamentoResponse );
+}
+
+// Messages específicas de Ordem de Serviço
+message GetUltimaOsPorNumeroSerieRequest {
+  string numeroSerie = 1;
+}
+
+message GetUltimaOsPorNumeroSerieResponse {
+  pedido.Pedido pedido = 1;
+}
+
+message HistoricoEquipamentoRequest {
+  string numeroSerie = 1;
+}
+
+// Resumo compacto de uma OS no historico de um equipamento. Leva apenas o
+// necessario para a tela de historico (sem o documento JSONB inteiro).
+message HistoricoEquipamentoItem {
+  string id = 1;
+
+  int32 numero = 2;
+
+  string tipo = 3;
+
+  string situacao = 4;
+
+  google.protobuf.Timestamp dataHoraRegistro = 5;
+
+  google.protobuf.Timestamp dataHoraFechamento = 6;
+
+  string clienteNome = 7;
+
+  double valorTotal = 8;
+
+  string defeitoReclamado = 9;
+
+  repeated string produtos = 10;
+
+  repeated string servicos = 11;
+}
+
+message HistoricoEquipamentoResponse {
+  repeated HistoricoEquipamentoItem itens = 1;
+}

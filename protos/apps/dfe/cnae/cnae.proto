@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package cnae;
+
+import "google/api/annotations.proto";
+
+option go_package = "comps/pb/apps/dfe/cnae";
+
+// Tabela fixa de subclasses CNAE (IBGE). Sem persistência.
+service CnaeService {
+  rpc Search ( SearchCnaeRequest ) returns ( SearchCnaeResponse );
+}
+
+message Cnae {
+  string code = 1; // Subclasse no formato 0000-0/00
+
+  string description = 2;
+}
+
+message SearchCnaeRequest {
+  string query = 1; // Código (com ou sem máscara) ou trecho da descrição; vazio retorna a tabela completa
+
+  int32 limit = 2; // Máximo de itens (0 = sem limite)
+}
+
+message SearchCnaeResponse {
+  repeated Cnae cnaes = 1;
+}

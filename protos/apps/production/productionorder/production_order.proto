@@ -1,0 +1,826 @@
+syntax = "proto3";
+
+package productionorder;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "apps/report/report.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/production/productionorder";
+
+// ProductionOrderService - Serviço de Ordem de Produção com operações CRUD e funcionalidades específicas
+service ProductionOrderService {
+  // CRUD padrão
+  rpc Create ( CreateProductionOrderRequest ) returns ( CreateProductionOrderResponse );
+
+  rpc Update ( UpdateProductionOrderRequest ) returns ( UpdateProductionOrderResponse );
+
+  rpc Delete ( DeleteProductionOrderRequest ) returns ( DeleteProductionOrderResponse );
+
+  rpc Get ( GetProductionOrderRequest ) returns ( GetProductionOrderResponse );
+
+  rpc List ( ListProductionOrderRequest ) returns ( ListProductionOrderResponse );
+
+  // Funcionalidades específicas
+  rpc EstimateProduction ( EstimateProductionRequest ) returns ( EstimateProductionResponse );
+
+  rpc CalculateCost ( CalculateCostRequest ) returns ( CalculateCostResponse );
+
+  rpc StartProduction ( StartProductionRequest ) returns ( StartProductionResponse );
+
+  rpc FinishProduction ( FinishProductionRequest ) returns ( FinishProductionResponse );
+
+  // Apontamento parcial: registra uma quantidade produzida, consome os insumos
+  // proporcionalmente e distribui a produção entre as demandas vinculadas.
+  rpc AddProductionEntry ( AddProductionEntryRequest ) returns ( AddProductionEntryResponse );
+
+  // Produção imediata: cria, inicia e finaliza a ordem numa única chamada, para
+  // quem fabrica e dá entrada no produto no mesmo momento.
+  rpc QuickProduction ( QuickProductionRequest ) returns ( QuickProductionResponse );
+
+  // Demanda de pedidos de venda ainda sem produção vinculada, agregada por produto.
+  rpc GetPendingDemands ( GetPendingDemandsRequest ) returns ( GetPendingDemandsResponse );
+
+  // Gera ordens de produção agrupando itens de pedidos por produto.
+  rpc GenerateFromSaleOrders ( GenerateFromSaleOrdersRequest ) returns ( GenerateFromSaleOrdersResponse );
+
+  rpc AddDemands ( AddDemandsRequest ) returns ( AddDemandsResponse );
+
+  rpc RemoveDemand ( RemoveDemandRequest ) returns ( RemoveDemandResponse );
+
+  // Indicadores do painel de produção.
+  rpc Dashboard ( DashboardRequest ) returns ( DashboardResponse );
+
+  rpc CancelProduction ( CancelProductionRequest ) returns ( CancelProductionResponse );
+
+  // Consultas por Lote
+  rpc GetByBatch ( GetByBatchRequest ) returns ( GetByBatchResponse );
+
+  rpc ListBatches ( ListBatchesRequest ) returns ( ListBatchesResponse );
+
+  // Relatório gerencial (menu Relatórios)
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  // Impressão de uma ordem (dados para o viewer Stimulsoft)
+  // Custos do cadastro que a ordem nova lançaria para este produto. A tela de
+  // inclusão usa para mostrar antes de salvar o que o servidor aplicaria.
+  rpc GetDefaultCosts ( GetDefaultCostsRequest ) returns ( GetDefaultCostsResponse );
+
+  rpc Print ( PrintRequest ) returns ( PrintResponse );
+}
+
+// ProductionOrder - Mensagem principal da Ordem de Produção
+message ProductionOrder {
+  metadata.BasicFields fields = 1;
+
+  string id = 2;
+
+  uint32 number = 3; // Número sequencial
+
+  string status = 4; // PENDING, IN_PRODUCTION, COMPLETED, CANCELLED
+
+  // Produto a ser produzido
+  string product_id = 10;
+
+  string product_name = 11;
+
+  string product_unit = 12;
+
+  string product_code = 13;
+
+  double planned_quantity = 14; // Quantidade a produzir
+
+  double produced_quantity = 15; // Quantidade boa efetivamente produzida (entra no estoque)
+
+  double lost_quantity = 16; // Quantidade perdida/refugo (não entra no estoque)
+
+  double loss_percentage = 17; // Perda real % = perdida / (produzida + perdida)
+
+  // Custos
+  double input_cost = 20; // Custo total dos insumos
+
+  double labor_cost = 21; // Custo de mão de obra (opcional)
+
+  double other_cost = 22; // Outros custos (opcional)
+
+  double total_cost = 23; // Soma de todos os custos
+
+  double unit_cost = 24; // Custo por unidade produzida
+
+  double planned_total_cost = 25; // Custo total planejado (snapshot ao iniciar a produção)
+
+  double planned_unit_cost = 26; // Custo unitário planejado (snapshot ao iniciar a produção)
+
+  // Custos extras detalhados. Quando houver itens, other_cost passa a ser a soma deles.
+  repeated ExtraCost extra_costs = 27;
+
+  // Insumos (composição expandida)
+  repeated ProductionInput inputs = 30;
+
+  // Datas
+  google.protobuf.Timestamp expected_date = 40;
+
+  google.protobuf.Timestamp start_date = 41;
+
+  google.protobuf.Timestamp finish_date = 42;
+
+  // Rastreabilidade de Lotes
+  string batch_code = 50; // Código do lote gerado
+
+  google.protobuf.Timestamp batch_manufacture_date = 51;
+
+  google.protobuf.Timestamp batch_expiration_date = 52;
+
+  string notes = 53;
+
+  string batch_id = 54; // ID do lote criado no controle de lotes (produto com controle de lote)
+
+  reserved 60, 61, 62;
+
+  // Metadados
+  google.protobuf.Timestamp created_at = 70;
+
+  google.protobuf.Timestamp updated_at = 71;
+
+  string user_id = 72;
+
+  string user_name = 73;
+
+  // Vínculo com pedido de venda (origem da demanda, opcional)
+  string sale_order_id = 80;
+
+  uint32 sale_order_number = 81;
+
+  // Estoques (almoxarifados) usados na produção. Vazio = estoque padrão.
+  string input_stock_name = 82; // De onde saem os insumos
+
+  string output_stock_name = 83; // Onde entra o produto acabado
+
+  bool is_late = 84; // Derivado: data prevista vencida e ordem não concluída
+
+  // Explode semiacabados: insumos que também são compostos entram pela própria ficha
+  // técnica, até a matéria-prima. Desligado, o semiacabado é consumido do estoque.
+  bool explode_sub_assemblies = 85;
+
+  // Demandas de pedidos de venda atendidas por esta ordem. A soma das demandas
+  // pode ser menor que planned_quantity: a diferença é excedente para estoque.
+  repeated SaleOrderDemand demands = 86;
+
+  // Apontamentos parciais de produção, em ordem cronológica.
+  repeated ProductionEntry entries = 87;
+
+  // Custo unitário do cadastro do produto, aplicado quando a ordem não tem insumos
+  // (produto sem ficha técnica). Zero na ordem que se valoriza pela ficha.
+  double standard_unit_cost = 88;
+
+  // Classificação livre da ordem, do cadastro de tags do tipo PRODUCTION_ORDER.
+  repeated ProductionTag tags = 89;
+
+  // Categoria do produto no momento da ordem. Define o perfil de custos de
+  // produção que é lançado automaticamente.
+  string product_category_id = 90;
+
+  string product_category_name = 91;
+}
+
+// ProductionTag - Tag aplicada à ordem, com a cor do cadastro no momento em que
+// foi aplicada.
+message ProductionTag {
+  string value = 1;
+
+  string color = 2;
+}
+
+// SaleOrderDemand - Demanda de um item de pedido de venda vinculada à ordem
+message SaleOrderDemand {
+  string id = 1;
+
+  string sale_order_id = 2;
+
+  uint32 sale_order_number = 3;
+
+  string sale_order_item_id = 4; // id do item (produto) dentro do pedido
+
+  string customer_name = 5;
+
+  double quantity = 6; // quantidade demandada para esta ordem
+
+  double fulfilled_quantity = 7; // quantidade já atendida pelos apontamentos
+
+  google.protobuf.Timestamp order_date = 8; // data de registro do pedido (desempate da sugestão)
+
+  google.protobuf.Timestamp delivery_date = 9; // previsão de entrega (prioridade da sugestão)
+}
+
+// ProductionEntry - Apontamento parcial de produção
+message ProductionEntry {
+  string id = 1;
+
+  uint32 number = 2; // sequencial dentro da ordem (1, 2, 3...)
+
+  google.protobuf.Timestamp date = 3;
+
+  double good_quantity = 4; // quantidade boa (entra no estoque)
+
+  double lost_quantity = 5; // refugo (não entra no estoque)
+
+  string user_id = 6;
+
+  string user_name = 7;
+
+  string notes = 8;
+
+  repeated EntryInput inputs = 9; // consumo de insumos deste apontamento
+
+  repeated EntryAllocation allocations = 10; // destino da quantidade boa
+}
+
+// EntryInput - Consumo de um insumo em um apontamento
+message EntryInput {
+  string product_id = 1;
+
+  string product_name = 2;
+
+  double quantity = 3;
+
+  double unit_cost = 4;
+
+  repeated ConsumedBatch consumed_batches = 5;
+}
+
+// EntryAllocation - Destino de uma quantidade produzida no apontamento.
+// demand_id vazio indica excedente para o estoque geral.
+message EntryAllocation {
+  string demand_id = 1;
+
+  string sale_order_id = 2;
+
+  uint32 sale_order_number = 3;
+
+  double quantity = 4;
+}
+
+// ExtraCost - Custo extra lançado na ordem (energia, embalagem, terceirização...)
+message ExtraCost {
+  string id = 1;
+
+  string description = 2;
+
+  double value = 3;
+}
+
+// ProductionInput - Mensagem para representar um insumo da produção
+message ProductionInput {
+  string id = 1;
+
+  string product_id = 2; // ID do insumo
+
+  string product_name = 3;
+
+  string product_code = 4;
+
+  string unit = 5;
+
+  double required_quantity = 10; // Qtd necessária por unidade do produto
+
+  double total_quantity = 11; // Qtd total = necessária * qtd_planejada * (1 + perda%)
+
+  double consumed_quantity = 12; // Qtd efetivamente consumida
+
+  double loss_percent = 13; // Perda prevista % sobre a quantidade necessária
+
+  double unit_cost = 20; // Custo unitário do insumo
+
+  double total_cost = 21; // Custo total = qtd_consumida * custo_unitario
+
+  double available_stock = 30; // Estoque atual do insumo (snapshot)
+
+  repeated ConsumedBatch consumed_batches = 31; // Lotes consumidos (insumo com controle de lote, seleção FEFO)
+
+  double min_stock = 32; // Estoque mínimo cadastrado no produto
+
+  int32 level = 33; // Nível na ficha técnica (0 = insumo direto do produto)
+
+  string parent_product_id = 34; // Semiacabado que originou o insumo, quando explodido
+
+  string parent_product_name = 35;
+}
+
+// ConsumedBatch - Lote de insumo consumido na produção (rastreabilidade matéria-prima -> produto)
+message ConsumedBatch {
+  string batch_id = 1;
+
+  string batch_number = 2;
+
+  double quantity = 3;
+
+  string supplier_id = 4;
+
+  string supplier_name = 5;
+
+  google.protobuf.Timestamp expiration_date = 6;
+}
+
+// InputAvailability - Mensagem para disponibilidade de insumo na estimativa
+message InputAvailability {
+  string product_id = 1;
+
+  string product_name = 2;
+
+  string product_code = 3;
+
+  string unit = 4;
+
+  double available_stock = 5;
+
+  double quantity_per_unit = 6;
+
+  double producible_quantity = 7; // Qtd que este insumo permite produzir
+
+  bool limiting = 8; // Se é o insumo limitante
+
+  double unit_cost = 9; // Custo unitário atual do insumo
+
+  double min_stock = 10; // Estoque mínimo cadastrado no produto
+}
+
+// ProductionBatch - Mensagem para informações de lote
+message ProductionBatch {
+  string batch = 1;
+
+  string product_id = 2;
+
+  string product_name = 3;
+
+  double quantity = 4;
+
+  google.protobuf.Timestamp manufacture_date = 5;
+
+  google.protobuf.Timestamp expiration_date = 6;
+
+  string production_order_id = 7;
+
+  uint32 production_order_number = 8;
+}
+
+// Request e Response para criação
+message CreateProductionOrderRequest {
+  ProductionOrder production_order = 1;
+}
+
+message CreateProductionOrderResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para atualização
+message UpdateProductionOrderRequest {
+  string id = 1;
+
+  ProductionOrder production_order = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateProductionOrderResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para exclusão
+message DeleteProductionOrderRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteProductionOrderResponse {
+  string id = 1;
+}
+
+// Request e Response para buscar por ID
+message GetProductionOrderRequest {
+  string id = 1;
+}
+
+message GetProductionOrderResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para listagem
+message ListProductionOrderRequest {
+  repeated string ids = 1;
+
+  string status = 2;
+
+  string product_id = 3;
+
+  string product_name = 4;
+
+  string batch_code = 5;
+
+  google.protobuf.Timestamp created_at_gte = 6;
+
+  google.protobuf.Timestamp created_at_lte = 7;
+
+  google.protobuf.Timestamp expected_date_gte = 8;
+
+  google.protobuf.Timestamp expected_date_lte = 9;
+
+  uint32 number = 10;
+
+  string sale_order_id = 11;
+
+  bool only_late = 12; // Somente ordens com data prevista vencida e não concluídas
+
+  string consumed_batch_number = 13; // Ordens que consumiram este lote de insumo
+
+  repeated string sale_order_ids = 14; // Ordens vinculadas a qualquer um destes pedidos (demandas ou vínculo legado)
+
+  bool with_fulfilled_demands = 15; // Somente ordens com alguma demanda já atendida
+
+  uint32 sale_order_number = 16; // Ordens que atendem o pedido de venda com este número
+
+  repeated string tags = 17; // Ordens que tenham qualquer uma destas tags
+
+  Filter filter = 32;
+}
+
+message ListProductionOrderResponse {
+  repeated ProductionOrder production_order_list = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para estimar produção
+message EstimateProductionRequest {
+  string product_id = 1;
+
+  double quantity = 2; // Se informado, verifica se é possível produzir essa quantidade
+
+  bool explode_sub_assemblies = 3; // Explode semiacabados até a matéria-prima
+}
+
+message EstimateProductionResponse {
+  string product_id = 1;
+
+  string product_name = 2;
+
+  double max_quantity = 3; // Máximo produzível
+
+  bool can_produce = 4; // Se pode produzir a quantidade solicitada
+
+  repeated InputAvailability inputs = 5;
+}
+
+// Request e Response para calcular custo
+message CalculateCostRequest {
+  string id = 1;
+
+  double labor_cost = 2;
+
+  double other_cost = 3;
+}
+
+message CalculateCostResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para iniciar produção
+message StartProductionRequest {
+  string id = 1;
+}
+
+message StartProductionResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para finalizar produção
+message FinishProductionRequest {
+  string id = 1;
+
+  double produced_quantity = 2; // Quantidade boa produzida (se diferente da planejada)
+
+  string batch_code = 3; // Código do lote (gerado automaticamente se não informado)
+
+  google.protobuf.Timestamp batch_manufacture_date = 4;
+
+  google.protobuf.Timestamp batch_expiration_date = 5;
+
+  reserved 6;
+
+  string notes = 7;
+
+  double lost_quantity = 8; // Quantidade perdida/refugo (não entra no estoque)
+}
+
+message FinishProductionResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para cancelar produção
+message CancelProductionRequest {
+  string id = 1;
+
+  string reason = 2;
+}
+
+message CancelProductionResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para consultar por lote
+message GetByBatchRequest {
+  string batch = 1;
+}
+
+message GetByBatchResponse {
+  repeated ProductionOrder production_order_list = 1;
+}
+
+// Request e Response para listar lotes
+message ListBatchesRequest {
+  string product_id = 1;
+
+  google.protobuf.Timestamp manufacture_date_gte = 2;
+
+  google.protobuf.Timestamp manufacture_date_lte = 3;
+
+  google.protobuf.Timestamp expiration_date_gte = 4;
+
+  google.protobuf.Timestamp expiration_date_lte = 5;
+
+  Filter filter = 32;
+}
+
+message ListBatchesResponse {
+  repeated ProductionBatch batches = 1;
+}
+
+// Request e Response para relatório gerencial
+message ReportRequest {
+  string report_type = 1;
+
+  ListProductionOrderRequest list_request = 2;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}
+
+message GetDefaultCostsRequest {
+  string product_id = 1;
+
+  double planned_quantity = 2; // Multiplica os custos cobrados por unidade
+}
+
+message GetDefaultCostsResponse {
+  repeated ExtraCost extra_costs = 1;
+}
+
+// Request e Response para impressão de uma ou mais ordens
+message PrintRequest {
+  string id = 1;
+
+  // Ordens adicionais na mesma impressão. Cada uma começa em uma página nova.
+  repeated string ids = 2;
+}
+
+message PrintResponse {
+  report.Response response = 1;
+}
+
+// Request e Response para apontamento parcial
+message AddProductionEntryRequest {
+  string id = 1; // id da ordem
+
+  double good_quantity = 2;
+
+  double lost_quantity = 3;
+
+  // Destinos da quantidade boa. Vazio: o servidor aplica a sugestão automática
+  // (demandas por data de entrega, excedente para estoque geral).
+  repeated EntryAllocation allocations = 4;
+
+  bool prioritize_stock = 5; // Sugestão automática direciona tudo para o estoque geral
+
+  string notes = 6;
+}
+
+message AddProductionEntryResponse {
+  ProductionOrder production_order = 1;
+
+  ProductionEntry entry = 2;
+}
+
+// Request e Response para produção imediata
+message QuickProductionRequest {
+  string product_id = 1;
+
+  double quantity = 2; // Quantidade boa produzida
+
+  double lost_quantity = 3; // Refugo (consome insumo e não entra no estoque)
+
+  // Insumos consumidos. Vazio: usa a ficha técnica do produto.
+  repeated ProductionInput inputs = 4;
+
+  string batch_code = 5;
+
+  google.protobuf.Timestamp batch_manufacture_date = 6;
+
+  google.protobuf.Timestamp batch_expiration_date = 7;
+
+  string input_stock_name = 8;
+
+  string output_stock_name = 9;
+
+  string notes = 10;
+
+  reserved 11;
+
+  double labor_cost = 12; // Mão de obra da produção
+
+  repeated ExtraCost extra_costs = 13; // Energia, embalagem, terceirização...
+}
+
+message QuickProductionResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para demanda pendente agregada por produto
+message GetPendingDemandsRequest {
+  string product_id = 1; // Vazio: todos os produtos com demanda pendente
+}
+
+message GetPendingDemandsResponse {
+  repeated PendingDemandProduct products = 1;
+}
+
+message PendingDemandProduct {
+  string product_id = 1;
+
+  string product_name = 2;
+
+  string product_code = 3;
+
+  string unit = 4;
+
+  double total_quantity = 5; // Soma das quantidades pendentes
+
+  repeated PendingDemandItem items = 6;
+}
+
+message PendingDemandItem {
+  string sale_order_id = 1;
+
+  uint32 sale_order_number = 2;
+
+  string sale_order_item_id = 3;
+
+  string customer_name = 4;
+
+  google.protobuf.Timestamp order_date = 5;
+
+  google.protobuf.Timestamp delivery_date = 6;
+
+  double quantity = 7; // Pendente = quantidade do item - já vinculado em ordens ativas
+
+  bool own_composition = 8; // Item traz composição própria: vira uma ordem só dele
+}
+
+// Request e Response para gerar ordens a partir de pedidos
+message GenerateFromSaleOrdersRequest {
+  repeated GenerateOrderInput orders = 1; // Uma entrada por produto
+}
+
+message GenerateOrderInput {
+  string product_id = 1;
+
+  double extra_quantity = 2; // Quantidade adicional para estoque geral
+
+  repeated SaleOrderDemandInput demands = 3;
+
+  google.protobuf.Timestamp expected_date = 4;
+
+  string input_stock_name = 5;
+
+  string output_stock_name = 6;
+}
+
+message SaleOrderDemandInput {
+  string sale_order_id = 1;
+
+  string sale_order_item_id = 2;
+
+  double quantity = 3;
+}
+
+message GenerateFromSaleOrdersResponse {
+  repeated ProductionOrder production_orders = 1;
+}
+
+// Request e Response para vincular/desvincular demandas
+message AddDemandsRequest {
+  string id = 1; // id da ordem
+
+  repeated SaleOrderDemandInput demands = 2;
+
+  // Aumenta planned_quantity quando a soma das demandas exceder o planejado.
+  bool increase_planned_quantity = 3;
+}
+
+message AddDemandsResponse {
+  ProductionOrder production_order = 1;
+}
+
+message RemoveDemandRequest {
+  string id = 1; // id da ordem
+
+  string demand_id = 2;
+}
+
+message RemoveDemandResponse {
+  ProductionOrder production_order = 1;
+}
+
+// Request e Response para o painel de produção
+message DashboardRequest {
+}
+
+message DashboardResponse {
+  double pending_demand_quantity = 1; // Demanda de pedidos sem ordem vinculada
+
+  int32 pending_demand_orders = 2; // Nº de pedidos aguardando produção
+
+  int32 in_production_count = 3;
+
+  double in_production_planned = 4;
+
+  double in_production_produced = 5;
+
+  int32 late_count = 6;
+
+  double ready_to_ship_quantity = 7; // Alocado a pedidos e ainda não expedido
+
+  int32 ready_to_ship_orders = 8; // Nº de pedidos com quantidade pronta para expedição
+
+  ProductionMetrics metrics = 9; // Indicadores das ordens finalizadas
+}
+
+// ProductionMetrics - Indicadores gerenciais das ordens finalizadas.
+// Os campos soltos referem-se ao mês corrente; monthly cobre os últimos meses.
+message ProductionMetrics {
+  double produced_quantity = 1; // Quantidade boa produzida no mês
+
+  double lost_quantity = 2; // Refugo do mês
+
+  double loss_percentage = 3; // Perda % = perdida / (produzida + perdida)
+
+  double total_cost = 4; // Custo total da produção do mês
+
+  double input_cost = 5;
+
+  double labor_cost = 6;
+
+  double other_cost = 7;
+
+  int32 orders_completed = 8; // Ordens finalizadas no mês
+
+  double planned_total_cost = 9; // Previsto das mesmas ordens (comparativo)
+
+  repeated MonthlyProduction monthly = 10; // Série mensal, do mês mais antigo ao atual
+
+  repeated TopProduct top_products = 11; // Mais produzidos no mês, por quantidade
+}
+
+message MonthlyProduction {
+  string month = 1; // MM/AAAA
+
+  double quantity = 2; // Quantidade boa produzida
+
+  double cost = 3; // Custo total das ordens finalizadas
+
+  double lost_quantity = 4; // Refugo do mês
+
+  double unit_cost = 5; // Custo por unidade boa produzida
+}
+
+message TopProduct {
+  string product_id = 1;
+
+  string product_name = 2;
+
+  string unit = 3;
+
+  double quantity = 4; // Quantidade boa no mês
+
+  double cost = 5; // Custo total no mês
+}

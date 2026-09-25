@@ -1,0 +1,143 @@
+syntax = "proto3";
+
+package apps.purchasing.suggestion;
+
+option go_package = "comps/pb/apps/purchasing/suggestion";
+
+import "google/api/annotations.proto";
+
+// Serviço de Sugestão de Compras (análise de reposição de estoque)
+service SuggestionService {
+  // Analisa o estoque e sugere reposição de compras
+  rpc Analisar ( AnalisarRequest ) returns ( AnalisarResponse );
+
+  // Gera pedidos de compra (rascunho) a partir dos itens sugeridos
+  rpc GerarPedidos ( GerarPedidosRequest ) returns ( GerarPedidosResponse );
+
+  // Gera cotação de preços (rascunho) a partir dos itens sugeridos
+  rpc GerarCotacao ( GerarCotacaoRequest ) returns ( GerarCotacaoResponse );
+}
+
+// Método de cálculo da sugestão
+enum SuggestionMethod {
+  SUGGESTION_METHOD_UNSPECIFIED = 0;
+
+  SUGGESTION_METHOD_MIN_MAX = 1; // Repõe até o estoque máximo quando atinge o mínimo
+
+  SUGGESTION_METHOD_REORDER_POINT = 2; // Ponto de pedido = consumo médio x lead time + segurança
+
+  SUGGESTION_METHOD_DEMAND_FORECAST = 3; // Previsão de demanda = consumo médio x (lead time + cobertura)
+}
+
+// Classe da curva ABC
+enum AbcClass {
+  ABC_CLASS_UNSPECIFIED = 0;
+
+  ABC_CLASS_A = 1;
+
+  ABC_CLASS_B = 2;
+
+  ABC_CLASS_C = 3;
+}
+
+message AnalisarRequest {
+  SuggestionMethod method = 1;
+
+  repeated string category_ids = 2; // Filtra por categorias de produto
+
+  repeated string product_ids = 3; // Ou produtos específicos
+
+  int32 lead_time_days = 4; // Prazo de entrega padrão (ponto de pedido)
+
+  int32 coverage_days = 5; // Dias de cobertura desejada
+
+  int32 analysis_window_days = 6; // Janela para consumo médio (padrão 90)
+
+  bool only_to_buy = 7; // Retorna apenas itens com quantidade sugerida > 0
+
+  bool explode_composition = 8; // Expande produtos compostos nos componentes
+}
+
+message AnalisarResponse {
+  repeated SuggestionItem items = 1;
+}
+
+message SuggestionItem {
+  string product_id = 1;
+
+  string product_code = 2;
+
+  string product_name = 3;
+
+  string unit = 4;
+
+  string category_name = 5;
+
+  double current_stock = 6;
+
+  double minimum_stock = 7;
+
+  double maximum_stock = 8;
+
+  double average_daily_consumption = 9;
+
+  double reorder_point = 10;
+
+  double suggested_quantity = 11;
+
+  AbcClass abc_class = 12;
+
+  double last_purchase_price = 13;
+
+  double estimated_cost = 14; // suggested_quantity x last_purchase_price (ou custo médio)
+
+  string vendor_id = 15; // Último fornecedor da entrada de estoque
+
+  string vendor_name = 16;
+
+  string source_product_id = 17; // Produto composto de origem (quando explode composição)
+
+  string source_product_name = 18;
+}
+
+message GerarPedidosRequest {
+  repeated GerarPedidoItem items = 1;
+
+  bool group_by_vendor = 2; // Agrupa itens por fornecedor em pedidos distintos
+}
+
+message GerarPedidoItem {
+  string product_id = 1;
+
+  string product_code = 2;
+
+  string product_name = 3;
+
+  string unit = 4;
+
+  double quantity = 5;
+
+  double unit_price = 6;
+
+  string vendor_id = 7;
+
+  string vendor_name = 8;
+}
+
+message GerarPedidosResponse {
+  repeated string purchase_order_ids = 1;
+
+  int32 total_orders = 2;
+}
+
+message GerarCotacaoRequest {
+  repeated GerarPedidoItem items = 1;
+
+  string title = 2;
+}
+
+message GerarCotacaoResponse {
+  string quotation_id = 1;
+
+  int64 quotation_number = 2;
+}

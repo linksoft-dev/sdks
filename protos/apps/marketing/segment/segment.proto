@@ -1,0 +1,297 @@
+syntax = "proto3";
+
+package marketing_segment;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/marketing/segment";
+
+service SegmentService {
+  // CRUD basico
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  // Resolver contatos do segmento (consulta Pessoas do CRM)
+  rpc ResolveContacts ( ResolveContactsRequest ) returns ( ResolveContactsResponse );
+
+  // Importar contatos para o segmento (CSV/JSON -> Pessoas no CRM)
+  rpc ImportContacts ( ImportContactsRequest ) returns ( ImportContactsResponse );
+
+  // Desinscrever contato do segmento (link publico, sem auth)
+  rpc Unsubscribe ( UnsubscribeRequest ) returns ( UnsubscribeResponse );
+
+  // Reinscrever contato no segmento (link publico, sem auth)
+  rpc Resubscribe ( ResubscribeRequest ) returns ( ResubscribeResponse );
+
+  // Relatorios
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+}
+
+message Segment {
+  string id = 1;
+
+  string name = 2;
+
+  string description = 3;
+
+  repeated string filters = 4;
+
+  repeated string tags = 5;
+
+  google.protobuf.Timestamp created_at = 6;
+
+  google.protobuf.Timestamp updated_at = 7;
+
+  // Contatos e atributos
+  int32 contact_count = 8; // Quantidade de contatos ativos
+
+  repeated string contact_ids = 9; // Legado - IDs manuais (mantido para compat)
+
+  map<string, string> custom_attributes = 10; // Atributos do segmento para variaveis {{list.xxx}}
+
+  repeated SegmentContact contacts = 11; // Contatos com metadados (status, token, etc)
+
+  repeated FieldDefinition field_definitions = 12; // Definicoes de campos customizados da lista
+
+  repeated SegmentCriteria criteria = 13; // Criterios do segmento; so valem quando kind = SEGMENT
+
+  // Tipo do publico: "LIST" (contatos gravados, importaveis) ou "SEGMENT"
+  // (criterios resolvidos a cada uso). Vazio na criacao assume LIST.
+  string kind = 14;
+}
+
+// SegmentCriteria descreve uma condicao do segmento. Todas as condicoes precisam
+// ser atendidas, e o publico e resolvido a cada uso — o segmento acompanha o
+// cadastro em vez de congelar quem estava la quando foi montado.
+message SegmentCriteria {
+  // Campo do catalogo de filtros do modulo (ex.: "tags[*].value", "contract.status").
+  // Nos criterios gravados antes do campo module, traz o vocabulario antigo
+  // ("person.tag", "contract.status", "pedido.situacao", "list.id").
+  string field = 1;
+
+  // Operador do catalogo de filtros (EQUALS, CONTAINS, IN, GTE, LTE, BETWEEN...).
+  // Vazio usa o operador padrao do campo. Aceita tambem "eq", "contains" e "ne"
+  // dos criterios gravados antes do catalogo.
+  string operator = 2;
+
+  // Valor comparado. Em campo de data aceita token relativo ("last30days",
+  // "currentmonth"), resolvido no momento de apurar o publico.
+  string value = 3;
+
+  // Modulo consultado: "person", "contrato", "pedido" ou "list". Vazio nos
+  // criterios gravados antes do campo, deduzido do prefixo de field.
+  string module = 4;
+}
+
+// --- CRUD Request/Response ---
+
+message CreateRequest {
+  Segment segment = 1;
+}
+
+message CreateResponse {
+  Segment segment = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Segment segment = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Segment segment = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Segment segment = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string tag = 2;
+
+  Filter filter = 3;
+
+  string kind = 4; // "LIST" ou "SEGMENT"; vazio devolve os dois
+}
+
+message ListResponse {
+  repeated Segment segment_list = 1;
+}
+
+// --- FieldDefinition ---
+
+message FieldDefinition {
+  string name = 1; // Chave interna (ex: "empresa")
+
+  string label = 2; // Label exibido (ex: "Empresa")
+
+  string type = 3; // "text", "email", "phone", "number", "select"
+
+  string default_value = 4;
+
+  repeated string options = 5; // Opcoes para tipo "select"
+}
+
+// --- SegmentContact ---
+
+message SegmentContact {
+  string id = 1; // UUID unico do contato na lista
+
+  string name = 2;
+
+  string email = 3;
+
+  string phone = 4;
+
+  map<string, string> attributes = 5; // Atributos customizados por contato
+
+  string status = 6; // "active" ou "unsubscribed"
+
+  string unsubscribe_token = 7; // Token unico para link de desinscricao
+
+  string subscribed_at = 8; // ISO timestamp da inscricao
+
+  string unsubscribed_at = 9; // ISO timestamp da desinscricao
+
+  string unsubscribe_reason = 10; // Motivo da desinscricao
+}
+
+// --- ResolveContacts ---
+
+message ResolveContactsRequest {
+  string id = 1; // Segment ID
+
+  Filter filter = 2; // Paginacao e busca
+}
+
+message ResolveContactsResponse {
+  repeated SegmentContact contacts = 1;
+
+  int32 total_count = 2;
+}
+
+// --- ImportContacts ---
+
+message ImportContactsRequest {
+  string id = 1; // Segment ID
+
+  repeated SegmentContact contacts = 2; // Input direto (bypass file)
+
+  string file_string = 3; // Base64 do arquivo
+
+  string file_name = 4; // Extensao determina parser (.csv, .json)
+
+  bool validate_only = 5;
+
+  bool update_if_exists = 6;
+}
+
+message ImportErrorGroup {
+  repeated ImportError errors = 1;
+}
+
+message ImportError {
+  string contact = 1;
+
+  string reason = 2;
+
+  repeated string details = 3;
+}
+
+message ImportContactsResponse {
+  repeated SegmentContact contacts = 1;
+
+  string result = 2;
+
+  int64 success = 3;
+
+  int64 failed = 4;
+
+  int64 total = 5;
+
+  map<string, ImportErrorGroup> erros_by_category = 6;
+}
+
+// --- Unsubscribe / Resubscribe ---
+
+message UnsubscribeRequest {
+  string token = 1;
+
+  string reason = 2; // Motivo da desinscricao (opcional)
+
+  bool preview = 3; // Se true, retorna dados sem desinscrever
+}
+
+message UnsubscribeResponse {
+  string segment_name = 1;
+
+  string contact_name = 2;
+
+  string contact_email = 3;
+
+  string status = 4; // "unsubscribed", "active", "already_unsubscribed"
+
+  string resubscribe_token = 5; // Mesmo token para reinscrever
+}
+
+message ResubscribeRequest {
+  string token = 1;
+}
+
+message ResubscribeResponse {
+  string segment_name = 1;
+
+  string contact_name = 2;
+
+  string status = 3; // "active"
+}
+
+// --- Relatorios ---
+
+message ReportRequest {
+  ListRequest list_request = 1;
+
+  string tipo_relatorio = 2;
+}
+
+message ReportResponse {
+  report.Response response = 1;
+}

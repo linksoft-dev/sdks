@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package tanque;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/posto/tanque";
+
+// Tanques de combustível do posto.
+service TanqueService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+message Tanque {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  metadata.BasicFields fields = 6;
+
+  int32 numero = 7;
+
+  string nome = 8;
+
+  string produto_id = 9;
+
+  string produto_nome = 10;
+
+  // Capacidade nominal em litros.
+  double capacidade = 11;
+}
+
+message CreateRequest {
+  Tanque tanque = 1;
+}
+
+message CreateResponse {
+  Tanque tanque = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Tanque tanque = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Tanque tanque = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+  string id = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Tanque tanque = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  uint32 page_size = 2;
+
+  string page_token = 3;
+
+  Filter filter = 5;
+}
+
+message ListResponse {
+  repeated Tanque tanque_list = 1;
+
+  string next_page_token = 2;
+}

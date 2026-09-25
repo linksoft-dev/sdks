@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "comps/pb/apps/user";
+
+package user;
+
+message UserOrgSettings {
+  string org_id = 1;
+
+  string role = 2;
+}
+
+// Represents the UserSettings structure
+message UserSettings {
+  bool disable_auto_find = 1;
+
+  map<string, UserOrgSettings> user_org_settings = 13;
+
+  map<string, string> metadata = 14;
+}

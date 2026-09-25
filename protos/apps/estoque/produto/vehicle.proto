@@ -1,0 +1,179 @@
+syntax = "proto3";
+
+package produto;
+
+import "plugins/validate/validate.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/estoque/produto";
+
+enum VehicleStatus {
+  STATUS_UNSPECIFIED = 0;
+
+  STATUS_AVAILABLE = 1;
+
+  STATUS_RESERVED = 2;
+
+  STATUS_RENTED = 3;
+
+  STATUS_MAINTENANCE = 4;
+
+  STATUS_INACTIVE = 5;
+}
+
+enum VehicleType {
+  TYPE_UNSPECIFIED = 0;
+
+  TYPE_COMPACT = 1;
+
+  TYPE_SEDAN = 2;
+
+  TYPE_SUV = 3;
+
+  TYPE_LUXURY = 4;
+
+  TYPE_VAN = 5;
+
+  TYPE_TRUCK = 6;
+
+  TYPE_CONVERTIBLE = 7;
+
+  TYPE_SPORTS = 8;
+
+  TYPE_ELECTRIC = 9;
+
+  TYPE_HYBRID = 10;
+}
+
+enum FuelType {
+  FUEL_TYPE_UNSPECIFIED = 0;
+
+  FUEL_TYPE_GASOLINE = 1;
+
+  FUEL_TYPE_DIESEL = 2;
+
+  FUEL_TYPE_ELECTRIC = 3;
+
+  FUEL_TYPE_HYBRID = 4;
+
+  FUEL_TYPE_ETHANOL = 5;
+
+  FUEL_TYPE_FLEX = 6;
+
+  FUEL_TYPE_CNG = 7;
+}
+
+enum MaintenanceType {
+  MAINTENANCE_TYPE_UNSPECIFIED = 0;
+
+  MAINTENANCE_TYPE_REGULAR = 1;
+
+  MAINTENANCE_TYPE_REPAIR = 2;
+
+  MAINTENANCE_TYPE_INSPECTION = 3;
+
+  MAINTENANCE_TYPE_CLEANING = 4;
+
+  MAINTENANCE_TYPE_ACCIDENT = 5;
+}
+
+message VehicleData {
+  google.protobuf.Timestamp created_at = 1;
+
+  google.protobuf.Timestamp updated_at = 2;
+
+  string user_id = 3;
+
+  string user_name = 4;
+
+  string id = 5;
+
+  metadata.BasicFields fields = 6;
+
+  string make = 7;
+
+  string model = 8;
+
+  int32 year = 9;
+
+  VehicleType type = 10;
+
+  string color = 11;
+
+  string license_plate = 12;
+
+  string vin = 13;
+
+  int32 odometer = 14;
+
+  FuelType fuel_type = 15;
+
+  string fuel_level = 16;
+
+  int32 seats = 17;
+
+  int32 doors = 18;
+
+  bool has_air_conditioning = 19;
+
+  bool has_gps = 20;
+
+  bool has_bluetooth = 21;
+
+  bool has_automatic_transmission = 22;
+
+  VehicleStatus status = 23;
+
+  string location = 24;
+
+  double daily_rate = 25;
+
+  double weekly_rate = 26;
+
+  double monthly_rate = 27;
+
+  string currency = 28;
+
+  repeated string features = 29;
+
+  string image_url = 30;
+
+  string notes = 31;
+
+  repeated Maintenance maintenance_history = 32;
+
+  string hq_rental_id = 33;
+
+  google.protobuf.Timestamp last_sync_at = 34;
+}
+
+message Maintenance {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  MaintenanceType type = 6;
+
+  string description = 7;
+
+  google.protobuf.Timestamp start_date = 8;
+
+  google.protobuf.Timestamp end_date = 9;
+
+  bool completed = 10;
+
+  double cost = 11;
+
+  string notes = 12;
+
+  int32 odometer = 13;
+}

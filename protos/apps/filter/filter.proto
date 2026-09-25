@@ -1,0 +1,170 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+import "plugins/service/service.proto";
+
+import "plugins/validate/validate.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+package filter;
+
+option go_package = "comps/pb/apps/filter";
+
+service FilterDataService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc Facets ( FacetsRequest ) returns ( FacetsResponse );
+}
+
+message FilterData {
+  string id = 1;
+
+  metadata.BasicFields fields = 2;
+
+  string name = 3;
+
+  string description = 4;
+
+  string module = 5;
+
+  repeated condition conditions = 6;
+
+  string main_label = 7;
+
+  repeated condition main_fields = 8;
+
+  bool padrao_sistema = 9;
+
+  // dono do filtro; definido pelo servidor a partir do usuário autenticado
+  string user_id = 10;
+
+  // quando true, o filtro fica visível para todos os usuários da organização
+  bool shared = 11;
+
+  // quando true, é uma combinação salva de condições com valores;
+  // quando false, é o catálogo de campos disponíveis do módulo
+  bool preset = 12;
+
+  // texto da busca principal salvo junto com o filtro
+  string main = 13;
+
+  // texto de ajuda da busca principal, mostrado ao lado do campo de consulta
+  string main_help = 14;
+}
+
+message CreateRequest {
+  FilterData filter_data = 1;
+}
+
+message CreateResponse {
+  FilterData filter_data = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  FilterData filter_data = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  FilterData filter_data = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string name = 2;
+
+  string module = 3;
+
+  Filter filter = 4;
+}
+
+message ListResponse {
+  repeated FilterData filter_data_list = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  FilterData filter_data = 1;
+}
+
+message FacetsRequest {
+  string module = 1;
+
+  // filtro base aplicado; valores relativos de data devem vir resolvidos pelo cliente
+  Filter filter = 2;
+
+  // campos para contagem por valor; a contagem de cada campo desconsidera as
+  // condições do próprio campo no filtro base
+  repeated string facet_fields = 3;
+
+  repeated FacetPreset presets = 4;
+}
+
+message FacetPreset {
+  // identificador devolvido em PresetCount
+  string id = 1;
+
+  // condições do preset; valores relativos de data devem vir resolvidos pelo cliente
+  Filter filter = 2;
+}
+
+message FacetsResponse {
+  // total de registros do módulo sem o filtro base
+  int64 total = 1;
+
+  // total de registros com o filtro base aplicado
+  int64 filtered_total = 2;
+
+  repeated FieldFacet fields = 3;
+
+  repeated PresetCount presets = 4;
+}
+
+message FieldFacet {
+  string field_name = 1;
+
+  repeated FacetValue values = 2;
+}
+
+message FacetValue {
+  string value = 1;
+
+  int64 count = 2;
+
+  // rótulo de exibição quando o valor é um identificador
+  string label = 3;
+}
+
+message PresetCount {
+  string id = 1;
+
+  int64 count = 2;
+}

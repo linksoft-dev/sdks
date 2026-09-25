@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+option go_package = "comps/pb/apps/vendas/pedido";
+
+message Otica {
+  string tipoLenteId = 1;
+
+  string tipoLenteNome = 2;
+
+  string tipoLente2Id = 3;
+
+  string tipoLente2Nome = 4;
+
+  string tipoMaterialId = 5;
+
+  string tipoMaterialNome = 6;
+
+  string tipoMaterial2Id = 7;
+
+  string tipoMaterial2Nome = 8;
+
+  string tipoTratamentoId = 9;
+
+  string tipoTratamentoNome = 10;
+
+  string tipoTratamento2Id = 11;
+
+  string tipoTratamento2Nome = 12;
+
+  DadosLente longeDir = 13;
+
+  DadosLente pertoDir = 14;
+
+  DadosLente longeEsq = 15;
+
+  DadosLente pertoEsq = 16;
+
+  AcuidadeVisual acuidadeVisual = 17;
+
+  string vencimentoLente = 18;
+
+  string fornecedorId = 19;
+
+  string fornecedorNome = 20;
+
+  string armacaoCor = 21;
+
+  string armacaoCor2 = 22;
+
+  int32 armacaoTamanho = 23;
+
+  int32 armacaoTamanho2 = 24;
+
+  double armacaoAltura = 25;
+
+  double armacaoAltura2 = 26;
+
+  string armacaoTipoId = 27;
+
+  string armacaoTipoNome = 28;
+
+  string armacaoTipo2Id = 29;
+
+  string armacaoTipo2Nome = 30;
+}
+
+message AcuidadeVisual {
+  Sc sc = 1;
+
+  Cc cc = 2;
+}
+
+message Sc {
+  Acuidade olhoDireito = 1;
+
+  Acuidade olhoEsquerdo = 2;
+
+  Acuidade ambosOlhos = 3;
+}
+
+message Cc {
+  Acuidade olhoDireito = 1;
+
+  Acuidade olhoEsquerdo = 2;
+
+  Acuidade ambosOlhos = 3;
+}
+
+message Acuidade {
+  string longe = 1;
+
+  string perto = 2;
+}
+
+message DadosLente {
+  double esf = 1;
+
+  double cil = 2;
+
+  double eixo = 3;
+
+  double dnp = 4;
+
+  double dp = 5;
+
+  double co = 6;
+
+  double pl = 7;
+
+  double adicao = 8;
+}

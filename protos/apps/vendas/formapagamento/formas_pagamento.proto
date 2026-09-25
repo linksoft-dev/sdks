@@ -1,0 +1,309 @@
+syntax = "proto3";
+
+package PaymentMethod;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+option go_package = "comps/pb/apps/vendas/formapagamento";
+
+// Serviço PaymentMethod com operações CRUD
+service PaymentMethodService {
+  rpc Create ( CreatePaymentMethodRequest ) returns ( CreatePaymentMethodResponse );
+
+  rpc Update ( UpdatePaymentMethodRequest ) returns ( UpdatePaymentMethodResponse );
+
+  rpc Delete ( DeletePaymentMethodRequest ) returns ( DeletePaymentMethodResponse );
+
+  rpc Get ( GetPaymentMethodRequest ) returns ( GetPaymentMethodResponse );
+
+  rpc List ( ListPaymentMethodRequest ) returns ( ListPaymentMethodResponse );
+
+  rpc Import ( ImportPaymentMethodRequest ) returns ( ImportPaymentMethodResponse );
+
+  rpc Clone ( ClonePaymentMethodRequest ) returns ( ClonePaymentMethodResponse );
+}
+
+// PaymentMethod structure to represent payment methods on the service
+// PaymentMethod structure to represent payment methods on the service
+message PaymentMethod {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string tipo_pagamento = 6;
+
+  string nome = 7;
+
+  int32 codigo = 8;
+
+  bool padrao = 9; // Indicates that this is a default payment method in the system
+
+  bool disponivel_checkout = 10;
+
+  bool disponivel_venda = 11;
+
+  bool usar_carteira_cashback = 12; // Allows the digital wallet to use the customer's cashback balance
+
+  bool lancar_contas_receber = 13;
+
+  string checkout_nome_tela = 14;
+
+  string adquirente_nome = 25;
+
+  string adquirente_cnpj = 26;
+
+  int32 adquirente_dias_recebimento_total = 27;
+
+  string tipo_moeda_baixa = 28; // The type of currency for payment settlement, if different from REAL
+
+  double taxa_adm = 29;
+
+  double taxa_antecipacao = 30;
+
+  double taxa_valor_fixo = 31;
+
+  double juros = 32;
+
+  double valor_venda_maior_que = 33;
+
+  repeated Parcelas parcelas = 34;
+
+  Integration integration = 35;
+
+  FraudPolicy antifraud_policy = 36;
+
+  ManualReviewPolicy manual_review_policy = 37;
+
+  string caixa_id = 38;
+
+  string caixa_nome = 39;
+
+  // Se verdadeiro, pagamentos com esta forma não geram lançamento no movimento de caixa
+  // (o valor não entra no financeiro da empresa, ex.: pago diretamente a um terceiro).
+  bool nao_movimenta_caixa = 40;
+
+  // Se verdadeiro, quando este meio de pagamento é usado em uma venda/autorização, o pedido
+  // inteiro não gera comissão/repasse em contas a pagar (o profissional recebe por fora).
+  bool nao_gera_comissao = 41;
+
+  metadata.BasicFields fields = 42;
+
+  // Tabela de preço dos itens pagos nesta forma: "avista" ou "aprazo". Vazio não muda o preço da venda.
+  string tabela_preco = 43;
+
+  // Venda a prazo nesta forma não confere o crédito disponível do cliente. O cliente continua obrigatório.
+  bool nao_verifica_limite_credito = 45;
+}
+
+message FraudIntegration {
+  string id = 1;
+
+  string name = 2;
+
+  string provider = 3;
+
+  string environment = 4;
+}
+
+message AntifraudCriteria {
+  repeated string payment_types = 1;
+
+  double min_amount = 2;
+
+  double max_amount = 3;
+
+  int32 min_installments = 4;
+
+  int32 max_installments = 5;
+
+  bool checkout_only = 6;
+
+  bool require_device_id = 7;
+}
+
+message FraudPolicy {
+  bool enabled = 1;
+
+  bool hold_payment_while_pending = 2;
+
+  FraudIntegration integration = 3;
+
+  AntifraudCriteria criteria = 4;
+}
+
+message ManualReviewPolicy {
+  bool enabled = 1;
+
+  bool required_after_antifraud = 2;
+
+  bool hold_payment_while_pending = 3;
+
+  double min_amount = 4;
+
+  int32 min_installments = 5;
+
+  string reason_hint = 6;
+}
+
+message Integration {
+  string id = 1; // ID da integração com o gateway (ex: "pagseguro, pagar-me, stripe, etc")
+
+  string name = 2; // Nome da integração com o gateway
+
+  string gateway = 3;
+
+  string gateway_ambiente = 4;
+
+  string gateway_nome_fatura_cartao = 5;
+
+  int32 gateway_dias_validade = 6;
+
+  bool gateway_validade_pos_vencimento_p = 7; // Indicates if the validity days should be counted after the order's due date (periodicidadeData)
+
+  string gateway_webhook_url = 8;
+
+  GatewayPix gateway_pix = 9;
+}
+
+message GatewayPix {
+  int32 segundos_validos = 1;
+
+  string chave_pix = 2;
+
+  CertificadoPix certificado_pix = 3;
+
+  // Gera a cobrança PIX na própria tela de venda, com QR Code para o cliente pagar na hora.
+  bool cobranca_presencial = 4;
+}
+
+message CertificadoPix {
+  string arquivo_nome = 1;
+
+  string validade = 2; // Note: protobuf does not support Go's time.Time directly. Consider using string or int64 for timestamp
+
+  string conteudo_upload = 3;
+
+  string download_link = 4;
+}
+
+message Parcelas {
+  string id = 1;
+
+  int32 numero_parcela = 2;
+
+  int32 dias = 3;
+
+  double juros = 4;
+
+  double taxa = 5;
+}
+
+// Request e Response para criação de PaymentMethod
+message CreatePaymentMethodRequest {
+  PaymentMethod payment_method = 1;
+}
+
+message CreatePaymentMethodResponse {
+  PaymentMethod payment_method = 1;
+}
+
+// Request e Response para atualização de PaymentMethod
+message UpdatePaymentMethodRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  PaymentMethod payment_method = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de PaymentMethod
+message UpdatePaymentMethodResponse {
+  PaymentMethod payment_method = 1;
+}
+
+// Request e Response para exclusão de PaymentMethod
+message DeletePaymentMethodRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeletePaymentMethodResponse {
+  string id = 1;
+}
+
+// Request para obter um PaymentMethod por ID
+message GetPaymentMethodRequest {
+  string id = 1;
+}
+
+// Request para obter um PaymentMethod por ID
+message GetPaymentMethodResponse {
+  PaymentMethod payment_method = 1;
+}
+
+// Request e Response para listagem de PaymentMethods
+message ListPaymentMethodRequest {
+  repeated string ids = 1;
+
+  string codigo = 2;
+
+  bool disponivel_venda = 3;
+
+  bool checkout_available = 4;
+
+  uint32 page_size = 5;
+
+  string page_token = 6;
+
+  Filter filter = 7;
+}
+
+message ListPaymentMethodResponse {
+  repeated PaymentMethod payment_method_list = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para importação de formas de pagamento
+message ImportPaymentMethodRequest {
+  repeated PaymentMethod payment_methods = 1;
+
+  bool update_if_exists = 2;
+}
+
+message ImportPaymentMethodResponse {
+  repeated PaymentMethod payment_methods = 1;
+
+  int32 imported_count = 2;
+
+  int32 updated_count = 3;
+
+  int32 error_count = 4;
+
+  repeated string errors = 5;
+}
+
+message ClonePaymentMethodRequest {
+  string id = 1;
+}
+
+message ClonePaymentMethodResponse {
+  PaymentMethod payment_method = 1;
+}

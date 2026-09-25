@@ -1,0 +1,141 @@
+syntax = "proto3";
+
+package crm_leadwebhook;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "comps/pb/apps/crm/leadwebhook";
+
+service WebhookService {
+  rpc Create ( CreateRequest ) returns ( CreateResponse );
+
+  rpc Update ( UpdateRequest ) returns ( UpdateResponse );
+
+  rpc Delete ( DeleteRequest ) returns ( DeleteResponse );
+
+  rpc Get ( GetRequest ) returns ( GetResponse );
+
+  rpc List ( ListRequest ) returns ( ListResponse );
+}
+
+// ProviderType identifica como decodificar o payload recebido pela URL inbound.
+// Cada valor corresponde a um decoder no backend (ver pasta apps/crm/leadwebhook/decoder_*.go).
+enum ProviderType {
+  PROVIDER_TYPE_UNSPECIFIED = 0;
+
+  PROVIDER_TYPE_JIVO = 1; // JivoChat — chat multicanal popular no Brasil
+
+  PROVIDER_TYPE_TAWK = 2; // Tawk.to — chat gratuito amplamente usado em SMB
+
+  PROVIDER_TYPE_TIDIO = 3; // Tidio — chat + automacoes voltado a ecommerce
+
+  PROVIDER_TYPE_CRISP = 4; // Crisp — chat multicanal popular em startups
+
+  PROVIDER_TYPE_INTERCOM = 5; // Intercom — chat B2B enterprise
+
+  PROVIDER_TYPE_CHATWOOT = 6; // Chatwoot — alternativa open-source ao Intercom
+
+  PROVIDER_TYPE_LIVECHAT = 7; // LiveChat — chat enterprise classico
+
+  PROVIDER_TYPE_META_LEAD_ADS = 8; // Formularios de anuncio da Meta (Facebook e Instagram); sem URL, chega pela pagina conectada em Integracoes
+
+  PROVIDER_TYPE_FORM = 9; // Formulario proprio (site, landing page): JSON com name, email, phone e fields
+}
+
+// Webhook: configuracao de uma fonte de leads externa que envia eventos via webhook.
+// Nao tem credenciais — a URL gerada (com configId UUID nao-enumeravel) e a propria
+// barreira de acesso. Vive dentro do modulo crm_leadwebhook.
+message Webhook {
+  string id = 1;
+
+  metadata.BasicFields basic_fields = 2;
+
+  // Nome amigavel para identificar a fonte (ex.: "Site institucional Jivo")
+  string name = 3;
+
+  // Tipo do provider que envia o webhook — determina qual decoder usar.
+  ProviderType provider_type = 4;
+
+  // Funil + etapa destino dos leads recebidos.
+  string pipeline_id = 5;
+
+  string pipeline_name = 6;
+
+  string stage_id = 7;
+
+  string stage_name = 8;
+
+  // Tags adicionais aplicadas ao lead (alem da tag automatica do provider).
+  repeated string tags = 9;
+
+  // Permite ativar/desativar a fonte sem precisar deletar o registro.
+  bool active = 10;
+
+  // Telemetria para a UI: ultima vez que recebeu um evento e contador total.
+  google.protobuf.Timestamp last_received_at = 11;
+
+  int64 total_received = 12;
+}
+
+message CreateRequest {
+  Webhook webhook = 1;
+}
+
+message CreateResponse {
+  Webhook webhook = 1;
+}
+
+message UpdateRequest {
+  string id = 1;
+
+  Webhook webhook = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateResponse {
+  Webhook webhook = 1;
+}
+
+message DeleteRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteResponse {
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetResponse {
+  Webhook webhook = 1;
+}
+
+message ListRequest {
+  repeated string ids = 1;
+
+  string name = 2;
+
+  ProviderType provider_type = 3;
+
+  string pipeline_id = 4;
+
+  Filter filter = 5;
+}
+
+message ListResponse {
+  repeated Webhook webhook_list = 1;
+}

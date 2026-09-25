@@ -1,198 +1,59 @@
-# Linksoft SDKs
+# SDKs da API
 
-SDKs oficiais da Linksoft para comunicação com sistemas e serviços em múltiplas linguagens de programação.
+Clientes gRPC da API do sistema, gerados dos mesmos contratos que o servidor usa. Cada
+SDK traz os serviços abertos a integrações — os mesmos da [referência REST](https://docs.sigeflex.com/api) —
+e um cliente pronto para conectar, entrar e manter a credencial das chamadas.
 
-[![Release](https://img.shields.io/github/v/release/linksoft-dev/sdks)](https://github.com/linksoft-dev/sdks/releases)
-[![License](https://img.shields.io/github/license/linksoft-dev/sdks)](LICENSE)
+| Linguagem | Instalação |
+|-----------|------------|
+| Go (1.24+) | `go get github.com/linksoft-dev/sdks/go@latest` |
+| Python (3.9+) | `pip install "git+https://github.com/linksoft-dev/sdks.git#subdirectory=python"` |
 
-## 📦 SDKs Disponíveis
+## Antes de começar
 
-| Linguagem | Pacote | Instalação | Documentação |
-|-----------|--------|------------|--------------|
-| 🐍 **Python** | [`linksoft-sdk`](https://pypi.org/project/linksoft-sdk/) | `pip install linksoft-sdk` | [README](python/README.md) |
-| 🔷 **C#** | [`Linksoft.Sdk`](https://www.nuget.org/packages/Linksoft.Sdk/) | `dotnet add package Linksoft.Sdk` | [README](csharp/README.md) |
-| 🎯 **Dart** | [`linksoft_sdk`](https://pub.dev/packages/linksoft_sdk) | `dart pub add linksoft_sdk` | [README](dart/README.md) |
-| ☕ **Java** | [`linksoft-sdk`](https://central.sonatype.com/artifact/dev.linksoft/linksoft-sdk) | Maven/Gradle | [README](java/README.md) |
-| 🏗️ **Kotlin** | [`linksoft-kotlin-sdk`](https://central.sonatype.com/artifact/dev.linksoft/linksoft-kotlin-sdk) | Maven/Gradle | [README](kotlin/README.md) |
-| 🐹 **Go** | `github.com/linksoft-dev/sdks/go` | `go get github.com/linksoft-dev/sdks/go` | [README](go/README.md) |
+- A empresa precisa do **módulo API** contratado. Sem ele as chamadas voltam com
+  `FAILED_PRECONDITION`.
+- Crie um usuário só para a integração, num grupo com as permissões do que ela vai
+  fazer. A integração enxerga exatamente o que esse usuário enxerga.
+- O endereço é o mesmo que você usa para acessar o sistema, na porta 443.
 
-## 🚀 Início Rápido
+## Exemplo
 
-### Python
-```bash
-pip install linksoft-sdk
-```
-
-```python
-from linksoft_sdk import LinksoftClient
-
-client = LinksoftClient.with_defaults("sua-api-key")
-```
-
-### C#
-```bash
-dotnet add package Linksoft.Sdk
-```
-
-```csharp
-using Linksoft.Sdk;
-
-var client = new LinksoftClient("sua-api-key");
-```
-
-### Dart/Flutter
-```bash
-dart pub add linksoft_sdk
-```
-
-```dart
-import 'package:linksoft_sdk/linksoft_sdk.dart';
-
-final client = LinksoftClient.withDefaults("sua-api-key");
-```
-
-### Java
-```xml
-<dependency>
-    <groupId>dev.linksoft</groupId>
-    <artifactId>linksoft-sdk</artifactId>
-    <version>LATEST</version>
-</dependency>
-```
-
-```java
-import dev.linksoft.sdk.LinksoftClient;
-
-LinksoftClient client = LinksoftClient.withDefaults("sua-api-key");
-```
-
-### Kotlin
-```kotlin
-implementation("dev.linksoft:linksoft-kotlin-sdk:LATEST")
-```
-
-```kotlin
-import dev.linksoft.sdk.LinksoftClient
-
-val client = LinksoftClient.withDefaults("sua-api-key")
-```
-
-### Go
-```bash
-go get github.com/linksoft-dev/sdks/go
-```
-
-```go
-import "github.com/linksoft-dev/sdks/go"
-
-client := linksoft.NewClient("sua-api-key")
-```
-
-## 📚 Documentação
-
-Cada SDK possui sua própria documentação detalhada:
-
-- **[Python SDK](python/README.md)** - Suporte async/await, FastAPI, Django
-- **[C# SDK](csharp/README.md)** - .NET 6+, ASP.NET Core, Dependency Injection
-- **[Dart SDK](dart/README.md)** - Flutter, Dart puro, async/sync
-- **[Java SDK](java/README.md)** - Java 17+, Spring Boot, Maven/Gradle
-- **[Kotlin SDK](kotlin/README.md)** - Coroutines, interoperabilidade Java
-- **[Go SDK](go/README.md)** - Context, channels, concorrência
-
-## 🔧 Configuração
-
-Todos os SDKs suportam configuração similar:
+Os dois SDKs trazem o mesmo exemplo: o sistema de uma loja consulta produtos, clientes e
+os últimos pedidos; com `GRAVAR=1` cadastra um cliente de exemplo e lança um pedido.
 
 ```bash
-# Variáveis de ambiente
-export LINKSOFT_API_KEY="sua-api-key"
-export LINKSOFT_HOST="api.linksoft.com.br"
-export LINKSOFT_PORT="443"
-export LINKSOFT_USE_TLS="true"
+export API_ENDERECO=app.suaempresa.com.br:443
+export API_USUARIO=integracao@suaempresa.com.br
+export API_SENHA='senha do usuário da integração'
+
+cd go && go run ./exemplos/cliente
+cd python && python exemplos/cliente.py
 ```
 
-## 🏗️ Arquitetura
+`API_ORG` escolhe a empresa quando o usuário tem acesso a mais de uma.
 
-Os SDKs são gerados automaticamente a partir dos arquivos Protocol Buffers (protobuf) da Linksoft, garantindo:
+## Credenciais
 
-- **Consistência** entre todas as linguagens
-- **Type Safety** com tipos fortemente tipados
-- **Atualizações automáticas** quando novos serviços são adicionados
-- **Compatibilidade** com gRPC e HTTP/REST
+- **Usuário e senha**: `Login` devolve um token de sessão; o cliente passa a enviá-lo
+  com a empresa em toda chamada e troca pelo token renovado quando o servidor devolve
+  um novo.
+- **Conexão OAuth2**: com o token de um aplicativo autorizado pelo usuário, use
+  `SetBearer` (Go) ou `set_bearer` (Python).
 
-## 🔄 Atualizações
+## Testar sem programar
 
-Os SDKs são atualizados automaticamente quando:
+- **Postman ou Apidog, por REST**: importe a
+  [coleção com todas as rotas](https://docs.sigeflex.com/openapi/api.postman_collection.json)
+  e preencha `usuario` e `senha` nas variáveis dela; o login é automático.
+- **Postman, por gRPC**: importe `protos/api.proto`, com a pasta `protos` nos caminhos de
+  importação, e mande os metadados `token` e `org`. No Apidog, importe o `.proto` do
+  serviço, com a mesma pasta nas dependências.
+- **grpcurl e grpcui**: `api.protoset` descreve os mesmos serviços:
 
-1. Novos serviços são adicionados aos protobuf
-2. Uma nova versão é lançada
-3. Correções de bugs são aplicadas
+  ```bash
+  grpcui -protoset api.protoset -rpc-header "token: $TOKEN" -rpc-header "org: $ORG" app.suaempresa.com.br:443
+  ```
 
-As atualizações são publicadas simultaneamente em todos os repositórios centrais.
-
-## 🛠️ Desenvolvimento
-
-### Estrutura do Projeto
-
-```
-sdks/
-├── go/           # Go SDK
-├── csharp/       # C# SDK  
-├── dart/         # Dart SDK
-├── java/         # Java SDK
-├── kotlin/       # Kotlin SDK
-├── python/       # Python SDK
-├── buf.gen.yaml  # Configuração Buf
-└── Makefile      # Comandos de build
-```
-
-### Comandos de Build
-
-```bash
-# Gerar todos os SDKs
-make generate-all
-
-# Gerar SDK específico
-make generate-go
-make generate-python
-make generate-csharp
-# etc...
-
-# Testar todos os SDKs
-make test-all
-
-# Limpar arquivos gerados
-make clean-all
-```
-
-## 📋 Requisitos
-
-- **Buf CLI** para geração de protobuf
-- **Go 1.21+** para SDK Go
-- **Python 3.8+** para SDK Python
-- **.NET 6+** para SDK C#
-- **Dart 3.0+** para SDK Dart
-- **Java 17+** para SDK Java
-- **Kotlin 1.8+** para SDK Kotlin
-
-## 🤝 Contribuição
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
-## 📄 Licença
-
-Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## 🏷️ Versões
-
-| Versão | Data | Mudanças |
-|--------|------|----------|
-| 1.0.0 | 2025-01-XX | Lançamento inicial |
-
----
-
-**Linksoft** - Construindo software de qualidade desde 2020. 
+Guia completo, com a lista de áreas e a referência de cada rota:
+https://docs.sigeflex.com/manual-usuario/integracoes/api

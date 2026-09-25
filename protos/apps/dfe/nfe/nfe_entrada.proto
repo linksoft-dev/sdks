@@ -1,0 +1,185 @@
+syntax = "proto3";
+
+package nfe;
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/dfe/nfe/nfe.proto";
+
+option go_package = "comps/pb/apps/dfe/nfe";
+
+// Serviço relacionado a nota fiscal de entrada
+service NfeEntradaService {
+  rpc Create ( CreateNfeRequest ) returns ( CreateNfeResponse );
+
+  rpc Update ( UpdateNfeRequest ) returns ( UpdateNfeResponse );
+
+  rpc Delete ( DeleteNfeRequest ) returns ( DeleteNfeResponse );
+
+  rpc Get ( GetNfeRequest ) returns ( GetNfeResponse );
+
+  rpc List ( ListNfeRequest ) returns ( ListNfeResponse );
+
+  rpc AddProduto ( AddProdutoRequest ) returns ( AddProdutoResponse );
+
+  rpc UpdateProduto ( UpdateProdutoRequest ) returns ( UpdateProdutoResponse );
+
+  rpc DeleteProduto ( DeleteProdutoRequest ) returns ( DeleteProdutoResponse );
+
+  rpc AddDuplicata ( AddDuplicataRequest ) returns ( AddDuplicataResponse );
+
+  rpc UpdateDuplicata ( UpdateDuplicataRequest ) returns ( UpdateDuplicataResponse );
+
+  rpc DeleteDuplicata ( DeleteDuplicataRequest ) returns ( DeleteDuplicataResponse );
+
+  rpc GetDownloadLinkXml ( GetDownloadLinkXmlRequest ) returns ( GetDownloadLinkXmlResponse );
+
+  rpc NfeEntradaAceitar ( NfeEntradaAceitarRequest ) returns ( NfeEntradaAceitarResponse );
+
+  rpc NfeEntradaRejeitar ( NfeEntradaRejeitarRequest ) returns ( NfeEntradaRejeitarResponse );
+
+  rpc NfeEntradaDesfazAceite ( NfeEntradaDesfazAceiteRequest ) returns ( NfeEntradaDesfazAceiteResponse );
+
+  rpc NfeEntradaImportaPelaChave ( NfeEntradaImportaPelaChaveRequest ) returns ( NfeEntradaImportaPelaChaveResponse );
+
+  rpc NfeEntradaConsultaNota ( NfeEntradaConsultaNotaRequest ) returns ( NfeEntradaConsultaNotaResponse );
+
+  rpc NfeEntradaConsultaSituacao ( NfeEntradaConsultaSituacaoRequest ) returns ( NfeEntradaConsultaSituacaoResponse );
+
+  rpc NfeEntradaImportaXmlString ( NfeEntradaImportaXmlStringRequest ) returns ( NfeEntradaImportaXmlStringResponse );
+
+  rpc NfeImportaXml ( NfeImportaXmlRequest ) returns ( NfeImportaXmlResponse );
+
+  rpc NfeEnviaXml ( NfeEnviaXmlRequest ) returns ( NfeEnviaXmlResponse );
+
+  rpc GerarDevolucaoNfe ( GerarDevolucaoNfeRequest ) returns ( GerarDevolucaoNfeResponse );
+
+  rpc Report ( ReportRequest ) returns ( ReportResponse );
+
+  rpc Danfe ( DanfeRequest ) returns ( DanfeResponse );
+
+  rpc CorrecaoMovimentacao ( CorrecaoMovimentacaoRequest ) returns ( CorrecaoMovimentacaoResponse );
+
+  rpc NfeEntradaConfirmarOperacao ( NfeEntradaConfirmarOperacaoRequest ) returns ( NfeEntradaConfirmarOperacaoResponse );
+
+  rpc NfeEntradaCienciaOperacao ( NfeEntradaCienciaOperacaoRequest ) returns ( NfeEntradaCienciaOperacaoResponse );
+
+  rpc NfeEntradaDesconhecimentoOperacao ( NfeEntradaDesconhecimentoOperacaoRequest ) returns ( NfeEntradaDesconhecimentoOperacaoResponse );
+
+  rpc NfeEntradaOperacaoNaoRealizada ( NfeEntradaOperacaoNaoRealizadaRequest ) returns ( NfeEntradaOperacaoNaoRealizadaResponse );
+}
+
+message NfeEntradaAceitarRequest {
+  string id = 1;
+
+  bool cadastra_nao_vinculados = 2;
+
+  bool entrada_aplica_calculo_venda_custo = 3;
+
+  bool emitir_evento_confirmacao = 4; // Ao aceitar, se estiver marcado o sistema tenta emitir o evento de confirmação para o SEFAZ
+
+  string natureza_operacao = 5;
+
+  google.protobuf.Timestamp entrada_data_hora_aceite = 6;
+}
+
+message NfeEntradaAceitarResponse {
+  Nfe nfe = 1;
+}
+
+message NfeEntradaDesfazAceiteRequest {
+  string id = 1;
+}
+
+message NfeEntradaDesfazAceiteResponse {
+  Nfe nfe = 1;
+}
+
+message NfeEntradaRejeitarRequest {
+  string id = 1;
+
+  string motivo = 2;
+
+  bool emitir_evento_desconhecimento_operacao = 3; // se marcado o sistema tenta emitir o evento de desconhecimento durante a recusa
+
+  bool emitir_evento_operacao_nao_realizada = 4; // se marcado o sistema tenta emitir o evento de operacao nao realizada durante a recusa
+}
+
+message NfeEntradaRejeitarResponse {
+  Nfe nfe = 1;
+}
+
+message NfeEntradaImportaPelaChaveRequest {
+  string chave = 1;
+}
+
+message NfeEntradaImportaPelaChaveResponse {
+  Nfe nfe = 1;
+}
+
+message NfeEntradaConsultaNotaRequest {
+}
+
+message NfeEntradaConsultaNotaResponse {
+  repeated Nfe nfeList = 1;
+}
+
+message NfeEntradaConsultaSituacaoRequest {
+  string id = 1;
+
+  bool forcar = 2; // ignora o intervalo mínimo entre consultas da mesma nota
+}
+
+message NfeEntradaConsultaSituacaoResponse {
+  Nfe nfe = 1;
+
+  bool consultado = 2; // false quando a consulta foi dispensada pelo intervalo mínimo
+
+  bool cancelada = 3; // o emitente cancelou o documento
+
+  string mensagem = 4; // resumo do que o ambiente nacional respondeu
+}
+
+message NfeEntradaImportaXmlStringRequest {
+  string xmlString = 1;
+}
+
+message NfeEntradaImportaXmlStringResponse {
+  Nfe nfe = 1;
+}
+
+message NfeEntradaConfirmarOperacaoRequest {
+  string id = 1;
+}
+
+message NfeEntradaConfirmarOperacaoResponse {
+  Nfe nfe = 1;
+}
+
+message NfeEntradaCienciaOperacaoRequest {
+  string id = 1;
+}
+
+message NfeEntradaCienciaOperacaoResponse {
+  Nfe nfe = 1;
+}
+
+message NfeEntradaDesconhecimentoOperacaoRequest {
+  string id = 1;
+}
+
+message NfeEntradaDesconhecimentoOperacaoResponse {
+  Nfe nfe = 1;
+}
+
+message NfeEntradaOperacaoNaoRealizadaRequest {
+  string id = 1;
+
+  string motivo = 2;
+}
+
+message NfeEntradaOperacaoNaoRealizadaResponse {
+  Nfe nfe = 1;
+}

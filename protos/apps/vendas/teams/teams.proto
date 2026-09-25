@@ -1,0 +1,408 @@
+syntax = "proto3";
+
+package teams;
+
+import "google/api/annotations.proto";
+
+import "plugins/validate/validate.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "apps/report/report.proto";
+
+option go_package = "comps/pb/apps/vendas/teams";
+
+// Teams service with CRUD operations
+service TeamService {
+  rpc Create ( CreateTeamRequest ) returns ( CreateTeamResponse );
+
+  rpc Update ( UpdateTeamRequest ) returns ( UpdateTeamResponse );
+
+  rpc Delete ( DeleteTeamRequest ) returns ( DeleteTeamResponse );
+
+  rpc Get ( GetTeamRequest ) returns ( GetTeamResponse );
+
+  rpc List ( ListTeamRequest ) returns ( ListTeamResponse );
+
+  rpc Report ( ReportTeamRequest ) returns ( ReportTeamResponse );
+
+  rpc AddMember ( AddMemberRequest ) returns ( AddMemberResponse );
+
+  rpc RemoveMember ( RemoveMemberRequest ) returns ( RemoveMemberResponse );
+
+  rpc UpdateMember ( UpdateMemberRequest ) returns ( UpdateMemberResponse );
+
+  rpc GetTeamPerformance ( GetTeamPerformanceRequest ) returns ( GetTeamPerformanceResponse );
+}
+
+enum TeamStatus {
+  TEAM_STATUS_UNSPECIFIED = 0;
+
+  TEAM_STATUS_ACTIVE = 1;
+
+  TEAM_STATUS_INACTIVE = 2;
+
+  TEAM_STATUS_SUSPENDED = 3;
+}
+
+enum MemberRole {
+  MEMBER_ROLE_UNSPECIFIED = 0;
+
+  MEMBER_ROLE_SALESPERSON = 1;
+
+  MEMBER_ROLE_COORDINATOR = 2;
+
+  MEMBER_ROLE_SUPERVISOR = 3;
+}
+
+enum MemberStatus {
+  MEMBER_STATUS_UNSPECIFIED = 0;
+
+  MEMBER_STATUS_ACTIVE = 1;
+
+  MEMBER_STATUS_INACTIVE = 2;
+
+  MEMBER_STATUS_ON_LEAVE = 3;
+}
+
+enum CurrencyType {
+  CURRENCY_TYPE_UNSPECIFIED = 0;
+
+  CURRENCY_TYPE_BRL = 1; // Real Brasileiro
+
+  CURRENCY_TYPE_USD = 2; // Dólar Americano
+
+  CURRENCY_TYPE_EUR = 3; // Euro
+
+  CURRENCY_TYPE_GBP = 4; // Libra Esterlina
+
+  CURRENCY_TYPE_CAD = 5; // Dólar Canadense
+
+  CURRENCY_TYPE_AUD = 6; // Dólar Australiano
+
+  CURRENCY_TYPE_CHF = 7; // Franco Suíço
+}
+
+// Team data
+message Team {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  // Informações básicas
+  string name = 6;
+
+  string description = 7;
+
+  TeamStatus status = 8;
+
+  // Gerente/Líder do time
+  string manager_id = 9;
+
+  string manager_name = 10;
+
+  string manager_email = 11;
+
+  // Configurações padrão de metas
+  TeamGoalConfiguration default_configuration = 12;
+
+  // Vendedores do time
+  repeated TeamMember members = 13;
+
+  // Configurações específicas
+  string region = 14;
+
+  repeated string product_categories = 15;
+
+  string cost_center = 16;
+
+  // Performance histórica
+  TeamPerformance performance = 17;
+
+  // Metadados
+  repeated string tags = 18;
+
+  string color = 19; // Cor para identificação visual
+
+  // Tipo de moeda padrão para o time
+  CurrencyType currency_type = 20;
+
+  metadata.BasicFields fields = 21;
+}
+
+// Configurações padrão de metas para o time
+message TeamGoalConfiguration {
+  // Metas de valor
+  double daily_value_goal = 1;
+
+  double weekly_value_goal = 2;
+
+  double monthly_value_goal = 3;
+
+  double quarterly_value_goal = 4;
+
+  double yearly_value_goal = 5;
+
+  // Metas de quantidade
+  int32 daily_sales_quantity = 6;
+
+  int32 weekly_sales_quantity = 7;
+
+  int32 monthly_sales_quantity = 8;
+
+  int32 quarterly_sales_quantity = 9;
+
+  int32 yearly_sales_quantity = 10;
+
+  // Configurações
+  bool use_value_as_criteria = 11; // true = valor, false = quantidade
+
+  double commission_percentage = 12;
+
+  // Margem e ticket médio
+  double target_margin_percentage = 13;
+
+  double target_average_ticket = 14;
+}
+
+// Membro do time
+message TeamMember {
+  string id = 1;
+
+  string salesperson_id = 2;
+
+  string salesperson_name = 3;
+
+  string salesperson_email = 4;
+
+  google.protobuf.Timestamp joined_date = 5;
+
+  google.protobuf.Timestamp left_date = 6;
+
+  MemberStatus status = 7;
+
+  MemberRole role = 8;
+
+  // Configurações específicas do membro
+  double commission_percentage = 9;
+
+  repeated string specialties = 10; // Especialidades do vendedor
+
+  // Performance individual
+  MemberPerformance performance = 11;
+}
+
+// Performance do time
+message TeamPerformance {
+  // Performance atual
+  double total_sales_value = 1;
+
+  int32 total_sales_quantity = 2;
+
+  double average_ticket = 3;
+
+  double margin_percentage = 4;
+
+  int32 active_members_count = 5;
+
+  // Performance por período
+  PeriodPerformance daily_performance = 6;
+
+  PeriodPerformance weekly_performance = 7;
+
+  PeriodPerformance monthly_performance = 8;
+
+  PeriodPerformance quarterly_performance = 9;
+
+  PeriodPerformance yearly_performance = 10;
+
+  google.protobuf.Timestamp last_update = 11;
+
+  // Ranking
+  int32 team_ranking = 12;
+
+  double performance_score = 13;
+}
+
+// Performance individual do membro
+message MemberPerformance {
+  double sales_value = 1;
+
+  int32 sales_quantity = 2;
+
+  double average_ticket = 3;
+
+  double margin_percentage = 4;
+
+  double commission_earned = 5;
+
+  // Última venda
+  string last_sale_id = 6;
+
+  double last_sale_value = 7;
+
+  google.protobuf.Timestamp last_sale_date = 8;
+
+  google.protobuf.Timestamp last_update = 9;
+}
+
+// Performance por período
+message PeriodPerformance {
+  double sales_value = 1;
+
+  double goal_value = 2;
+
+  int32 sales_quantity = 3;
+
+  int32 goal_quantity = 4;
+
+  double achievement_percentage = 5;
+
+  google.protobuf.Timestamp period_start = 6;
+
+  google.protobuf.Timestamp period_end = 7;
+}
+
+// Requests e Responses
+
+message CreateTeamRequest {
+  Team team = 1;
+}
+
+message CreateTeamResponse {
+  Team team = 1;
+}
+
+message UpdateTeamRequest {
+  string id = 1;
+
+  Team team = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+message UpdateTeamResponse {
+  Team team = 1;
+}
+
+message DeleteTeamRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteTeamResponse {
+  string id = 1;
+}
+
+message GetTeamRequest {
+  string id = 1;
+}
+
+message GetTeamResponse {
+  Team team = 1;
+}
+
+message ListTeamRequest {
+  repeated string ids = 1;
+
+  string manager_id = 2;
+
+  string salesperson_id = 3;
+
+  TeamStatus status = 4;
+
+  string region = 5;
+
+  repeated string product_categories = 6;
+
+  bool only_active = 7;
+
+  Filter filter = 8;
+}
+
+message ListTeamResponse {
+  repeated Team teamList = 1;
+
+  string next_page_token = 2;
+}
+
+message ReportTeamRequest {
+  string report_type = 1;
+
+  ListTeamRequest list_team_request = 2;
+
+  string mail = 3;
+}
+
+message ReportTeamResponse {
+  report.Response response = 1;
+}
+
+// Member management
+
+message AddMemberRequest {
+  string team_id = 1;
+
+  TeamMember member = 2;
+}
+
+message AddMemberResponse {
+  Team team = 1;
+}
+
+message RemoveMemberRequest {
+  string team_id = 1;
+
+  string member_id = 2;
+
+  string reason = 3;
+}
+
+message RemoveMemberResponse {
+  Team team = 1;
+}
+
+message UpdateMemberRequest {
+  string team_id = 1;
+
+  string member_id = 2;
+
+  TeamMember member = 3;
+
+  metadata.FieldMask update_mask = 4;
+}
+
+message UpdateMemberResponse {
+  Team team = 1;
+}
+
+// Performance
+
+message GetTeamPerformanceRequest {
+  string team_id = 1;
+
+  google.protobuf.Timestamp start_date = 2;
+
+  google.protobuf.Timestamp end_date = 3;
+
+  bool include_member_details = 4;
+}
+
+message GetTeamPerformanceResponse {
+  TeamPerformance team_performance = 1;
+
+  repeated MemberPerformance member_performances = 2;
+}

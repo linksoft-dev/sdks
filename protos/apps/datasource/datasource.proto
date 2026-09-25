@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+import "plugins/service/service.proto";
+
+import "common/metadata/metadata.proto";
+
+import "google/api/resource.proto";
+
+package datasource;
+
+option go_package = "comps/pb/apps/datasource";
+
+enum DataSourceType {
+  DATASOURCE_TYPE_UNSPECIFIED = 0;
+
+  DATASOURCE_TYPE_REST = 1; // REST API
+
+  DATASOURCE_TYPE_POSTGRES = 2; // PostgreSQL
+
+  DATASOURCE_TYPE_MYSQL = 3; // MySQL
+
+  DATASOURCE_TYPE_MONGODB = 4; // MongoDB
+
+  DATASOURCE_TYPE_GRAPHQL = 5; // GraphQL
+
+  DATASOURCE_TYPE_REDIS = 6; // Redis
+}
+
+enum AuthenticationType {
+  AUTH_TYPE_NONE = 0; // Sem autenticação
+
+  AUTH_TYPE_BASIC = 1; // Autenticação básica (usuário/senha)
+
+  AUTH_TYPE_BEARER = 2; // Bearer token
+
+  AUTH_TYPE_API_KEY = 3; // API Key
+
+  AUTH_TYPE_OAUTH2 = 4; // OAuth 2.0
+}
+
+enum HTTPMethod {
+  HTTP_METHOD_GET = 0;
+
+  HTTP_METHOD_POST = 1;
+
+  HTTP_METHOD_PUT = 2;
+
+  HTTP_METHOD_DELETE = 3;
+
+  HTTP_METHOD_PATCH = 4;
+}
+
+// Configurações específicas para REST APIs
+message RestConfig {
+  HTTPMethod method = 1; // Método HTTP padrão
+
+  map<string, string> headers = 2; // Headers customizados (formato JSON)
+
+  string body = 3; // Corpo da requisição para POST/PUT
+
+  string response_field = 4; // Campo JSON para extrair dados
+}
+
+// Configurações específicas para bancos de dados
+message DatabaseConfig {
+  string connection_string = 1; // String de conexão específica
+
+  int32 max_connections = 2; // Máximo de conexões no pool
+
+  int32 connection_timeout = 3; // Timeout de conexão em segundos
+
+  bool ssl_enabled = 4; // Habilitar SSL
+}
+
+message DataSource {
+  string id = 1;
+
+  metadata.BasicFields fields = 2;
+
+  // Campos comuns a todas as fontes de dados
+  string name = 3;
+
+  string description = 4;
+
+  DataSourceType type = 5;
+
+  string url = 6; // URL base para REST, connection string para DB
+
+  bool active = 7;
+
+  // Configurações de autenticação
+  AuthenticationType auth_type = 8;
+
+  string username = 9; // Usuário para autenticação
+
+  string password = 10; // Senha para autenticação
+
+  string token = 11; // Token para autenticação Bearer
+
+  string api_key = 12; // Chave da API
+
+  // Configurações de timeout e cache
+  int32 timeout_seconds = 13; // Timeout em segundos
+
+  string default_query = 14; // Query SQL para DB, endpoint para REST
+
+  bool cache_enabled = 15; // Habilitar cache
+
+  int32 cache_ttl_seconds = 16; // TTL do cache em segundos
+
+  // Tags para categorização
+  repeated string tags = 17;
+
+  // Configurações específicas por tipo de fonte de dados
+  oneof type_config {
+    RestConfig rest_config = 18; // Configurações específicas para REST
+
+    DatabaseConfig db_config = 19; // Configurações específicas para banco de dados
+  }
+
+  // Configurações extras gerais (formato JSON)
+  string extra_config = 20;
+}

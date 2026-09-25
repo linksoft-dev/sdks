@@ -1,0 +1,585 @@
+syntax = "proto3";
+
+package mdfe;
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/timestamp.proto";
+
+import "plugins/validate/validate.proto";
+
+import "apps/report/report.proto";
+
+import "plugins/service/service.proto";
+
+import "filter/filter.proto";
+
+import "common/metadata/metadata.proto";
+
+option go_package = "comps/pb/apps/dfe/mdfe";
+
+// Serviço MDFe com operações CRUD
+service MdfeService {
+  rpc Create ( CreateMdfeRequest ) returns ( CreateMdfeResponse );
+
+  rpc Update ( UpdateMdfeRequest ) returns ( UpdateMdfeResponse );
+
+  rpc Delete ( DeleteMdfeRequest ) returns ( DeleteMdfeResponse );
+
+  rpc Get ( GetMdfeRequest ) returns ( GetMdfeResponse );
+
+  rpc List ( ListMdfeRequest ) returns ( ListMdfeResponse );
+
+  rpc Imprimir ( ImprimirMdfeRequest ) returns ( ImprimirMdfeResponse );
+
+  // Operações específicas de MDFe
+  rpc Emitir ( EmitirRequest ) returns ( EmitirResponse );
+
+  rpc Cancelar ( CancelarRequest ) returns ( CancelarResponse );
+
+  rpc Encerrar ( EncerrarRequest ) returns ( EncerrarResponse );
+
+  rpc RecuperaProtocolo ( RecuperaProtocoloRequest ) returns ( RecuperaProtocoloResponse );
+
+  rpc ImportaXml ( ImportaXmlRequest ) returns ( ImportaXmlResponse );
+}
+
+// Novas estruturas
+message Rodoviario {
+  string rntrc = 1;
+
+  string codigo_agendamento_porto = 2;
+
+  string tracao_cod_interno_veiculo = 3;
+
+  string tracao_tipo_carroceria = 4;
+
+  string tracao_placa = 5;
+
+  double tracao_tara = 6;
+
+  string tracao_renavam = 7;
+
+  string tracao_uf = 8;
+
+  string tracao_tipo_rodado = 9;
+
+  double tracao_capacidade_kg = 10;
+
+  double tracao_capacidade_m3 = 11;
+
+  string tracao_proprietario_cpf_cnpj = 12;
+
+  string tracao_proprietario_nome = 13;
+
+  string tracao_proprietario_ie = 14;
+
+  string tracao_proprietario_uf = 15;
+
+  int32 tracao_proprietario_tipo = 16;
+}
+
+message Pagamento {
+  string responsavel_pagamento_id = 1;
+
+  string responsavel_pagamento_nome = 2;
+
+  string responsavel_pagamento_cpf_cnpj = 3;
+
+  // Componente do Pagamento do Frete
+  repeated ComponentePagamento componentes_pagamento = 4;
+
+  double valor_contrato = 5;
+
+  string forma_pagamento = 6; // 0 - Pagamento à Vista; 1 - Pagamento à Prazo;
+
+  double valor_adiantamento = 7; // Valor do Adiantamento - 15 posições, sendo 13 inteiras e 2 decimais.
+
+  // Informações do pagamento a prazo - Informar somente se indPag for a Prazo
+  repeated Parcelamento parcelamentos = 8;
+
+  // Informações bancárias, se houver
+  string numero_banco = 11;
+
+  string numero_agencia = 12;
+
+  string cnpj_instituicao_pagamento_eletronico = 13;
+
+  string chave_pix = 14;
+}
+
+message ComponentePagamento {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string tipo = 6; // 01 - Vale Pedágio; 02 - Impostos, taxas e contribuições; 03 - Despesas (bancárias, meios de pagamento, outras); 99 - Outros;
+
+  double valor = 7;
+
+  string descricao_outros = 8;
+}
+
+message Parcelamento {
+  string numero_parcela = 1;
+
+  google.protobuf.Timestamp data_vencimento = 2;
+
+  double valor_parcela = 3;
+}
+
+message Proprietario {
+  string cnpj = 1;
+
+  string rntrc = 2;
+
+  string nome = 3;
+
+  string ie = 4;
+
+  string uf = 5;
+
+  int32 tracao_proprietario_tipo = 6;
+}
+
+message Reboque {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string tracao_cod_interno_veiculo = 6;
+
+  string tracao_placa = 7;
+
+  string tracao_renavam = 8;
+
+  double tracao_tara = 9;
+
+  double tracao_capacidade_kg = 10;
+
+  double tracao_capacidade_m3 = 11;
+
+  Proprietario proprietario = 12;
+
+  string tracao_tipo_carroceria = 13;
+
+  string tracao_proprietario_uf = 14;
+}
+
+message Condutor {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string nome = 6;
+
+  string cpf = 7;
+}
+
+message Carregamento {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string uf = 6;
+
+  string municipio_codigo = 7;
+
+  string municipio = 8;
+}
+
+message Percurso {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string uf = 6;
+}
+
+message NfeUnidadeCarga {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  int32 tipo = 6;
+
+  string tipo_text = 7;
+
+  string identificacao = 8;
+}
+
+message NfeUnidadeTransporte {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string tipo = 6;
+
+  string tipo_text = 7;
+
+  string identificacao = 8;
+
+  repeated NfeUnidadeCarga unidades_carga = 9;
+}
+
+message Nfe {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string chave = 6;
+
+  repeated NfeUnidadeTransporte unidades_transporte = 7;
+}
+
+message Cte {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string chave = 6;
+
+  repeated NfeUnidadeTransporte unidades_transporte = 7;
+}
+
+message Descarregamento {
+  string id = 1;
+
+  google.protobuf.Timestamp created_at = 2;
+
+  google.protobuf.Timestamp updated_at = 3;
+
+  string user_id = 4;
+
+  string user_name = 5;
+
+  string uf = 6;
+
+  string municipio_codigo = 7;
+
+  string municipio = 8;
+
+  repeated Nfe nfes = 9;
+
+  repeated Cte ctes = 10;
+}
+
+message Seguro {
+  string responsavel_tipo = 1;
+
+  string responsavel_cnpj = 2;
+
+  string seguradora = 3;
+
+  string seguradora_cnpj = 4;
+
+  string num_apolice = 5;
+
+  string averbacoes = 6;
+}
+
+message ProdutoPredominante {
+  string cean = 1;
+
+  string tipo_carga = 2;
+
+  string ncm = 3;
+
+  string nome = 4;
+
+  string cep_carrega = 5;
+
+  string cep_descarrega = 6;
+}
+
+message Rejeicao {
+  string id = 1;
+
+  google.protobuf.Timestamp data_hora = 2;
+
+  google.protobuf.Timestamp data_hora_situacao_doc = 3;
+
+  string cstat = 4;
+
+  string mensagem = 5;
+}
+
+// Dados do MDFe
+message Mdfe {
+  google.protobuf.Timestamp created_at = 1; // Data de criação
+
+  google.protobuf.Timestamp updated_at = 2; // Data de atualização
+
+  string user_id = 3; // ID do usuário que realizou a ação
+
+  string user_name = 4; // Nome do usuário que realizou a ação
+
+  string id = 5;
+
+  string situacao = 6;
+
+  string tipo_ambiente = 7;
+
+  string forma_emissao = 8;
+
+  uint32 numero = 9;
+
+  uint32 serie = 10;
+
+  string chave = 11;
+
+  string protocolo = 12;
+
+  metadata.BasicFields fields = 13;
+
+  google.protobuf.Timestamp data_hora_emissao = 14;
+
+  google.protobuf.Timestamp data_hora_autorizacao = 15;
+
+  string protocolo_encerramento = 16;
+
+  google.protobuf.Timestamp data_hora_encerramento = 17;
+
+  string protocolo_cancelamento = 18;
+
+  string motivo_cancelamento = 19;
+
+  google.protobuf.Timestamp data_hora_cancelamento = 20;
+
+  // Campos adicionais do modelo antigo
+  string uf_carregamento = 21;
+
+  string uf_descarregamento = 22;
+
+  string xml_autorizacao = 23;
+
+  string xml_cancelamento = 24;
+
+  int32 tipo_emitente = 25;
+
+  int32 tipo_transportador = 26;
+
+  int32 modalidade = 27;
+
+  Rodoviario rodoviario = 28;
+
+  repeated Reboque rodoviario_reboques = 29;
+
+  double valor_carga = 30;
+
+  string codigo_unidade = 31;
+
+  double peso_bruto_total = 32;
+
+  string inf_adicional_fisco = 33;
+
+  string inf_adicional_contibuinte = 34;
+
+  string historico = 35;
+
+  bool calcula_total_baseado_notas = 36;
+
+  repeated Condutor condutores = 37;
+
+  repeated Carregamento carregamentos = 38;
+
+  repeated Percurso percursos = 39;
+
+  repeated Descarregamento descarregamentos = 40;
+
+  Seguro seguro = 41;
+
+  ProdutoPredominante produto_predominante = 42;
+
+  repeated Rejeicao rejeicoes = 50;
+
+  Pagamento pagamento = 43;
+
+  // MDF-e não emitido por este sistema, apenas informado (encerramento por
+  // chave ou importação de XML de terceiro).
+  bool informado_externamente = 51;
+}
+
+// Request e Response para criação de MDFe
+message CreateMdfeRequest {
+  Mdfe mdfe = 1;
+}
+
+message CreateMdfeResponse {
+  Mdfe mdfe = 1;
+}
+
+// Request e Response para atualização de MDFe
+message UpdateMdfeRequest {
+  string id = 1; // ID da NFSe a ser atualizada
+
+  Mdfe mdfe = 2;
+
+  metadata.FieldMask update_mask = 3;
+}
+
+// Request e Response para atualização de MDFe
+message UpdateMdfeResponse {
+  Mdfe mdfe = 1;
+}
+
+// Request e Response para exclusão de MDFe
+message DeleteMdfeRequest {
+  string id = 1;
+
+  bool hard = 2;
+}
+
+message DeleteMdfeResponse {
+  string id = 1;
+}
+
+// Request para obter um MDFe por ID
+message GetMdfeRequest {
+  string id = 1;
+}
+
+// Request para obter um MDFe por ID
+message GetMdfeResponse {
+  Mdfe mdfe = 1;
+}
+
+// Request e Response para listagem de MDFes
+message ListMdfeRequest {
+  repeated string ids = 1;
+
+  string placa = 2;
+
+  string chave = 3;
+
+  repeated string situacao = 4;
+
+  google.protobuf.Timestamp created_at_gte = 5;
+
+  google.protobuf.Timestamp created_at_lte = 6;
+
+  uint32 page_size = 7;
+
+  string page_token = 8;
+
+  Filter filter = 9;
+}
+
+message ListMdfeResponse {
+  repeated Mdfe mdfe_list = 1;
+
+  string next_page_token = 2;
+}
+
+// Request e Response para emissão de MDFe
+message ImprimirMdfeRequest {
+  string id = 1;
+}
+
+message ImprimirMdfeResponse {
+  report.Response response = 1;
+}
+
+// Request e Response para emissão de MDFe
+message EmitirRequest {
+  Mdfe mdfe = 1;
+}
+
+message EmitirResponse {
+  Mdfe mdfe = 1;
+}
+
+// Request e Response para cancelamento de MDFe
+message CancelarRequest {
+  string id = 1;
+
+  string motivo_cancelamento = 2;
+}
+
+message CancelarResponse {
+  Mdfe mdfe = 1;
+}
+
+// Request e Response para encerramento de MDFe
+message EncerrarRequest {
+  string id = 1;
+
+  string chave = 2;
+
+  string protocolo = 3;
+}
+
+message EncerrarResponse {
+  Mdfe mdfe = 1;
+}
+
+message ImportaXmlRequest {
+  string arquivo_base64 = 1;
+}
+
+message ImportaXmlResponse {
+  Mdfe mdfe = 1;
+}
+
+// Request e Response para recuperação de protocolo de MDFe
+message RecuperaProtocoloRequest {
+  string chave = 1;
+}
+
+message RecuperaProtocoloResponse {
+  Mdfe mdfe = 1;
+}
