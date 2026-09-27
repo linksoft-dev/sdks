@@ -5030,8 +5030,10 @@ type GenerateSeoMetaRequest struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
 	Id                     string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	AdditionalInstructions string                 `protobuf:"bytes,2,opt,name=additional_instructions,json=additionalInstructions,proto3" json:"additional_instructions,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// Integração de IA da empresa que executa a geração. Vazio usa a IA nativa do sistema, cobrada em créditos.
+	AiIntegrationId string `protobuf:"bytes,3,opt,name=ai_integration_id,json=aiIntegrationId,proto3" json:"ai_integration_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *GenerateSeoMetaRequest) Reset() {
@@ -5074,6 +5076,13 @@ func (x *GenerateSeoMetaRequest) GetId() string {
 func (x *GenerateSeoMetaRequest) GetAdditionalInstructions() string {
 	if x != nil {
 		return x.AdditionalInstructions
+	}
+	return ""
+}
+
+func (x *GenerateSeoMetaRequest) GetAiIntegrationId() string {
+	if x != nil {
+		return x.AiIntegrationId
 	}
 	return ""
 }
@@ -6376,10 +6385,11 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\x13CloneProdutoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"B\n" +
 	"\x14CloneProdutoResponse\x12*\n" +
-	"\aproduto\x18\x01 \x01(\v2\x10.produto.ProdutoR\aproduto\"a\n" +
+	"\aproduto\x18\x01 \x01(\v2\x10.produto.ProdutoR\aproduto\"\x8d\x01\n" +
 	"\x16GenerateSeoMetaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x127\n" +
-	"\x17additional_instructions\x18\x02 \x01(\tR\x16additionalInstructions\"\x93\x01\n" +
+	"\x17additional_instructions\x18\x02 \x01(\tR\x16additionalInstructions\x12*\n" +
+	"\x11ai_integration_id\x18\x03 \x01(\tR\x0faiIntegrationId\"\x93\x01\n" +
 	"\x17GenerateSeoMetaResponse\x12\x1d\n" +
 	"\n" +
 	"meta_title\x18\x01 \x01(\tR\tmetaTitle\x12)\n" +

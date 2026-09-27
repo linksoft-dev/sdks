@@ -1098,6 +1098,9 @@ message GenerateSeoMetaRequest {
   string id = 1;
 
   string additional_instructions = 2;
+
+  // Integração de IA da empresa que executa a geração. Vazio usa a IA nativa do sistema, cobrada em créditos.
+  string ai_integration_id = 3;
 }
 
 message GenerateSeoMetaResponse {

@@ -570,7 +570,7 @@ message GenerateAIPostRequest {
 
   string image_style = 16; // Estilo visual da imagem (realista, ilustracao, minimalista, etc)
 
-  string integration_id = 17; // ID da integracao de IA a usar (se vazio, usa a primeira disponivel)
+  string integration_id = 17; // Integração de IA da empresa que executa; vazio usa a IA nativa (créditos)
 
   string model = 18; // Modelo especifico (ex: "gpt-4o", "claude-sonnet-4-20250514")
 
@@ -637,7 +637,7 @@ message GenerateBatchAIPostsRequest {
 
   string image_style = 18; // Estilo visual da imagem
 
-  string integration_id = 19; // ID da integracao de IA a usar
+  string integration_id = 19; // Integração de IA da empresa que executa; vazio usa a IA nativa (créditos)
 
   string model = 20; // Modelo especifico
 

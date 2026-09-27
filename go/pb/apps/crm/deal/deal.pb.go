@@ -1304,8 +1304,10 @@ type AiSummarizeRequest struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
 	Id                     string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	AdditionalInstructions string                 `protobuf:"bytes,2,opt,name=additional_instructions,json=additionalInstructions,proto3" json:"additional_instructions,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// Integração de IA da empresa que executa a geração. Vazio usa a IA nativa do sistema, cobrada em créditos.
+	AiIntegrationId string `protobuf:"bytes,3,opt,name=ai_integration_id,json=aiIntegrationId,proto3" json:"ai_integration_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AiSummarizeRequest) Reset() {
@@ -1348,6 +1350,13 @@ func (x *AiSummarizeRequest) GetId() string {
 func (x *AiSummarizeRequest) GetAdditionalInstructions() string {
 	if x != nil {
 		return x.AdditionalInstructions
+	}
+	return ""
+}
+
+func (x *AiSummarizeRequest) GetAiIntegrationId() string {
+	if x != nil {
+		return x.AiIntegrationId
 	}
 	return ""
 }
@@ -1425,8 +1434,10 @@ type AiSuggestNextStepRequest struct {
 	state                  protoimpl.MessageState `protogen:"open.v1"`
 	Id                     string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	AdditionalInstructions string                 `protobuf:"bytes,2,opt,name=additional_instructions,json=additionalInstructions,proto3" json:"additional_instructions,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// Integração de IA da empresa que executa a geração. Vazio usa a IA nativa do sistema, cobrada em créditos.
+	AiIntegrationId string `protobuf:"bytes,3,opt,name=ai_integration_id,json=aiIntegrationId,proto3" json:"ai_integration_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AiSuggestNextStepRequest) Reset() {
@@ -1469,6 +1480,13 @@ func (x *AiSuggestNextStepRequest) GetId() string {
 func (x *AiSuggestNextStepRequest) GetAdditionalInstructions() string {
 	if x != nil {
 		return x.AdditionalInstructions
+	}
+	return ""
+}
+
+func (x *AiSuggestNextStepRequest) GetAiIntegrationId() string {
+	if x != nil {
+		return x.AiIntegrationId
 	}
 	return ""
 }
@@ -2824,20 +2842,22 @@ const file_apps_crm_deal_deal_proto_rawDesc = "" +
 	"\flist_request\x18\x01 \x01(\v2\x15.crm_deal.ListRequestR\vlistRequest\x12%\n" +
 	"\x0etipo_relatorio\x18\x02 \x01(\tR\rtipoRelatorio\">\n" +
 	"\x0eReportResponse\x12,\n" +
-	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse\"]\n" +
+	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse\"\x89\x01\n" +
 	"\x12AiSummarizeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x127\n" +
-	"\x17additional_instructions\x18\x02 \x01(\tR\x16additionalInstructions\"\x87\x01\n" +
+	"\x17additional_instructions\x18\x02 \x01(\tR\x16additionalInstructions\x12*\n" +
+	"\x11ai_integration_id\x18\x03 \x01(\tR\x0faiIntegrationId\"\x87\x01\n" +
 	"\x13AiSummarizeResponse\x12\x18\n" +
 	"\asummary\x18\x01 \x01(\tR\asummary\x12 \n" +
 	"\vtemperature\x18\x02 \x01(\tR\vtemperature\x12\x1e\n" +
 	"\n" +
 	"highlights\x18\x03 \x03(\tR\n" +
 	"highlights\x12\x14\n" +
-	"\x05risks\x18\x04 \x03(\tR\x05risks\"c\n" +
+	"\x05risks\x18\x04 \x03(\tR\x05risks\"\x8f\x01\n" +
 	"\x18AiSuggestNextStepRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x127\n" +
-	"\x17additional_instructions\x18\x02 \x01(\tR\x16additionalInstructions\"\xb9\x01\n" +
+	"\x17additional_instructions\x18\x02 \x01(\tR\x16additionalInstructions\x12*\n" +
+	"\x11ai_integration_id\x18\x03 \x01(\tR\x0faiIntegrationId\"\xb9\x01\n" +
 	"\x19AiSuggestNextStepResponse\x12#\n" +
 	"\ractivity_type\x18\x01 \x01(\tR\factivityType\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1e\n" +

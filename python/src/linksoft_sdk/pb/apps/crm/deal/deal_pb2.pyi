@@ -214,12 +214,14 @@ class ReportResponse(_message.Message):
     def __init__(self, response: _Optional[_Union[_report_pb2.Response, _Mapping]] = ...) -> None: ...
 
 class AiSummarizeRequest(_message.Message):
-    __slots__ = ("id", "additional_instructions")
+    __slots__ = ("id", "additional_instructions", "ai_integration_id")
     ID_FIELD_NUMBER: _ClassVar[int]
     ADDITIONAL_INSTRUCTIONS_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     additional_instructions: str
-    def __init__(self, id: _Optional[str] = ..., additional_instructions: _Optional[str] = ...) -> None: ...
+    ai_integration_id: str
+    def __init__(self, id: _Optional[str] = ..., additional_instructions: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
 
 class AiSummarizeResponse(_message.Message):
     __slots__ = ("summary", "temperature", "highlights", "risks")
@@ -234,12 +236,14 @@ class AiSummarizeResponse(_message.Message):
     def __init__(self, summary: _Optional[str] = ..., temperature: _Optional[str] = ..., highlights: _Optional[_Iterable[str]] = ..., risks: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class AiSuggestNextStepRequest(_message.Message):
-    __slots__ = ("id", "additional_instructions")
+    __slots__ = ("id", "additional_instructions", "ai_integration_id")
     ID_FIELD_NUMBER: _ClassVar[int]
     ADDITIONAL_INSTRUCTIONS_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     additional_instructions: str
-    def __init__(self, id: _Optional[str] = ..., additional_instructions: _Optional[str] = ...) -> None: ...
+    ai_integration_id: str
+    def __init__(self, id: _Optional[str] = ..., additional_instructions: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
 
 class AiSuggestNextStepResponse(_message.Message):
     __slots__ = ("activity_type", "title", "due_in_days", "message_draft", "reasoning")

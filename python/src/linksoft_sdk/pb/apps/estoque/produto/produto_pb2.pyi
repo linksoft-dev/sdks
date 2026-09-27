@@ -1113,12 +1113,14 @@ class CloneProdutoResponse(_message.Message):
     def __init__(self, produto: _Optional[_Union[Produto, _Mapping]] = ...) -> None: ...
 
 class GenerateSeoMetaRequest(_message.Message):
-    __slots__ = ("id", "additional_instructions")
+    __slots__ = ("id", "additional_instructions", "ai_integration_id")
     ID_FIELD_NUMBER: _ClassVar[int]
     ADDITIONAL_INSTRUCTIONS_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     additional_instructions: str
-    def __init__(self, id: _Optional[str] = ..., additional_instructions: _Optional[str] = ...) -> None: ...
+    ai_integration_id: str
+    def __init__(self, id: _Optional[str] = ..., additional_instructions: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
 
 class GenerateSeoMetaResponse(_message.Message):
     __slots__ = ("meta_title", "meta_description", "slug", "keywords")

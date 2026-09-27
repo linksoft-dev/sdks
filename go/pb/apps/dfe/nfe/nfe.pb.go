@@ -8001,10 +8001,12 @@ func (*CorrecaoMovimentacaoResponse) Descriptor() ([]byte, []int) {
 }
 
 type ExplainRejectionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Integração de IA da empresa que executa a geração. Vazio usa a IA nativa do sistema, cobrada em créditos.
+	AiIntegrationId string `protobuf:"bytes,2,opt,name=ai_integration_id,json=aiIntegrationId,proto3" json:"ai_integration_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ExplainRejectionRequest) Reset() {
@@ -8040,6 +8042,13 @@ func (*ExplainRejectionRequest) Descriptor() ([]byte, []int) {
 func (x *ExplainRejectionRequest) GetId() string {
 	if x != nil {
 		return x.Id
+	}
+	return ""
+}
+
+func (x *ExplainRejectionRequest) GetAiIntegrationId() string {
+	if x != nil {
+		return x.AiIntegrationId
 	}
 	return ""
 }
@@ -8943,9 +8952,10 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\x13produto_origem_nome\x18\x03 \x01(\tR\x11produtoOrigemNome\x12,\n" +
 	"\x12produto_destino_id\x18\x04 \x01(\tR\x10produtoDestinoId\x120\n" +
 	"\x14produto_destino_nome\x18\x05 \x01(\tR\x12produtoDestinoNome\"\x1e\n" +
-	"\x1cCorrecaoMovimentacaoResponse\")\n" +
+	"\x1cCorrecaoMovimentacaoResponse\"U\n" +
 	"\x17ExplainRejectionRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xca\x01\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12*\n" +
+	"\x11ai_integration_id\x18\x02 \x01(\tR\x0faiIntegrationId\"\xca\x01\n" +
 	"\x18ExplainRejectionResponse\x12\x14\n" +
 	"\x05cstat\x18\x01 \x01(\tR\x05cstat\x12)\n" +
 	"\x10original_message\x18\x02 \x01(\tR\x0foriginalMessage\x12 \n" +

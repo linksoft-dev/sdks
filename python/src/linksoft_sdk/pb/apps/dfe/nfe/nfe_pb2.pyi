@@ -1537,10 +1537,12 @@ class CorrecaoMovimentacaoResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class ExplainRejectionRequest(_message.Message):
-    __slots__ = ("id",)
+    __slots__ = ("id", "ai_integration_id")
     ID_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
-    def __init__(self, id: _Optional[str] = ...) -> None: ...
+    ai_integration_id: str
+    def __init__(self, id: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
 
 class ExplainRejectionResponse(_message.Message):
     __slots__ = ("cstat", "original_message", "explanation", "recommended_actions", "severity")
