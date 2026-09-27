@@ -277,6 +277,9 @@ message SaveAsLeadsRequest {
   string responsible_name = 10; // Nome desnormalizado do responsável (opcional)
 
   map<string, string> custom_fields = 11; // Campos livres gravados em cada oportunidade criada
+
+  // Cria a oportunidade também para quem já estava cadastrado, ligada ao cadastro existente.
+  bool create_deal_for_existing = 12;
 }
 
 message SaveAsLeadsResponse {

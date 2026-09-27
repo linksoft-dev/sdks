@@ -1203,8 +1203,10 @@ type SaveAsLeadsRequest struct {
 	ResponsibleId   string            `protobuf:"bytes,9,opt,name=responsible_id,json=responsibleId,proto3" json:"responsible_id,omitempty"`                                                                         // Responsável pela oportunidade (opcional)
 	ResponsibleName string            `protobuf:"bytes,10,opt,name=responsible_name,json=responsibleName,proto3" json:"responsible_name,omitempty"`                                                                  // Nome desnormalizado do responsável (opcional)
 	CustomFields    map[string]string `protobuf:"bytes,11,rep,name=custom_fields,json=customFields,proto3" json:"custom_fields,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // Campos livres gravados em cada oportunidade criada
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Cria a oportunidade também para quem já estava cadastrado, ligada ao cadastro existente.
+	CreateDealForExisting bool `protobuf:"varint,12,opt,name=create_deal_for_existing,json=createDealForExisting,proto3" json:"create_deal_for_existing,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *SaveAsLeadsRequest) Reset() {
@@ -1312,6 +1314,13 @@ func (x *SaveAsLeadsRequest) GetCustomFields() map[string]string {
 		return x.CustomFields
 	}
 	return nil
+}
+
+func (x *SaveAsLeadsRequest) GetCreateDealForExisting() bool {
+	if x != nil {
+		return x.CreateDealForExisting
+	}
+	return false
 }
 
 type SaveAsLeadsResponse struct {
@@ -1796,7 +1805,7 @@ const file_apps_crm_prospect_prospect_proto_rawDesc = "" +
 	"\x0fcredits_balance\x18\x04 \x01(\x03R\x0ecreditsBalance\x1aA\n" +
 	"\x13ProviderErrorsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb4\x04\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xed\x04\n" +
 	"\x12SaveAsLeadsRequest\x12;\n" +
 	"\tcompanies\x18\x01 \x03(\v2\x1d.crm_prospect.ProspectCompanyR\tcompanies\x124\n" +
 	"\x06people\x18\x02 \x03(\v2\x1c.crm_prospect.ProspectPersonR\x06people\x12\x12\n" +
@@ -1811,7 +1820,8 @@ const file_apps_crm_prospect_prospect_proto_rawDesc = "" +
 	"\x0eresponsible_id\x18\t \x01(\tR\rresponsibleId\x12)\n" +
 	"\x10responsible_name\x18\n" +
 	" \x01(\tR\x0fresponsibleName\x12W\n" +
-	"\rcustom_fields\x18\v \x03(\v22.crm_prospect.SaveAsLeadsRequest.CustomFieldsEntryR\fcustomFields\x1a?\n" +
+	"\rcustom_fields\x18\v \x03(\v22.crm_prospect.SaveAsLeadsRequest.CustomFieldsEntryR\fcustomFields\x127\n" +
+	"\x18create_deal_for_existing\x18\f \x01(\bR\x15createDealForExisting\x1a?\n" +
 	"\x11CustomFieldsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xdd\x01\n" +

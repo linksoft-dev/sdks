@@ -305,7 +305,7 @@ class EnrichPersonResponse(_message.Message):
     def __init__(self, person: _Optional[_Union[ProspectPerson, _Mapping]] = ..., provider_errors: _Optional[_Mapping[str, str]] = ..., credits_charged: _Optional[int] = ..., credits_balance: _Optional[int] = ...) -> None: ...
 
 class SaveAsLeadsRequest(_message.Message):
-    __slots__ = ("companies", "people", "tags", "source_provider", "create_deal", "pipeline_id", "stage_id", "expected_value", "responsible_id", "responsible_name", "custom_fields")
+    __slots__ = ("companies", "people", "tags", "source_provider", "create_deal", "pipeline_id", "stage_id", "expected_value", "responsible_id", "responsible_name", "custom_fields", "create_deal_for_existing")
     class CustomFieldsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -324,6 +324,7 @@ class SaveAsLeadsRequest(_message.Message):
     RESPONSIBLE_ID_FIELD_NUMBER: _ClassVar[int]
     RESPONSIBLE_NAME_FIELD_NUMBER: _ClassVar[int]
     CUSTOM_FIELDS_FIELD_NUMBER: _ClassVar[int]
+    CREATE_DEAL_FOR_EXISTING_FIELD_NUMBER: _ClassVar[int]
     companies: _containers.RepeatedCompositeFieldContainer[ProspectCompany]
     people: _containers.RepeatedCompositeFieldContainer[ProspectPerson]
     tags: _containers.RepeatedScalarFieldContainer[str]
@@ -335,7 +336,8 @@ class SaveAsLeadsRequest(_message.Message):
     responsible_id: str
     responsible_name: str
     custom_fields: _containers.ScalarMap[str, str]
-    def __init__(self, companies: _Optional[_Iterable[_Union[ProspectCompany, _Mapping]]] = ..., people: _Optional[_Iterable[_Union[ProspectPerson, _Mapping]]] = ..., tags: _Optional[_Iterable[str]] = ..., source_provider: _Optional[str] = ..., create_deal: _Optional[bool] = ..., pipeline_id: _Optional[str] = ..., stage_id: _Optional[str] = ..., expected_value: _Optional[float] = ..., responsible_id: _Optional[str] = ..., responsible_name: _Optional[str] = ..., custom_fields: _Optional[_Mapping[str, str]] = ...) -> None: ...
+    create_deal_for_existing: bool
+    def __init__(self, companies: _Optional[_Iterable[_Union[ProspectCompany, _Mapping]]] = ..., people: _Optional[_Iterable[_Union[ProspectPerson, _Mapping]]] = ..., tags: _Optional[_Iterable[str]] = ..., source_provider: _Optional[str] = ..., create_deal: _Optional[bool] = ..., pipeline_id: _Optional[str] = ..., stage_id: _Optional[str] = ..., expected_value: _Optional[float] = ..., responsible_id: _Optional[str] = ..., responsible_name: _Optional[str] = ..., custom_fields: _Optional[_Mapping[str, str]] = ..., create_deal_for_existing: _Optional[bool] = ...) -> None: ...
 
 class SaveAsLeadsResponse(_message.Message):
     __slots__ = ("saved_count", "skipped_count", "person_ids", "errors", "deal_ids", "deals_created_count")
