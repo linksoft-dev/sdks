@@ -5171,8 +5171,10 @@ type Billing struct {
 	SendWhatsapp bool `protobuf:"varint,8,opt,name=send_whatsapp,json=sendWhatsapp,proto3" json:"send_whatsapp,omitempty"`
 	// Conta de WhatsApp usada no envio; vazia usa a conta padrão da organização.
 	WhatsappIntegrationId string `protobuf:"bytes,9,opt,name=whatsapp_integration_id,json=whatsappIntegrationId,proto3" json:"whatsapp_integration_id,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	// Nenhum plano de cobrança envia cobrança deste documento; o envio manual continua disponível.
+	IgnoreBillingPlan bool `protobuf:"varint,10,opt,name=ignore_billing_plan,json=ignoreBillingPlan,proto3" json:"ignore_billing_plan,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *Billing) Reset() {
@@ -5262,6 +5264,13 @@ func (x *Billing) GetWhatsappIntegrationId() string {
 		return x.WhatsappIntegrationId
 	}
 	return ""
+}
+
+func (x *Billing) GetIgnoreBillingPlan() bool {
+	if x != nil {
+		return x.IgnoreBillingPlan
+	}
+	return false
 }
 
 type ReportRequest struct {
@@ -13433,7 +13442,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x1aRecalcularComissaoResponse\x12(\n" +
 	"\apedidos\x18\x01 \x03(\v2\x0e.pedido.PedidoR\apedidos\x12\"\n" +
 	"\frecalculados\x18\x02 \x01(\x05R\frecalculados\x12\x1c\n" +
-	"\tignorados\x18\x03 \x01(\x05R\tignorados\"\x97\x03\n" +
+	"\tignorados\x18\x03 \x01(\x05R\tignorados\"\xc7\x03\n" +
 	"\aBilling\x12\x1c\n" +
 	"\aenabled\x18\x01 \x01(\bB\x02\x18\x01R\aenabled\x12*\n" +
 	"\x0fbilling_plan_id\x18\x02 \x01(\tB\x02\x18\x01R\rbillingPlanId\x12.\n" +
@@ -13442,7 +13451,9 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x0ebillings_count\x18\x06 \x01(\x05R\rbillingsCount\x12F\n" +
 	"\x11last_billing_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x0flastBillingDate\x12#\n" +
 	"\rsend_whatsapp\x18\b \x01(\bR\fsendWhatsapp\x126\n" +
-	"\x17whatsapp_integration_id\x18\t \x01(\tR\x15whatsappIntegrationId\"\xc9\x01\n" +
+	"\x17whatsapp_integration_id\x18\t \x01(\tR\x15whatsappIntegrationId\x12.\n" +
+	"\x13ignore_billing_plan\x18\n" +
+	" \x01(\bR\x11ignoreBillingPlan\"\xc9\x01\n" +
 	"\rReportRequest\x12<\n" +
 	"\flist_request\x18\x01 \x01(\v2\x19.pedido.ListPedidoRequestR\vlistRequest\x122\n" +
 	"\n" +

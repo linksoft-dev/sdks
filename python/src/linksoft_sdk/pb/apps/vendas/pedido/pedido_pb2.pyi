@@ -945,7 +945,7 @@ class RecalcularComissaoResponse(_message.Message):
     def __init__(self, pedidos: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., recalculados: _Optional[int] = ..., ignorados: _Optional[int] = ...) -> None: ...
 
 class Billing(_message.Message):
-    __slots__ = ("enabled", "billing_plan_id", "billing_plan_name", "next_billing_date", "billings_count", "last_billing_date", "send_whatsapp", "whatsapp_integration_id")
+    __slots__ = ("enabled", "billing_plan_id", "billing_plan_name", "next_billing_date", "billings_count", "last_billing_date", "send_whatsapp", "whatsapp_integration_id", "ignore_billing_plan")
     ENABLED_FIELD_NUMBER: _ClassVar[int]
     BILLING_PLAN_ID_FIELD_NUMBER: _ClassVar[int]
     BILLING_PLAN_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -954,6 +954,7 @@ class Billing(_message.Message):
     LAST_BILLING_DATE_FIELD_NUMBER: _ClassVar[int]
     SEND_WHATSAPP_FIELD_NUMBER: _ClassVar[int]
     WHATSAPP_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    IGNORE_BILLING_PLAN_FIELD_NUMBER: _ClassVar[int]
     enabled: bool
     billing_plan_id: str
     billing_plan_name: str
@@ -962,7 +963,8 @@ class Billing(_message.Message):
     last_billing_date: _timestamp_pb2.Timestamp
     send_whatsapp: bool
     whatsapp_integration_id: str
-    def __init__(self, enabled: _Optional[bool] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., next_billing_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., billings_count: _Optional[int] = ..., last_billing_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., send_whatsapp: _Optional[bool] = ..., whatsapp_integration_id: _Optional[str] = ...) -> None: ...
+    ignore_billing_plan: bool
+    def __init__(self, enabled: _Optional[bool] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., next_billing_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., billings_count: _Optional[int] = ..., last_billing_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., send_whatsapp: _Optional[bool] = ..., whatsapp_integration_id: _Optional[str] = ..., ignore_billing_plan: _Optional[bool] = ...) -> None: ...
 
 class ReportRequest(_message.Message):
     __slots__ = ("list_request", "reportType", "tipoRelatorio", "sendByEmail")

@@ -754,6 +754,9 @@ message Billing {
 
   // Conta de WhatsApp usada no envio; vazia usa a conta padrão da organização.
   string whatsapp_integration_id = 9;
+
+  // Nenhum plano de cobrança envia cobrança deste documento; o envio manual continua disponível.
+  bool ignore_billing_plan = 10;
 }
 
 enum ReportType {

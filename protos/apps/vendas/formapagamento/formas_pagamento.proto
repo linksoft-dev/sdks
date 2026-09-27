@@ -109,6 +109,10 @@ message PaymentMethod {
 
   // Venda a prazo nesta forma não confere o crédito disponível do cliente. O cliente continua obrigatório.
   bool nao_verifica_limite_credito = 45;
+
+  // Documento pago só com formas marcadas não emite a NFS-e automática ao fechar, mesmo com a
+  // emissão automática ligada. Pago também com outra forma, a nota sai.
+  bool nao_emite_nfse_automatica = 46;
 }
 
 message FraudIntegration {
