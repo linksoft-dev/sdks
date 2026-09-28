@@ -666,18 +666,17 @@ func (x *ManualReviewPolicy) GetReasonHint() string {
 }
 
 type Integration struct {
-	state                         protoimpl.MessageState `protogen:"open.v1"`
-	Id                            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`     // ID da integração com o gateway (ex: "pagseguro, pagar-me, stripe, etc")
-	Name                          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"` // Nome da integração com o gateway
-	Gateway                       string                 `protobuf:"bytes,3,opt,name=gateway,proto3" json:"gateway,omitempty"`
-	GatewayAmbiente               string                 `protobuf:"bytes,4,opt,name=gateway_ambiente,json=gatewayAmbiente,proto3" json:"gateway_ambiente,omitempty"`
-	GatewayNomeFaturaCartao       string                 `protobuf:"bytes,5,opt,name=gateway_nome_fatura_cartao,json=gatewayNomeFaturaCartao,proto3" json:"gateway_nome_fatura_cartao,omitempty"`
-	GatewayDiasValidade           int32                  `protobuf:"varint,6,opt,name=gateway_dias_validade,json=gatewayDiasValidade,proto3" json:"gateway_dias_validade,omitempty"`
-	GatewayValidadePosVencimentoP bool                   `protobuf:"varint,7,opt,name=gateway_validade_pos_vencimento_p,json=gatewayValidadePosVencimentoP,proto3" json:"gateway_validade_pos_vencimento_p,omitempty"` // Indicates if the validity days should be counted after the order's due date (periodicidadeData)
-	GatewayWebhookUrl             string                 `protobuf:"bytes,8,opt,name=gateway_webhook_url,json=gatewayWebhookUrl,proto3" json:"gateway_webhook_url,omitempty"`
-	GatewayPix                    *GatewayPix            `protobuf:"bytes,9,opt,name=gateway_pix,json=gatewayPix,proto3" json:"gateway_pix,omitempty"`
-	unknownFields                 protoimpl.UnknownFields
-	sizeCache                     protoimpl.SizeCache
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	Id                      string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`     // ID da integração com o gateway (ex: "pagseguro, pagar-me, stripe, etc")
+	Name                    string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"` // Nome da integração com o gateway
+	Gateway                 string                 `protobuf:"bytes,3,opt,name=gateway,proto3" json:"gateway,omitempty"`
+	GatewayAmbiente         string                 `protobuf:"bytes,4,opt,name=gateway_ambiente,json=gatewayAmbiente,proto3" json:"gateway_ambiente,omitempty"`
+	GatewayNomeFaturaCartao string                 `protobuf:"bytes,5,opt,name=gateway_nome_fatura_cartao,json=gatewayNomeFaturaCartao,proto3" json:"gateway_nome_fatura_cartao,omitempty"`
+	GatewayDiasValidade     int32                  `protobuf:"varint,6,opt,name=gateway_dias_validade,json=gatewayDiasValidade,proto3" json:"gateway_dias_validade,omitempty"`
+	GatewayWebhookUrl       string                 `protobuf:"bytes,8,opt,name=gateway_webhook_url,json=gatewayWebhookUrl,proto3" json:"gateway_webhook_url,omitempty"`
+	GatewayPix              *GatewayPix            `protobuf:"bytes,9,opt,name=gateway_pix,json=gatewayPix,proto3" json:"gateway_pix,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *Integration) Reset() {
@@ -750,13 +749,6 @@ func (x *Integration) GetGatewayDiasValidade() int32 {
 		return x.GatewayDiasValidade
 	}
 	return 0
-}
-
-func (x *Integration) GetGatewayValidadePosVencimentoP() bool {
-	if x != nil {
-		return x.GatewayValidadePosVencimentoP
-	}
-	return false
 }
 
 func (x *Integration) GetGatewayWebhookUrl() string {
@@ -1803,15 +1795,14 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"min_amount\x18\x04 \x01(\x01R\tminAmount\x12)\n" +
 	"\x10min_installments\x18\x05 \x01(\x05R\x0fminInstallments\x12\x1f\n" +
 	"\vreason_hint\x18\x06 \x01(\tR\n" +
-	"reasonHint\"\x9d\x03\n" +
+	"reasonHint\"\xd3\x02\n" +
 	"\vIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
 	"\agateway\x18\x03 \x01(\tR\agateway\x12)\n" +
 	"\x10gateway_ambiente\x18\x04 \x01(\tR\x0fgatewayAmbiente\x12;\n" +
 	"\x1agateway_nome_fatura_cartao\x18\x05 \x01(\tR\x17gatewayNomeFaturaCartao\x122\n" +
-	"\x15gateway_dias_validade\x18\x06 \x01(\x05R\x13gatewayDiasValidade\x12H\n" +
-	"!gateway_validade_pos_vencimento_p\x18\a \x01(\bR\x1dgatewayValidadePosVencimentoP\x12.\n" +
+	"\x15gateway_dias_validade\x18\x06 \x01(\x05R\x13gatewayDiasValidade\x12.\n" +
 	"\x13gateway_webhook_url\x18\b \x01(\tR\x11gatewayWebhookUrl\x12:\n" +
 	"\vgateway_pix\x18\t \x01(\v2\x19.PaymentMethod.GatewayPixR\n" +
 	"gatewayPix\"\xcd\x01\n" +

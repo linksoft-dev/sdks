@@ -147,14 +147,13 @@ class ManualReviewPolicy(_message.Message):
     def __init__(self, enabled: _Optional[bool] = ..., required_after_antifraud: _Optional[bool] = ..., hold_payment_while_pending: _Optional[bool] = ..., min_amount: _Optional[float] = ..., min_installments: _Optional[int] = ..., reason_hint: _Optional[str] = ...) -> None: ...
 
 class Integration(_message.Message):
-    __slots__ = ("id", "name", "gateway", "gateway_ambiente", "gateway_nome_fatura_cartao", "gateway_dias_validade", "gateway_validade_pos_vencimento_p", "gateway_webhook_url", "gateway_pix")
+    __slots__ = ("id", "name", "gateway", "gateway_ambiente", "gateway_nome_fatura_cartao", "gateway_dias_validade", "gateway_webhook_url", "gateway_pix")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_AMBIENTE_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_NOME_FATURA_CARTAO_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_DIAS_VALIDADE_FIELD_NUMBER: _ClassVar[int]
-    GATEWAY_VALIDADE_POS_VENCIMENTO_P_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_WEBHOOK_URL_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_PIX_FIELD_NUMBER: _ClassVar[int]
     id: str
@@ -163,10 +162,9 @@ class Integration(_message.Message):
     gateway_ambiente: str
     gateway_nome_fatura_cartao: str
     gateway_dias_validade: int
-    gateway_validade_pos_vencimento_p: bool
     gateway_webhook_url: str
     gateway_pix: GatewayPix
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., gateway: _Optional[str] = ..., gateway_ambiente: _Optional[str] = ..., gateway_nome_fatura_cartao: _Optional[str] = ..., gateway_dias_validade: _Optional[int] = ..., gateway_validade_pos_vencimento_p: _Optional[bool] = ..., gateway_webhook_url: _Optional[str] = ..., gateway_pix: _Optional[_Union[GatewayPix, _Mapping]] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., gateway: _Optional[str] = ..., gateway_ambiente: _Optional[str] = ..., gateway_nome_fatura_cartao: _Optional[str] = ..., gateway_dias_validade: _Optional[int] = ..., gateway_webhook_url: _Optional[str] = ..., gateway_pix: _Optional[_Union[GatewayPix, _Mapping]] = ...) -> None: ...
 
 class GatewayPix(_message.Message):
     __slots__ = ("segundos_validos", "chave_pix", "certificado_pix", "cobranca_presencial")
