@@ -351,8 +351,10 @@ type Person struct {
 	// Convênio: exige horário na agenda do profissional para pedir a autorização pelo portal.
 	// false = profissional sem agenda aceita o pedido sem horário.
 	AuthorizationRequiresSchedule bool `protobuf:"varint,40,opt,name=authorization_requires_schedule,json=authorizationRequiresSchedule,proto3" json:"authorization_requires_schedule,omitempty"`
-	unknownFields                 protoimpl.UnknownFields
-	sizeCache                     protoimpl.SizeCache
+	// Valores dos campos personalizados da empresa (nome do campo → valor).
+	CustomFields  map[string]string `protobuf:"bytes,41,rep,name=custom_fields,json=customFields,proto3" json:"custom_fields,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Person) Reset() {
@@ -656,6 +658,13 @@ func (x *Person) GetAuthorizationRequiresSchedule() bool {
 		return x.AuthorizationRequiresSchedule
 	}
 	return false
+}
+
+func (x *Person) GetCustomFields() map[string]string {
+	if x != nil {
+		return x.CustomFields
+	}
+	return nil
 }
 
 // Dados de transportadora associados a uma Person.
@@ -3076,7 +3085,7 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x18apps/person/person.proto\x12\x06person\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\x1a\x15exports/exports.proto\"7\n" +
 	"\tPersonTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xbd\f\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xc5\r\n" +
 	"\x06Person\x12?\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
@@ -3126,8 +3135,12 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\tphoto_url\x18% \x01(\tR\bphotoUrl\x12$\n" +
 	"\x0eshow_in_portal\x18& \x01(\bR\fshowInPortal\x12B\n" +
 	"\x1dauthorization_payment_minutes\x18' \x01(\x05R\x1bauthorizationPaymentMinutes\x12F\n" +
-	"\x1fauthorization_requires_schedule\x18( \x01(\bR\x1dauthorizationRequiresSchedule\x1a6\n" +
+	"\x1fauthorization_requires_schedule\x18( \x01(\bR\x1dauthorizationRequiresSchedule\x12E\n" +
+	"\rcustom_fields\x18) \x03(\v2 .person.Person.CustomFieldsEntryR\fcustomFields\x1a6\n" +
 	"\bIesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a?\n" +
+	"\x11CustomFieldsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x03\xc0>\x01J\x04\b\x18\x10\x19R\vpartnership\"q\n" +
 	"\aCarrier\x12#\n" +
@@ -3382,7 +3395,7 @@ func file_apps_person_person_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_person_person_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_apps_person_person_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
+var file_apps_person_person_proto_msgTypes = make([]protoimpl.MessageInfo, 39)
 var file_apps_person_person_proto_goTypes = []any{
 	(PersonStatus)(0),                          // 0: person.PersonStatus
 	(LeadStage)(0),                             // 1: person.LeadStage
@@ -3426,20 +3439,21 @@ var file_apps_person_person_proto_goTypes = []any{
 	(*BatchUpdateRequest)(nil),                 // 39: person.BatchUpdateRequest
 	(*BatchUpdateResponse)(nil),                // 40: person.BatchUpdateResponse
 	nil,                                        // 41: person.Person.IesEntry
-	(*timestamppb.Timestamp)(nil),              // 42: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),               // 43: metadata.BasicFields
-	(*metadata.FieldMask)(nil),                 // 44: metadata.FieldMask
-	(*filter.Filter)(nil),                      // 45: Filter
-	(*report.Response)(nil),                    // 46: report.Response
-	(exports.ExportFormat)(0),                  // 47: exports.ExportFormat
-	(*exports.ExportResponse)(nil),             // 48: exports.ExportResponse
+	nil,                                        // 42: person.Person.CustomFieldsEntry
+	(*timestamppb.Timestamp)(nil),              // 43: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),               // 44: metadata.BasicFields
+	(*metadata.FieldMask)(nil),                 // 45: metadata.FieldMask
+	(*filter.Filter)(nil),                      // 46: Filter
+	(*report.Response)(nil),                    // 47: report.Response
+	(exports.ExportFormat)(0),                  // 48: exports.ExportFormat
+	(*exports.ExportResponse)(nil),             // 49: exports.ExportResponse
 }
 var file_apps_person_person_proto_depIdxs = []int32{
-	42, // 0: person.Person.created_at:type_name -> google.protobuf.Timestamp
-	42, // 1: person.Person.updated_at:type_name -> google.protobuf.Timestamp
+	43, // 0: person.Person.created_at:type_name -> google.protobuf.Timestamp
+	43, // 1: person.Person.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: person.Person.status:type_name -> person.PersonStatus
 	4,  // 3: person.Person.tags:type_name -> person.PersonTag
-	42, // 4: person.Person.nascimento:type_name -> google.protobuf.Timestamp
+	43, // 4: person.Person.nascimento:type_name -> google.protobuf.Timestamp
 	8,  // 5: person.Person.address:type_name -> person.Address
 	41, // 6: person.Person.ies:type_name -> person.Person.IesEntry
 	15, // 7: person.Person.contacts:type_name -> person.Contact
@@ -3449,69 +3463,70 @@ var file_apps_person_person_proto_depIdxs = []int32{
 	20, // 11: person.Person.driver:type_name -> person.Driver
 	7,  // 12: person.Person.lead:type_name -> person.Lead
 	6,  // 13: person.Person.carrier:type_name -> person.Carrier
-	43, // 14: person.Person.fields:type_name -> metadata.BasicFields
-	1,  // 15: person.Lead.stage:type_name -> person.LeadStage
-	2,  // 16: person.Lead.qualification:type_name -> person.LeadQualification
-	42, // 17: person.Lead.expected_close_date:type_name -> google.protobuf.Timestamp
-	42, // 18: person.Lead.converted_at:type_name -> google.protobuf.Timestamp
-	3,  // 19: person.SendContactVerificationRequest.channel:type_name -> person.ContactChannel
-	15, // 20: person.ConfirmContactVerificationResponse.contact:type_name -> person.Contact
-	3,  // 21: person.VouchContactRequest.channel:type_name -> person.ContactChannel
-	15, // 22: person.VouchContactResponse.contact:type_name -> person.Contact
-	42, // 23: person.Contact.email_verified_at:type_name -> google.protobuf.Timestamp
-	42, // 24: person.Contact.phone_verified_at:type_name -> google.protobuf.Timestamp
-	16, // 25: person.Contact.email_vouch:type_name -> person.ContactVouch
-	16, // 26: person.Contact.phone_vouch:type_name -> person.ContactVouch
-	42, // 27: person.ContactVouch.at:type_name -> google.protobuf.Timestamp
-	42, // 28: person.Driver.license_expiration:type_name -> google.protobuf.Timestamp
-	42, // 29: person.Driver.birth_date:type_name -> google.protobuf.Timestamp
-	5,  // 30: person.CreateRequest.person:type_name -> person.Person
-	5,  // 31: person.CreateResponse.person:type_name -> person.Person
-	5,  // 32: person.UpdateRequest.person:type_name -> person.Person
-	44, // 33: person.UpdateRequest.update_mask:type_name -> metadata.FieldMask
-	5,  // 34: person.UpdateResponse.person:type_name -> person.Person
-	5,  // 35: person.GetResponse.person:type_name -> person.Person
-	42, // 36: person.ListRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	42, // 37: person.ListRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	45, // 38: person.ListRequest.filter:type_name -> Filter
-	5,  // 39: person.ListResponse.person_list:type_name -> person.Person
-	5,  // 40: person.ImportRequest.persons:type_name -> person.Person
-	29, // 41: person.ReportRequest.list_request:type_name -> person.ListRequest
-	46, // 42: person.ReportResponse.response:type_name -> report.Response
-	47, // 43: person.ExportPersonsRequest.format:type_name -> exports.ExportFormat
-	45, // 44: person.ExportPersonsRequest.filter:type_name -> Filter
-	48, // 45: person.ExportPersonsResponse.export:type_name -> exports.ExportResponse
-	37, // 46: person.BatchUpdateRequest.filter:type_name -> person.BatchUpdateFilter
-	38, // 47: person.BatchUpdateRequest.seller:type_name -> person.BatchUpdateSeller
-	21, // 48: person.PersonService.Create:input_type -> person.CreateRequest
-	23, // 49: person.PersonService.Update:input_type -> person.UpdateRequest
-	25, // 50: person.PersonService.Delete:input_type -> person.DeleteRequest
-	27, // 51: person.PersonService.Get:input_type -> person.GetRequest
-	29, // 52: person.PersonService.List:input_type -> person.ListRequest
-	31, // 53: person.PersonService.Import:input_type -> person.ImportRequest
-	33, // 54: person.PersonService.Report:input_type -> person.ReportRequest
-	35, // 55: person.PersonService.Export:input_type -> person.ExportPersonsRequest
-	9,  // 56: person.PersonService.SendContactVerification:input_type -> person.SendContactVerificationRequest
-	11, // 57: person.PersonService.ConfirmContactVerification:input_type -> person.ConfirmContactVerificationRequest
-	13, // 58: person.PersonService.VouchContact:input_type -> person.VouchContactRequest
-	39, // 59: person.PersonService.BatchUpdate:input_type -> person.BatchUpdateRequest
-	22, // 60: person.PersonService.Create:output_type -> person.CreateResponse
-	24, // 61: person.PersonService.Update:output_type -> person.UpdateResponse
-	26, // 62: person.PersonService.Delete:output_type -> person.DeleteResponse
-	28, // 63: person.PersonService.Get:output_type -> person.GetResponse
-	30, // 64: person.PersonService.List:output_type -> person.ListResponse
-	32, // 65: person.PersonService.Import:output_type -> person.ImportResponse
-	34, // 66: person.PersonService.Report:output_type -> person.ReportResponse
-	36, // 67: person.PersonService.Export:output_type -> person.ExportPersonsResponse
-	10, // 68: person.PersonService.SendContactVerification:output_type -> person.SendContactVerificationResponse
-	12, // 69: person.PersonService.ConfirmContactVerification:output_type -> person.ConfirmContactVerificationResponse
-	14, // 70: person.PersonService.VouchContact:output_type -> person.VouchContactResponse
-	40, // 71: person.PersonService.BatchUpdate:output_type -> person.BatchUpdateResponse
-	60, // [60:72] is the sub-list for method output_type
-	48, // [48:60] is the sub-list for method input_type
-	48, // [48:48] is the sub-list for extension type_name
-	48, // [48:48] is the sub-list for extension extendee
-	0,  // [0:48] is the sub-list for field type_name
+	44, // 14: person.Person.fields:type_name -> metadata.BasicFields
+	42, // 15: person.Person.custom_fields:type_name -> person.Person.CustomFieldsEntry
+	1,  // 16: person.Lead.stage:type_name -> person.LeadStage
+	2,  // 17: person.Lead.qualification:type_name -> person.LeadQualification
+	43, // 18: person.Lead.expected_close_date:type_name -> google.protobuf.Timestamp
+	43, // 19: person.Lead.converted_at:type_name -> google.protobuf.Timestamp
+	3,  // 20: person.SendContactVerificationRequest.channel:type_name -> person.ContactChannel
+	15, // 21: person.ConfirmContactVerificationResponse.contact:type_name -> person.Contact
+	3,  // 22: person.VouchContactRequest.channel:type_name -> person.ContactChannel
+	15, // 23: person.VouchContactResponse.contact:type_name -> person.Contact
+	43, // 24: person.Contact.email_verified_at:type_name -> google.protobuf.Timestamp
+	43, // 25: person.Contact.phone_verified_at:type_name -> google.protobuf.Timestamp
+	16, // 26: person.Contact.email_vouch:type_name -> person.ContactVouch
+	16, // 27: person.Contact.phone_vouch:type_name -> person.ContactVouch
+	43, // 28: person.ContactVouch.at:type_name -> google.protobuf.Timestamp
+	43, // 29: person.Driver.license_expiration:type_name -> google.protobuf.Timestamp
+	43, // 30: person.Driver.birth_date:type_name -> google.protobuf.Timestamp
+	5,  // 31: person.CreateRequest.person:type_name -> person.Person
+	5,  // 32: person.CreateResponse.person:type_name -> person.Person
+	5,  // 33: person.UpdateRequest.person:type_name -> person.Person
+	45, // 34: person.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	5,  // 35: person.UpdateResponse.person:type_name -> person.Person
+	5,  // 36: person.GetResponse.person:type_name -> person.Person
+	43, // 37: person.ListRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	43, // 38: person.ListRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	46, // 39: person.ListRequest.filter:type_name -> Filter
+	5,  // 40: person.ListResponse.person_list:type_name -> person.Person
+	5,  // 41: person.ImportRequest.persons:type_name -> person.Person
+	29, // 42: person.ReportRequest.list_request:type_name -> person.ListRequest
+	47, // 43: person.ReportResponse.response:type_name -> report.Response
+	48, // 44: person.ExportPersonsRequest.format:type_name -> exports.ExportFormat
+	46, // 45: person.ExportPersonsRequest.filter:type_name -> Filter
+	49, // 46: person.ExportPersonsResponse.export:type_name -> exports.ExportResponse
+	37, // 47: person.BatchUpdateRequest.filter:type_name -> person.BatchUpdateFilter
+	38, // 48: person.BatchUpdateRequest.seller:type_name -> person.BatchUpdateSeller
+	21, // 49: person.PersonService.Create:input_type -> person.CreateRequest
+	23, // 50: person.PersonService.Update:input_type -> person.UpdateRequest
+	25, // 51: person.PersonService.Delete:input_type -> person.DeleteRequest
+	27, // 52: person.PersonService.Get:input_type -> person.GetRequest
+	29, // 53: person.PersonService.List:input_type -> person.ListRequest
+	31, // 54: person.PersonService.Import:input_type -> person.ImportRequest
+	33, // 55: person.PersonService.Report:input_type -> person.ReportRequest
+	35, // 56: person.PersonService.Export:input_type -> person.ExportPersonsRequest
+	9,  // 57: person.PersonService.SendContactVerification:input_type -> person.SendContactVerificationRequest
+	11, // 58: person.PersonService.ConfirmContactVerification:input_type -> person.ConfirmContactVerificationRequest
+	13, // 59: person.PersonService.VouchContact:input_type -> person.VouchContactRequest
+	39, // 60: person.PersonService.BatchUpdate:input_type -> person.BatchUpdateRequest
+	22, // 61: person.PersonService.Create:output_type -> person.CreateResponse
+	24, // 62: person.PersonService.Update:output_type -> person.UpdateResponse
+	26, // 63: person.PersonService.Delete:output_type -> person.DeleteResponse
+	28, // 64: person.PersonService.Get:output_type -> person.GetResponse
+	30, // 65: person.PersonService.List:output_type -> person.ListResponse
+	32, // 66: person.PersonService.Import:output_type -> person.ImportResponse
+	34, // 67: person.PersonService.Report:output_type -> person.ReportResponse
+	36, // 68: person.PersonService.Export:output_type -> person.ExportPersonsResponse
+	10, // 69: person.PersonService.SendContactVerification:output_type -> person.SendContactVerificationResponse
+	12, // 70: person.PersonService.ConfirmContactVerification:output_type -> person.ConfirmContactVerificationResponse
+	14, // 71: person.PersonService.VouchContact:output_type -> person.VouchContactResponse
+	40, // 72: person.PersonService.BatchUpdate:output_type -> person.BatchUpdateResponse
+	61, // [61:73] is the sub-list for method output_type
+	49, // [49:61] is the sub-list for method input_type
+	49, // [49:49] is the sub-list for extension type_name
+	49, // [49:49] is the sub-list for extension extendee
+	0,  // [0:49] is the sub-list for field type_name
 }
 
 func init() { file_apps_person_person_proto_init() }
@@ -3525,7 +3540,7 @@ func file_apps_person_person_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_person_person_proto_rawDesc), len(file_apps_person_person_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   38,
+			NumMessages:   39,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
