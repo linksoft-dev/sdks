@@ -4,6 +4,7 @@ from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as _metadata_pb2
 from google.api import resource_pb2 as _resource_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message

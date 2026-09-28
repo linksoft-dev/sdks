@@ -1,6 +1,7 @@
 import datetime
 
 from google.api import annotations_pb2 as _annotations_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from linksoft_sdk.pb.plugins.validate import validate_pb2 as _validate_pb2
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2

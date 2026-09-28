@@ -334,13 +334,13 @@ const file_common_metadata_metadata_proto_rawDesc = "" +
 	"\n" +
 	"\x1ecommon/metadata/metadata.proto\x12\bmetadata\x1a\x1fgoogle/protobuf/timestamp.proto\"!\n" +
 	"\tFieldMask\x12\x14\n" +
-	"\x05paths\x18\x01 \x03(\tR\x05paths\"\x86\x02\n" +
-	"\vBasicFields\x128\n" +
-	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
-	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x18\n" +
-	"\aversion\x18\x03 \x01(\x05R\aversion\x128\n" +
-	"\tdeletedAt\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt\x12/\n" +
-	"\aactions\x18\b \x03(\v2\x15.metadata.ActionModelR\aactions\"\xc1\x01\n" +
+	"\x05paths\x18\x01 \x03(\tR\x05paths\"\xa4\x02\n" +
+	"\vBasicFields\x12>\n" +
+	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12>\n" +
+	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1e\n" +
+	"\aversion\x18\x03 \x01(\x05B\x04\xe2A\x01\x03R\aversion\x12>\n" +
+	"\tdeletedAt\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tdeletedAt\x125\n" +
+	"\aactions\x18\b \x03(\v2\x15.metadata.ActionModelB\x04\xe2A\x01\x03R\aactions\"\xc1\x01\n" +
 	"\vActionModel\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x128\n" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x16\n" +

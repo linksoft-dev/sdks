@@ -28,9 +28,10 @@ from linksoft_sdk.pb.plugins.service import service_pb2 as plugins_dot_service_d
 from linksoft_sdk.pb.filter import filter_pb2 as filter_dot_filter__pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as common_dot_metadata_dot_metadata__pb2
 from google.api import resource_pb2 as google_dot_api_dot_resource__pb2
+from google.api import field_behavior_pb2 as google_dot_api_dot_field__behavior__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n&apps/estoque/categoria/categoria.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13\x66ilter/filter.proto\x1a\x1e\x63ommon/metadata/metadata.proto\x1a\x19google/api/resource.proto\"B\n\x16\x43reateCategoriaRequest\x12(\n\tcategoria\x18\x01 \x01(\x0b\x32\n.CategoriaR\tcategoria\"C\n\x17\x43reateCategoriaResponse\x12(\n\tcategoria\x18\x01 \x01(\x0b\x32\n.CategoriaR\tcategoria\"\x88\x01\n\x16UpdateCategoriaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12(\n\tcategoria\x18\x02 \x01(\x0b\x32\n.CategoriaR\tcategoria\x12\x34\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x13.metadata.FieldMaskR\nupdateMask\"C\n\x17UpdateCategoriaResponse\x12(\n\tcategoria\x18\x01 \x01(\x0b\x32\n.CategoriaR\tcategoria\"<\n\x16\x44\x65leteCategoriaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04hard\x18\x02 \x01(\x08R\x04hard\"1\n\x17\x44\x65leteCategoriaResponse\x12\x16\n\x06\x61visos\x18\x01 \x03(\tR\x06\x61visos\"]\n\x14ListCategoriaRequest\x12\x10\n\x03ids\x18\x01 \x03(\tR\x03ids\x12\x12\n\x04nome\x18\x02 \x01(\tR\x04nome\x12\x1f\n\x06\x66ilter\x18\x04 \x01(\x0b\x32\x07.FilterR\x06\x66ilter\"I\n\x15ListCategoriaResponse\x12\x30\n\rcategoriaList\x18\x01 \x03(\x0b\x32\n.CategoriaR\rcategoriaList\"%\n\x13GetCategoriaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"@\n\x14GetCategoriaResponse\x12(\n\tcategoria\x18\x01 \x01(\x0b\x32\n.CategoriaR\tcategoria\"\xdc\x06\n\tCategoria\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\"\n\x04nome\x18\x02 \x01(\tB\x0e\xca>\x02\x08\x01\xfa\x42\x06r\x04\x10\x02\x18PR\x04nome\x12\"\n\x0ctributacaoId\x18\x03 \x01(\tR\x0ctributacaoId\x12-\n\x0etributacaoNome\x18\x04 \x01(\tB\x05\xca>\x02\x08\x01R\x0etributacaoNome\x12\x30\n\x13tributacaoRevendaId\x18\x13 \x01(\tR\x13tributacaoRevendaId\x12;\n\x15tributacaoRevendaNome\x18\x14 \x01(\tB\x05\xca>\x02\x08\x01R\x15tributacaoRevendaNome\x12 \n\x03ncm\x18\x05 \x01(\tB\x0e\xca>\x02\x08\x01\xfa\x42\x06r\x04\x10\x08\x18\x08R\x03ncm\x12;\n\x10quantidadeMinima\x18\x06 \x01(\x01\x42\x0f\xfa\x42\x0c\n\n\x1d\x00$tI-\x00\x00\x00\x00R\x10quantidadeMinima\x12;\n\x10quantidadeMaxima\x18\x07 \x01(\x01\x42\x0f\xfa\x42\x0c\n\n\x1d\x00$tI-\x00\x00\x00\x00R\x10quantidadeMaxima\x12,\n\x11margemLucroPadrao\x18\x08 \x01(\x01R\x11margemLucroPadrao\x12$\n\rproductsCount\x18\t \x01(\rR\rproductsCount\x12/\n\x13\x65\x63ommerce_available\x18\n \x01(\x08R\x12\x65\x63ommerceAvailable\x12\x1b\n\timage_url\x18\x0b \x01(\tR\x08imageUrl\x12 \n\x04\x63ode\x18\x0c \x01(\tB\x0c\xca>\x02\x08\x01\xfa\x42\x04r\x02\x18\x1eR\x04\x63ode\x12\x12\n\x04slug\x18\r \x01(\tR\x04slug\x12$\n\rgrupoProducao\x18\x0e \x01(\tR\rgrupoProducao\x12\"\n\x0cimpressoraId\x18\x0f \x01(\tR\x0cimpressoraId\x12&\n\x0eimpressoraNome\x18\x10 \x01(\tR\x0eimpressoraNome\x12!\n\x04tags\x18\x11 \x03(\x0b\x32\r.CategoriaTagR\x04tags\x12-\n\x06\x66ields\x18\x12 \x01(\x0b\x32\x15.metadata.BasicFieldsR\x06\x66ields:!\xc0>\x01\xea\x41\x1b\x12\x19stock.category/{category}\":\n\x0c\x43\x61tegoriaTag\x12\x14\n\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n\x05\x63olor\x18\x02 \x01(\tR\x05\x63olor2\xce\x03\n\x10\x43\x61tegoriaService\x12W\n\x06\x43reate\x12\x17.CreateCategoriaRequest\x1a\x18.CreateCategoriaResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/categorias\x12\\\n\x06Update\x12\x17.UpdateCategoriaRequest\x1a\x18.UpdateCategoriaResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\x1a\x14/api/categorias/{id}\x12Y\n\x06\x44\x65lete\x12\x17.DeleteCategoriaRequest\x1a\x18.DeleteCategoriaResponse\"\x1c\x82\xd3\xe4\x93\x02\x16*\x14/api/categorias/{id}\x12V\n\x04List\x12\x15.ListCategoriaRequest\x1a\x16.ListCategoriaResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/categorias/list\x12P\n\x03Get\x12\x14.GetCategoriaRequest\x1a\x15.GetCategoriaResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/categorias/{id}B!Z\x1f\x63omps/pb/apps/estoque/categoriab\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n&apps/estoque/categoria/categoria.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13\x66ilter/filter.proto\x1a\x1e\x63ommon/metadata/metadata.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/api/field_behavior.proto\"B\n\x16\x43reateCategoriaRequest\x12(\n\tcategoria\x18\x01 \x01(\x0b\x32\n.CategoriaR\tcategoria\"C\n\x17\x43reateCategoriaResponse\x12(\n\tcategoria\x18\x01 \x01(\x0b\x32\n.CategoriaR\tcategoria\"\x88\x01\n\x16UpdateCategoriaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12(\n\tcategoria\x18\x02 \x01(\x0b\x32\n.CategoriaR\tcategoria\x12\x34\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x13.metadata.FieldMaskR\nupdateMask\"C\n\x17UpdateCategoriaResponse\x12(\n\tcategoria\x18\x01 \x01(\x0b\x32\n.CategoriaR\tcategoria\"<\n\x16\x44\x65leteCategoriaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04hard\x18\x02 \x01(\x08R\x04hard\"1\n\x17\x44\x65leteCategoriaResponse\x12\x16\n\x06\x61visos\x18\x01 \x03(\tR\x06\x61visos\"]\n\x14ListCategoriaRequest\x12\x10\n\x03ids\x18\x01 \x03(\tR\x03ids\x12\x12\n\x04nome\x18\x02 \x01(\tR\x04nome\x12\x1f\n\x06\x66ilter\x18\x04 \x01(\x0b\x32\x07.FilterR\x06\x66ilter\"I\n\x15ListCategoriaResponse\x12\x30\n\rcategoriaList\x18\x01 \x03(\x0b\x32\n.CategoriaR\rcategoriaList\"%\n\x13GetCategoriaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"@\n\x14GetCategoriaResponse\x12(\n\tcategoria\x18\x01 \x01(\x0b\x32\n.CategoriaR\tcategoria\"\xdc\x06\n\tCategoria\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\"\n\x04nome\x18\x02 \x01(\tB\x0e\xca>\x02\x08\x01\xfa\x42\x06r\x04\x10\x02\x18PR\x04nome\x12\"\n\x0ctributacaoId\x18\x03 \x01(\tR\x0ctributacaoId\x12-\n\x0etributacaoNome\x18\x04 \x01(\tB\x05\xca>\x02\x08\x01R\x0etributacaoNome\x12\x30\n\x13tributacaoRevendaId\x18\x13 \x01(\tR\x13tributacaoRevendaId\x12;\n\x15tributacaoRevendaNome\x18\x14 \x01(\tB\x05\xca>\x02\x08\x01R\x15tributacaoRevendaNome\x12 \n\x03ncm\x18\x05 \x01(\tB\x0e\xca>\x02\x08\x01\xfa\x42\x06r\x04\x10\x08\x18\x08R\x03ncm\x12;\n\x10quantidadeMinima\x18\x06 \x01(\x01\x42\x0f\xfa\x42\x0c\n\n\x1d\x00$tI-\x00\x00\x00\x00R\x10quantidadeMinima\x12;\n\x10quantidadeMaxima\x18\x07 \x01(\x01\x42\x0f\xfa\x42\x0c\n\n\x1d\x00$tI-\x00\x00\x00\x00R\x10quantidadeMaxima\x12,\n\x11margemLucroPadrao\x18\x08 \x01(\x01R\x11margemLucroPadrao\x12$\n\rproductsCount\x18\t \x01(\rR\rproductsCount\x12/\n\x13\x65\x63ommerce_available\x18\n \x01(\x08R\x12\x65\x63ommerceAvailable\x12\x1b\n\timage_url\x18\x0b \x01(\tR\x08imageUrl\x12 \n\x04\x63ode\x18\x0c \x01(\tB\x0c\xca>\x02\x08\x01\xfa\x42\x04r\x02\x18\x1eR\x04\x63ode\x12\x12\n\x04slug\x18\r \x01(\tR\x04slug\x12$\n\rgrupoProducao\x18\x0e \x01(\tR\rgrupoProducao\x12\"\n\x0cimpressoraId\x18\x0f \x01(\tR\x0cimpressoraId\x12&\n\x0eimpressoraNome\x18\x10 \x01(\tR\x0eimpressoraNome\x12!\n\x04tags\x18\x11 \x03(\x0b\x32\r.CategoriaTagR\x04tags\x12-\n\x06\x66ields\x18\x12 \x01(\x0b\x32\x15.metadata.BasicFieldsR\x06\x66ields:!\xc0>\x01\xea\x41\x1b\x12\x19stock.category/{category}\":\n\x0c\x43\x61tegoriaTag\x12\x14\n\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n\x05\x63olor\x18\x02 \x01(\tR\x05\x63olor2\xce\x03\n\x10\x43\x61tegoriaService\x12W\n\x06\x43reate\x12\x17.CreateCategoriaRequest\x1a\x18.CreateCategoriaResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/categorias\x12\\\n\x06Update\x12\x17.UpdateCategoriaRequest\x1a\x18.UpdateCategoriaResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\x1a\x14/api/categorias/{id}\x12Y\n\x06\x44\x65lete\x12\x17.DeleteCategoriaRequest\x1a\x18.DeleteCategoriaResponse\"\x1c\x82\xd3\xe4\x93\x02\x16*\x14/api/categorias/{id}\x12V\n\x04List\x12\x15.ListCategoriaRequest\x1a\x16.ListCategoriaResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/categorias/list\x12P\n\x03Get\x12\x14.GetCategoriaRequest\x1a\x15.GetCategoriaResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/categorias/{id}B!Z\x1f\x63omps/pb/apps/estoque/categoriab\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -64,30 +65,30 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CATEGORIASERVICE'].methods_by_name['List']._serialized_options = b'\202\323\344\223\002\031:\001*\"\024/api/categorias/list'
   _globals['_CATEGORIASERVICE'].methods_by_name['Get']._loaded_options = None
   _globals['_CATEGORIASERVICE'].methods_by_name['Get']._serialized_options = b'\202\323\344\223\002\026\022\024/api/categorias/{id}'
-  _globals['_CREATECATEGORIAREQUEST']._serialized_start=216
-  _globals['_CREATECATEGORIAREQUEST']._serialized_end=282
-  _globals['_CREATECATEGORIARESPONSE']._serialized_start=284
-  _globals['_CREATECATEGORIARESPONSE']._serialized_end=351
-  _globals['_UPDATECATEGORIAREQUEST']._serialized_start=354
-  _globals['_UPDATECATEGORIAREQUEST']._serialized_end=490
-  _globals['_UPDATECATEGORIARESPONSE']._serialized_start=492
-  _globals['_UPDATECATEGORIARESPONSE']._serialized_end=559
-  _globals['_DELETECATEGORIAREQUEST']._serialized_start=561
-  _globals['_DELETECATEGORIAREQUEST']._serialized_end=621
-  _globals['_DELETECATEGORIARESPONSE']._serialized_start=623
-  _globals['_DELETECATEGORIARESPONSE']._serialized_end=672
-  _globals['_LISTCATEGORIAREQUEST']._serialized_start=674
-  _globals['_LISTCATEGORIAREQUEST']._serialized_end=767
-  _globals['_LISTCATEGORIARESPONSE']._serialized_start=769
-  _globals['_LISTCATEGORIARESPONSE']._serialized_end=842
-  _globals['_GETCATEGORIAREQUEST']._serialized_start=844
-  _globals['_GETCATEGORIAREQUEST']._serialized_end=881
-  _globals['_GETCATEGORIARESPONSE']._serialized_start=883
-  _globals['_GETCATEGORIARESPONSE']._serialized_end=947
-  _globals['_CATEGORIA']._serialized_start=950
-  _globals['_CATEGORIA']._serialized_end=1810
-  _globals['_CATEGORIATAG']._serialized_start=1812
-  _globals['_CATEGORIATAG']._serialized_end=1870
-  _globals['_CATEGORIASERVICE']._serialized_start=1873
-  _globals['_CATEGORIASERVICE']._serialized_end=2335
+  _globals['_CREATECATEGORIAREQUEST']._serialized_start=249
+  _globals['_CREATECATEGORIAREQUEST']._serialized_end=315
+  _globals['_CREATECATEGORIARESPONSE']._serialized_start=317
+  _globals['_CREATECATEGORIARESPONSE']._serialized_end=384
+  _globals['_UPDATECATEGORIAREQUEST']._serialized_start=387
+  _globals['_UPDATECATEGORIAREQUEST']._serialized_end=523
+  _globals['_UPDATECATEGORIARESPONSE']._serialized_start=525
+  _globals['_UPDATECATEGORIARESPONSE']._serialized_end=592
+  _globals['_DELETECATEGORIAREQUEST']._serialized_start=594
+  _globals['_DELETECATEGORIAREQUEST']._serialized_end=654
+  _globals['_DELETECATEGORIARESPONSE']._serialized_start=656
+  _globals['_DELETECATEGORIARESPONSE']._serialized_end=705
+  _globals['_LISTCATEGORIAREQUEST']._serialized_start=707
+  _globals['_LISTCATEGORIAREQUEST']._serialized_end=800
+  _globals['_LISTCATEGORIARESPONSE']._serialized_start=802
+  _globals['_LISTCATEGORIARESPONSE']._serialized_end=875
+  _globals['_GETCATEGORIAREQUEST']._serialized_start=877
+  _globals['_GETCATEGORIAREQUEST']._serialized_end=914
+  _globals['_GETCATEGORIARESPONSE']._serialized_start=916
+  _globals['_GETCATEGORIARESPONSE']._serialized_end=980
+  _globals['_CATEGORIA']._serialized_start=983
+  _globals['_CATEGORIA']._serialized_end=1843
+  _globals['_CATEGORIATAG']._serialized_start=1845
+  _globals['_CATEGORIATAG']._serialized_end=1903
+  _globals['_CATEGORIASERVICE']._serialized_start=1906
+  _globals['_CATEGORIASERVICE']._serialized_end=2368
 # @@protoc_insertion_point(module_scope)

@@ -772,7 +772,7 @@ var File_apps_estoque_categoria_categoria_proto protoreflect.FileDescriptor
 
 const file_apps_estoque_categoria_categoria_proto_rawDesc = "" +
 	"\n" +
-	"&apps/estoque/categoria/categoria.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x19google/api/resource.proto\"B\n" +
+	"&apps/estoque/categoria/categoria.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/api/field_behavior.proto\"B\n" +
 	"\x16CreateCategoriaRequest\x12(\n" +
 	"\tcategoria\x18\x01 \x01(\v2\n" +
 	".CategoriaR\tcategoria\"C\n" +

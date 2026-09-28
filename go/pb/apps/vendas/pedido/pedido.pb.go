@@ -13147,7 +13147,7 @@ var File_apps_vendas_pedido_pedido_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\n" +
-	"\x1fapps/vendas/pedido/pedido.proto\x12\x06pedido\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x18apps/report/report.proto\x1a-apps/vendas/rentcar/model/rentcar_model.proto\x1a%apps/vendas/pedido/pedido_otica.proto\x1a$apps/vendas/pedido/pedido_mesa.proto\x1a\"apps/filemanager/filemanager.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15imports/imports.proto\x1a\x15exports/exports.proto\"C\n" +
+	"\x1fapps/vendas/pedido/pedido.proto\x12\x06pedido\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x18apps/report/report.proto\x1a-apps/vendas/rentcar/model/rentcar_model.proto\x1a%apps/vendas/pedido/pedido_otica.proto\x1a$apps/vendas/pedido/pedido_mesa.proto\x1a\"apps/filemanager/filemanager.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15imports/imports.proto\x1a\x15exports/exports.proto\"C\n" +
 	"\x17GetQuickProdutosRequest\x12\x12\n" +
 	"\x04dias\x18\x01 \x01(\x05R\x04dias\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\xf4\x01\n" +
@@ -13483,16 +13483,16 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x11acompanhamento_id\x18\x02 \x01(\tR\x10acompanhamentoId\x12\x12\n" +
 	"\x04code\x18\x03 \x01(\tR\x04code\"`\n" +
 	"\x19SetAcompanhamentoResponse\x12C\n" +
-	"\x0eacompanhamento\x18\x01 \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\"\xa6)\n" +
-	"\x06Pedido\x128\n" +
-	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
-	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x16\n" +
-	"\x06userId\x18\x03 \x01(\tR\x06userId\x12\x1a\n" +
-	"\buserName\x18\x04 \x01(\tR\buserName\x12\x0e\n" +
-	"\x02id\x18\x05 \x01(\tR\x02id\x12\x1d\n" +
+	"\x0eacompanhamento\x18\x01 \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\"\x9a+\n" +
+	"\x06Pedido\x12>\n" +
+	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12>\n" +
+	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1c\n" +
+	"\x06userId\x18\x03 \x01(\tB\x04\xe2A\x01\x03R\x06userId\x12 \n" +
+	"\buserName\x18\x04 \x01(\tB\x04\xe2A\x01\x03R\buserName\x12\x14\n" +
+	"\x02id\x18\x05 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12#\n" +
 	"\n" +
-	"account_id\x18\x06 \x01(\tR\taccountId\x12-\n" +
-	"\x06fields\x18\a \x01(\v2\x15.metadata.BasicFieldsR\x06fields\x12\x16\n" +
+	"account_id\x18\x06 \x01(\tB\x04\xe2A\x01\x03R\taccountId\x123\n" +
+	"\x06fields\x18\a \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x16\n" +
 	"\x06origem\x18\b \x01(\tR\x06origem\x12\x1a\n" +
 	"\borigemId\x18\t \x01(\tR\borigemId\x12\x12\n" +
 	"\x04tipo\x18\n" +
@@ -13501,18 +13501,18 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x04tags\x18\f \x03(\v2\x10.pedido.OrderTagR\x04tags\x12\x1c\n" +
 	"\ttipoMoeda\x18\r \x01(\tR\ttipoMoeda\x12*\n" +
 	"\x10tipoMoedaCotacao\x18\x0e \x01(\x01R\x10tipoMoedaCotacao\x12 \n" +
-	"\vtabelaPreco\x18\x0f \x01(\tR\vtabelaPreco\x12<\n" +
-	"\vimportadoEm\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\vimportadoEm\x12&\n" +
+	"\vtabelaPreco\x18\x0f \x01(\tR\vtabelaPreco\x12B\n" +
+	"\vimportadoEm\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\vimportadoEm\x12&\n" +
 	"\x06pessoa\x18\x11 \x01(\v2\x0e.pedido.PessoaR\x06pessoa\x12*\n" +
-	"\bvendedor\x18\x12 \x01(\v2\x0e.pedido.PessoaR\bvendedor\x12\x16\n" +
-	"\x06numero\x18\x13 \x01(\x05R\x06numero\x12F\n" +
-	"\x10dataHoraRegistro\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\x10dataHoraRegistro\x12J\n" +
-	"\x12dataHoraFechamento\x18\x15 \x01(\v2\x1a.google.protobuf.TimestampR\x12dataHoraFechamento\x12D\n" +
+	"\bvendedor\x18\x12 \x01(\v2\x0e.pedido.PessoaR\bvendedor\x12\x1c\n" +
+	"\x06numero\x18\x13 \x01(\x05B\x04\xe2A\x01\x03R\x06numero\x12F\n" +
+	"\x10dataHoraRegistro\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\x10dataHoraRegistro\x12P\n" +
+	"\x12dataHoraFechamento\x18\x15 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x12dataHoraFechamento\x12D\n" +
 	"\x0fprevisaoEntrega\x18\x16 \x01(\v2\x1a.google.protobuf.TimestampR\x0fprevisaoEntrega\x12:\n" +
 	"\x18previsaoEntregaDescricao\x18\x17 \x01(\tR\x18previsaoEntregaDescricao\x12B\n" +
 	"\x0edataHoraInicio\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampR\x0edataHoraInicio\x12D\n" +
-	"\x0fdataHoraEntrega\x18\x19 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\x12-\n" +
-	"\x0etempoDecorrido\x18\x1a \x01(\tB\x05\xca>\x020\x01R\x0etempoDecorrido\x12$\n" +
+	"\x0fdataHoraEntrega\x18\x19 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\x121\n" +
+	"\x0etempoDecorrido\x18\x1a \x01(\tB\t\xca>\x020\x01\xe2A\x01\x03R\x0etempoDecorrido\x12$\n" +
 	"\rdescontoValor\x18\x1b \x01(\x01R\rdescontoValor\x12&\n" +
 	"\x0eacrescimoValor\x18\x1c \x01(\x01R\x0eacrescimoValor\x12+\n" +
 	"\rvalorSubtotal\x18\x1d \x01(\x01B\x05\xca>\x020\x01R\rvalorSubtotal\x123\n" +
@@ -13523,39 +13523,39 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"valorTotal\x12-\n" +
 	"\x0evalorTotalPago\x18! \x01(\x01B\x05\xca>\x020\x01R\x0evalorTotalPago\x12+\n" +
 	"\rcashbackValor\x18\" \x01(\x01B\x05\xca>\x020\x01R\rcashbackValor\x12+\n" +
-	"\rcomissaoValor\x18# \x01(\x01B\x05\xca>\x020\x01R\rcomissaoValor\x12\x1c\n" +
-	"\tnfeNumero\x18$ \x01(\x05R\tnfeNumero\x12 \n" +
-	"\vnfeUrlDanfe\x18% \x01(\tR\vnfeUrlDanfe\x12\x1a\n" +
-	"\bnfeChave\x18& \x01(\tR\bnfeChave\x12\x1a\n" +
-	"\bnfeSerie\x18' \x01(\x05R\bnfeSerie\x12\x14\n" +
-	"\x05nfeId\x18( \x01(\tR\x05nfeId\x12 \n" +
-	"\vnfeSituacao\x18) \x01(\tR\vnfeSituacao\x12*\n" +
-	"\x11nfe_forma_emissao\x18* \x01(\tR\x0fnfeFormaEmissao\x12J\n" +
-	"\x12nfeDataHoraEmissao\x18n \x01(\v2\x1a.google.protobuf.TimestampR\x12nfeDataHoraEmissao\x12\x1e\n" +
+	"\rcomissaoValor\x18# \x01(\x01B\x05\xca>\x020\x01R\rcomissaoValor\x12\"\n" +
+	"\tnfeNumero\x18$ \x01(\x05B\x04\xe2A\x01\x03R\tnfeNumero\x12&\n" +
+	"\vnfeUrlDanfe\x18% \x01(\tB\x04\xe2A\x01\x03R\vnfeUrlDanfe\x12 \n" +
+	"\bnfeChave\x18& \x01(\tB\x04\xe2A\x01\x03R\bnfeChave\x12 \n" +
+	"\bnfeSerie\x18' \x01(\x05B\x04\xe2A\x01\x03R\bnfeSerie\x12\x1a\n" +
+	"\x05nfeId\x18( \x01(\tB\x04\xe2A\x01\x03R\x05nfeId\x12&\n" +
+	"\vnfeSituacao\x18) \x01(\tB\x04\xe2A\x01\x03R\vnfeSituacao\x120\n" +
+	"\x11nfe_forma_emissao\x18* \x01(\tB\x04\xe2A\x01\x03R\x0fnfeFormaEmissao\x12P\n" +
+	"\x12nfeDataHoraEmissao\x18n \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x12nfeDataHoraEmissao\x12$\n" +
 	"\n" +
-	"nfceNumero\x18+ \x01(\x05R\n" +
-	"nfceNumero\x12\"\n" +
-	"\fnfceUrlDanfe\x18, \x01(\tR\fnfceUrlDanfe\x12\x1e\n" +
+	"nfceNumero\x18+ \x01(\x05B\x04\xe2A\x01\x03R\n" +
+	"nfceNumero\x12(\n" +
+	"\fnfceUrlDanfe\x18, \x01(\tB\x04\xe2A\x01\x03R\fnfceUrlDanfe\x12$\n" +
 	"\n" +
-	"nfceUrlXml\x18- \x01(\tR\n" +
-	"nfceUrlXml\x12\x1c\n" +
-	"\tnfceSerie\x18. \x01(\x05R\tnfceSerie\x12\x1c\n" +
-	"\tnfceChave\x18/ \x01(\tR\tnfceChave\x12\x16\n" +
-	"\x06nfceId\x180 \x01(\tR\x06nfceId\x12\"\n" +
-	"\fnfceSituacao\x181 \x01(\tR\fnfceSituacao\x12,\n" +
-	"\x12nfce_forma_emissao\x182 \x01(\tR\x10nfceFormaEmissao\x12L\n" +
-	"\x13nfceDataHoraEmissao\x18o \x01(\v2\x1a.google.protobuf.TimestampR\x13nfceDataHoraEmissao\x12\"\n" +
-	"\fnfseUrlDanfe\x183 \x01(\tR\fnfseUrlDanfe\x12\x1c\n" +
-	"\tnfseChave\x184 \x01(\tR\tnfseChave\x12\x1e\n" +
+	"nfceUrlXml\x18- \x01(\tB\x04\xe2A\x01\x03R\n" +
+	"nfceUrlXml\x12\"\n" +
+	"\tnfceSerie\x18. \x01(\x05B\x04\xe2A\x01\x03R\tnfceSerie\x12\"\n" +
+	"\tnfceChave\x18/ \x01(\tB\x04\xe2A\x01\x03R\tnfceChave\x12\x1c\n" +
+	"\x06nfceId\x180 \x01(\tB\x04\xe2A\x01\x03R\x06nfceId\x12(\n" +
+	"\fnfceSituacao\x181 \x01(\tB\x04\xe2A\x01\x03R\fnfceSituacao\x122\n" +
+	"\x12nfce_forma_emissao\x182 \x01(\tB\x04\xe2A\x01\x03R\x10nfceFormaEmissao\x12R\n" +
+	"\x13nfceDataHoraEmissao\x18o \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x13nfceDataHoraEmissao\x12(\n" +
+	"\fnfseUrlDanfe\x183 \x01(\tB\x04\xe2A\x01\x03R\fnfseUrlDanfe\x12\"\n" +
+	"\tnfseChave\x184 \x01(\tB\x04\xe2A\x01\x03R\tnfseChave\x12$\n" +
 	"\n" +
-	"nfseNumero\x185 \x01(\tR\n" +
-	"nfseNumero\x12\"\n" +
-	"\fnfseSituacao\x186 \x01(\tR\fnfseSituacao\x12\x1a\n" +
-	"\x03obs\x187 \x01(\tB\b\xfaB\x05r\x03\x18\xb8\x17R\x03obs\x12.\n" +
-	"\x12cancelamentoMotivo\x188 \x01(\tR\x12cancelamentoMotivo\x124\n" +
-	"\x15cancelamentoUsuarioId\x189 \x01(\tR\x15cancelamentoUsuarioId\x128\n" +
-	"\x17cancelamentoUsuarioNome\x18: \x01(\tR\x17cancelamentoUsuarioNome\x12N\n" +
-	"\x14cancelamentoDataHora\x18; \x01(\v2\x1a.google.protobuf.TimestampR\x14cancelamentoDataHora\x12+\n" +
+	"nfseNumero\x185 \x01(\tB\x04\xe2A\x01\x03R\n" +
+	"nfseNumero\x12(\n" +
+	"\fnfseSituacao\x186 \x01(\tB\x04\xe2A\x01\x03R\fnfseSituacao\x12\x1a\n" +
+	"\x03obs\x187 \x01(\tB\b\xfaB\x05r\x03\x18\xb8\x17R\x03obs\x124\n" +
+	"\x12cancelamentoMotivo\x188 \x01(\tB\x04\xe2A\x01\x03R\x12cancelamentoMotivo\x12:\n" +
+	"\x15cancelamentoUsuarioId\x189 \x01(\tB\x04\xe2A\x01\x03R\x15cancelamentoUsuarioId\x12>\n" +
+	"\x17cancelamentoUsuarioNome\x18: \x01(\tB\x04\xe2A\x01\x03R\x17cancelamentoUsuarioNome\x12T\n" +
+	"\x14cancelamentoDataHora\x18; \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x14cancelamentoDataHora\x12+\n" +
 	"\bprodutos\x18< \x03(\v2\x0f.pedido.ProdutoR\bprodutos\x12+\n" +
 	"\bservicos\x18= \x03(\v2\x0f.pedido.ServicoR\bservicos\x121\n" +
 	"\n" +
@@ -13585,20 +13585,20 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\bdelivery\x18T \x01(\v2\x14.pedido.DeliveryInfoR\bdelivery\x12^\n" +
 	"\x1acheckout_payment_selection\x18U \x01(\v2 .pedido.CheckoutPaymentSelectionR\x18checkoutPaymentSelection\x12\x1d\n" +
 	"\x03dfe\x18^ \x01(\v2\v.pedido.DfeR\x03dfe\x12K\n" +
-	"\x13consumption_control\x18_ \x01(\v2\x1a.pedido.ConsumptionControlR\x12consumptionControl\x12+\n" +
-	"\x06events\x18` \x03(\v2\x13.pedido.PedidoEventR\x06events\x12\"\n" +
-	"\fdiasGarantia\x18a \x01(\x01R\fdiasGarantia\x12D\n" +
-	"\x0fdataFimGarantia\x18b \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataFimGarantia\x12,\n" +
-	"\bwarranty\x18c \x01(\v2\x10.pedido.WarrantyR\bwarranty\x122\n" +
+	"\x13consumption_control\x18_ \x01(\v2\x1a.pedido.ConsumptionControlR\x12consumptionControl\x121\n" +
+	"\x06events\x18` \x03(\v2\x13.pedido.PedidoEventB\x04\xe2A\x01\x03R\x06events\x12\"\n" +
+	"\fdiasGarantia\x18a \x01(\x01R\fdiasGarantia\x12J\n" +
+	"\x0fdataFimGarantia\x18b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x0fdataFimGarantia\x122\n" +
+	"\bwarranty\x18c \x01(\v2\x10.pedido.WarrantyB\x04\xe2A\x01\x03R\bwarranty\x122\n" +
 	"\frecorrencias\x18d \x03(\v2\x0e.pedido.PedidoR\frecorrencias\x12!\n" +
 	"\fdevolucao_id\x18e \x01(\tR\vdevolucaoId\x12)\n" +
 	"\x10devolucao_numero\x18f \x01(\x05R\x0fdevolucaoNumero\x121\n" +
 	"\bwebhooks\x18g \x03(\v2\x15.pedido.PedidoWebhookR\bwebhooks\x12-\n" +
 	"\x12external_reference\x18h \x01(\tR\x11externalReference\x12C\n" +
 	"\x0eacompanhamento\x18l \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\x12@\n" +
-	"\rcupomAplicado\x18m \x01(\v2\x1a.pedido.CupomAplicadoModelR\rcupomAplicado\x12\x15\n" +
-	"\x06org_id\x18p \x01(\tR\x05orgId\x12\x19\n" +
-	"\borg_nome\x18q \x01(\tR\aorgNome\x12\x16\n" +
+	"\rcupomAplicado\x18m \x01(\v2\x1a.pedido.CupomAplicadoModelR\rcupomAplicado\x12\x1b\n" +
+	"\x06org_id\x18p \x01(\tB\x04\xe2A\x01\x03R\x05orgId\x12\x1f\n" +
+	"\borg_nome\x18q \x01(\tB\x04\xe2A\x01\x03R\aorgNome\x12\x16\n" +
 	"\x06divida\x18r \x01(\x01R\x06divida\x126\n" +
 	"\bvalidade\x18s \x01(\v2\x1a.google.protobuf.TimestampR\bvalidade\x12,\n" +
 	"\x11validadeDescricao\x18t \x01(\tR\x11validadeDescricao\x12C\n" +

@@ -46,14 +46,6 @@ cd python && python exemplos/cliente.py
 - **Postman ou Apidog, por REST**: importe a
   [coleção com todas as rotas](https://docs.sigeflex.com/openapi/api.postman_collection.json)
   e preencha `usuario` e `senha` nas variáveis dela; o login é automático.
-- **Postman, por gRPC**: importe `protos/api.proto`, com a pasta `protos` nos caminhos de
-  importação, e mande os metadados `token` e `org`. No Apidog, importe o `.proto` do
-  serviço, com a mesma pasta nas dependências.
-- **grpcurl e grpcui**: `api.protoset` descreve os mesmos serviços:
-
-  ```bash
-  grpcui -protoset api.protoset -rpc-header "token: $TOKEN" -rpc-header "org: $ORG" app.suaempresa.com.br:443
-  ```
 
 Guia completo, com a lista de áreas e a referência de cada rota:
 https://docs.sigeflex.com/manual-usuario/integracoes/api

@@ -1,6 +1,7 @@
 import datetime
 
 from google.api import annotations_pb2 as _annotations_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from linksoft_sdk.pb.plugins.validate import validate_pb2 as _validate_pb2
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
@@ -173,7 +174,7 @@ class ListNfeResponse(_message.Message):
     def __init__(self, nfeList: _Optional[_Iterable[_Union[Nfe, _Mapping]]] = ..., next_page_token: _Optional[str] = ...) -> None: ...
 
 class Nfe(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "account_id", "situacao", "emitente", "pessoa", "tipo", "tipo_ambiente", "tipo_operacao", "finalidade_emissao", "natureza_operacao", "entrada_cadastra_produto_nao_vinculado", "entrada_aplica_calculo_venda_custo", "entrada_motivo_rejeicao", "entrada_data_hora_aceite_rejeicao", "entrada_alteracao_preco", "numero", "serie", "chave", "nfe_origem", "nfe_origens", "id_devolucao", "url_danfe", "protocolo", "data_hora_autorizacao", "data_hora_emissao", "data_hora_saida", "obs", "qrcode", "importada", "protocolo_cancelamento", "motivo_cancelamento", "data_hora_cancelamento", "cancelamento_usuario_id", "cancelamento_usuario_nome", "historico", "forma_emissao", "forma_emissao_descricao", "sequencia_evento", "contingencia_data_hora", "contingencia_motivo", "contingencia_nfe_numero_vinculada", "contingencia_nfe_serie_vinculada", "contingencia_processada_em", "xml_autorizacao", "xml_cancelamento", "xml_cancelamento_evento", "rejeicoes", "total_icms_credito", "icms_credito_aliquota", "transp_mod_frete", "transporte", "transp_id", "transp_cpf_cnpj", "transp_nome", "transp_ie", "transp_endereco", "transp_municipio", "transp_uf", "transp_veic_placa", "transp_veic_uf", "transp_veic_rntc", "transp_quantidade", "transp_especie", "transp_marca", "transp_numeracao_volumes", "transp_peso_liquido", "transp_peso_bruto", "valor_seguro", "total_seguro", "valor_frete", "total_frete", "valor_outras_despesas", "total_outras_despesas", "desconto_valor", "desconto_percentual", "subtotal_produtos", "total_desconto_produtos", "subtotal", "total", "total_pago", "total_tributos", "ibs_cbs_habilitado", "impostos", "valor_icms", "valor_icms_bc", "valor_icms_desoneracao", "valor_icms_st", "valor_icms_st_bc", "valor_ipi", "valor_pis", "valor_cofins", "valor_icms_intere_fcp", "valor_icms_intere_destino", "valor_icms_intere_origem", "totais", "produtos", "pagamentos", "duplicatas", "volumes", "referencias", "eventos", "entrada_data_hora_consulta_sefaz", "tipo_nota_debito", "tipo_nota_credito", "pag_antecipado_refs")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "account_id", "situacao", "emitente", "pessoa", "tipo", "tipo_ambiente", "tipo_operacao", "finalidade_emissao", "natureza_operacao", "entrada_cadastra_produto_nao_vinculado", "entrada_aplica_calculo_venda_custo", "entrada_motivo_rejeicao", "entrada_data_hora_aceite_rejeicao", "entrada_alteracao_preco", "numero", "serie", "chave", "nfe_origem", "nfe_origens", "id_devolucao", "url_danfe", "protocolo", "data_hora_autorizacao", "data_hora_emissao", "data_hora_saida", "obs", "qrcode", "importada", "protocolo_cancelamento", "motivo_cancelamento", "data_hora_cancelamento", "cancelamento_usuario_id", "cancelamento_usuario_nome", "historico", "forma_emissao", "forma_emissao_descricao", "sequencia_evento", "contingencia_data_hora", "contingencia_motivo", "contingencia_nfe_numero_vinculada", "contingencia_nfe_serie_vinculada", "contingencia_processada_em", "xml_autorizacao", "xml_cancelamento", "xml_cancelamento_evento", "rejeicoes", "total_icms_credito", "icms_credito_aliquota", "transp_mod_frete", "transporte", "transp_id", "transp_cpf_cnpj", "transp_nome", "transp_ie", "transp_endereco", "transp_municipio", "transp_uf", "transp_veic_placa", "transp_veic_uf", "transp_veic_rntc", "transp_quantidade", "transp_especie", "transp_marca", "transp_numeracao_volumes", "transp_peso_liquido", "transp_peso_bruto", "valor_seguro", "total_seguro", "valor_frete", "total_frete", "valor_outras_despesas", "total_outras_despesas", "desconto_valor", "desconto_percentual", "subtotal_produtos", "total_desconto_produtos", "subtotal", "total", "total_pago", "total_tributos", "ibs_cbs_habilitado", "impostos", "valor_icms", "valor_icms_bc", "valor_icms_desoneracao", "valor_icms_st", "valor_icms_st_bc", "valor_ipi", "valor_pis", "valor_cofins", "valor_icms_intere_fcp", "valor_icms_intere_destino", "valor_icms_intere_origem", "totais", "produtos", "pagamentos", "duplicatas", "volumes", "referencias", "eventos", "entrada_data_hora_consulta_sefaz", "tipo_nota_debito", "tipo_nota_credito", "pag_antecipado_refs", "idempotency_key")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -284,6 +285,7 @@ class Nfe(_message.Message):
     TIPO_NOTA_DEBITO_FIELD_NUMBER: _ClassVar[int]
     TIPO_NOTA_CREDITO_FIELD_NUMBER: _ClassVar[int]
     PAG_ANTECIPADO_REFS_FIELD_NUMBER: _ClassVar[int]
+    IDEMPOTENCY_KEY_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -394,7 +396,8 @@ class Nfe(_message.Message):
     tipo_nota_debito: str
     tipo_nota_credito: str
     pag_antecipado_refs: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., account_id: _Optional[str] = ..., situacao: _Optional[str] = ..., emitente: _Optional[_Union[_emitente_pb2.Emitente, _Mapping]] = ..., pessoa: _Optional[_Union[Pessoa, _Mapping]] = ..., tipo: _Optional[str] = ..., tipo_ambiente: _Optional[str] = ..., tipo_operacao: _Optional[str] = ..., finalidade_emissao: _Optional[str] = ..., natureza_operacao: _Optional[str] = ..., entrada_cadastra_produto_nao_vinculado: _Optional[str] = ..., entrada_aplica_calculo_venda_custo: _Optional[bool] = ..., entrada_motivo_rejeicao: _Optional[str] = ..., entrada_data_hora_aceite_rejeicao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_alteracao_preco: _Optional[bool] = ..., numero: _Optional[int] = ..., serie: _Optional[int] = ..., chave: _Optional[str] = ..., nfe_origem: _Optional[str] = ..., nfe_origens: _Optional[_Iterable[str]] = ..., id_devolucao: _Optional[str] = ..., url_danfe: _Optional[str] = ..., protocolo: _Optional[str] = ..., data_hora_autorizacao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_hora_emissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_hora_saida: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., obs: _Optional[str] = ..., qrcode: _Optional[str] = ..., importada: _Optional[bool] = ..., protocolo_cancelamento: _Optional[str] = ..., motivo_cancelamento: _Optional[str] = ..., data_hora_cancelamento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., cancelamento_usuario_id: _Optional[str] = ..., cancelamento_usuario_nome: _Optional[str] = ..., historico: _Optional[str] = ..., forma_emissao: _Optional[str] = ..., forma_emissao_descricao: _Optional[str] = ..., sequencia_evento: _Optional[int] = ..., contingencia_data_hora: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contingencia_motivo: _Optional[str] = ..., contingencia_nfe_numero_vinculada: _Optional[int] = ..., contingencia_nfe_serie_vinculada: _Optional[int] = ..., contingencia_processada_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., xml_autorizacao: _Optional[str] = ..., xml_cancelamento: _Optional[str] = ..., xml_cancelamento_evento: _Optional[str] = ..., rejeicoes: _Optional[_Iterable[_Union[Rejeicao, _Mapping]]] = ..., total_icms_credito: _Optional[float] = ..., icms_credito_aliquota: _Optional[float] = ..., transp_mod_frete: _Optional[str] = ..., transporte: _Optional[_Union[TranspDados, _Mapping]] = ..., transp_id: _Optional[str] = ..., transp_cpf_cnpj: _Optional[str] = ..., transp_nome: _Optional[str] = ..., transp_ie: _Optional[str] = ..., transp_endereco: _Optional[str] = ..., transp_municipio: _Optional[str] = ..., transp_uf: _Optional[str] = ..., transp_veic_placa: _Optional[str] = ..., transp_veic_uf: _Optional[str] = ..., transp_veic_rntc: _Optional[str] = ..., transp_quantidade: _Optional[int] = ..., transp_especie: _Optional[str] = ..., transp_marca: _Optional[str] = ..., transp_numeracao_volumes: _Optional[str] = ..., transp_peso_liquido: _Optional[float] = ..., transp_peso_bruto: _Optional[float] = ..., valor_seguro: _Optional[float] = ..., total_seguro: _Optional[float] = ..., valor_frete: _Optional[float] = ..., total_frete: _Optional[float] = ..., valor_outras_despesas: _Optional[float] = ..., total_outras_despesas: _Optional[float] = ..., desconto_valor: _Optional[float] = ..., desconto_percentual: _Optional[float] = ..., subtotal_produtos: _Optional[float] = ..., total_desconto_produtos: _Optional[float] = ..., subtotal: _Optional[float] = ..., total: _Optional[float] = ..., total_pago: _Optional[float] = ..., total_tributos: _Optional[float] = ..., ibs_cbs_habilitado: _Optional[bool] = ..., impostos: _Optional[_Union[Impostos, _Mapping]] = ..., valor_icms: _Optional[float] = ..., valor_icms_bc: _Optional[float] = ..., valor_icms_desoneracao: _Optional[float] = ..., valor_icms_st: _Optional[float] = ..., valor_icms_st_bc: _Optional[float] = ..., valor_ipi: _Optional[float] = ..., valor_pis: _Optional[float] = ..., valor_cofins: _Optional[float] = ..., valor_icms_intere_fcp: _Optional[float] = ..., valor_icms_intere_destino: _Optional[float] = ..., valor_icms_intere_origem: _Optional[float] = ..., totais: _Optional[_Union[_impostos_pb2.Totais, _Mapping]] = ..., produtos: _Optional[_Iterable[_Union[ItemModel, _Mapping]]] = ..., pagamentos: _Optional[_Iterable[_Union[PagamentoModel, _Mapping]]] = ..., duplicatas: _Optional[_Iterable[_Union[DuplicataModel, _Mapping]]] = ..., volumes: _Optional[_Iterable[_Union[VolumesModel, _Mapping]]] = ..., referencias: _Optional[_Iterable[_Union[ReferenciaModel, _Mapping]]] = ..., eventos: _Optional[_Iterable[_Union[Evento, _Mapping]]] = ..., entrada_data_hora_consulta_sefaz: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., tipo_nota_debito: _Optional[str] = ..., tipo_nota_credito: _Optional[str] = ..., pag_antecipado_refs: _Optional[_Iterable[str]] = ...) -> None: ...
+    idempotency_key: str
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., account_id: _Optional[str] = ..., situacao: _Optional[str] = ..., emitente: _Optional[_Union[_emitente_pb2.Emitente, _Mapping]] = ..., pessoa: _Optional[_Union[Pessoa, _Mapping]] = ..., tipo: _Optional[str] = ..., tipo_ambiente: _Optional[str] = ..., tipo_operacao: _Optional[str] = ..., finalidade_emissao: _Optional[str] = ..., natureza_operacao: _Optional[str] = ..., entrada_cadastra_produto_nao_vinculado: _Optional[str] = ..., entrada_aplica_calculo_venda_custo: _Optional[bool] = ..., entrada_motivo_rejeicao: _Optional[str] = ..., entrada_data_hora_aceite_rejeicao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_alteracao_preco: _Optional[bool] = ..., numero: _Optional[int] = ..., serie: _Optional[int] = ..., chave: _Optional[str] = ..., nfe_origem: _Optional[str] = ..., nfe_origens: _Optional[_Iterable[str]] = ..., id_devolucao: _Optional[str] = ..., url_danfe: _Optional[str] = ..., protocolo: _Optional[str] = ..., data_hora_autorizacao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_hora_emissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_hora_saida: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., obs: _Optional[str] = ..., qrcode: _Optional[str] = ..., importada: _Optional[bool] = ..., protocolo_cancelamento: _Optional[str] = ..., motivo_cancelamento: _Optional[str] = ..., data_hora_cancelamento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., cancelamento_usuario_id: _Optional[str] = ..., cancelamento_usuario_nome: _Optional[str] = ..., historico: _Optional[str] = ..., forma_emissao: _Optional[str] = ..., forma_emissao_descricao: _Optional[str] = ..., sequencia_evento: _Optional[int] = ..., contingencia_data_hora: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contingencia_motivo: _Optional[str] = ..., contingencia_nfe_numero_vinculada: _Optional[int] = ..., contingencia_nfe_serie_vinculada: _Optional[int] = ..., contingencia_processada_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., xml_autorizacao: _Optional[str] = ..., xml_cancelamento: _Optional[str] = ..., xml_cancelamento_evento: _Optional[str] = ..., rejeicoes: _Optional[_Iterable[_Union[Rejeicao, _Mapping]]] = ..., total_icms_credito: _Optional[float] = ..., icms_credito_aliquota: _Optional[float] = ..., transp_mod_frete: _Optional[str] = ..., transporte: _Optional[_Union[TranspDados, _Mapping]] = ..., transp_id: _Optional[str] = ..., transp_cpf_cnpj: _Optional[str] = ..., transp_nome: _Optional[str] = ..., transp_ie: _Optional[str] = ..., transp_endereco: _Optional[str] = ..., transp_municipio: _Optional[str] = ..., transp_uf: _Optional[str] = ..., transp_veic_placa: _Optional[str] = ..., transp_veic_uf: _Optional[str] = ..., transp_veic_rntc: _Optional[str] = ..., transp_quantidade: _Optional[int] = ..., transp_especie: _Optional[str] = ..., transp_marca: _Optional[str] = ..., transp_numeracao_volumes: _Optional[str] = ..., transp_peso_liquido: _Optional[float] = ..., transp_peso_bruto: _Optional[float] = ..., valor_seguro: _Optional[float] = ..., total_seguro: _Optional[float] = ..., valor_frete: _Optional[float] = ..., total_frete: _Optional[float] = ..., valor_outras_despesas: _Optional[float] = ..., total_outras_despesas: _Optional[float] = ..., desconto_valor: _Optional[float] = ..., desconto_percentual: _Optional[float] = ..., subtotal_produtos: _Optional[float] = ..., total_desconto_produtos: _Optional[float] = ..., subtotal: _Optional[float] = ..., total: _Optional[float] = ..., total_pago: _Optional[float] = ..., total_tributos: _Optional[float] = ..., ibs_cbs_habilitado: _Optional[bool] = ..., impostos: _Optional[_Union[Impostos, _Mapping]] = ..., valor_icms: _Optional[float] = ..., valor_icms_bc: _Optional[float] = ..., valor_icms_desoneracao: _Optional[float] = ..., valor_icms_st: _Optional[float] = ..., valor_icms_st_bc: _Optional[float] = ..., valor_ipi: _Optional[float] = ..., valor_pis: _Optional[float] = ..., valor_cofins: _Optional[float] = ..., valor_icms_intere_fcp: _Optional[float] = ..., valor_icms_intere_destino: _Optional[float] = ..., valor_icms_intere_origem: _Optional[float] = ..., totais: _Optional[_Union[_impostos_pb2.Totais, _Mapping]] = ..., produtos: _Optional[_Iterable[_Union[ItemModel, _Mapping]]] = ..., pagamentos: _Optional[_Iterable[_Union[PagamentoModel, _Mapping]]] = ..., duplicatas: _Optional[_Iterable[_Union[DuplicataModel, _Mapping]]] = ..., volumes: _Optional[_Iterable[_Union[VolumesModel, _Mapping]]] = ..., referencias: _Optional[_Iterable[_Union[ReferenciaModel, _Mapping]]] = ..., eventos: _Optional[_Iterable[_Union[Evento, _Mapping]]] = ..., entrada_data_hora_consulta_sefaz: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., tipo_nota_debito: _Optional[str] = ..., tipo_nota_credito: _Optional[str] = ..., pag_antecipado_refs: _Optional[_Iterable[str]] = ..., idempotency_key: _Optional[str] = ...) -> None: ...
 
 class Pessoa(_message.Message):
     __slots__ = ("id", "nome", "nome2", "cpfCnpj", "ie", "contribuinte", "revenda", "isentoIe", "endCep", "endEndereco", "endNumero", "endBairro", "endCidade", "endCidadeCod", "endUf", "endComplemento", "telefone", "email", "enviarNfePorEmail")
@@ -986,16 +989,204 @@ class ItemDevolucao(_message.Message):
     def __init__(self, id: _Optional[str] = ..., codigo: _Optional[str] = ..., produtoNomeNfe: _Optional[str] = ..., valorUnitario: _Optional[float] = ..., quantidade: _Optional[float] = ..., quantidadeDevolver: _Optional[float] = ..., un: _Optional[str] = ...) -> None: ...
 
 class EmitirNfeRequest(_message.Message):
-    __slots__ = ("Nfes",)
-    NFES_FIELD_NUMBER: _ClassVar[int]
-    Nfes: _containers.RepeatedCompositeFieldContainer[Nfe]
-    def __init__(self, Nfes: _Optional[_Iterable[_Union[Nfe, _Mapping]]] = ...) -> None: ...
+    __slots__ = ("id", "nota", "idempotency_key")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NOTA_FIELD_NUMBER: _ClassVar[int]
+    IDEMPOTENCY_KEY_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    nota: NfeEmissao
+    idempotency_key: str
+    def __init__(self, id: _Optional[str] = ..., nota: _Optional[_Union[NfeEmissao, _Mapping]] = ..., idempotency_key: _Optional[str] = ...) -> None: ...
+
+class NfeEmissao(_message.Message):
+    __slots__ = ("tipo_operacao", "finalidade_emissao", "natureza_operacao", "tipo_ambiente", "serie", "data_hora_saida", "obs", "pessoa", "desconto_valor", "desconto_percentual", "valor_frete", "valor_seguro", "valor_outras_despesas", "transp_mod_frete", "transp_id", "transp_cpf_cnpj", "transp_nome", "transp_ie", "transp_endereco", "transp_municipio", "transp_uf", "transp_veic_placa", "transp_veic_uf", "transp_veic_rntc", "volumes", "produtos", "pagamentos", "duplicatas", "referencias", "tipo_nota_debito", "tipo_nota_credito", "pag_antecipado_refs")
+    TIPO_OPERACAO_FIELD_NUMBER: _ClassVar[int]
+    FINALIDADE_EMISSAO_FIELD_NUMBER: _ClassVar[int]
+    NATUREZA_OPERACAO_FIELD_NUMBER: _ClassVar[int]
+    TIPO_AMBIENTE_FIELD_NUMBER: _ClassVar[int]
+    SERIE_FIELD_NUMBER: _ClassVar[int]
+    DATA_HORA_SAIDA_FIELD_NUMBER: _ClassVar[int]
+    OBS_FIELD_NUMBER: _ClassVar[int]
+    PESSOA_FIELD_NUMBER: _ClassVar[int]
+    DESCONTO_VALOR_FIELD_NUMBER: _ClassVar[int]
+    DESCONTO_PERCENTUAL_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FRETE_FIELD_NUMBER: _ClassVar[int]
+    VALOR_SEGURO_FIELD_NUMBER: _ClassVar[int]
+    VALOR_OUTRAS_DESPESAS_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_MOD_FRETE_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_ID_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_CPF_CNPJ_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_NOME_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_IE_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_ENDERECO_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_MUNICIPIO_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_UF_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_VEIC_PLACA_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_VEIC_UF_FIELD_NUMBER: _ClassVar[int]
+    TRANSP_VEIC_RNTC_FIELD_NUMBER: _ClassVar[int]
+    VOLUMES_FIELD_NUMBER: _ClassVar[int]
+    PRODUTOS_FIELD_NUMBER: _ClassVar[int]
+    PAGAMENTOS_FIELD_NUMBER: _ClassVar[int]
+    DUPLICATAS_FIELD_NUMBER: _ClassVar[int]
+    REFERENCIAS_FIELD_NUMBER: _ClassVar[int]
+    TIPO_NOTA_DEBITO_FIELD_NUMBER: _ClassVar[int]
+    TIPO_NOTA_CREDITO_FIELD_NUMBER: _ClassVar[int]
+    PAG_ANTECIPADO_REFS_FIELD_NUMBER: _ClassVar[int]
+    tipo_operacao: str
+    finalidade_emissao: str
+    natureza_operacao: str
+    tipo_ambiente: str
+    serie: int
+    data_hora_saida: _timestamp_pb2.Timestamp
+    obs: str
+    pessoa: Pessoa
+    desconto_valor: float
+    desconto_percentual: float
+    valor_frete: float
+    valor_seguro: float
+    valor_outras_despesas: float
+    transp_mod_frete: str
+    transp_id: str
+    transp_cpf_cnpj: str
+    transp_nome: str
+    transp_ie: str
+    transp_endereco: str
+    transp_municipio: str
+    transp_uf: str
+    transp_veic_placa: str
+    transp_veic_uf: str
+    transp_veic_rntc: str
+    volumes: _containers.RepeatedCompositeFieldContainer[NfeEmissaoVolume]
+    produtos: _containers.RepeatedCompositeFieldContainer[NfeEmissaoItem]
+    pagamentos: _containers.RepeatedCompositeFieldContainer[NfeEmissaoPagamento]
+    duplicatas: _containers.RepeatedCompositeFieldContainer[NfeEmissaoDuplicata]
+    referencias: _containers.RepeatedCompositeFieldContainer[NfeEmissaoReferencia]
+    tipo_nota_debito: str
+    tipo_nota_credito: str
+    pag_antecipado_refs: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, tipo_operacao: _Optional[str] = ..., finalidade_emissao: _Optional[str] = ..., natureza_operacao: _Optional[str] = ..., tipo_ambiente: _Optional[str] = ..., serie: _Optional[int] = ..., data_hora_saida: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., obs: _Optional[str] = ..., pessoa: _Optional[_Union[Pessoa, _Mapping]] = ..., desconto_valor: _Optional[float] = ..., desconto_percentual: _Optional[float] = ..., valor_frete: _Optional[float] = ..., valor_seguro: _Optional[float] = ..., valor_outras_despesas: _Optional[float] = ..., transp_mod_frete: _Optional[str] = ..., transp_id: _Optional[str] = ..., transp_cpf_cnpj: _Optional[str] = ..., transp_nome: _Optional[str] = ..., transp_ie: _Optional[str] = ..., transp_endereco: _Optional[str] = ..., transp_municipio: _Optional[str] = ..., transp_uf: _Optional[str] = ..., transp_veic_placa: _Optional[str] = ..., transp_veic_uf: _Optional[str] = ..., transp_veic_rntc: _Optional[str] = ..., volumes: _Optional[_Iterable[_Union[NfeEmissaoVolume, _Mapping]]] = ..., produtos: _Optional[_Iterable[_Union[NfeEmissaoItem, _Mapping]]] = ..., pagamentos: _Optional[_Iterable[_Union[NfeEmissaoPagamento, _Mapping]]] = ..., duplicatas: _Optional[_Iterable[_Union[NfeEmissaoDuplicata, _Mapping]]] = ..., referencias: _Optional[_Iterable[_Union[NfeEmissaoReferencia, _Mapping]]] = ..., tipo_nota_debito: _Optional[str] = ..., tipo_nota_credito: _Optional[str] = ..., pag_antecipado_refs: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class NfeEmissaoItem(_message.Message):
+    __slots__ = ("produto_id", "codigo", "codigo_ean", "produto_nome", "produto_nome_nfe", "variation_product_id", "quantidade", "valor_unitario", "desconto_valor", "un", "ncm", "cfop", "obs", "posto", "skip_stock_decrease", "pedido_compra", "pedido_compra_item")
+    PRODUTO_ID_FIELD_NUMBER: _ClassVar[int]
+    CODIGO_FIELD_NUMBER: _ClassVar[int]
+    CODIGO_EAN_FIELD_NUMBER: _ClassVar[int]
+    PRODUTO_NOME_FIELD_NUMBER: _ClassVar[int]
+    PRODUTO_NOME_NFE_FIELD_NUMBER: _ClassVar[int]
+    VARIATION_PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
+    QUANTIDADE_FIELD_NUMBER: _ClassVar[int]
+    VALOR_UNITARIO_FIELD_NUMBER: _ClassVar[int]
+    DESCONTO_VALOR_FIELD_NUMBER: _ClassVar[int]
+    UN_FIELD_NUMBER: _ClassVar[int]
+    NCM_FIELD_NUMBER: _ClassVar[int]
+    CFOP_FIELD_NUMBER: _ClassVar[int]
+    OBS_FIELD_NUMBER: _ClassVar[int]
+    POSTO_FIELD_NUMBER: _ClassVar[int]
+    SKIP_STOCK_DECREASE_FIELD_NUMBER: _ClassVar[int]
+    PEDIDO_COMPRA_FIELD_NUMBER: _ClassVar[int]
+    PEDIDO_COMPRA_ITEM_FIELD_NUMBER: _ClassVar[int]
+    produto_id: str
+    codigo: str
+    codigo_ean: str
+    produto_nome: str
+    produto_nome_nfe: str
+    variation_product_id: str
+    quantidade: float
+    valor_unitario: float
+    desconto_valor: float
+    un: str
+    ncm: str
+    cfop: str
+    obs: str
+    posto: PostoDados
+    skip_stock_decrease: bool
+    pedido_compra: str
+    pedido_compra_item: int
+    def __init__(self, produto_id: _Optional[str] = ..., codigo: _Optional[str] = ..., codigo_ean: _Optional[str] = ..., produto_nome: _Optional[str] = ..., produto_nome_nfe: _Optional[str] = ..., variation_product_id: _Optional[str] = ..., quantidade: _Optional[float] = ..., valor_unitario: _Optional[float] = ..., desconto_valor: _Optional[float] = ..., un: _Optional[str] = ..., ncm: _Optional[str] = ..., cfop: _Optional[str] = ..., obs: _Optional[str] = ..., posto: _Optional[_Union[PostoDados, _Mapping]] = ..., skip_stock_decrease: _Optional[bool] = ..., pedido_compra: _Optional[str] = ..., pedido_compra_item: _Optional[int] = ...) -> None: ...
+
+class NfeEmissaoPagamento(_message.Message):
+    __slots__ = ("formaPagamentoId", "formaPagamentoCodigo", "formaPagamentoNome", "numeroParcelas", "valor", "valorTroco", "cartaoCodigoAutorizacao", "cartaoBandeira", "cartaoCnpjAdministradora", "comprovanteTef")
+    FORMAPAGAMENTOID_FIELD_NUMBER: _ClassVar[int]
+    FORMAPAGAMENTOCODIGO_FIELD_NUMBER: _ClassVar[int]
+    FORMAPAGAMENTONOME_FIELD_NUMBER: _ClassVar[int]
+    NUMEROPARCELAS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    VALORTROCO_FIELD_NUMBER: _ClassVar[int]
+    CARTAOCODIGOAUTORIZACAO_FIELD_NUMBER: _ClassVar[int]
+    CARTAOBANDEIRA_FIELD_NUMBER: _ClassVar[int]
+    CARTAOCNPJADMINISTRADORA_FIELD_NUMBER: _ClassVar[int]
+    COMPROVANTETEF_FIELD_NUMBER: _ClassVar[int]
+    formaPagamentoId: str
+    formaPagamentoCodigo: str
+    formaPagamentoNome: str
+    numeroParcelas: str
+    valor: float
+    valorTroco: float
+    cartaoCodigoAutorizacao: str
+    cartaoBandeira: str
+    cartaoCnpjAdministradora: str
+    comprovanteTef: str
+    def __init__(self, formaPagamentoId: _Optional[str] = ..., formaPagamentoCodigo: _Optional[str] = ..., formaPagamentoNome: _Optional[str] = ..., numeroParcelas: _Optional[str] = ..., valor: _Optional[float] = ..., valorTroco: _Optional[float] = ..., cartaoCodigoAutorizacao: _Optional[str] = ..., cartaoBandeira: _Optional[str] = ..., cartaoCnpjAdministradora: _Optional[str] = ..., comprovanteTef: _Optional[str] = ...) -> None: ...
+
+class NfeEmissaoDuplicata(_message.Message):
+    __slots__ = ("numero", "valor", "vencimento")
+    NUMERO_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    VENCIMENTO_FIELD_NUMBER: _ClassVar[int]
+    numero: str
+    valor: float
+    vencimento: _timestamp_pb2.Timestamp
+    def __init__(self, numero: _Optional[str] = ..., valor: _Optional[float] = ..., vencimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class NfeEmissaoVolume(_message.Message):
+    __slots__ = ("quantidade", "especie", "marca", "numeracaoVolumes", "pesoLiquido", "pesoBruto")
+    QUANTIDADE_FIELD_NUMBER: _ClassVar[int]
+    ESPECIE_FIELD_NUMBER: _ClassVar[int]
+    MARCA_FIELD_NUMBER: _ClassVar[int]
+    NUMERACAOVOLUMES_FIELD_NUMBER: _ClassVar[int]
+    PESOLIQUIDO_FIELD_NUMBER: _ClassVar[int]
+    PESOBRUTO_FIELD_NUMBER: _ClassVar[int]
+    quantidade: int
+    especie: str
+    marca: str
+    numeracaoVolumes: str
+    pesoLiquido: float
+    pesoBruto: float
+    def __init__(self, quantidade: _Optional[int] = ..., especie: _Optional[str] = ..., marca: _Optional[str] = ..., numeracaoVolumes: _Optional[str] = ..., pesoLiquido: _Optional[float] = ..., pesoBruto: _Optional[float] = ...) -> None: ...
+
+class NfeEmissaoReferencia(_message.Message):
+    __slots__ = ("chave",)
+    CHAVE_FIELD_NUMBER: _ClassVar[int]
+    chave: str
+    def __init__(self, chave: _Optional[str] = ...) -> None: ...
 
 class EmitirNfeResponse(_message.Message):
-    __slots__ = ("nfe",)
-    NFE_FIELD_NUMBER: _ClassVar[int]
-    nfe: Nfe
-    def __init__(self, nfe: _Optional[_Union[Nfe, _Mapping]] = ...) -> None: ...
+    __slots__ = ("id", "chave", "numero", "serie", "situacao", "forma_emissao", "protocolo", "motivo", "data_hora_emissao", "data_hora_autorizacao", "url_danfe", "url_xml")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    CHAVE_FIELD_NUMBER: _ClassVar[int]
+    NUMERO_FIELD_NUMBER: _ClassVar[int]
+    SERIE_FIELD_NUMBER: _ClassVar[int]
+    SITUACAO_FIELD_NUMBER: _ClassVar[int]
+    FORMA_EMISSAO_FIELD_NUMBER: _ClassVar[int]
+    PROTOCOLO_FIELD_NUMBER: _ClassVar[int]
+    MOTIVO_FIELD_NUMBER: _ClassVar[int]
+    DATA_HORA_EMISSAO_FIELD_NUMBER: _ClassVar[int]
+    DATA_HORA_AUTORIZACAO_FIELD_NUMBER: _ClassVar[int]
+    URL_DANFE_FIELD_NUMBER: _ClassVar[int]
+    URL_XML_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    chave: str
+    numero: int
+    serie: int
+    situacao: str
+    forma_emissao: str
+    protocolo: str
+    motivo: str
+    data_hora_emissao: _timestamp_pb2.Timestamp
+    data_hora_autorizacao: _timestamp_pb2.Timestamp
+    url_danfe: str
+    url_xml: str
+    def __init__(self, id: _Optional[str] = ..., chave: _Optional[str] = ..., numero: _Optional[int] = ..., serie: _Optional[int] = ..., situacao: _Optional[str] = ..., forma_emissao: _Optional[str] = ..., protocolo: _Optional[str] = ..., motivo: _Optional[str] = ..., data_hora_emissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_hora_autorizacao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., url_danfe: _Optional[str] = ..., url_xml: _Optional[str] = ...) -> None: ...
 
 class ConsultaProtocoloByChaveRequest(_message.Message):
     __slots__ = ("id", "tipo", "numero", "chave")

@@ -3073,18 +3073,18 @@ var File_apps_person_person_proto protoreflect.FileDescriptor
 
 const file_apps_person_person_proto_rawDesc = "" +
 	"\n" +
-	"\x18apps/person/person.proto\x12\x06person\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\x1a\x15exports/exports.proto\"7\n" +
+	"\x18apps/person/person.proto\x12\x06person\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\x1a\x15exports/exports.proto\"7\n" +
 	"\tPersonTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\x99\f\n" +
-	"\x06Person\x129\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xbd\f\n" +
+	"\x06Person\x12?\n" +
 	"\n" +
-	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
 	"\n" +
-	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x17\n" +
-	"\auser_id\x18\x03 \x01(\tR\x06userId\x12\x1b\n" +
-	"\tuser_name\x18\x04 \x01(\tR\buserName\x12\x0e\n" +
-	"\x02id\x18\x05 \x01(\tR\x02id\x12\x16\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1d\n" +
+	"\auser_id\x18\x03 \x01(\tB\x04\xe2A\x01\x03R\x06userId\x12!\n" +
+	"\tuser_name\x18\x04 \x01(\tB\x04\xe2A\x01\x03R\buserName\x12\x14\n" +
+	"\x02id\x18\x05 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12\x16\n" +
 	"\x06resale\x18\x06 \x01(\bR\x06resale\x12,\n" +
 	"\x06status\x18\a \x01(\x0e2\x14.person.PersonStatusR\x06status\x12%\n" +
 	"\x04tags\x18\b \x03(\v2\x11.person.PersonTagR\x04tags\x12\x1d\n" +
@@ -3121,8 +3121,8 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\acarrier\x18\x1f \x01(\v2\x0f.person.CarrierR\acarrier\x12\x1c\n" +
 	"\tspecialty\x18  \x01(\tR\tspecialty\x12/\n" +
 	"\x13registration_number\x18! \x01(\tR\x12registrationNumber\x12:\n" +
-	"\x19require_valid_carteirinha\x18\" \x01(\bR\x17requireValidCarteirinha\x12-\n" +
-	"\x06fields\x18$ \x01(\v2\x15.metadata.BasicFieldsR\x06fields\x12\x1b\n" +
+	"\x19require_valid_carteirinha\x18\" \x01(\bR\x17requireValidCarteirinha\x123\n" +
+	"\x06fields\x18$ \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x1b\n" +
 	"\tphoto_url\x18% \x01(\tR\bphotoUrl\x12$\n" +
 	"\x0eshow_in_portal\x18& \x01(\bR\fshowInPortal\x12B\n" +
 	"\x1dauthorization_payment_minutes\x18' \x01(\x05R\x1bauthorizationPaymentMinutes\x12F\n" +

@@ -5860,15 +5860,15 @@ var File_apps_estoque_produto_produto_proto protoreflect.FileDescriptor
 
 const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
-	"\"apps/estoque/produto/produto.proto\x12\aproduto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x18apps/report/report.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a-apps/estoque/movimento/movimentoestoque.proto\x1a\"apps/estoque/produto/vehicle.proto\x1a\x15exports/exports.proto\"8\n" +
+	"\"apps/estoque/produto/produto.proto\x12\aproduto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x18apps/report/report.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a-apps/estoque/movimento/movimentoestoque.proto\x1a\"apps/estoque/produto/vehicle.proto\x1a\x15exports/exports.proto\"8\n" +
 	"\n" +
 	"ProdutoTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xb95\n" +
-	"\aProduto\x12-\n" +
-	"\x06fields\x18\x01 \x01(\v2\x15.metadata.BasicFieldsR\x06fields\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\tR\x02id\x12<\n" +
-	"\vimportadoEm\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vimportadoEm\x12\x1a\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\x816\n" +
+	"\aProduto\x123\n" +
+	"\x06fields\x18\x01 \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x14\n" +
+	"\x02id\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12B\n" +
+	"\vimportadoEm\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\vimportadoEm\x12\x1a\n" +
 	"\bsituacao\x18\x04 \x01(\tR\bsituacao\x12\x1d\n" +
 	"\x04nome\x18\x05 \x01(\tB\t\xfaB\x06r\x04\x10\x03\x18<R\x04nome\x12:\n" +
 	"\rprimary_media\x18\x06 \x01(\v2\x15.produto.ProductMediaR\fprimaryMedia\x12+\n" +
@@ -5904,8 +5904,8 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\vpesoLiquido\x18\x1e \x01(\x01R\vpesoLiquido\x12$\n" +
 	"\rvalorUnitario\x18\x1f \x01(\x01R\rvalorUnitario\x12*\n" +
 	"\x10precoVendaAprazo\x18  \x01(\x01R\x10precoVendaAprazo\x12,\n" +
-	"\x11precoVendaAtacado\x18! \x01(\x01R\x11precoVendaAtacado\x12?\n" +
-	"\x0ehistoricoPreco\x18\" \x03(\v2\x17.produto.HistoricoPrecoR\x0ehistoricoPreco\x12(\n" +
+	"\x11precoVendaAtacado\x18! \x01(\x01R\x11precoVendaAtacado\x12E\n" +
+	"\x0ehistoricoPreco\x18\" \x03(\v2\x17.produto.HistoricoPrecoB\x04\xe2A\x01\x03R\x0ehistoricoPreco\x12(\n" +
 	"\x0fprecoComposicao\x18# \x01(\x01R\x0fprecoComposicao\x12*\n" +
 	"\x10quantidadeMinima\x18$ \x01(\x01R\x10quantidadeMinima\x12*\n" +
 	"\x10quantidadeMaxima\x18% \x01(\x01R\x10quantidadeMaxima\x124\n" +
@@ -5924,12 +5924,12 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"rendimento\x18V \x01(\x01R\n" +
 	"rendimento\x12(\n" +
-	"\x04tags\x18\xdd\x01 \x03(\v2\x13.produto.ProdutoTagR\x04tags\x12:\n" +
-	"\bestoques\x180 \x03(\v2\x1e.produto.Produto.EstoquesEntryR\bestoques\x124\n" +
-	"\festoquesList\x181 \x03(\v2\x10.produto.EstoqueR\festoquesList\x12@\n" +
-	"\flocalizacoes\x18\xde\x01 \x03(\v2\x1b.produto.ProdutoLocalizacaoR\flocalizacoes\x12.\n" +
-	"\x12consultaQuantidade\x182 \x01(\x01R\x12consultaQuantidade\x126\n" +
-	"\x16quantidadeEstoqueTotal\x183 \x01(\x01R\x16quantidadeEstoqueTotal\x12.\n" +
+	"\x04tags\x18\xdd\x01 \x03(\v2\x13.produto.ProdutoTagR\x04tags\x12@\n" +
+	"\bestoques\x180 \x03(\v2\x1e.produto.Produto.EstoquesEntryB\x04\xe2A\x01\x03R\bestoques\x12:\n" +
+	"\festoquesList\x181 \x03(\v2\x10.produto.EstoqueB\x04\xe2A\x01\x03R\festoquesList\x12@\n" +
+	"\flocalizacoes\x18\xde\x01 \x03(\v2\x1b.produto.ProdutoLocalizacaoR\flocalizacoes\x124\n" +
+	"\x12consultaQuantidade\x182 \x01(\x01B\x04\xe2A\x01\x03R\x12consultaQuantidade\x12<\n" +
+	"\x16quantidadeEstoqueTotal\x183 \x01(\x01B\x04\xe2A\x01\x03R\x16quantidadeEstoqueTotal\x12.\n" +
 	"\x12quantidadeImportar\x184 \x01(\x01R\x12quantidadeImportar\x12,\n" +
 	"\x11produtoEspecifico\x185 \x01(\tR\x11produtoEspecifico\x12,\n" +
 	"\x11precoUltimaCompra\x186 \x01(\x01R\x11precoUltimaCompra\x12 \n" +
@@ -5983,11 +5983,11 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\fdadosFiscais\x18\xdf\x01 \x01(\v2\x1d.produto.Produto.DadosFiscaisR\fdadosFiscais\x12,\n" +
 	"\x12has_serial_control\x18K \x01(\bR\x10hasSerialControl\x12.\n" +
 	"\avehicle\x18J \x01(\v2\x14.produto.VehicleDataR\avehicle\x12\x1a\n" +
-	"\bcomodato\x18U \x01(\bR\bcomodato\x129\n" +
-	"\tcreatedAt\x18\xc8\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
-	"\tupdatedAt\x18\xcd\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x17\n" +
-	"\x06userId\x18\xc9\x01 \x01(\tR\x06userId\x12\x1b\n" +
-	"\buserName\x18\xca\x01 \x01(\tR\buserName\x12\x13\n" +
+	"\bcomodato\x18U \x01(\bR\bcomodato\x12?\n" +
+	"\tcreatedAt\x18\xc8\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
+	"\tupdatedAt\x18\xcd\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1d\n" +
+	"\x06userId\x18\xc9\x01 \x01(\tB\x04\xe2A\x01\x03R\x06userId\x12!\n" +
+	"\buserName\x18\xca\x01 \x01(\tB\x04\xe2A\x01\x03R\buserName\x12\x13\n" +
 	"\x04type\x18\xcb\x01 \x01(\tR\x04type\x12!\n" +
 	"\vdescription\x18\xcc\x01 \x01(\tR\vdescription\x1aM\n" +
 	"\rEstoquesEntry\x12\x10\n" +
