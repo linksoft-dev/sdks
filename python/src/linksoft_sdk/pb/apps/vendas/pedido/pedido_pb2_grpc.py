@@ -235,6 +235,11 @@ class PedidoServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RecalcularComissaoRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RecalcularComissaoResponse.FromString,
                 _registered_method=True)
+        self.Renumber = channel.unary_unary(
+                '/pedido.PedidoService/Renumber',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberResponse.FromString,
+                _registered_method=True)
         self.EnviarProducao = channel.unary_unary(
                 '/pedido.PedidoService/EnviarProducao',
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.EnviarProducaoRequest.SerializeToString,
@@ -547,6 +552,15 @@ class PedidoServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Renumber(self, request, context):
+        """Renumera todos os documentos do tipo em ordem de criação, a partir do número
+        informado; o próximo documento criado continua depois do último. Recusado quando
+        algum documento do tipo tem pagamento, nota fiscal ou já foi fechado.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def EnviarProducao(self, request, context):
         """Agrupa os itens ainda não enviados por impressora de produção e devolve os
         jobs de impressão (cozinha/bar), marcando os itens como enviados.
@@ -808,6 +822,11 @@ def add_PedidoServiceServicer_to_server(servicer, server):
                     servicer.RecalcularComissao,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RecalcularComissaoRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RecalcularComissaoResponse.SerializeToString,
+            ),
+            'Renumber': grpc.unary_unary_rpc_method_handler(
+                    servicer.Renumber,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberResponse.SerializeToString,
             ),
             'EnviarProducao': grpc.unary_unary_rpc_method_handler(
                     servicer.EnviarProducao,
@@ -2024,6 +2043,33 @@ class PedidoService:
             '/pedido.PedidoService/RecalcularComissao',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.RecalcularComissaoRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.RecalcularComissaoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Renumber(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/Renumber',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberResponse.FromString,
             options,
             channel_credentials,
             insecure,

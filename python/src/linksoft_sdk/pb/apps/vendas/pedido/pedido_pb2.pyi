@@ -945,6 +945,20 @@ class RecalcularComissaoResponse(_message.Message):
     ignorados: int
     def __init__(self, pedidos: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., recalculados: _Optional[int] = ..., ignorados: _Optional[int] = ...) -> None: ...
 
+class RenumberRequest(_message.Message):
+    __slots__ = ("start_number",)
+    START_NUMBER_FIELD_NUMBER: _ClassVar[int]
+    start_number: int
+    def __init__(self, start_number: _Optional[int] = ...) -> None: ...
+
+class RenumberResponse(_message.Message):
+    __slots__ = ("renumbered", "last_number")
+    RENUMBERED_FIELD_NUMBER: _ClassVar[int]
+    LAST_NUMBER_FIELD_NUMBER: _ClassVar[int]
+    renumbered: int
+    last_number: int
+    def __init__(self, renumbered: _Optional[int] = ..., last_number: _Optional[int] = ...) -> None: ...
+
 class Billing(_message.Message):
     __slots__ = ("enabled", "billing_plan_id", "billing_plan_name", "next_billing_date", "billings_count", "last_billing_date", "send_whatsapp", "whatsapp_integration_id", "ignore_billing_plan")
     ENABLED_FIELD_NUMBER: _ClassVar[int]

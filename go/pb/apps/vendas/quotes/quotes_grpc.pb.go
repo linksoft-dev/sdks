@@ -32,6 +32,7 @@ const (
 	QuotesService_GenerateFromOrcamento_FullMethodName = "/quotes.QuotesService/GenerateFromOrcamento"
 	QuotesService_Cancel_FullMethodName                = "/quotes.QuotesService/Cancel"
 	QuotesService_Clone_FullMethodName                 = "/quotes.QuotesService/Clone"
+	QuotesService_Renumber_FullMethodName              = "/quotes.QuotesService/Renumber"
 	QuotesService_AddProduct_FullMethodName            = "/quotes.QuotesService/AddProduct"
 	QuotesService_UpdateProduct_FullMethodName         = "/quotes.QuotesService/UpdateProduct"
 	QuotesService_DeleteProduct_FullMethodName         = "/quotes.QuotesService/DeleteProduct"
@@ -62,6 +63,7 @@ type QuotesServiceClient interface {
 	GenerateFromOrcamento(ctx context.Context, in *pedido.GenerateFromOrcamentoRequest, opts ...grpc.CallOption) (*pedido.GenerateFromOrcamentoResponse, error)
 	Cancel(ctx context.Context, in *pedido.CancelPedidoRequest, opts ...grpc.CallOption) (*pedido.CancelPedidoResponse, error)
 	Clone(ctx context.Context, in *pedido.ClonePedidoRequest, opts ...grpc.CallOption) (*pedido.ClonePedidoResponse, error)
+	Renumber(ctx context.Context, in *pedido.RenumberRequest, opts ...grpc.CallOption) (*pedido.RenumberResponse, error)
 	AddProduct(ctx context.Context, in *pedido.AddProductRequest, opts ...grpc.CallOption) (*pedido.AddProductResponse, error)
 	UpdateProduct(ctx context.Context, in *pedido.UpdateProductRequest, opts ...grpc.CallOption) (*pedido.UpdateProductResponse, error)
 	DeleteProduct(ctx context.Context, in *pedido.DeleteProductRequest, opts ...grpc.CallOption) (*pedido.DeleteProductResponse, error)
@@ -204,6 +206,16 @@ func (c *quotesServiceClient) Clone(ctx context.Context, in *pedido.ClonePedidoR
 	return out, nil
 }
 
+func (c *quotesServiceClient) Renumber(ctx context.Context, in *pedido.RenumberRequest, opts ...grpc.CallOption) (*pedido.RenumberResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(pedido.RenumberResponse)
+	err := c.cc.Invoke(ctx, QuotesService_Renumber_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *quotesServiceClient) AddProduct(ctx context.Context, in *pedido.AddProductRequest, opts ...grpc.CallOption) (*pedido.AddProductResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(pedido.AddProductResponse)
@@ -340,6 +352,7 @@ type QuotesServiceServer interface {
 	GenerateFromOrcamento(context.Context, *pedido.GenerateFromOrcamentoRequest) (*pedido.GenerateFromOrcamentoResponse, error)
 	Cancel(context.Context, *pedido.CancelPedidoRequest) (*pedido.CancelPedidoResponse, error)
 	Clone(context.Context, *pedido.ClonePedidoRequest) (*pedido.ClonePedidoResponse, error)
+	Renumber(context.Context, *pedido.RenumberRequest) (*pedido.RenumberResponse, error)
 	AddProduct(context.Context, *pedido.AddProductRequest) (*pedido.AddProductResponse, error)
 	UpdateProduct(context.Context, *pedido.UpdateProductRequest) (*pedido.UpdateProductResponse, error)
 	DeleteProduct(context.Context, *pedido.DeleteProductRequest) (*pedido.DeleteProductResponse, error)
@@ -397,6 +410,9 @@ func (UnimplementedQuotesServiceServer) Cancel(context.Context, *pedido.CancelPe
 }
 func (UnimplementedQuotesServiceServer) Clone(context.Context, *pedido.ClonePedidoRequest) (*pedido.ClonePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Clone not implemented")
+}
+func (UnimplementedQuotesServiceServer) Renumber(context.Context, *pedido.RenumberRequest) (*pedido.RenumberResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Renumber not implemented")
 }
 func (UnimplementedQuotesServiceServer) AddProduct(context.Context, *pedido.AddProductRequest) (*pedido.AddProductResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddProduct not implemented")
@@ -671,6 +687,24 @@ func _QuotesService_Clone_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _QuotesService_Renumber_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(pedido.RenumberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuotesServiceServer).Renumber(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QuotesService_Renumber_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuotesServiceServer).Renumber(ctx, req.(*pedido.RenumberRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _QuotesService_AddProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(pedido.AddProductRequest)
 	if err := dec(in); err != nil {
@@ -941,6 +975,10 @@ var QuotesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Clone",
 			Handler:    _QuotesService_Clone_Handler,
+		},
+		{
+			MethodName: "Renumber",
+			Handler:    _QuotesService_Renumber_Handler,
 		},
 		{
 			MethodName: "AddProduct",

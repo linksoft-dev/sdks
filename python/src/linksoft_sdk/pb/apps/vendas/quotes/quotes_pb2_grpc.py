@@ -74,6 +74,11 @@ class QuotesServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoResponse.FromString,
                 _registered_method=True)
+        self.Renumber = channel.unary_unary(
+                '/quotes.QuotesService/Renumber',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberResponse.FromString,
+                _registered_method=True)
         self.AddProduct = channel.unary_unary(
                 '/quotes.QuotesService/AddProduct',
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.AddProductRequest.SerializeToString,
@@ -206,6 +211,12 @@ class QuotesServiceServicer:
         raise NotImplementedError('Method not implemented!')
 
     def Clone(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Renumber(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -345,6 +356,11 @@ def add_QuotesServiceServicer_to_server(servicer, server):
                     servicer.Clone,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoResponse.SerializeToString,
+            ),
+            'Renumber': grpc.unary_unary_rpc_method_handler(
+                    servicer.Renumber,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberResponse.SerializeToString,
             ),
             'AddProduct': grpc.unary_unary_rpc_method_handler(
                     servicer.AddProduct,
@@ -731,6 +747,33 @@ class QuotesService:
             '/quotes.QuotesService/Clone',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Renumber(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/quotes.QuotesService/Renumber',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.RenumberResponse.FromString,
             options,
             channel_credentials,
             insecure,

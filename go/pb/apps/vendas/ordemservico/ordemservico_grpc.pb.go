@@ -30,6 +30,7 @@ const (
 	OrdemServicoService_Print_FullMethodName                     = "/ordemservico.OrdemServicoService/Print"
 	OrdemServicoService_Cancel_FullMethodName                    = "/ordemservico.OrdemServicoService/Cancel"
 	OrdemServicoService_Clone_FullMethodName                     = "/ordemservico.OrdemServicoService/Clone"
+	OrdemServicoService_Renumber_FullMethodName                  = "/ordemservico.OrdemServicoService/Renumber"
 	OrdemServicoService_AddProduct_FullMethodName                = "/ordemservico.OrdemServicoService/AddProduct"
 	OrdemServicoService_UpdateProduct_FullMethodName             = "/ordemservico.OrdemServicoService/UpdateProduct"
 	OrdemServicoService_DeleteProduct_FullMethodName             = "/ordemservico.OrdemServicoService/DeleteProduct"
@@ -69,6 +70,7 @@ type OrdemServicoServiceClient interface {
 	Print(ctx context.Context, in *pedido.PrintPedidoRequest, opts ...grpc.CallOption) (*pedido.PrintPedidoResponse, error)
 	Cancel(ctx context.Context, in *pedido.CancelPedidoRequest, opts ...grpc.CallOption) (*pedido.CancelPedidoResponse, error)
 	Clone(ctx context.Context, in *pedido.ClonePedidoRequest, opts ...grpc.CallOption) (*pedido.ClonePedidoResponse, error)
+	Renumber(ctx context.Context, in *pedido.RenumberRequest, opts ...grpc.CallOption) (*pedido.RenumberResponse, error)
 	AddProduct(ctx context.Context, in *pedido.AddProductRequest, opts ...grpc.CallOption) (*pedido.AddProductResponse, error)
 	UpdateProduct(ctx context.Context, in *pedido.UpdateProductRequest, opts ...grpc.CallOption) (*pedido.UpdateProductResponse, error)
 	DeleteProduct(ctx context.Context, in *pedido.DeleteProductRequest, opts ...grpc.CallOption) (*pedido.DeleteProductResponse, error)
@@ -204,6 +206,16 @@ func (c *ordemServicoServiceClient) Clone(ctx context.Context, in *pedido.CloneP
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(pedido.ClonePedidoResponse)
 	err := c.cc.Invoke(ctx, OrdemServicoService_Clone_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ordemServicoServiceClient) Renumber(ctx context.Context, in *pedido.RenumberRequest, opts ...grpc.CallOption) (*pedido.RenumberResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(pedido.RenumberResponse)
+	err := c.cc.Invoke(ctx, OrdemServicoService_Renumber_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -454,6 +466,7 @@ type OrdemServicoServiceServer interface {
 	Print(context.Context, *pedido.PrintPedidoRequest) (*pedido.PrintPedidoResponse, error)
 	Cancel(context.Context, *pedido.CancelPedidoRequest) (*pedido.CancelPedidoResponse, error)
 	Clone(context.Context, *pedido.ClonePedidoRequest) (*pedido.ClonePedidoResponse, error)
+	Renumber(context.Context, *pedido.RenumberRequest) (*pedido.RenumberResponse, error)
 	AddProduct(context.Context, *pedido.AddProductRequest) (*pedido.AddProductResponse, error)
 	UpdateProduct(context.Context, *pedido.UpdateProductRequest) (*pedido.UpdateProductResponse, error)
 	DeleteProduct(context.Context, *pedido.DeleteProductRequest) (*pedido.DeleteProductResponse, error)
@@ -524,6 +537,9 @@ func (UnimplementedOrdemServicoServiceServer) Cancel(context.Context, *pedido.Ca
 }
 func (UnimplementedOrdemServicoServiceServer) Clone(context.Context, *pedido.ClonePedidoRequest) (*pedido.ClonePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Clone not implemented")
+}
+func (UnimplementedOrdemServicoServiceServer) Renumber(context.Context, *pedido.RenumberRequest) (*pedido.RenumberResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Renumber not implemented")
 }
 func (UnimplementedOrdemServicoServiceServer) AddProduct(context.Context, *pedido.AddProductRequest) (*pedido.AddProductResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddProduct not implemented")
@@ -791,6 +807,24 @@ func _OrdemServicoService_Clone_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrdemServicoServiceServer).Clone(ctx, req.(*pedido.ClonePedidoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrdemServicoService_Renumber_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(pedido.RenumberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrdemServicoServiceServer).Renumber(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrdemServicoService_Renumber_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrdemServicoServiceServer).Renumber(ctx, req.(*pedido.RenumberRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1255,6 +1289,10 @@ var OrdemServicoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Clone",
 			Handler:    _OrdemServicoService_Clone_Handler,
+		},
+		{
+			MethodName: "Renumber",
+			Handler:    _OrdemServicoService_Renumber_Handler,
 		},
 		{
 			MethodName: "AddProduct",

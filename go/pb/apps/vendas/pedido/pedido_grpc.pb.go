@@ -63,6 +63,7 @@ const (
 	PedidoService_Export_FullMethodName                     = "/pedido.PedidoService/Export"
 	PedidoService_SendReviewEmail_FullMethodName            = "/pedido.PedidoService/SendReviewEmail"
 	PedidoService_RecalcularComissao_FullMethodName         = "/pedido.PedidoService/RecalcularComissao"
+	PedidoService_Renumber_FullMethodName                   = "/pedido.PedidoService/Renumber"
 	PedidoService_EnviarProducao_FullMethodName             = "/pedido.PedidoService/EnviarProducao"
 	PedidoService_ConfirmarImpressaoProducao_FullMethodName = "/pedido.PedidoService/ConfirmarImpressaoProducao"
 	PedidoService_MarcarItemEntregue_FullMethodName         = "/pedido.PedidoService/MarcarItemEntregue"
@@ -137,6 +138,10 @@ type PedidoServiceClient interface {
 	SendReviewEmail(ctx context.Context, in *SendReviewEmailRequest, opts ...grpc.CallOption) (*SendReviewEmailResponse, error)
 	// Recalcula a comissao de todos os itens do pedido com base no percentual atual do vendedor/tecnico
 	RecalcularComissao(ctx context.Context, in *RecalcularComissaoRequest, opts ...grpc.CallOption) (*RecalcularComissaoResponse, error)
+	// Renumera todos os documentos do tipo em ordem de criação, a partir do número
+	// informado; o próximo documento criado continua depois do último. Recusado quando
+	// algum documento do tipo tem pagamento, nota fiscal ou já foi fechado.
+	Renumber(ctx context.Context, in *RenumberRequest, opts ...grpc.CallOption) (*RenumberResponse, error)
 	// Agrupa os itens ainda não enviados por impressora de produção e devolve os
 	// jobs de impressão (cozinha/bar), marcando os itens como enviados.
 	EnviarProducao(ctx context.Context, in *EnviarProducaoRequest, opts ...grpc.CallOption) (*EnviarProducaoResponse, error)
@@ -601,6 +606,16 @@ func (c *pedidoServiceClient) RecalcularComissao(ctx context.Context, in *Recalc
 	return out, nil
 }
 
+func (c *pedidoServiceClient) Renumber(ctx context.Context, in *RenumberRequest, opts ...grpc.CallOption) (*RenumberResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RenumberResponse)
+	err := c.cc.Invoke(ctx, PedidoService_Renumber_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *pedidoServiceClient) EnviarProducao(ctx context.Context, in *EnviarProducaoRequest, opts ...grpc.CallOption) (*EnviarProducaoResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EnviarProducaoResponse)
@@ -718,6 +733,10 @@ type PedidoServiceServer interface {
 	SendReviewEmail(context.Context, *SendReviewEmailRequest) (*SendReviewEmailResponse, error)
 	// Recalcula a comissao de todos os itens do pedido com base no percentual atual do vendedor/tecnico
 	RecalcularComissao(context.Context, *RecalcularComissaoRequest) (*RecalcularComissaoResponse, error)
+	// Renumera todos os documentos do tipo em ordem de criação, a partir do número
+	// informado; o próximo documento criado continua depois do último. Recusado quando
+	// algum documento do tipo tem pagamento, nota fiscal ou já foi fechado.
+	Renumber(context.Context, *RenumberRequest) (*RenumberResponse, error)
 	// Agrupa os itens ainda não enviados por impressora de produção e devolve os
 	// jobs de impressão (cozinha/bar), marcando os itens como enviados.
 	EnviarProducao(context.Context, *EnviarProducaoRequest) (*EnviarProducaoResponse, error)
@@ -873,6 +892,9 @@ func (UnimplementedPedidoServiceServer) SendReviewEmail(context.Context, *SendRe
 }
 func (UnimplementedPedidoServiceServer) RecalcularComissao(context.Context, *RecalcularComissaoRequest) (*RecalcularComissaoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RecalcularComissao not implemented")
+}
+func (UnimplementedPedidoServiceServer) Renumber(context.Context, *RenumberRequest) (*RenumberResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Renumber not implemented")
 }
 func (UnimplementedPedidoServiceServer) EnviarProducao(context.Context, *EnviarProducaoRequest) (*EnviarProducaoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method EnviarProducao not implemented")
@@ -1702,6 +1724,24 @@ func _PedidoService_RecalcularComissao_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PedidoService_Renumber_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RenumberRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).Renumber(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_Renumber_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).Renumber(ctx, req.(*RenumberRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PedidoService_EnviarProducao_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EnviarProducaoRequest)
 	if err := dec(in); err != nil {
@@ -1974,6 +2014,10 @@ var PedidoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RecalcularComissao",
 			Handler:    _PedidoService_RecalcularComissao_Handler,
+		},
+		{
+			MethodName: "Renumber",
+			Handler:    _PedidoService_Renumber_Handler,
 		},
 		{
 			MethodName: "EnviarProducao",
