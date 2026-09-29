@@ -482,10 +482,13 @@ type Produto struct {
 	Insumo bool `protobuf:"varint,219,opt,name=insumo,proto3" json:"insumo,omitempty"`
 	// Composição fixa: a ficha não é montada item a item na venda. O produto entra
 	// no pedido direto, sem a tela de composição.
-	ComposicaoFixa   bool                  `protobuf:"varint,220,opt,name=composicaoFixa,proto3" json:"composicaoFixa,omitempty"`
-	DadosFiscais     *Produto_DadosFiscais `protobuf:"bytes,223,opt,name=dadosFiscais,proto3" json:"dadosFiscais,omitempty"`
-	HasSerialControl bool                  `protobuf:"varint,75,opt,name=has_serial_control,json=hasSerialControl,proto3" json:"has_serial_control,omitempty"` // Controle de número de série ativado
-	Vehicle          *VehicleData          `protobuf:"bytes,74,opt,name=vehicle,proto3" json:"vehicle,omitempty"`
+	ComposicaoFixa bool                  `protobuf:"varint,220,opt,name=composicaoFixa,proto3" json:"composicaoFixa,omitempty"`
+	DadosFiscais   *Produto_DadosFiscais `protobuf:"bytes,223,opt,name=dadosFiscais,proto3" json:"dadosFiscais,omitempty"`
+	// Dias de validade impressos na etiqueta da balança, contados a partir da data da pesagem.
+	// Zero significa não informado.
+	DiasValidade     int32        `protobuf:"varint,226,opt,name=diasValidade,proto3" json:"diasValidade,omitempty"`
+	HasSerialControl bool         `protobuf:"varint,75,opt,name=has_serial_control,json=hasSerialControl,proto3" json:"has_serial_control,omitempty"` // Controle de número de série ativado
+	Vehicle          *VehicleData `protobuf:"bytes,74,opt,name=vehicle,proto3" json:"vehicle,omitempty"`
 	// Comodato: produto cedido em comodato (empréstimo). Quando true, ao adicionar
 	// em pedido/contrato o item entra com valor zero e baixa estoque apenas no primeiro
 	// pedido — recorrências subsequentes não rebaixam.
@@ -1215,6 +1218,13 @@ func (x *Produto) GetDadosFiscais() *Produto_DadosFiscais {
 		return x.DadosFiscais
 	}
 	return nil
+}
+
+func (x *Produto) GetDiasValidade() int32 {
+	if x != nil {
+		return x.DiasValidade
+	}
+	return 0
 }
 
 func (x *Produto) GetHasSerialControl() bool {
@@ -5864,7 +5874,7 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"ProdutoTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\x816\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xa66\n" +
 	"\aProduto\x123\n" +
 	"\x06fields\x18\x01 \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12B\n" +
@@ -5980,7 +5990,8 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\x13naoImprimirProducao\x18\xda\x01 \x01(\bR\x13naoImprimirProducao\x12\x17\n" +
 	"\x06insumo\x18\xdb\x01 \x01(\bR\x06insumo\x12'\n" +
 	"\x0ecomposicaoFixa\x18\xdc\x01 \x01(\bR\x0ecomposicaoFixa\x12B\n" +
-	"\fdadosFiscais\x18\xdf\x01 \x01(\v2\x1d.produto.Produto.DadosFiscaisR\fdadosFiscais\x12,\n" +
+	"\fdadosFiscais\x18\xdf\x01 \x01(\v2\x1d.produto.Produto.DadosFiscaisR\fdadosFiscais\x12#\n" +
+	"\fdiasValidade\x18\xe2\x01 \x01(\x05R\fdiasValidade\x12,\n" +
 	"\x12has_serial_control\x18K \x01(\bR\x10hasSerialControl\x12.\n" +
 	"\avehicle\x18J \x01(\v2\x14.produto.VehicleDataR\avehicle\x12\x1a\n" +
 	"\bcomodato\x18U \x01(\bR\bcomodato\x12?\n" +
