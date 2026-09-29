@@ -104,8 +104,11 @@ type Servico struct {
 	Fields        *metadata.BasicFields  `protobuf:"bytes,23,opt,name=fields,proto3" json:"fields,omitempty"`
 	CategoriaId   string                 `protobuf:"bytes,24,opt,name=categoria_id,json=categoriaId,proto3" json:"categoria_id,omitempty"`
 	CategoriaNome string                 `protobuf:"bytes,25,opt,name=categoria_nome,json=categoriaNome,proto3" json:"categoria_nome,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Especialidade que atende o serviço (cadastro de especialidades).
+	EspecialidadeId   string `protobuf:"bytes,26,opt,name=especialidade_id,json=especialidadeId,proto3" json:"especialidade_id,omitempty"`
+	EspecialidadeNome string `protobuf:"bytes,27,opt,name=especialidade_nome,json=especialidadeNome,proto3" json:"especialidade_nome,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *Servico) Reset() {
@@ -281,6 +284,20 @@ func (x *Servico) GetCategoriaId() string {
 func (x *Servico) GetCategoriaNome() string {
 	if x != nil {
 		return x.CategoriaNome
+	}
+	return ""
+}
+
+func (x *Servico) GetEspecialidadeId() string {
+	if x != nil {
+		return x.EspecialidadeId
+	}
+	return ""
+}
+
+func (x *Servico) GetEspecialidadeNome() string {
+	if x != nil {
+		return x.EspecialidadeNome
 	}
 	return ""
 }
@@ -1957,7 +1974,7 @@ var File_apps_servico_servico_proto protoreflect.FileDescriptor
 
 const file_apps_servico_servico_proto_rawDesc = "" +
 	"\n" +
-	"\x1aapps/servico/servico.proto\x12\aservico\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15imports/imports.proto\x1a\x18apps/report/report.proto\"\xf1\f\n" +
+	"\x1aapps/servico/servico.proto\x12\aservico\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15imports/imports.proto\x1a\x18apps/report/report.proto\"\xcb\r\n" +
 	"\aServico\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -1986,7 +2003,9 @@ const file_apps_servico_servico_proto_rawDesc = "" +
 	"\bsituacao\x18\x16 \x01(\tR\bsituacao\x12-\n" +
 	"\x06fields\x18\x17 \x01(\v2\x15.metadata.BasicFieldsR\x06fields\x12!\n" +
 	"\fcategoria_id\x18\x18 \x01(\tR\vcategoriaId\x12%\n" +
-	"\x0ecategoria_nome\x18\x19 \x01(\tR\rcategoriaNome\x1a\xb6\x04\n" +
+	"\x0ecategoria_nome\x18\x19 \x01(\tR\rcategoriaNome\x12)\n" +
+	"\x10especialidade_id\x18\x1a \x01(\tR\x0fespecialidadeId\x12-\n" +
+	"\x12especialidade_nome\x18\x1b \x01(\tR\x11especialidadeNome\x1a\xb6\x04\n" +
 	"\tEcommerce\x12\x12\n" +
 	"\x04slug\x18\x01 \x01(\tR\x04slug\x12)\n" +
 	"\x10available_online\x18\x02 \x01(\bR\x0favailableOnline\x12\x1a\n" +
