@@ -12,6 +12,7 @@ from linksoft_sdk.pb.apps.vendas.pedido import pedido_otica_pb2 as _pedido_otica
 from linksoft_sdk.pb.apps.vendas.pedido import pedido_mesa_pb2 as _pedido_mesa_pb2
 from linksoft_sdk.pb.apps.filemanager import filemanager_pb2 as _filemanager_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from linksoft_sdk.pb.apps.vendas.billingplan import billingplan_pb2 as _billingplan_pb2
 from linksoft_sdk.pb.imports import imports_pb2 as _imports_pb2
 from linksoft_sdk.pb.exports import exports_pb2 as _exports_pb2
 from google.protobuf.internal import containers as _containers
@@ -2267,6 +2268,44 @@ class SendPaymentLinkRequest(_message.Message):
     whatsapp_template_language: str
     message_template_id: str
     def __init__(self, ids: _Optional[_Iterable[str]] = ..., pedidos: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., email: _Optional[str] = ..., channel: _Optional[str] = ..., email_integration_id: _Optional[str] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., whatsapp_template_name: _Optional[str] = ..., whatsapp_template_language: _Optional[str] = ..., message_template_id: _Optional[str] = ...) -> None: ...
+
+class SimulaCobrancaRequest(_message.Message):
+    __slots__ = ("billing_plan", "data")
+    BILLING_PLAN_FIELD_NUMBER: _ClassVar[int]
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    billing_plan: _billingplan_pb2.BillingPlan
+    data: _timestamp_pb2.Timestamp
+    def __init__(self, billing_plan: _Optional[_Union[_billingplan_pb2.BillingPlan, _Mapping]] = ..., data: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class SimulaCobrancaResponse(_message.Message):
+    __slots__ = ("itens", "valor_total", "com_outro_plano", "sem_envio")
+    ITENS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    COM_OUTRO_PLANO_FIELD_NUMBER: _ClassVar[int]
+    SEM_ENVIO_FIELD_NUMBER: _ClassVar[int]
+    itens: _containers.RepeatedCompositeFieldContainer[SimulaCobrancaItem]
+    valor_total: float
+    com_outro_plano: int
+    sem_envio: str
+    def __init__(self, itens: _Optional[_Iterable[_Union[SimulaCobrancaItem, _Mapping]]] = ..., valor_total: _Optional[float] = ..., com_outro_plano: _Optional[int] = ..., sem_envio: _Optional[str] = ...) -> None: ...
+
+class SimulaCobrancaItem(_message.Message):
+    __slots__ = ("documento_id", "tipo", "numero", "destinatario", "referencia", "valor", "envio")
+    DOCUMENTO_ID_FIELD_NUMBER: _ClassVar[int]
+    TIPO_FIELD_NUMBER: _ClassVar[int]
+    NUMERO_FIELD_NUMBER: _ClassVar[int]
+    DESTINATARIO_FIELD_NUMBER: _ClassVar[int]
+    REFERENCIA_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    ENVIO_FIELD_NUMBER: _ClassVar[int]
+    documento_id: str
+    tipo: str
+    numero: int
+    destinatario: str
+    referencia: _timestamp_pb2.Timestamp
+    valor: float
+    envio: int
+    def __init__(self, documento_id: _Optional[str] = ..., tipo: _Optional[str] = ..., numero: _Optional[int] = ..., destinatario: _Optional[str] = ..., referencia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valor: _Optional[float] = ..., envio: _Optional[int] = ...) -> None: ...
 
 class SendPaymentLinkResponse(_message.Message):
     __slots__ = ("pedidos", "whatsapp_web")

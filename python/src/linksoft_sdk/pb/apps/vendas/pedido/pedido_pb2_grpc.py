@@ -195,6 +195,11 @@ class PedidoServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendPaymentLinkRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendPaymentLinkResponse.FromString,
                 _registered_method=True)
+        self.SimulaCobranca = channel.unary_unary(
+                '/pedido.PedidoService/SimulaCobranca',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaResponse.FromString,
+                _registered_method=True)
         self.CorrecaoMovimentacao = channel.unary_unary(
                 '/pedido.PedidoService/CorrecaoMovimentacao',
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CorrecaoMovimentacaoRequest.SerializeToString,
@@ -499,6 +504,13 @@ class PedidoServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SimulaCobranca(self, request, context):
+        """Mostra o que o envio automático cobraria num dia pelo plano informado, sem enviar nada.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def CorrecaoMovimentacao(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -782,6 +794,11 @@ def add_PedidoServiceServicer_to_server(servicer, server):
                     servicer.SendPaymentLink,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendPaymentLinkRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendPaymentLinkResponse.SerializeToString,
+            ),
+            'SimulaCobranca': grpc.unary_unary_rpc_method_handler(
+                    servicer.SimulaCobranca,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaResponse.SerializeToString,
             ),
             'CorrecaoMovimentacao': grpc.unary_unary_rpc_method_handler(
                     servicer.CorrecaoMovimentacao,
@@ -1827,6 +1844,33 @@ class PedidoService:
             '/pedido.PedidoService/SendPaymentLink',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendPaymentLinkRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendPaymentLinkResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SimulaCobranca(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/SimulaCobranca',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaResponse.FromString,
             options,
             channel_credentials,
             insecure,
