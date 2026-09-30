@@ -125,6 +125,55 @@ func (Situacao) EnumDescriptor() ([]byte, []int) {
 	return file_apps_vendas_desconto_desconto_proto_rawDescGZIP(), []int{1}
 }
 
+type CanalVenda int32
+
+const (
+	CanalVenda_CANAL_VENDA_UNSPECIFIED  CanalVenda = 0
+	CanalVenda_CANAL_VENDA_LOJA_FISICA  CanalVenda = 1 // Venda feita no sistema (PDV, tela de vendas, vendedor)
+	CanalVenda_CANAL_VENDA_LOJA_VIRTUAL CanalVenda = 2
+)
+
+// Enum value maps for CanalVenda.
+var (
+	CanalVenda_name = map[int32]string{
+		0: "CANAL_VENDA_UNSPECIFIED",
+		1: "CANAL_VENDA_LOJA_FISICA",
+		2: "CANAL_VENDA_LOJA_VIRTUAL",
+	}
+	CanalVenda_value = map[string]int32{
+		"CANAL_VENDA_UNSPECIFIED":  0,
+		"CANAL_VENDA_LOJA_FISICA":  1,
+		"CANAL_VENDA_LOJA_VIRTUAL": 2,
+	}
+)
+
+func (x CanalVenda) Enum() *CanalVenda {
+	p := new(CanalVenda)
+	*p = x
+	return p
+}
+
+func (x CanalVenda) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CanalVenda) Descriptor() protoreflect.EnumDescriptor {
+	return file_apps_vendas_desconto_desconto_proto_enumTypes[2].Descriptor()
+}
+
+func (CanalVenda) Type() protoreflect.EnumType {
+	return &file_apps_vendas_desconto_desconto_proto_enumTypes[2]
+}
+
+func (x CanalVenda) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CanalVenda.Descriptor instead.
+func (CanalVenda) EnumDescriptor() ([]byte, []int) {
+	return file_apps_vendas_desconto_desconto_proto_rawDescGZIP(), []int{2}
+}
+
 type TipoGrupo int32
 
 const (
@@ -158,11 +207,11 @@ func (x TipoGrupo) String() string {
 }
 
 func (TipoGrupo) Descriptor() protoreflect.EnumDescriptor {
-	return file_apps_vendas_desconto_desconto_proto_enumTypes[2].Descriptor()
+	return file_apps_vendas_desconto_desconto_proto_enumTypes[3].Descriptor()
 }
 
 func (TipoGrupo) Type() protoreflect.EnumType {
-	return &file_apps_vendas_desconto_desconto_proto_enumTypes[2]
+	return &file_apps_vendas_desconto_desconto_proto_enumTypes[3]
 }
 
 func (x TipoGrupo) Number() protoreflect.EnumNumber {
@@ -171,7 +220,7 @@ func (x TipoGrupo) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TipoGrupo.Descriptor instead.
 func (TipoGrupo) EnumDescriptor() ([]byte, []int) {
-	return file_apps_vendas_desconto_desconto_proto_rawDescGZIP(), []int{2}
+	return file_apps_vendas_desconto_desconto_proto_rawDescGZIP(), []int{3}
 }
 
 type TipoItem int32
@@ -213,11 +262,11 @@ func (x TipoItem) String() string {
 }
 
 func (TipoItem) Descriptor() protoreflect.EnumDescriptor {
-	return file_apps_vendas_desconto_desconto_proto_enumTypes[3].Descriptor()
+	return file_apps_vendas_desconto_desconto_proto_enumTypes[4].Descriptor()
 }
 
 func (TipoItem) Type() protoreflect.EnumType {
-	return &file_apps_vendas_desconto_desconto_proto_enumTypes[3]
+	return &file_apps_vendas_desconto_desconto_proto_enumTypes[4]
 }
 
 func (x TipoItem) Number() protoreflect.EnumNumber {
@@ -226,7 +275,7 @@ func (x TipoItem) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TipoItem.Descriptor instead.
 func (TipoItem) EnumDescriptor() ([]byte, []int) {
-	return file_apps_vendas_desconto_desconto_proto_rawDescGZIP(), []int{3}
+	return file_apps_vendas_desconto_desconto_proto_rawDescGZIP(), []int{4}
 }
 
 // Dados do Desconto
@@ -286,8 +335,18 @@ type Desconto struct {
 	// Pior caso (percentual efetivo) que a autorização cobriu. Em edição, se o novo pior caso
 	// passar deste valor, a autorização anterior cai e precisa de nova liberação.
 	PercentualEfetivoAutorizado float64 `protobuf:"fixed64,47,opt,name=percentual_efetivo_autorizado,json=percentualEfetivoAutorizado,proto3" json:"percentual_efetivo_autorizado,omitempty"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	// Entre regras que valem para a mesma venda, a de maior prioridade vence; empate fica com o maior desconto.
+	Prioridade int32 `protobuf:"varint,48,opt,name=prioridade,proto3" json:"prioridade,omitempty"`
+	// Valor máximo de desconto concedido numa venda (0 = sem teto). Só para desconto percentual.
+	DescontoMaximoValor float64 `protobuf:"fixed64,49,opt,name=desconto_maximo_valor,json=descontoMaximoValor,proto3" json:"desconto_maximo_valor,omitempty"`
+	// Canais em que a regra vale (vazio = todos).
+	Canais []CanalVenda `protobuf:"varint,50,rep,packed,name=canais,proto3,enum=desconto.CanalVenda" json:"canais,omitempty"`
+	// Tabelas de preço da venda em que a regra vale (vazio = todas).
+	TabelasPreco []string `protobuf:"bytes,51,rep,name=tabelas_preco,json=tabelasPreco,proto3" json:"tabelas_preco,omitempty"`
+	// Vale só quando o cliente ainda não tem compra fechada.
+	SomentePrimeiraCompra bool `protobuf:"varint,52,opt,name=somente_primeira_compra,json=somentePrimeiraCompra,proto3" json:"somente_primeira_compra,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *Desconto) Reset() {
@@ -649,6 +708,41 @@ func (x *Desconto) GetPercentualEfetivoAutorizado() float64 {
 	return 0
 }
 
+func (x *Desconto) GetPrioridade() int32 {
+	if x != nil {
+		return x.Prioridade
+	}
+	return 0
+}
+
+func (x *Desconto) GetDescontoMaximoValor() float64 {
+	if x != nil {
+		return x.DescontoMaximoValor
+	}
+	return 0
+}
+
+func (x *Desconto) GetCanais() []CanalVenda {
+	if x != nil {
+		return x.Canais
+	}
+	return nil
+}
+
+func (x *Desconto) GetTabelasPreco() []string {
+	if x != nil {
+		return x.TabelasPreco
+	}
+	return nil
+}
+
+func (x *Desconto) GetSomentePrimeiraCompra() bool {
+	if x != nil {
+		return x.SomentePrimeiraCompra
+	}
+	return false
+}
+
 type Item struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Id                 string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -663,8 +757,10 @@ type Item struct {
 	CategoriaNome      string                 `protobuf:"bytes,10,opt,name=categoria_nome,json=categoriaNome,proto3" json:"categoria_nome,omitempty"`
 	QuantidadeMaiorQue float64                `protobuf:"fixed64,11,opt,name=quantidade_maior_que,json=quantidadeMaiorQue,proto3" json:"quantidade_maior_que,omitempty"`
 	DescontoPercentual float64                `protobuf:"fixed64,12,opt,name=desconto_percentual,json=descontoPercentual,proto3" json:"desconto_percentual,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// Item ou categoria que fica fora do desconto.
+	Excecao       bool `protobuf:"varint,13,opt,name=excecao,proto3" json:"excecao,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Item) Reset() {
@@ -779,6 +875,13 @@ func (x *Item) GetDescontoPercentual() float64 {
 		return x.DescontoPercentual
 	}
 	return 0
+}
+
+func (x *Item) GetExcecao() bool {
+	if x != nil {
+		return x.Excecao
+	}
+	return false
 }
 
 // Request e Response para criação de Desconto
@@ -1284,14 +1387,18 @@ func (x *ListResponse) GetNextPageToken() string {
 
 // Criterio dados de entrada para GetDesconto
 type Criterio struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Tipo          Tipo                   `protobuf:"varint,1,opt,name=tipo,proto3,enum=desconto.Tipo" json:"tipo,omitempty"`
-	ClienteId     string                 `protobuf:"bytes,2,opt,name=cliente_id,json=clienteId,proto3" json:"cliente_id,omitempty"`
-	VendedorId    string                 `protobuf:"bytes,3,opt,name=vendedor_id,json=vendedorId,proto3" json:"vendedor_id,omitempty"`
-	Itens         []*CriterioItem        `protobuf:"bytes,4,rep,name=itens,proto3" json:"itens,omitempty"`
-	ValorVenda    float64                `protobuf:"fixed64,5,opt,name=valor_venda,json=valorVenda,proto3" json:"valor_venda,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Tipo        Tipo                   `protobuf:"varint,1,opt,name=tipo,proto3,enum=desconto.Tipo" json:"tipo,omitempty"`
+	ClienteId   string                 `protobuf:"bytes,2,opt,name=cliente_id,json=clienteId,proto3" json:"cliente_id,omitempty"`
+	VendedorId  string                 `protobuf:"bytes,3,opt,name=vendedor_id,json=vendedorId,proto3" json:"vendedor_id,omitempty"`
+	Itens       []*CriterioItem        `protobuf:"bytes,4,rep,name=itens,proto3" json:"itens,omitempty"`
+	ValorVenda  float64                `protobuf:"fixed64,5,opt,name=valor_venda,json=valorVenda,proto3" json:"valor_venda,omitempty"`
+	Canal       CanalVenda             `protobuf:"varint,6,opt,name=canal,proto3,enum=desconto.CanalVenda" json:"canal,omitempty"`
+	TabelaPreco string                 `protobuf:"bytes,7,opt,name=tabela_preco,json=tabelaPreco,proto3" json:"tabela_preco,omitempty"`
+	// Indica que o cliente da venda ainda não tem compra fechada. Sem o campo, a resposta avisa quando precisa dele.
+	PrimeiraCompra *bool `protobuf:"varint,8,opt,name=primeira_compra,json=primeiraCompra,proto3,oneof" json:"primeira_compra,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Criterio) Reset() {
@@ -1359,6 +1466,27 @@ func (x *Criterio) GetValorVenda() float64 {
 	return 0
 }
 
+func (x *Criterio) GetCanal() CanalVenda {
+	if x != nil {
+		return x.Canal
+	}
+	return CanalVenda_CANAL_VENDA_UNSPECIFIED
+}
+
+func (x *Criterio) GetTabelaPreco() string {
+	if x != nil {
+		return x.TabelaPreco
+	}
+	return ""
+}
+
+func (x *Criterio) GetPrimeiraCompra() bool {
+	if x != nil && x.PrimeiraCompra != nil {
+		return *x.PrimeiraCompra
+	}
+	return false
+}
+
 type CriterioItem struct {
 	state      protoimpl.MessageState `protogen:"open.v1"`
 	Id         string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1366,7 +1494,9 @@ type CriterioItem struct {
 	Quantidade float64                `protobuf:"fixed64,3,opt,name=quantidade,proto3" json:"quantidade,omitempty"`
 	// Categoria do item na venda. Quem chama pode deixar vazio: o serviço resolve a
 	// categoria dos produtos quando existe alguma regra cadastrada por categoria.
-	CategoriaId   string `protobuf:"bytes,4,opt,name=categoria_id,json=categoriaId,proto3" json:"categoria_id,omitempty"`
+	CategoriaId string `protobuf:"bytes,4,opt,name=categoria_id,json=categoriaId,proto3" json:"categoria_id,omitempty"`
+	// Valor do item na venda: base do teto de desconto e do desconto em reais que decide entre promoções.
+	Valor         float64 `protobuf:"fixed64,5,opt,name=valor,proto3" json:"valor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1427,6 +1557,13 @@ func (x *CriterioItem) GetCategoriaId() string {
 		return x.CategoriaId
 	}
 	return ""
+}
+
+func (x *CriterioItem) GetValor() float64 {
+	if x != nil {
+		return x.Valor
+	}
+	return 0
 }
 
 // DescontoElegivel representa o desconto a ser aplicado
@@ -1624,8 +1761,10 @@ func (x *GetDescontoRequest) GetCriterio() *Criterio {
 type GetDescontoResponse struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	DescontoElegivel *DescontoElegivel      `protobuf:"bytes,1,opt,name=desconto_elegivel,json=descontoElegivel,proto3" json:"desconto_elegivel,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// A resposta depende de saber se é a primeira compra do cliente: repita informando primeira_compra.
+	PrecisaPrimeiraCompra bool `protobuf:"varint,2,opt,name=precisa_primeira_compra,json=precisaPrimeiraCompra,proto3" json:"precisa_primeira_compra,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *GetDescontoResponse) Reset() {
@@ -1663,6 +1802,13 @@ func (x *GetDescontoResponse) GetDescontoElegivel() *DescontoElegivel {
 		return x.DescontoElegivel
 	}
 	return nil
+}
+
+func (x *GetDescontoResponse) GetPrecisaPrimeiraCompra() bool {
+	if x != nil {
+		return x.PrecisaPrimeiraCompra
+	}
+	return false
 }
 
 // Coupon representa os dados do cupom de desconto para uso em loja virtual
@@ -2203,8 +2349,10 @@ type ValidateCouponResponse struct {
 	DescontoElegivel *DescontoElegivel      `protobuf:"bytes,3,opt,name=desconto_elegivel,json=descontoElegivel,proto3" json:"desconto_elegivel,omitempty"` // Desconto a aplicar quando válido
 	CupomId          string                 `protobuf:"bytes,4,opt,name=cupom_id,json=cupomId,proto3" json:"cupom_id,omitempty"`                            // ID do cadastro do cupom
 	Cumulativo       bool                   `protobuf:"varint,5,opt,name=cumulativo,proto3" json:"cumulativo,omitempty"`                                    // Indica se o cupom acumula com outros descontos
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// A validação depende de saber se é a primeira compra do cliente: repita informando primeira_compra.
+	PrecisaPrimeiraCompra bool `protobuf:"varint,6,opt,name=precisa_primeira_compra,json=precisaPrimeiraCompra,proto3" json:"precisa_primeira_compra,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *ValidateCouponResponse) Reset() {
@@ -2272,6 +2420,13 @@ func (x *ValidateCouponResponse) GetCumulativo() bool {
 	return false
 }
 
+func (x *ValidateCouponResponse) GetPrecisaPrimeiraCompra() bool {
+	if x != nil {
+		return x.PrecisaPrimeiraCompra
+	}
+	return false
+}
+
 // ProdutoConsultado identifica um produto avaliado para exibição, com a categoria a que pertence
 type ProdutoConsultado struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2332,7 +2487,8 @@ func (x *ProdutoConsultado) GetCategoriaId() string {
 type GetDescontosProdutosRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Produtos      []*ProdutoConsultado   `protobuf:"bytes,1,rep,name=produtos,proto3" json:"produtos,omitempty"`
-	ClienteId     string                 `protobuf:"bytes,2,opt,name=cliente_id,json=clienteId,proto3" json:"cliente_id,omitempty"` // Quando informado, habilita as promoções restritas a grupo de cliente
+	ClienteId     string                 `protobuf:"bytes,2,opt,name=cliente_id,json=clienteId,proto3" json:"cliente_id,omitempty"`  // Quando informado, habilita as promoções restritas a grupo de cliente
+	Canal         CanalVenda             `protobuf:"varint,3,opt,name=canal,proto3,enum=desconto.CanalVenda" json:"canal,omitempty"` // Canal em que o produto é exibido
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2379,6 +2535,13 @@ func (x *GetDescontosProdutosRequest) GetClienteId() string {
 		return x.ClienteId
 	}
 	return ""
+}
+
+func (x *GetDescontosProdutosRequest) GetCanal() CanalVenda {
+	if x != nil {
+		return x.Canal
+	}
+	return CanalVenda_CANAL_VENDA_UNSPECIFIED
 }
 
 type DescontoProduto struct {
@@ -2497,7 +2660,7 @@ var File_apps_vendas_desconto_desconto_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"\n" +
-	"#apps/vendas/desconto/desconto.proto\x12\bdesconto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe0\x16\n" +
+	"#apps/vendas/desconto/desconto.proto\x12\bdesconto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbf\x18\n" +
 	"\bDesconto\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -2552,7 +2715,14 @@ const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"\x16autorizado_por_user_id\x18, \x01(\tR\x13autorizadoPorUserId\x127\n" +
 	"\x18autorizado_por_user_name\x18- \x01(\tR\x15autorizadoPorUserName\x12?\n" +
 	"\rautorizado_em\x18. \x01(\v2\x1a.google.protobuf.TimestampR\fautorizadoEm\x12B\n" +
-	"\x1dpercentual_efetivo_autorizado\x18/ \x01(\x01R\x1bpercentualEfetivoAutorizado:\x03\xc0>\x01\"\xd6\x03\n" +
+	"\x1dpercentual_efetivo_autorizado\x18/ \x01(\x01R\x1bpercentualEfetivoAutorizado\x12\x1e\n" +
+	"\n" +
+	"prioridade\x180 \x01(\x05R\n" +
+	"prioridade\x122\n" +
+	"\x15desconto_maximo_valor\x181 \x01(\x01R\x13descontoMaximoValor\x12,\n" +
+	"\x06canais\x182 \x03(\x0e2\x14.desconto.CanalVendaR\x06canais\x12#\n" +
+	"\rtabelas_preco\x183 \x03(\tR\ftabelasPreco\x126\n" +
+	"\x17somente_primeira_compra\x184 \x01(\bR\x15somentePrimeiraCompra:\x03\xc0>\x01\"\xf0\x03\n" +
 	"\x04Item\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -2568,7 +2738,8 @@ const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"\x0ecategoria_nome\x18\n" +
 	" \x01(\tR\rcategoriaNome\x120\n" +
 	"\x14quantidade_maior_que\x18\v \x01(\x01R\x12quantidadeMaiorQue\x12/\n" +
-	"\x13desconto_percentual\x18\f \x01(\x01R\x12descontoPercentual\"?\n" +
+	"\x13desconto_percentual\x18\f \x01(\x01R\x12descontoPercentual\x12\x18\n" +
+	"\aexcecao\x18\r \x01(\bR\aexcecao\"?\n" +
 	"\rCreateRequest\x12.\n" +
 	"\bdesconto\x18\x01 \x01(\v2\x12.desconto.DescontoR\bdesconto\"@\n" +
 	"\x0eCreateResponse\x12.\n" +
@@ -2598,7 +2769,7 @@ const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"\x06filter\x18\x05 \x01(\v2\a.FilterR\x06filter\"o\n" +
 	"\fListResponse\x127\n" +
 	"\rdesconto_list\x18\x01 \x03(\v2\x12.desconto.DescontoR\fdescontoList\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xbd\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xce\x02\n" +
 	"\bCriterio\x12\"\n" +
 	"\x04tipo\x18\x01 \x01(\x0e2\x0e.desconto.TipoR\x04tipo\x12\x1d\n" +
 	"\n" +
@@ -2607,14 +2778,19 @@ const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"vendedorId\x12,\n" +
 	"\x05itens\x18\x04 \x03(\v2\x16.desconto.CriterioItemR\x05itens\x12\x1f\n" +
 	"\vvalor_venda\x18\x05 \x01(\x01R\n" +
-	"valorVenda\"\x92\x01\n" +
+	"valorVenda\x12*\n" +
+	"\x05canal\x18\x06 \x01(\x0e2\x14.desconto.CanalVendaR\x05canal\x12!\n" +
+	"\ftabela_preco\x18\a \x01(\tR\vtabelaPreco\x12,\n" +
+	"\x0fprimeira_compra\x18\b \x01(\bH\x00R\x0eprimeiraCompra\x88\x01\x01B\x12\n" +
+	"\x10_primeira_compra\"\xa8\x01\n" +
 	"\fCriterioItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12/\n" +
 	"\ttipo_item\x18\x02 \x01(\x0e2\x12.desconto.TipoItemR\btipoItem\x12\x1e\n" +
 	"\n" +
 	"quantidade\x18\x03 \x01(\x01R\n" +
 	"quantidade\x12!\n" +
-	"\fcategoria_id\x18\x04 \x01(\tR\vcategoriaId\"\xea\x01\n" +
+	"\fcategoria_id\x18\x04 \x01(\tR\vcategoriaId\x12\x14\n" +
+	"\x05valor\x18\x05 \x01(\x01R\x05valor\"\xea\x01\n" +
 	"\x10DescontoElegivel\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12$\n" +
@@ -2627,9 +2803,10 @@ const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"\ttipo_item\x18\x02 \x01(\x0e2\x12.desconto.TipoItemR\btipoItem\x12/\n" +
 	"\x13percentual_desconto\x18\x03 \x01(\x01R\x12percentualDesconto\"D\n" +
 	"\x12GetDescontoRequest\x12.\n" +
-	"\bcriterio\x18\x01 \x01(\v2\x12.desconto.CriterioR\bcriterio\"^\n" +
+	"\bcriterio\x18\x01 \x01(\v2\x12.desconto.CriterioR\bcriterio\"\x96\x01\n" +
 	"\x13GetDescontoResponse\x12G\n" +
-	"\x11desconto_elegivel\x18\x01 \x01(\v2\x1a.desconto.DescontoElegivelR\x10descontoElegivel\"\xff\x01\n" +
+	"\x11desconto_elegivel\x18\x01 \x01(\v2\x1a.desconto.DescontoElegivelR\x10descontoElegivel\x126\n" +
+	"\x17precisa_primeira_compra\x18\x02 \x01(\bR\x15precisaPrimeiraCompra\"\xff\x01\n" +
 	"\x06Coupon\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x1f\n" +
 	"\vusage_limit\x18\x02 \x01(\x05R\n" +
@@ -2676,7 +2853,7 @@ const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12.\n" +
 	"\bcriterio\x18\x02 \x01(\v2\x12.desconto.CriterioR\bcriterio\x12\x19\n" +
 	"\bcpf_cnpj\x18\x03 \x01(\tR\acpfCnpj\x122\n" +
-	"\x15tem_desconto_aplicado\x18\x04 \x01(\bR\x13temDescontoAplicado\"\xcc\x01\n" +
+	"\x15tem_desconto_aplicado\x18\x04 \x01(\bR\x13temDescontoAplicado\"\x84\x02\n" +
 	"\x16ValidateCouponResponse\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12G\n" +
@@ -2684,15 +2861,17 @@ const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"\bcupom_id\x18\x04 \x01(\tR\acupomId\x12\x1e\n" +
 	"\n" +
 	"cumulativo\x18\x05 \x01(\bR\n" +
-	"cumulativo\"U\n" +
+	"cumulativo\x126\n" +
+	"\x17precisa_primeira_compra\x18\x06 \x01(\bR\x15precisaPrimeiraCompra\"U\n" +
 	"\x11ProdutoConsultado\x12\x1d\n" +
 	"\n" +
 	"produto_id\x18\x01 \x01(\tR\tprodutoId\x12!\n" +
-	"\fcategoria_id\x18\x02 \x01(\tR\vcategoriaId\"u\n" +
+	"\fcategoria_id\x18\x02 \x01(\tR\vcategoriaId\"\xa1\x01\n" +
 	"\x1bGetDescontosProdutosRequest\x127\n" +
 	"\bprodutos\x18\x01 \x03(\v2\x1b.desconto.ProdutoConsultadoR\bprodutos\x12\x1d\n" +
 	"\n" +
-	"cliente_id\x18\x02 \x01(\tR\tclienteId\"\xa7\x01\n" +
+	"cliente_id\x18\x02 \x01(\tR\tclienteId\x12*\n" +
+	"\x05canal\x18\x03 \x01(\x0e2\x14.desconto.CanalVendaR\x05canal\"\xa7\x01\n" +
 	"\x0fDescontoProduto\x12\x1d\n" +
 	"\n" +
 	"produto_id\x18\x01 \x01(\tR\tprodutoId\x12/\n" +
@@ -2709,7 +2888,12 @@ const file_apps_vendas_desconto_desconto_proto_rawDesc = "" +
 	"\bSituacao\x12\x18\n" +
 	"\x14SITUACAO_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eSITUACAO_ATIVO\x10\x01\x12\x14\n" +
-	"\x10SITUACAO_INATIVO\x10\x02*X\n" +
+	"\x10SITUACAO_INATIVO\x10\x02*d\n" +
+	"\n" +
+	"CanalVenda\x12\x1b\n" +
+	"\x17CANAL_VENDA_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17CANAL_VENDA_LOJA_FISICA\x10\x01\x12\x1c\n" +
+	"\x18CANAL_VENDA_LOJA_VIRTUAL\x10\x02*X\n" +
 	"\tTipoGrupo\x12\x1a\n" +
 	"\x16TIPO_GRUPO_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12TIPO_GRUPO_CLIENTE\x10\x01\x12\x17\n" +
@@ -2745,126 +2929,130 @@ func file_apps_vendas_desconto_desconto_proto_rawDescGZIP() []byte {
 	return file_apps_vendas_desconto_desconto_proto_rawDescData
 }
 
-var file_apps_vendas_desconto_desconto_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_apps_vendas_desconto_desconto_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_apps_vendas_desconto_desconto_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_apps_vendas_desconto_desconto_proto_goTypes = []any{
 	(Tipo)(0),                            // 0: desconto.Tipo
 	(Situacao)(0),                        // 1: desconto.Situacao
-	(TipoGrupo)(0),                       // 2: desconto.TipoGrupo
-	(TipoItem)(0),                        // 3: desconto.TipoItem
-	(*Desconto)(nil),                     // 4: desconto.Desconto
-	(*Item)(nil),                         // 5: desconto.Item
-	(*CreateRequest)(nil),                // 6: desconto.CreateRequest
-	(*CreateResponse)(nil),               // 7: desconto.CreateResponse
-	(*UpdateRequest)(nil),                // 8: desconto.UpdateRequest
-	(*UpdateResponse)(nil),               // 9: desconto.UpdateResponse
-	(*DeleteRequest)(nil),                // 10: desconto.DeleteRequest
-	(*DeleteResponse)(nil),               // 11: desconto.DeleteResponse
-	(*GetRequest)(nil),                   // 12: desconto.GetRequest
-	(*GetResponse)(nil),                  // 13: desconto.GetResponse
-	(*ListRequest)(nil),                  // 14: desconto.ListRequest
-	(*ListResponse)(nil),                 // 15: desconto.ListResponse
-	(*Criterio)(nil),                     // 16: desconto.Criterio
-	(*CriterioItem)(nil),                 // 17: desconto.CriterioItem
-	(*DescontoElegivel)(nil),             // 18: desconto.DescontoElegivel
-	(*DescontoElegivelItem)(nil),         // 19: desconto.DescontoElegivelItem
-	(*GetDescontoRequest)(nil),           // 20: desconto.GetDescontoRequest
-	(*GetDescontoResponse)(nil),          // 21: desconto.GetDescontoResponse
-	(*Coupon)(nil),                       // 22: desconto.Coupon
-	(*CouponUsage)(nil),                  // 23: desconto.CouponUsage
-	(*UseCouponRequest)(nil),             // 24: desconto.UseCouponRequest
-	(*UseCouponResponse)(nil),            // 25: desconto.UseCouponResponse
-	(*ReleaseCouponRequest)(nil),         // 26: desconto.ReleaseCouponRequest
-	(*ReleaseCouponResponse)(nil),        // 27: desconto.ReleaseCouponResponse
-	(*ValidateCouponRequest)(nil),        // 28: desconto.ValidateCouponRequest
-	(*ValidateCouponResponse)(nil),       // 29: desconto.ValidateCouponResponse
-	(*ProdutoConsultado)(nil),            // 30: desconto.ProdutoConsultado
-	(*GetDescontosProdutosRequest)(nil),  // 31: desconto.GetDescontosProdutosRequest
-	(*DescontoProduto)(nil),              // 32: desconto.DescontoProduto
-	(*GetDescontosProdutosResponse)(nil), // 33: desconto.GetDescontosProdutosResponse
-	(*timestamppb.Timestamp)(nil),        // 34: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),         // 35: metadata.BasicFields
-	(*metadata.FieldMask)(nil),           // 36: metadata.FieldMask
-	(*filter.Filter)(nil),                // 37: Filter
+	(CanalVenda)(0),                      // 2: desconto.CanalVenda
+	(TipoGrupo)(0),                       // 3: desconto.TipoGrupo
+	(TipoItem)(0),                        // 4: desconto.TipoItem
+	(*Desconto)(nil),                     // 5: desconto.Desconto
+	(*Item)(nil),                         // 6: desconto.Item
+	(*CreateRequest)(nil),                // 7: desconto.CreateRequest
+	(*CreateResponse)(nil),               // 8: desconto.CreateResponse
+	(*UpdateRequest)(nil),                // 9: desconto.UpdateRequest
+	(*UpdateResponse)(nil),               // 10: desconto.UpdateResponse
+	(*DeleteRequest)(nil),                // 11: desconto.DeleteRequest
+	(*DeleteResponse)(nil),               // 12: desconto.DeleteResponse
+	(*GetRequest)(nil),                   // 13: desconto.GetRequest
+	(*GetResponse)(nil),                  // 14: desconto.GetResponse
+	(*ListRequest)(nil),                  // 15: desconto.ListRequest
+	(*ListResponse)(nil),                 // 16: desconto.ListResponse
+	(*Criterio)(nil),                     // 17: desconto.Criterio
+	(*CriterioItem)(nil),                 // 18: desconto.CriterioItem
+	(*DescontoElegivel)(nil),             // 19: desconto.DescontoElegivel
+	(*DescontoElegivelItem)(nil),         // 20: desconto.DescontoElegivelItem
+	(*GetDescontoRequest)(nil),           // 21: desconto.GetDescontoRequest
+	(*GetDescontoResponse)(nil),          // 22: desconto.GetDescontoResponse
+	(*Coupon)(nil),                       // 23: desconto.Coupon
+	(*CouponUsage)(nil),                  // 24: desconto.CouponUsage
+	(*UseCouponRequest)(nil),             // 25: desconto.UseCouponRequest
+	(*UseCouponResponse)(nil),            // 26: desconto.UseCouponResponse
+	(*ReleaseCouponRequest)(nil),         // 27: desconto.ReleaseCouponRequest
+	(*ReleaseCouponResponse)(nil),        // 28: desconto.ReleaseCouponResponse
+	(*ValidateCouponRequest)(nil),        // 29: desconto.ValidateCouponRequest
+	(*ValidateCouponResponse)(nil),       // 30: desconto.ValidateCouponResponse
+	(*ProdutoConsultado)(nil),            // 31: desconto.ProdutoConsultado
+	(*GetDescontosProdutosRequest)(nil),  // 32: desconto.GetDescontosProdutosRequest
+	(*DescontoProduto)(nil),              // 33: desconto.DescontoProduto
+	(*GetDescontosProdutosResponse)(nil), // 34: desconto.GetDescontosProdutosResponse
+	(*timestamppb.Timestamp)(nil),        // 35: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),         // 36: metadata.BasicFields
+	(*metadata.FieldMask)(nil),           // 37: metadata.FieldMask
+	(*filter.Filter)(nil),                // 38: Filter
 }
 var file_apps_vendas_desconto_desconto_proto_depIdxs = []int32{
-	34, // 0: desconto.Desconto.created_at:type_name -> google.protobuf.Timestamp
-	34, // 1: desconto.Desconto.updated_at:type_name -> google.protobuf.Timestamp
-	35, // 2: desconto.Desconto.fields:type_name -> metadata.BasicFields
+	35, // 0: desconto.Desconto.created_at:type_name -> google.protobuf.Timestamp
+	35, // 1: desconto.Desconto.updated_at:type_name -> google.protobuf.Timestamp
+	36, // 2: desconto.Desconto.fields:type_name -> metadata.BasicFields
 	0,  // 3: desconto.Desconto.tipo:type_name -> desconto.Tipo
 	1,  // 4: desconto.Desconto.situacao:type_name -> desconto.Situacao
-	2,  // 5: desconto.Desconto.tipo_grupo:type_name -> desconto.TipoGrupo
-	34, // 6: desconto.Desconto.validade_a_partir:type_name -> google.protobuf.Timestamp
-	34, // 7: desconto.Desconto.validade_ate:type_name -> google.protobuf.Timestamp
-	34, // 8: desconto.Desconto.dia_semana_segunda_horario_inicial:type_name -> google.protobuf.Timestamp
-	34, // 9: desconto.Desconto.dia_semana_segunda_horario_final:type_name -> google.protobuf.Timestamp
-	34, // 10: desconto.Desconto.dia_semana_terca_horario_inicial:type_name -> google.protobuf.Timestamp
-	34, // 11: desconto.Desconto.dia_semana_terca_horario_final:type_name -> google.protobuf.Timestamp
-	34, // 12: desconto.Desconto.dia_semana_quarta_horario_inicial:type_name -> google.protobuf.Timestamp
-	34, // 13: desconto.Desconto.dia_semana_quarta_horario_final:type_name -> google.protobuf.Timestamp
-	34, // 14: desconto.Desconto.dia_semana_quinta_horario_inicial:type_name -> google.protobuf.Timestamp
-	34, // 15: desconto.Desconto.dia_semana_quinta_horario_final:type_name -> google.protobuf.Timestamp
-	34, // 16: desconto.Desconto.dia_semana_sexta_horario_inicial:type_name -> google.protobuf.Timestamp
-	34, // 17: desconto.Desconto.dia_semana_sexta_horario_final:type_name -> google.protobuf.Timestamp
-	34, // 18: desconto.Desconto.dia_semana_sabado_horario_inicial:type_name -> google.protobuf.Timestamp
-	34, // 19: desconto.Desconto.dia_semana_sabado_horario_final:type_name -> google.protobuf.Timestamp
-	34, // 20: desconto.Desconto.dia_semana_domingo_horario_inicial:type_name -> google.protobuf.Timestamp
-	34, // 21: desconto.Desconto.dia_semana_domingo_horario_final:type_name -> google.protobuf.Timestamp
-	5,  // 22: desconto.Desconto.itens:type_name -> desconto.Item
-	22, // 23: desconto.Desconto.coupon:type_name -> desconto.Coupon
-	34, // 24: desconto.Desconto.autorizado_em:type_name -> google.protobuf.Timestamp
-	34, // 25: desconto.Item.created_at:type_name -> google.protobuf.Timestamp
-	34, // 26: desconto.Item.updated_at:type_name -> google.protobuf.Timestamp
-	3,  // 27: desconto.Item.tipo_item:type_name -> desconto.TipoItem
-	4,  // 28: desconto.CreateRequest.desconto:type_name -> desconto.Desconto
-	4,  // 29: desconto.CreateResponse.desconto:type_name -> desconto.Desconto
-	4,  // 30: desconto.UpdateRequest.desconto:type_name -> desconto.Desconto
-	36, // 31: desconto.UpdateRequest.update_mask:type_name -> metadata.FieldMask
-	4,  // 32: desconto.UpdateResponse.desconto:type_name -> desconto.Desconto
-	4,  // 33: desconto.GetResponse.desconto:type_name -> desconto.Desconto
-	37, // 34: desconto.ListRequest.filter:type_name -> Filter
-	4,  // 35: desconto.ListResponse.desconto_list:type_name -> desconto.Desconto
-	0,  // 36: desconto.Criterio.tipo:type_name -> desconto.Tipo
-	17, // 37: desconto.Criterio.itens:type_name -> desconto.CriterioItem
-	3,  // 38: desconto.CriterioItem.tipo_item:type_name -> desconto.TipoItem
-	19, // 39: desconto.DescontoElegivel.itens:type_name -> desconto.DescontoElegivelItem
-	3,  // 40: desconto.DescontoElegivelItem.tipo_item:type_name -> desconto.TipoItem
-	16, // 41: desconto.GetDescontoRequest.criterio:type_name -> desconto.Criterio
-	18, // 42: desconto.GetDescontoResponse.desconto_elegivel:type_name -> desconto.DescontoElegivel
-	23, // 43: desconto.Coupon.usage_history:type_name -> desconto.CouponUsage
-	34, // 44: desconto.CouponUsage.used_at:type_name -> google.protobuf.Timestamp
-	4,  // 45: desconto.UseCouponResponse.desconto:type_name -> desconto.Desconto
-	23, // 46: desconto.UseCouponResponse.usage:type_name -> desconto.CouponUsage
-	4,  // 47: desconto.ReleaseCouponResponse.desconto:type_name -> desconto.Desconto
-	16, // 48: desconto.ValidateCouponRequest.criterio:type_name -> desconto.Criterio
-	18, // 49: desconto.ValidateCouponResponse.desconto_elegivel:type_name -> desconto.DescontoElegivel
-	30, // 50: desconto.GetDescontosProdutosRequest.produtos:type_name -> desconto.ProdutoConsultado
-	32, // 51: desconto.GetDescontosProdutosResponse.descontos:type_name -> desconto.DescontoProduto
-	6,  // 52: desconto.DescontoService.Create:input_type -> desconto.CreateRequest
-	8,  // 53: desconto.DescontoService.Update:input_type -> desconto.UpdateRequest
-	10, // 54: desconto.DescontoService.Delete:input_type -> desconto.DeleteRequest
-	12, // 55: desconto.DescontoService.Get:input_type -> desconto.GetRequest
-	14, // 56: desconto.DescontoService.List:input_type -> desconto.ListRequest
-	20, // 57: desconto.DescontoService.GetDesconto:input_type -> desconto.GetDescontoRequest
-	31, // 58: desconto.DescontoService.GetDescontosProdutos:input_type -> desconto.GetDescontosProdutosRequest
-	28, // 59: desconto.DescontoService.ValidateCoupon:input_type -> desconto.ValidateCouponRequest
-	24, // 60: desconto.DescontoService.UseCoupon:input_type -> desconto.UseCouponRequest
-	26, // 61: desconto.DescontoService.ReleaseCoupon:input_type -> desconto.ReleaseCouponRequest
-	7,  // 62: desconto.DescontoService.Create:output_type -> desconto.CreateResponse
-	9,  // 63: desconto.DescontoService.Update:output_type -> desconto.UpdateResponse
-	11, // 64: desconto.DescontoService.Delete:output_type -> desconto.DeleteResponse
-	13, // 65: desconto.DescontoService.Get:output_type -> desconto.GetResponse
-	15, // 66: desconto.DescontoService.List:output_type -> desconto.ListResponse
-	21, // 67: desconto.DescontoService.GetDesconto:output_type -> desconto.GetDescontoResponse
-	33, // 68: desconto.DescontoService.GetDescontosProdutos:output_type -> desconto.GetDescontosProdutosResponse
-	29, // 69: desconto.DescontoService.ValidateCoupon:output_type -> desconto.ValidateCouponResponse
-	25, // 70: desconto.DescontoService.UseCoupon:output_type -> desconto.UseCouponResponse
-	27, // 71: desconto.DescontoService.ReleaseCoupon:output_type -> desconto.ReleaseCouponResponse
-	62, // [62:72] is the sub-list for method output_type
-	52, // [52:62] is the sub-list for method input_type
-	52, // [52:52] is the sub-list for extension type_name
-	52, // [52:52] is the sub-list for extension extendee
-	0,  // [0:52] is the sub-list for field type_name
+	3,  // 5: desconto.Desconto.tipo_grupo:type_name -> desconto.TipoGrupo
+	35, // 6: desconto.Desconto.validade_a_partir:type_name -> google.protobuf.Timestamp
+	35, // 7: desconto.Desconto.validade_ate:type_name -> google.protobuf.Timestamp
+	35, // 8: desconto.Desconto.dia_semana_segunda_horario_inicial:type_name -> google.protobuf.Timestamp
+	35, // 9: desconto.Desconto.dia_semana_segunda_horario_final:type_name -> google.protobuf.Timestamp
+	35, // 10: desconto.Desconto.dia_semana_terca_horario_inicial:type_name -> google.protobuf.Timestamp
+	35, // 11: desconto.Desconto.dia_semana_terca_horario_final:type_name -> google.protobuf.Timestamp
+	35, // 12: desconto.Desconto.dia_semana_quarta_horario_inicial:type_name -> google.protobuf.Timestamp
+	35, // 13: desconto.Desconto.dia_semana_quarta_horario_final:type_name -> google.protobuf.Timestamp
+	35, // 14: desconto.Desconto.dia_semana_quinta_horario_inicial:type_name -> google.protobuf.Timestamp
+	35, // 15: desconto.Desconto.dia_semana_quinta_horario_final:type_name -> google.protobuf.Timestamp
+	35, // 16: desconto.Desconto.dia_semana_sexta_horario_inicial:type_name -> google.protobuf.Timestamp
+	35, // 17: desconto.Desconto.dia_semana_sexta_horario_final:type_name -> google.protobuf.Timestamp
+	35, // 18: desconto.Desconto.dia_semana_sabado_horario_inicial:type_name -> google.protobuf.Timestamp
+	35, // 19: desconto.Desconto.dia_semana_sabado_horario_final:type_name -> google.protobuf.Timestamp
+	35, // 20: desconto.Desconto.dia_semana_domingo_horario_inicial:type_name -> google.protobuf.Timestamp
+	35, // 21: desconto.Desconto.dia_semana_domingo_horario_final:type_name -> google.protobuf.Timestamp
+	6,  // 22: desconto.Desconto.itens:type_name -> desconto.Item
+	23, // 23: desconto.Desconto.coupon:type_name -> desconto.Coupon
+	35, // 24: desconto.Desconto.autorizado_em:type_name -> google.protobuf.Timestamp
+	2,  // 25: desconto.Desconto.canais:type_name -> desconto.CanalVenda
+	35, // 26: desconto.Item.created_at:type_name -> google.protobuf.Timestamp
+	35, // 27: desconto.Item.updated_at:type_name -> google.protobuf.Timestamp
+	4,  // 28: desconto.Item.tipo_item:type_name -> desconto.TipoItem
+	5,  // 29: desconto.CreateRequest.desconto:type_name -> desconto.Desconto
+	5,  // 30: desconto.CreateResponse.desconto:type_name -> desconto.Desconto
+	5,  // 31: desconto.UpdateRequest.desconto:type_name -> desconto.Desconto
+	37, // 32: desconto.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	5,  // 33: desconto.UpdateResponse.desconto:type_name -> desconto.Desconto
+	5,  // 34: desconto.GetResponse.desconto:type_name -> desconto.Desconto
+	38, // 35: desconto.ListRequest.filter:type_name -> Filter
+	5,  // 36: desconto.ListResponse.desconto_list:type_name -> desconto.Desconto
+	0,  // 37: desconto.Criterio.tipo:type_name -> desconto.Tipo
+	18, // 38: desconto.Criterio.itens:type_name -> desconto.CriterioItem
+	2,  // 39: desconto.Criterio.canal:type_name -> desconto.CanalVenda
+	4,  // 40: desconto.CriterioItem.tipo_item:type_name -> desconto.TipoItem
+	20, // 41: desconto.DescontoElegivel.itens:type_name -> desconto.DescontoElegivelItem
+	4,  // 42: desconto.DescontoElegivelItem.tipo_item:type_name -> desconto.TipoItem
+	17, // 43: desconto.GetDescontoRequest.criterio:type_name -> desconto.Criterio
+	19, // 44: desconto.GetDescontoResponse.desconto_elegivel:type_name -> desconto.DescontoElegivel
+	24, // 45: desconto.Coupon.usage_history:type_name -> desconto.CouponUsage
+	35, // 46: desconto.CouponUsage.used_at:type_name -> google.protobuf.Timestamp
+	5,  // 47: desconto.UseCouponResponse.desconto:type_name -> desconto.Desconto
+	24, // 48: desconto.UseCouponResponse.usage:type_name -> desconto.CouponUsage
+	5,  // 49: desconto.ReleaseCouponResponse.desconto:type_name -> desconto.Desconto
+	17, // 50: desconto.ValidateCouponRequest.criterio:type_name -> desconto.Criterio
+	19, // 51: desconto.ValidateCouponResponse.desconto_elegivel:type_name -> desconto.DescontoElegivel
+	31, // 52: desconto.GetDescontosProdutosRequest.produtos:type_name -> desconto.ProdutoConsultado
+	2,  // 53: desconto.GetDescontosProdutosRequest.canal:type_name -> desconto.CanalVenda
+	33, // 54: desconto.GetDescontosProdutosResponse.descontos:type_name -> desconto.DescontoProduto
+	7,  // 55: desconto.DescontoService.Create:input_type -> desconto.CreateRequest
+	9,  // 56: desconto.DescontoService.Update:input_type -> desconto.UpdateRequest
+	11, // 57: desconto.DescontoService.Delete:input_type -> desconto.DeleteRequest
+	13, // 58: desconto.DescontoService.Get:input_type -> desconto.GetRequest
+	15, // 59: desconto.DescontoService.List:input_type -> desconto.ListRequest
+	21, // 60: desconto.DescontoService.GetDesconto:input_type -> desconto.GetDescontoRequest
+	32, // 61: desconto.DescontoService.GetDescontosProdutos:input_type -> desconto.GetDescontosProdutosRequest
+	29, // 62: desconto.DescontoService.ValidateCoupon:input_type -> desconto.ValidateCouponRequest
+	25, // 63: desconto.DescontoService.UseCoupon:input_type -> desconto.UseCouponRequest
+	27, // 64: desconto.DescontoService.ReleaseCoupon:input_type -> desconto.ReleaseCouponRequest
+	8,  // 65: desconto.DescontoService.Create:output_type -> desconto.CreateResponse
+	10, // 66: desconto.DescontoService.Update:output_type -> desconto.UpdateResponse
+	12, // 67: desconto.DescontoService.Delete:output_type -> desconto.DeleteResponse
+	14, // 68: desconto.DescontoService.Get:output_type -> desconto.GetResponse
+	16, // 69: desconto.DescontoService.List:output_type -> desconto.ListResponse
+	22, // 70: desconto.DescontoService.GetDesconto:output_type -> desconto.GetDescontoResponse
+	34, // 71: desconto.DescontoService.GetDescontosProdutos:output_type -> desconto.GetDescontosProdutosResponse
+	30, // 72: desconto.DescontoService.ValidateCoupon:output_type -> desconto.ValidateCouponResponse
+	26, // 73: desconto.DescontoService.UseCoupon:output_type -> desconto.UseCouponResponse
+	28, // 74: desconto.DescontoService.ReleaseCoupon:output_type -> desconto.ReleaseCouponResponse
+	65, // [65:75] is the sub-list for method output_type
+	55, // [55:65] is the sub-list for method input_type
+	55, // [55:55] is the sub-list for extension type_name
+	55, // [55:55] is the sub-list for extension extendee
+	0,  // [0:55] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_desconto_desconto_proto_init() }
@@ -2872,12 +3060,13 @@ func file_apps_vendas_desconto_desconto_proto_init() {
 	if File_apps_vendas_desconto_desconto_proto != nil {
 		return
 	}
+	file_apps_vendas_desconto_desconto_proto_msgTypes[12].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_vendas_desconto_desconto_proto_rawDesc), len(file_apps_vendas_desconto_desconto_proto_rawDesc)),
-			NumEnums:      4,
+			NumEnums:      5,
 			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,

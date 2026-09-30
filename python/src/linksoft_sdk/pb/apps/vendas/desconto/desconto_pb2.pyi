@@ -27,6 +27,12 @@ class Situacao(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SITUACAO_ATIVO: _ClassVar[Situacao]
     SITUACAO_INATIVO: _ClassVar[Situacao]
 
+class CanalVenda(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    CANAL_VENDA_UNSPECIFIED: _ClassVar[CanalVenda]
+    CANAL_VENDA_LOJA_FISICA: _ClassVar[CanalVenda]
+    CANAL_VENDA_LOJA_VIRTUAL: _ClassVar[CanalVenda]
+
 class TipoGrupo(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     TIPO_GRUPO_UNSPECIFIED: _ClassVar[TipoGrupo]
@@ -46,6 +52,9 @@ TIPO_PROMOCOES: Tipo
 SITUACAO_UNSPECIFIED: Situacao
 SITUACAO_ATIVO: Situacao
 SITUACAO_INATIVO: Situacao
+CANAL_VENDA_UNSPECIFIED: CanalVenda
+CANAL_VENDA_LOJA_FISICA: CanalVenda
+CANAL_VENDA_LOJA_VIRTUAL: CanalVenda
 TIPO_GRUPO_UNSPECIFIED: TipoGrupo
 TIPO_GRUPO_CLIENTE: TipoGrupo
 TIPO_GRUPO_VENDEDOR: TipoGrupo
@@ -56,7 +65,7 @@ TIPO_ITEM_POR_SERVICO: TipoItem
 TIPO_ITEM_POR_PRODUTO: TipoItem
 
 class Desconto(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "nome", "tipo", "situacao", "situacao_caption", "tipo_grupo", "grupo_id", "grupo_nome", "validade_a_partir", "validade_ate", "dia_semana_segunda", "dia_semana_segunda_horario_inicial", "dia_semana_segunda_horario_final", "dia_semana_terca", "dia_semana_terca_horario_inicial", "dia_semana_terca_horario_final", "dia_semana_quarta", "dia_semana_quarta_horario_inicial", "dia_semana_quarta_horario_final", "dia_semana_quinta", "dia_semana_quinta_horario_inicial", "dia_semana_quinta_horario_final", "dia_semana_sexta", "dia_semana_sexta_horario_inicial", "dia_semana_sexta_horario_final", "dia_semana_sabado", "dia_semana_sabado_horario_inicial", "dia_semana_sabado_horario_final", "dia_semana_domingo", "dia_semana_domingo_horario_inicial", "dia_semana_domingo_horario_final", "itens", "valor_venda_maior_que", "desconto_percentual", "coupon", "desconto_valor", "cumulativo", "autorizado_acima_do_teto", "autorizado_por_user_id", "autorizado_por_user_name", "autorizado_em", "percentual_efetivo_autorizado")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "nome", "tipo", "situacao", "situacao_caption", "tipo_grupo", "grupo_id", "grupo_nome", "validade_a_partir", "validade_ate", "dia_semana_segunda", "dia_semana_segunda_horario_inicial", "dia_semana_segunda_horario_final", "dia_semana_terca", "dia_semana_terca_horario_inicial", "dia_semana_terca_horario_final", "dia_semana_quarta", "dia_semana_quarta_horario_inicial", "dia_semana_quarta_horario_final", "dia_semana_quinta", "dia_semana_quinta_horario_inicial", "dia_semana_quinta_horario_final", "dia_semana_sexta", "dia_semana_sexta_horario_inicial", "dia_semana_sexta_horario_final", "dia_semana_sabado", "dia_semana_sabado_horario_inicial", "dia_semana_sabado_horario_final", "dia_semana_domingo", "dia_semana_domingo_horario_inicial", "dia_semana_domingo_horario_final", "itens", "valor_venda_maior_que", "desconto_percentual", "coupon", "desconto_valor", "cumulativo", "autorizado_acima_do_teto", "autorizado_por_user_id", "autorizado_por_user_name", "autorizado_em", "percentual_efetivo_autorizado", "prioridade", "desconto_maximo_valor", "canais", "tabelas_preco", "somente_primeira_compra")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -104,6 +113,11 @@ class Desconto(_message.Message):
     AUTORIZADO_POR_USER_NAME_FIELD_NUMBER: _ClassVar[int]
     AUTORIZADO_EM_FIELD_NUMBER: _ClassVar[int]
     PERCENTUAL_EFETIVO_AUTORIZADO_FIELD_NUMBER: _ClassVar[int]
+    PRIORIDADE_FIELD_NUMBER: _ClassVar[int]
+    DESCONTO_MAXIMO_VALOR_FIELD_NUMBER: _ClassVar[int]
+    CANAIS_FIELD_NUMBER: _ClassVar[int]
+    TABELAS_PRECO_FIELD_NUMBER: _ClassVar[int]
+    SOMENTE_PRIMEIRA_COMPRA_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -151,10 +165,15 @@ class Desconto(_message.Message):
     autorizado_por_user_name: str
     autorizado_em: _timestamp_pb2.Timestamp
     percentual_efetivo_autorizado: float
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., nome: _Optional[str] = ..., tipo: _Optional[_Union[Tipo, str]] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., situacao_caption: _Optional[str] = ..., tipo_grupo: _Optional[_Union[TipoGrupo, str]] = ..., grupo_id: _Optional[str] = ..., grupo_nome: _Optional[str] = ..., validade_a_partir: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., validade_ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_segunda: _Optional[bool] = ..., dia_semana_segunda_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_segunda_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_terca: _Optional[bool] = ..., dia_semana_terca_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_terca_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_quarta: _Optional[bool] = ..., dia_semana_quarta_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_quarta_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_quinta: _Optional[bool] = ..., dia_semana_quinta_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_quinta_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_sexta: _Optional[bool] = ..., dia_semana_sexta_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_sexta_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_sabado: _Optional[bool] = ..., dia_semana_sabado_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_sabado_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_domingo: _Optional[bool] = ..., dia_semana_domingo_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_domingo_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., itens: _Optional[_Iterable[_Union[Item, _Mapping]]] = ..., valor_venda_maior_que: _Optional[float] = ..., desconto_percentual: _Optional[float] = ..., coupon: _Optional[_Union[Coupon, _Mapping]] = ..., desconto_valor: _Optional[float] = ..., cumulativo: _Optional[bool] = ..., autorizado_acima_do_teto: _Optional[bool] = ..., autorizado_por_user_id: _Optional[str] = ..., autorizado_por_user_name: _Optional[str] = ..., autorizado_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., percentual_efetivo_autorizado: _Optional[float] = ...) -> None: ...
+    prioridade: int
+    desconto_maximo_valor: float
+    canais: _containers.RepeatedScalarFieldContainer[CanalVenda]
+    tabelas_preco: _containers.RepeatedScalarFieldContainer[str]
+    somente_primeira_compra: bool
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., nome: _Optional[str] = ..., tipo: _Optional[_Union[Tipo, str]] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., situacao_caption: _Optional[str] = ..., tipo_grupo: _Optional[_Union[TipoGrupo, str]] = ..., grupo_id: _Optional[str] = ..., grupo_nome: _Optional[str] = ..., validade_a_partir: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., validade_ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_segunda: _Optional[bool] = ..., dia_semana_segunda_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_segunda_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_terca: _Optional[bool] = ..., dia_semana_terca_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_terca_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_quarta: _Optional[bool] = ..., dia_semana_quarta_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_quarta_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_quinta: _Optional[bool] = ..., dia_semana_quinta_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_quinta_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_sexta: _Optional[bool] = ..., dia_semana_sexta_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_sexta_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_sabado: _Optional[bool] = ..., dia_semana_sabado_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_sabado_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_domingo: _Optional[bool] = ..., dia_semana_domingo_horario_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dia_semana_domingo_horario_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., itens: _Optional[_Iterable[_Union[Item, _Mapping]]] = ..., valor_venda_maior_que: _Optional[float] = ..., desconto_percentual: _Optional[float] = ..., coupon: _Optional[_Union[Coupon, _Mapping]] = ..., desconto_valor: _Optional[float] = ..., cumulativo: _Optional[bool] = ..., autorizado_acima_do_teto: _Optional[bool] = ..., autorizado_por_user_id: _Optional[str] = ..., autorizado_por_user_name: _Optional[str] = ..., autorizado_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., percentual_efetivo_autorizado: _Optional[float] = ..., prioridade: _Optional[int] = ..., desconto_maximo_valor: _Optional[float] = ..., canais: _Optional[_Iterable[_Union[CanalVenda, str]]] = ..., tabelas_preco: _Optional[_Iterable[str]] = ..., somente_primeira_compra: _Optional[bool] = ...) -> None: ...
 
 class Item(_message.Message):
-    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "tipo_item", "item_id", "item_nome", "categoria_id", "categoria_nome", "quantidade_maior_que", "desconto_percentual")
+    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "tipo_item", "item_id", "item_nome", "categoria_id", "categoria_nome", "quantidade_maior_que", "desconto_percentual", "excecao")
     ID_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
@@ -167,6 +186,7 @@ class Item(_message.Message):
     CATEGORIA_NOME_FIELD_NUMBER: _ClassVar[int]
     QUANTIDADE_MAIOR_QUE_FIELD_NUMBER: _ClassVar[int]
     DESCONTO_PERCENTUAL_FIELD_NUMBER: _ClassVar[int]
+    EXCECAO_FIELD_NUMBER: _ClassVar[int]
     id: str
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
@@ -179,7 +199,8 @@ class Item(_message.Message):
     categoria_nome: str
     quantidade_maior_que: float
     desconto_percentual: float
-    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., tipo_item: _Optional[_Union[TipoItem, str]] = ..., item_id: _Optional[str] = ..., item_nome: _Optional[str] = ..., categoria_id: _Optional[str] = ..., categoria_nome: _Optional[str] = ..., quantidade_maior_que: _Optional[float] = ..., desconto_percentual: _Optional[float] = ...) -> None: ...
+    excecao: bool
+    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., tipo_item: _Optional[_Union[TipoItem, str]] = ..., item_id: _Optional[str] = ..., item_nome: _Optional[str] = ..., categoria_id: _Optional[str] = ..., categoria_nome: _Optional[str] = ..., quantidade_maior_que: _Optional[float] = ..., desconto_percentual: _Optional[float] = ..., excecao: _Optional[bool] = ...) -> None: ...
 
 class CreateRequest(_message.Message):
     __slots__ = ("desconto",)
@@ -256,30 +277,38 @@ class ListResponse(_message.Message):
     def __init__(self, desconto_list: _Optional[_Iterable[_Union[Desconto, _Mapping]]] = ..., next_page_token: _Optional[str] = ...) -> None: ...
 
 class Criterio(_message.Message):
-    __slots__ = ("tipo", "cliente_id", "vendedor_id", "itens", "valor_venda")
+    __slots__ = ("tipo", "cliente_id", "vendedor_id", "itens", "valor_venda", "canal", "tabela_preco", "primeira_compra")
     TIPO_FIELD_NUMBER: _ClassVar[int]
     CLIENTE_ID_FIELD_NUMBER: _ClassVar[int]
     VENDEDOR_ID_FIELD_NUMBER: _ClassVar[int]
     ITENS_FIELD_NUMBER: _ClassVar[int]
     VALOR_VENDA_FIELD_NUMBER: _ClassVar[int]
+    CANAL_FIELD_NUMBER: _ClassVar[int]
+    TABELA_PRECO_FIELD_NUMBER: _ClassVar[int]
+    PRIMEIRA_COMPRA_FIELD_NUMBER: _ClassVar[int]
     tipo: Tipo
     cliente_id: str
     vendedor_id: str
     itens: _containers.RepeatedCompositeFieldContainer[CriterioItem]
     valor_venda: float
-    def __init__(self, tipo: _Optional[_Union[Tipo, str]] = ..., cliente_id: _Optional[str] = ..., vendedor_id: _Optional[str] = ..., itens: _Optional[_Iterable[_Union[CriterioItem, _Mapping]]] = ..., valor_venda: _Optional[float] = ...) -> None: ...
+    canal: CanalVenda
+    tabela_preco: str
+    primeira_compra: bool
+    def __init__(self, tipo: _Optional[_Union[Tipo, str]] = ..., cliente_id: _Optional[str] = ..., vendedor_id: _Optional[str] = ..., itens: _Optional[_Iterable[_Union[CriterioItem, _Mapping]]] = ..., valor_venda: _Optional[float] = ..., canal: _Optional[_Union[CanalVenda, str]] = ..., tabela_preco: _Optional[str] = ..., primeira_compra: _Optional[bool] = ...) -> None: ...
 
 class CriterioItem(_message.Message):
-    __slots__ = ("id", "tipo_item", "quantidade", "categoria_id")
+    __slots__ = ("id", "tipo_item", "quantidade", "categoria_id", "valor")
     ID_FIELD_NUMBER: _ClassVar[int]
     TIPO_ITEM_FIELD_NUMBER: _ClassVar[int]
     QUANTIDADE_FIELD_NUMBER: _ClassVar[int]
     CATEGORIA_ID_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
     id: str
     tipo_item: TipoItem
     quantidade: float
     categoria_id: str
-    def __init__(self, id: _Optional[str] = ..., tipo_item: _Optional[_Union[TipoItem, str]] = ..., quantidade: _Optional[float] = ..., categoria_id: _Optional[str] = ...) -> None: ...
+    valor: float
+    def __init__(self, id: _Optional[str] = ..., tipo_item: _Optional[_Union[TipoItem, str]] = ..., quantidade: _Optional[float] = ..., categoria_id: _Optional[str] = ..., valor: _Optional[float] = ...) -> None: ...
 
 class DescontoElegivel(_message.Message):
     __slots__ = ("id", "nome", "todos_os_itens", "percentual_desconto", "itens", "valor_desconto")
@@ -314,10 +343,12 @@ class GetDescontoRequest(_message.Message):
     def __init__(self, criterio: _Optional[_Union[Criterio, _Mapping]] = ...) -> None: ...
 
 class GetDescontoResponse(_message.Message):
-    __slots__ = ("desconto_elegivel",)
+    __slots__ = ("desconto_elegivel", "precisa_primeira_compra")
     DESCONTO_ELEGIVEL_FIELD_NUMBER: _ClassVar[int]
+    PRECISA_PRIMEIRA_COMPRA_FIELD_NUMBER: _ClassVar[int]
     desconto_elegivel: DescontoElegivel
-    def __init__(self, desconto_elegivel: _Optional[_Union[DescontoElegivel, _Mapping]] = ...) -> None: ...
+    precisa_primeira_compra: bool
+    def __init__(self, desconto_elegivel: _Optional[_Union[DescontoElegivel, _Mapping]] = ..., precisa_primeira_compra: _Optional[bool] = ...) -> None: ...
 
 class Coupon(_message.Message):
     __slots__ = ("code", "usage_limit", "usage_count", "usage_history", "usage_limit_per_customer", "release_on_cancel")
@@ -416,18 +447,20 @@ class ValidateCouponRequest(_message.Message):
     def __init__(self, code: _Optional[str] = ..., criterio: _Optional[_Union[Criterio, _Mapping]] = ..., cpf_cnpj: _Optional[str] = ..., tem_desconto_aplicado: _Optional[bool] = ...) -> None: ...
 
 class ValidateCouponResponse(_message.Message):
-    __slots__ = ("valid", "message", "desconto_elegivel", "cupom_id", "cumulativo")
+    __slots__ = ("valid", "message", "desconto_elegivel", "cupom_id", "cumulativo", "precisa_primeira_compra")
     VALID_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
     DESCONTO_ELEGIVEL_FIELD_NUMBER: _ClassVar[int]
     CUPOM_ID_FIELD_NUMBER: _ClassVar[int]
     CUMULATIVO_FIELD_NUMBER: _ClassVar[int]
+    PRECISA_PRIMEIRA_COMPRA_FIELD_NUMBER: _ClassVar[int]
     valid: bool
     message: str
     desconto_elegivel: DescontoElegivel
     cupom_id: str
     cumulativo: bool
-    def __init__(self, valid: _Optional[bool] = ..., message: _Optional[str] = ..., desconto_elegivel: _Optional[_Union[DescontoElegivel, _Mapping]] = ..., cupom_id: _Optional[str] = ..., cumulativo: _Optional[bool] = ...) -> None: ...
+    precisa_primeira_compra: bool
+    def __init__(self, valid: _Optional[bool] = ..., message: _Optional[str] = ..., desconto_elegivel: _Optional[_Union[DescontoElegivel, _Mapping]] = ..., cupom_id: _Optional[str] = ..., cumulativo: _Optional[bool] = ..., precisa_primeira_compra: _Optional[bool] = ...) -> None: ...
 
 class ProdutoConsultado(_message.Message):
     __slots__ = ("produto_id", "categoria_id")
@@ -438,12 +471,14 @@ class ProdutoConsultado(_message.Message):
     def __init__(self, produto_id: _Optional[str] = ..., categoria_id: _Optional[str] = ...) -> None: ...
 
 class GetDescontosProdutosRequest(_message.Message):
-    __slots__ = ("produtos", "cliente_id")
+    __slots__ = ("produtos", "cliente_id", "canal")
     PRODUTOS_FIELD_NUMBER: _ClassVar[int]
     CLIENTE_ID_FIELD_NUMBER: _ClassVar[int]
+    CANAL_FIELD_NUMBER: _ClassVar[int]
     produtos: _containers.RepeatedCompositeFieldContainer[ProdutoConsultado]
     cliente_id: str
-    def __init__(self, produtos: _Optional[_Iterable[_Union[ProdutoConsultado, _Mapping]]] = ..., cliente_id: _Optional[str] = ...) -> None: ...
+    canal: CanalVenda
+    def __init__(self, produtos: _Optional[_Iterable[_Union[ProdutoConsultado, _Mapping]]] = ..., cliente_id: _Optional[str] = ..., canal: _Optional[_Union[CanalVenda, str]] = ...) -> None: ...
 
 class DescontoProduto(_message.Message):
     __slots__ = ("produto_id", "percentual_desconto", "desconto_id", "desconto_nome")
