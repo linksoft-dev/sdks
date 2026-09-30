@@ -10,6 +10,7 @@ import (
 	filemanager "github.com/linksoft-dev/sdks/go/pb/apps/filemanager"
 	report "github.com/linksoft-dev/sdks/go/pb/apps/report"
 	billingplan "github.com/linksoft-dev/sdks/go/pb/apps/vendas/billingplan"
+	readjustmentplan "github.com/linksoft-dev/sdks/go/pb/apps/vendas/readjustmentplan"
 	model "github.com/linksoft-dev/sdks/go/pb/apps/vendas/rentcar/model"
 	metadata "github.com/linksoft-dev/sdks/go/pb/common/metadata"
 	exports "github.com/linksoft-dev/sdks/go/pb/exports"
@@ -944,7 +945,7 @@ func (x PagamentoPaymentOrigin) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PagamentoPaymentOrigin.Descriptor instead.
 func (PagamentoPaymentOrigin) EnumDescriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{98, 0}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{100, 0}
 }
 
 type GetQuickProdutosRequest struct {
@@ -7608,22 +7609,24 @@ type Contract struct {
 	RecurrenceDueDate   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=recurrence_due_date,json=recurrenceDueDate,proto3" json:"recurrence_due_date,omitempty"`
 	Status              ContractStatus         `protobuf:"varint,6,opt,name=status,proto3,enum=pedido.ContractStatus" json:"status,omitempty"`
 	// Deprecated: Marked as deprecated in apps/vendas/pedido/pedido.proto.
-	BlockReason             string                 `protobuf:"bytes,7,opt,name=block_reason,json=blockReason,proto3" json:"block_reason,omitempty"`                                        // Substituído por status_reason
-	LastAccess              *Contract_LastAccess   `protobuf:"bytes,8,opt,name=last_access,json=lastAccess,proto3" json:"last_access,omitempty"`                                           // Último acesso (migrado de LicenciamentoModel)
-	RecurrenceCreatedId     string                 `protobuf:"bytes,10,opt,name=recurrence_created_id,json=recurrenceCreatedId,proto3" json:"recurrence_created_id,omitempty"`             // ID do contrato de recorrência criado
-	RecurrenceCreatedNumber string                 `protobuf:"bytes,11,opt,name=recurrence_created_number,json=recurrenceCreatedNumber,proto3" json:"recurrence_created_number,omitempty"` // Número do contrato de recorrência criado
-	StartDate               *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`                                             // Data de início do contrato: fixada na criação do contrato original e copiada em cada recorrência (a cadeia inteira compartilha a mesma data)
-	Courtesy                bool                   `protobuf:"varint,13,opt,name=courtesy,proto3" json:"courtesy,omitempty"`                                                               // Contrato de bonificação/cortesia: fica fora das métricas de receita e carteira; herdado pelas renovações
-	RenewalNumber           int32                  `protobuf:"varint,14,opt,name=renewal_number,json=renewalNumber,proto3" json:"renewal_number,omitempty"`                                // Número da renovação na cadeia do contrato: 0 no contrato original, incrementado a cada renovação gerada
-	GracePeriodDays         int32                  `protobuf:"varint,15,opt,name=grace_period_days,json=gracePeriodDays,proto3" json:"grace_period_days,omitempty"`                        // Dias de carência após o vencimento em que a licença do contrato permanece liberada antes do bloqueio; herdado pelas renovações
-	AutoRenewDisabled       bool                   `protobuf:"varint,16,opt,name=auto_renew_disabled,json=autoRenewDisabled,proto3" json:"auto_renew_disabled,omitempty"`                  // Quando true, o contrato só é renovado manualmente: a geração automática do próximo ciclo perto do vencimento não acontece. Padrão (false) mantém a renovação automática; herdado pelas renovações
-	StatusReason            string                 `protobuf:"bytes,17,opt,name=status_reason,json=statusReason,proto3" json:"status_reason,omitempty"`                                    // Motivo informado na última mudança de status (suspensão, cancelamento, reativação)
-	ReleasedAt              *timestamppb.Timestamp `protobuf:"bytes,18,opt,name=released_at,json=releasedAt,proto3" json:"released_at,omitempty"`                                          // Ciclo liberado sem pagamento: passa a valer nesta data mesmo com a parcela em aberto. Vazio = só vale depois de quitada
-	TrialDays               int32                  `protobuf:"varint,19,opt,name=trial_days,json=trialDays,proto3" json:"trial_days,omitempty"`                                            // Duração total do período de avaliação, em dias corridos a partir da criação do contrato. Zero usa a duração padrão
-	PreviousDueDate         *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=previous_due_date,json=previousDueDate,proto3" json:"previous_due_date,omitempty"`                         // Vencimento do ciclo anterior: até quando o cliente estava coberto quando esta parcela nasceu, e portanto o prazo para pagá-la. Vazio na primeira parcela da cadeia, em que o prazo é o próprio recurrence_due_date
-	ReleasedUntil           *timestamppb.Timestamp `protobuf:"bytes,21,opt,name=released_until,json=releasedUntil,proto3" json:"released_until,omitempty"`                                 // Prazo da liberação sem pagamento: até esta data o ciclo cobre o cliente mesmo já vencido. Vazio = a liberação vale só até o vencimento do ciclo
-	TrialEndsAt             *timestamppb.Timestamp `protobuf:"bytes,22,opt,name=trial_ends_at,json=trialEndsAt,proto3" json:"trial_ends_at,omitempty"`                                     // Fim do período de avaliação. Vazio nos contratos anteriores ao campo, em que o prazo é a criação somada a trial_days
-	FullPeriodTotal         float64                `protobuf:"fixed64,23,opt,name=full_period_total,json=fullPeriodTotal,proto3" json:"full_period_total,omitempty"`                       // Valor do ciclo por um período inteiro, preenchido só quando esta parcela cobre uma fração do período e por isso foi cobrada proporcionalmente. Zero = a parcela cobre o período cheio e o total dela já é o valor do período
+	BlockReason             string                       `protobuf:"bytes,7,opt,name=block_reason,json=blockReason,proto3" json:"block_reason,omitempty"`                                        // Substituído por status_reason
+	LastAccess              *Contract_LastAccess         `protobuf:"bytes,8,opt,name=last_access,json=lastAccess,proto3" json:"last_access,omitempty"`                                           // Último acesso (migrado de LicenciamentoModel)
+	RecurrenceCreatedId     string                       `protobuf:"bytes,10,opt,name=recurrence_created_id,json=recurrenceCreatedId,proto3" json:"recurrence_created_id,omitempty"`             // ID do contrato de recorrência criado
+	RecurrenceCreatedNumber string                       `protobuf:"bytes,11,opt,name=recurrence_created_number,json=recurrenceCreatedNumber,proto3" json:"recurrence_created_number,omitempty"` // Número do contrato de recorrência criado
+	StartDate               *timestamppb.Timestamp       `protobuf:"bytes,12,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`                                             // Data de início do contrato: fixada na criação do contrato original e copiada em cada recorrência (a cadeia inteira compartilha a mesma data)
+	Courtesy                bool                         `protobuf:"varint,13,opt,name=courtesy,proto3" json:"courtesy,omitempty"`                                                               // Contrato de bonificação/cortesia: fica fora das métricas de receita e carteira; herdado pelas renovações
+	RenewalNumber           int32                        `protobuf:"varint,14,opt,name=renewal_number,json=renewalNumber,proto3" json:"renewal_number,omitempty"`                                // Número da renovação na cadeia do contrato: 0 no contrato original, incrementado a cada renovação gerada
+	GracePeriodDays         int32                        `protobuf:"varint,15,opt,name=grace_period_days,json=gracePeriodDays,proto3" json:"grace_period_days,omitempty"`                        // Dias de carência após o vencimento em que a licença do contrato permanece liberada antes do bloqueio; herdado pelas renovações
+	AutoRenewDisabled       bool                         `protobuf:"varint,16,opt,name=auto_renew_disabled,json=autoRenewDisabled,proto3" json:"auto_renew_disabled,omitempty"`                  // Quando true, o contrato só é renovado manualmente: a geração automática do próximo ciclo perto do vencimento não acontece. Padrão (false) mantém a renovação automática; herdado pelas renovações
+	StatusReason            string                       `protobuf:"bytes,17,opt,name=status_reason,json=statusReason,proto3" json:"status_reason,omitempty"`                                    // Motivo informado na última mudança de status (suspensão, cancelamento, reativação)
+	ReleasedAt              *timestamppb.Timestamp       `protobuf:"bytes,18,opt,name=released_at,json=releasedAt,proto3" json:"released_at,omitempty"`                                          // Ciclo liberado sem pagamento: passa a valer nesta data mesmo com a parcela em aberto. Vazio = só vale depois de quitada
+	TrialDays               int32                        `protobuf:"varint,19,opt,name=trial_days,json=trialDays,proto3" json:"trial_days,omitempty"`                                            // Duração total do período de avaliação, em dias corridos a partir da criação do contrato. Zero usa a duração padrão
+	PreviousDueDate         *timestamppb.Timestamp       `protobuf:"bytes,20,opt,name=previous_due_date,json=previousDueDate,proto3" json:"previous_due_date,omitempty"`                         // Vencimento do ciclo anterior: até quando o cliente estava coberto quando esta parcela nasceu, e portanto o prazo para pagá-la. Vazio na primeira parcela da cadeia, em que o prazo é o próprio recurrence_due_date
+	ReleasedUntil           *timestamppb.Timestamp       `protobuf:"bytes,21,opt,name=released_until,json=releasedUntil,proto3" json:"released_until,omitempty"`                                 // Prazo da liberação sem pagamento: até esta data o ciclo cobre o cliente mesmo já vencido. Vazio = a liberação vale só até o vencimento do ciclo
+	TrialEndsAt             *timestamppb.Timestamp       `protobuf:"bytes,22,opt,name=trial_ends_at,json=trialEndsAt,proto3" json:"trial_ends_at,omitempty"`                                     // Fim do período de avaliação. Vazio nos contratos anteriores ao campo, em que o prazo é a criação somada a trial_days
+	FullPeriodTotal         float64                      `protobuf:"fixed64,23,opt,name=full_period_total,json=fullPeriodTotal,proto3" json:"full_period_total,omitempty"`                       // Valor do ciclo por um período inteiro, preenchido só quando esta parcela cobre uma fração do período e por isso foi cobrada proporcionalmente. Zero = a parcela cobre o período cheio e o total dela já é o valor do período
+	Readjustment            *ContractReadjustment        `protobuf:"bytes,24,opt,name=readjustment,proto3" json:"readjustment,omitempty"`                                                        // Plano de reajuste do contrato, o que muda nele só para este contrato e a data do próximo reajuste; herdado pelas renovações
+	ReadjustmentApplied     *ContractReadjustmentApplied `protobuf:"bytes,25,opt,name=readjustment_applied,json=readjustmentApplied,proto3" json:"readjustment_applied,omitempty"`               // Reajuste aplicado nesta parcela, quando ela é a primeira com o valor novo
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -7813,6 +7816,217 @@ func (x *Contract) GetFullPeriodTotal() float64 {
 	return 0
 }
 
+func (x *Contract) GetReadjustment() *ContractReadjustment {
+	if x != nil {
+		return x.Readjustment
+	}
+	return nil
+}
+
+func (x *Contract) GetReadjustmentApplied() *ContractReadjustmentApplied {
+	if x != nil {
+		return x.ReadjustmentApplied
+	}
+	return nil
+}
+
+// Reajuste do contrato. Sem plano o contrato não reajusta; plano excluído ou inativo também deixa de
+// reajustar. Tipo não informado segue o tipo e o valor do plano; meses e dias de aviso
+// zerados seguem os do plano.
+type ContractReadjustment struct {
+	state          protoimpl.MessageState        `protogen:"open.v1"`
+	PlanId         string                        `protobuf:"bytes,1,opt,name=plan_id,json=planId,proto3" json:"plan_id,omitempty"`
+	PlanName       string                        `protobuf:"bytes,2,opt,name=plan_name,json=planName,proto3" json:"plan_name,omitempty"`
+	Type           readjustmentplan.TipoReajuste `protobuf:"varint,3,opt,name=type,proto3,enum=readjustmentplan.TipoReajuste" json:"type,omitempty"`        // índice não é aceito aqui: vale o do plano
+	Value          float64                       `protobuf:"fixed64,4,opt,name=value,proto3" json:"value,omitempty"`                                        // percentual (10 = 10%) ou valor em R$, conforme o tipo
+	IntervalMonths int32                         `protobuf:"varint,5,opt,name=interval_months,json=intervalMonths,proto3" json:"interval_months,omitempty"` // meses entre um reajuste e o seguinte
+	NoticeDays     int32                         `protobuf:"varint,6,opt,name=notice_days,json=noticeDays,proto3" json:"notice_days,omitempty"`             // dias antes do reajuste em que o cliente é avisado
+	// Data do próximo reajuste: a primeira parcela que começa nela ou depois sai com o valor
+	// reajustado. Vazia com plano informado, vale o próximo aniversário da data de contratação.
+	NextDate        *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=next_date,json=nextDate,proto3" json:"next_date,omitempty"`
+	NoticeSentFor   *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=notice_sent_for,json=noticeSentFor,proto3" json:"notice_sent_for,omitempty"`       // data do reajuste do qual o cliente já foi avisado
+	ReminderSentFor *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=reminder_sent_for,json=reminderSentFor,proto3" json:"reminder_sent_for,omitempty"` // data do reajuste da qual o cliente já recebeu o lembrete
+	LastDate        *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=last_date,json=lastDate,proto3" json:"last_date,omitempty"`                       // data do último reajuste aplicado
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ContractReadjustment) Reset() {
+	*x = ContractReadjustment{}
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[92]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ContractReadjustment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ContractReadjustment) ProtoMessage() {}
+
+func (x *ContractReadjustment) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[92]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ContractReadjustment.ProtoReflect.Descriptor instead.
+func (*ContractReadjustment) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{92}
+}
+
+func (x *ContractReadjustment) GetPlanId() string {
+	if x != nil {
+		return x.PlanId
+	}
+	return ""
+}
+
+func (x *ContractReadjustment) GetPlanName() string {
+	if x != nil {
+		return x.PlanName
+	}
+	return ""
+}
+
+func (x *ContractReadjustment) GetType() readjustmentplan.TipoReajuste {
+	if x != nil {
+		return x.Type
+	}
+	return readjustmentplan.TipoReajuste(0)
+}
+
+func (x *ContractReadjustment) GetValue() float64 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
+}
+
+func (x *ContractReadjustment) GetIntervalMonths() int32 {
+	if x != nil {
+		return x.IntervalMonths
+	}
+	return 0
+}
+
+func (x *ContractReadjustment) GetNoticeDays() int32 {
+	if x != nil {
+		return x.NoticeDays
+	}
+	return 0
+}
+
+func (x *ContractReadjustment) GetNextDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.NextDate
+	}
+	return nil
+}
+
+func (x *ContractReadjustment) GetNoticeSentFor() *timestamppb.Timestamp {
+	if x != nil {
+		return x.NoticeSentFor
+	}
+	return nil
+}
+
+func (x *ContractReadjustment) GetReminderSentFor() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ReminderSentFor
+	}
+	return nil
+}
+
+func (x *ContractReadjustment) GetLastDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastDate
+	}
+	return nil
+}
+
+type ContractReadjustmentApplied struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Date          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`                                          // data do reajuste
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`                            // o que foi aplicado, ex.: "10%" ou "R$ 20,00"
+	PreviousTotal float64                `protobuf:"fixed64,3,opt,name=previous_total,json=previousTotal,proto3" json:"previous_total,omitempty"` // valor do ciclo antes do reajuste
+	NewTotal      float64                `protobuf:"fixed64,4,opt,name=new_total,json=newTotal,proto3" json:"new_total,omitempty"`                // valor do ciclo reajustado
+	PlanName      string                 `protobuf:"bytes,5,opt,name=plan_name,json=planName,proto3" json:"plan_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ContractReadjustmentApplied) Reset() {
+	*x = ContractReadjustmentApplied{}
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[93]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ContractReadjustmentApplied) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ContractReadjustmentApplied) ProtoMessage() {}
+
+func (x *ContractReadjustmentApplied) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[93]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ContractReadjustmentApplied.ProtoReflect.Descriptor instead.
+func (*ContractReadjustmentApplied) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{93}
+}
+
+func (x *ContractReadjustmentApplied) GetDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Date
+	}
+	return nil
+}
+
+func (x *ContractReadjustmentApplied) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *ContractReadjustmentApplied) GetPreviousTotal() float64 {
+	if x != nil {
+		return x.PreviousTotal
+	}
+	return 0
+}
+
+func (x *ContractReadjustmentApplied) GetNewTotal() float64 {
+	if x != nil {
+		return x.NewTotal
+	}
+	return 0
+}
+
+func (x *ContractReadjustmentApplied) GetPlanName() string {
+	if x != nil {
+		return x.PlanName
+	}
+	return ""
+}
+
 // Informações do lote vinculado ao item
 type BatchInfo struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
@@ -7827,7 +8041,7 @@ type BatchInfo struct {
 
 func (x *BatchInfo) Reset() {
 	*x = BatchInfo{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[92]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7839,7 +8053,7 @@ func (x *BatchInfo) String() string {
 func (*BatchInfo) ProtoMessage() {}
 
 func (x *BatchInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[92]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7852,7 +8066,7 @@ func (x *BatchInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchInfo.ProtoReflect.Descriptor instead.
 func (*BatchInfo) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{92}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *BatchInfo) GetId() string {
@@ -7901,7 +8115,7 @@ type SerialInfo struct {
 
 func (x *SerialInfo) Reset() {
 	*x = SerialInfo{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[93]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7913,7 +8127,7 @@ func (x *SerialInfo) String() string {
 func (*SerialInfo) ProtoMessage() {}
 
 func (x *SerialInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[93]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7926,7 +8140,7 @@ func (x *SerialInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SerialInfo.ProtoReflect.Descriptor instead.
 func (*SerialInfo) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{93}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *SerialInfo) GetIds() []string {
@@ -8037,13 +8251,17 @@ type Produto struct {
 	// Número do item no pedido do cliente (nItemPed da NF-e). Zero usa a posição do item no
 	// documento.
 	PedidoCompraItem int32 `protobuf:"varint,70,opt,name=pedido_compra_item,json=pedidoCompraItem,proto3" json:"pedido_compra_item,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Locação: bem alugado ao cliente durante o contrato. É cobrado pelo valor do item em todo
+	// ciclo, mas sai do estoque só no ciclo em que foi incluído; a nota de remessa leva o
+	// valor_reposicao como valor do bem. Não pode ser comodato ao mesmo tempo.
+	Locacao       bool `protobuf:"varint,74,opt,name=locacao,proto3" json:"locacao,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Produto) Reset() {
 	*x = Produto{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[94]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8055,7 +8273,7 @@ func (x *Produto) String() string {
 func (*Produto) ProtoMessage() {}
 
 func (x *Produto) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[94]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8068,7 +8286,7 @@ func (x *Produto) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Produto.ProtoReflect.Descriptor instead.
 func (*Produto) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{94}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *Produto) GetId() string {
@@ -8582,6 +8800,13 @@ func (x *Produto) GetPedidoCompraItem() int32 {
 	return 0
 }
 
+func (x *Produto) GetLocacao() bool {
+	if x != nil {
+		return x.Locacao
+	}
+	return false
+}
+
 // Ciclo de vida do item na produção (cozinha/bar): envio, confirmação de
 // impressão e entrega, com timestamps para cálculo de tempo de preparo.
 type ItemProducao struct {
@@ -8601,7 +8826,7 @@ type ItemProducao struct {
 
 func (x *ItemProducao) Reset() {
 	*x = ItemProducao{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[95]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8613,7 +8838,7 @@ func (x *ItemProducao) String() string {
 func (*ItemProducao) ProtoMessage() {}
 
 func (x *ItemProducao) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[95]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8626,7 +8851,7 @@ func (x *ItemProducao) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemProducao.ProtoReflect.Descriptor instead.
 func (*ItemProducao) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{95}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *ItemProducao) GetEnviado() bool {
@@ -8742,7 +8967,7 @@ type Servico struct {
 
 func (x *Servico) Reset() {
 	*x = Servico{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[96]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8754,7 +8979,7 @@ func (x *Servico) String() string {
 func (*Servico) ProtoMessage() {}
 
 func (x *Servico) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[96]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8767,7 +8992,7 @@ func (x *Servico) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Servico.ProtoReflect.Descriptor instead.
 func (*Servico) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{96}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *Servico) GetId() string {
@@ -9060,7 +9285,7 @@ type ComposicaoServico struct {
 
 func (x *ComposicaoServico) Reset() {
 	*x = ComposicaoServico{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[97]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9072,7 +9297,7 @@ func (x *ComposicaoServico) String() string {
 func (*ComposicaoServico) ProtoMessage() {}
 
 func (x *ComposicaoServico) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[97]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9085,7 +9310,7 @@ func (x *ComposicaoServico) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ComposicaoServico.ProtoReflect.Descriptor instead.
 func (*ComposicaoServico) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{97}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *ComposicaoServico) GetId() string {
@@ -9197,7 +9422,7 @@ type Pagamento struct {
 
 func (x *Pagamento) Reset() {
 	*x = Pagamento{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[98]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9209,7 +9434,7 @@ func (x *Pagamento) String() string {
 func (*Pagamento) ProtoMessage() {}
 
 func (x *Pagamento) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[98]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9222,7 +9447,7 @@ func (x *Pagamento) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pagamento.ProtoReflect.Descriptor instead.
 func (*Pagamento) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{98}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *Pagamento) GetId() string {
@@ -9511,7 +9736,7 @@ type Parcelas struct {
 
 func (x *Parcelas) Reset() {
 	*x = Parcelas{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[99]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9523,7 +9748,7 @@ func (x *Parcelas) String() string {
 func (*Parcelas) ProtoMessage() {}
 
 func (x *Parcelas) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[99]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9536,7 +9761,7 @@ func (x *Parcelas) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Parcelas.ProtoReflect.Descriptor instead.
 func (*Parcelas) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{99}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *Parcelas) GetId() string {
@@ -9658,7 +9883,7 @@ type Pessoa struct {
 
 func (x *Pessoa) Reset() {
 	*x = Pessoa{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[100]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9670,7 +9895,7 @@ func (x *Pessoa) String() string {
 func (*Pessoa) ProtoMessage() {}
 
 func (x *Pessoa) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[100]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9683,7 +9908,7 @@ func (x *Pessoa) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pessoa.ProtoReflect.Descriptor instead.
 func (*Pessoa) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{100}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *Pessoa) GetId() string {
@@ -9865,7 +10090,7 @@ type Dfe struct {
 
 func (x *Dfe) Reset() {
 	*x = Dfe{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[101]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[103]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9877,7 +10102,7 @@ func (x *Dfe) String() string {
 func (*Dfe) ProtoMessage() {}
 
 func (x *Dfe) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[101]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[103]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9890,7 +10115,7 @@ func (x *Dfe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Dfe.ProtoReflect.Descriptor instead.
 func (*Dfe) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{101}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{103}
 }
 
 func (x *Dfe) GetNfe() *Nfe {
@@ -9932,7 +10157,7 @@ type Nfe struct {
 
 func (x *Nfe) Reset() {
 	*x = Nfe{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[102]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[104]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9944,7 +10169,7 @@ func (x *Nfe) String() string {
 func (*Nfe) ProtoMessage() {}
 
 func (x *Nfe) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[102]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[104]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9957,7 +10182,7 @@ func (x *Nfe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Nfe.ProtoReflect.Descriptor instead.
 func (*Nfe) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{102}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *Nfe) GetId() string {
@@ -10040,7 +10265,7 @@ type Nfce struct {
 
 func (x *Nfce) Reset() {
 	*x = Nfce{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[103]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[105]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10052,7 +10277,7 @@ func (x *Nfce) String() string {
 func (*Nfce) ProtoMessage() {}
 
 func (x *Nfce) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[103]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[105]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10065,7 +10290,7 @@ func (x *Nfce) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Nfce.ProtoReflect.Descriptor instead.
 func (*Nfce) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{103}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *Nfce) GetNfceNumero() int32 {
@@ -10140,7 +10365,7 @@ type Nfse struct {
 
 func (x *Nfse) Reset() {
 	*x = Nfse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[104]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[106]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10152,7 +10377,7 @@ func (x *Nfse) String() string {
 func (*Nfse) ProtoMessage() {}
 
 func (x *Nfse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[104]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[106]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10165,7 +10390,7 @@ func (x *Nfse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Nfse.ProtoReflect.Descriptor instead.
 func (*Nfse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{104}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{106}
 }
 
 func (x *Nfse) GetId() string {
@@ -10231,7 +10456,7 @@ type LicenciamentoModel struct {
 
 func (x *LicenciamentoModel) Reset() {
 	*x = LicenciamentoModel{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[105]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[107]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10243,7 +10468,7 @@ func (x *LicenciamentoModel) String() string {
 func (*LicenciamentoModel) ProtoMessage() {}
 
 func (x *LicenciamentoModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[105]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[107]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10256,7 +10481,7 @@ func (x *LicenciamentoModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LicenciamentoModel.ProtoReflect.Descriptor instead.
 func (*LicenciamentoModel) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{105}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{107}
 }
 
 func (x *LicenciamentoModel) GetTipoContrato() string {
@@ -10311,7 +10536,7 @@ type PedidoVinculado struct {
 
 func (x *PedidoVinculado) Reset() {
 	*x = PedidoVinculado{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[106]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[108]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10323,7 +10548,7 @@ func (x *PedidoVinculado) String() string {
 func (*PedidoVinculado) ProtoMessage() {}
 
 func (x *PedidoVinculado) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[106]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[108]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10336,7 +10561,7 @@ func (x *PedidoVinculado) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PedidoVinculado.ProtoReflect.Descriptor instead.
 func (*PedidoVinculado) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{106}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{108}
 }
 
 func (x *PedidoVinculado) GetId() string {
@@ -10421,7 +10646,7 @@ type DescontoAplicadosModel struct {
 
 func (x *DescontoAplicadosModel) Reset() {
 	*x = DescontoAplicadosModel{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[107]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[109]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10433,7 +10658,7 @@ func (x *DescontoAplicadosModel) String() string {
 func (*DescontoAplicadosModel) ProtoMessage() {}
 
 func (x *DescontoAplicadosModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[107]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[109]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10446,7 +10671,7 @@ func (x *DescontoAplicadosModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DescontoAplicadosModel.ProtoReflect.Descriptor instead.
 func (*DescontoAplicadosModel) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{107}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{109}
 }
 
 func (x *DescontoAplicadosModel) GetId() string {
@@ -10528,7 +10753,7 @@ type CupomAplicadoModel struct {
 
 func (x *CupomAplicadoModel) Reset() {
 	*x = CupomAplicadoModel{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[108]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[110]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10540,7 +10765,7 @@ func (x *CupomAplicadoModel) String() string {
 func (*CupomAplicadoModel) ProtoMessage() {}
 
 func (x *CupomAplicadoModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[108]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[110]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10553,7 +10778,7 @@ func (x *CupomAplicadoModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CupomAplicadoModel.ProtoReflect.Descriptor instead.
 func (*CupomAplicadoModel) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{108}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{110}
 }
 
 func (x *CupomAplicadoModel) GetCupomId() string {
@@ -10612,7 +10837,7 @@ type DescontoItemAplicado struct {
 
 func (x *DescontoItemAplicado) Reset() {
 	*x = DescontoItemAplicado{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[109]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[111]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10624,7 +10849,7 @@ func (x *DescontoItemAplicado) String() string {
 func (*DescontoItemAplicado) ProtoMessage() {}
 
 func (x *DescontoItemAplicado) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[109]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[111]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10637,7 +10862,7 @@ func (x *DescontoItemAplicado) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DescontoItemAplicado.ProtoReflect.Descriptor instead.
 func (*DescontoItemAplicado) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{109}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{111}
 }
 
 func (x *DescontoItemAplicado) GetItemId() string {
@@ -10677,7 +10902,7 @@ type CashbackAplicadosModel struct {
 
 func (x *CashbackAplicadosModel) Reset() {
 	*x = CashbackAplicadosModel{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[110]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[112]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10689,7 +10914,7 @@ func (x *CashbackAplicadosModel) String() string {
 func (*CashbackAplicadosModel) ProtoMessage() {}
 
 func (x *CashbackAplicadosModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[110]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[112]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10702,7 +10927,7 @@ func (x *CashbackAplicadosModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CashbackAplicadosModel.ProtoReflect.Descriptor instead.
 func (*CashbackAplicadosModel) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{110}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{112}
 }
 
 func (x *CashbackAplicadosModel) GetId() string {
@@ -10775,7 +11000,7 @@ type Partnership struct {
 
 func (x *Partnership) Reset() {
 	*x = Partnership{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[111]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[113]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10787,7 +11012,7 @@ func (x *Partnership) String() string {
 func (*Partnership) ProtoMessage() {}
 
 func (x *Partnership) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[111]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[113]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10800,7 +11025,7 @@ func (x *Partnership) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Partnership.ProtoReflect.Descriptor instead.
 func (*Partnership) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{111}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{113}
 }
 
 func (x *Partnership) GetPartnershipId() string {
@@ -10858,7 +11083,7 @@ type ConfirmationOrderReceipt struct {
 
 func (x *ConfirmationOrderReceipt) Reset() {
 	*x = ConfirmationOrderReceipt{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[112]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[114]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10870,7 +11095,7 @@ func (x *ConfirmationOrderReceipt) String() string {
 func (*ConfirmationOrderReceipt) ProtoMessage() {}
 
 func (x *ConfirmationOrderReceipt) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[112]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[114]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10883,7 +11108,7 @@ func (x *ConfirmationOrderReceipt) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfirmationOrderReceipt.ProtoReflect.Descriptor instead.
 func (*ConfirmationOrderReceipt) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{112}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{114}
 }
 
 func (x *ConfirmationOrderReceipt) GetDateTime() *timestamppb.Timestamp {
@@ -10924,7 +11149,7 @@ type CuponsSorteio struct {
 
 func (x *CuponsSorteio) Reset() {
 	*x = CuponsSorteio{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[113]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[115]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10936,7 +11161,7 @@ func (x *CuponsSorteio) String() string {
 func (*CuponsSorteio) ProtoMessage() {}
 
 func (x *CuponsSorteio) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[113]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[115]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10949,7 +11174,7 @@ func (x *CuponsSorteio) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CuponsSorteio.ProtoReflect.Descriptor instead.
 func (*CuponsSorteio) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{113}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{115}
 }
 
 func (x *CuponsSorteio) GetId() string {
@@ -10977,7 +11202,7 @@ type DfeDanfeRequest struct {
 
 func (x *DfeDanfeRequest) Reset() {
 	*x = DfeDanfeRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[114]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[116]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -10989,7 +11214,7 @@ func (x *DfeDanfeRequest) String() string {
 func (*DfeDanfeRequest) ProtoMessage() {}
 
 func (x *DfeDanfeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[114]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[116]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11002,7 +11227,7 @@ func (x *DfeDanfeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DfeDanfeRequest.ProtoReflect.Descriptor instead.
 func (*DfeDanfeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{114}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{116}
 }
 
 func (x *DfeDanfeRequest) GetId() string {
@@ -11035,7 +11260,7 @@ type DfeDanfeResponse struct {
 
 func (x *DfeDanfeResponse) Reset() {
 	*x = DfeDanfeResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[115]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[117]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11047,7 +11272,7 @@ func (x *DfeDanfeResponse) String() string {
 func (*DfeDanfeResponse) ProtoMessage() {}
 
 func (x *DfeDanfeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[115]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[117]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11060,7 +11285,7 @@ func (x *DfeDanfeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DfeDanfeResponse.ProtoReflect.Descriptor instead.
 func (*DfeDanfeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{115}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{117}
 }
 
 func (x *DfeDanfeResponse) GetResponse() *report.Response {
@@ -11092,7 +11317,7 @@ type ImportRequest struct {
 
 func (x *ImportRequest) Reset() {
 	*x = ImportRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[116]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[118]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11104,7 +11329,7 @@ func (x *ImportRequest) String() string {
 func (*ImportRequest) ProtoMessage() {}
 
 func (x *ImportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[116]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[118]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11117,7 +11342,7 @@ func (x *ImportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportRequest.ProtoReflect.Descriptor instead.
 func (*ImportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{116}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{118}
 }
 
 func (x *ImportRequest) GetData() string {
@@ -11227,7 +11452,7 @@ type ImportResponse struct {
 
 func (x *ImportResponse) Reset() {
 	*x = ImportResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[117]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[119]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11239,7 +11464,7 @@ func (x *ImportResponse) String() string {
 func (*ImportResponse) ProtoMessage() {}
 
 func (x *ImportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[117]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[119]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11252,7 +11477,7 @@ func (x *ImportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportResponse.ProtoReflect.Descriptor instead.
 func (*ImportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{117}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{119}
 }
 
 func (x *ImportResponse) GetReport() *imports.ImportResponse {
@@ -11291,7 +11516,7 @@ type SendPaymentLinkRequest struct {
 
 func (x *SendPaymentLinkRequest) Reset() {
 	*x = SendPaymentLinkRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[118]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[120]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11303,7 +11528,7 @@ func (x *SendPaymentLinkRequest) String() string {
 func (*SendPaymentLinkRequest) ProtoMessage() {}
 
 func (x *SendPaymentLinkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[118]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[120]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11316,7 +11541,7 @@ func (x *SendPaymentLinkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendPaymentLinkRequest.ProtoReflect.Descriptor instead.
 func (*SendPaymentLinkRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{118}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{120}
 }
 
 func (x *SendPaymentLinkRequest) GetIds() []string {
@@ -11408,7 +11633,7 @@ type SimulaCobrancaRequest struct {
 
 func (x *SimulaCobrancaRequest) Reset() {
 	*x = SimulaCobrancaRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[119]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[121]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11420,7 +11645,7 @@ func (x *SimulaCobrancaRequest) String() string {
 func (*SimulaCobrancaRequest) ProtoMessage() {}
 
 func (x *SimulaCobrancaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[119]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[121]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11433,7 +11658,7 @@ func (x *SimulaCobrancaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SimulaCobrancaRequest.ProtoReflect.Descriptor instead.
 func (*SimulaCobrancaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{119}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{121}
 }
 
 func (x *SimulaCobrancaRequest) GetBillingPlan() *billingplan.BillingPlan {
@@ -11464,7 +11689,7 @@ type SimulaCobrancaResponse struct {
 
 func (x *SimulaCobrancaResponse) Reset() {
 	*x = SimulaCobrancaResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[120]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[122]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11476,7 +11701,7 @@ func (x *SimulaCobrancaResponse) String() string {
 func (*SimulaCobrancaResponse) ProtoMessage() {}
 
 func (x *SimulaCobrancaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[120]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[122]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11489,7 +11714,7 @@ func (x *SimulaCobrancaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SimulaCobrancaResponse.ProtoReflect.Descriptor instead.
 func (*SimulaCobrancaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{120}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{122}
 }
 
 func (x *SimulaCobrancaResponse) GetItens() []*SimulaCobrancaItem {
@@ -11538,7 +11763,7 @@ type SimulaCobrancaItem struct {
 
 func (x *SimulaCobrancaItem) Reset() {
 	*x = SimulaCobrancaItem{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[121]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[123]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11550,7 +11775,7 @@ func (x *SimulaCobrancaItem) String() string {
 func (*SimulaCobrancaItem) ProtoMessage() {}
 
 func (x *SimulaCobrancaItem) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[121]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[123]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11563,7 +11788,7 @@ func (x *SimulaCobrancaItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SimulaCobrancaItem.ProtoReflect.Descriptor instead.
 func (*SimulaCobrancaItem) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{121}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{123}
 }
 
 func (x *SimulaCobrancaItem) GetDocumentoId() string {
@@ -11627,7 +11852,7 @@ type SendPaymentLinkResponse struct {
 
 func (x *SendPaymentLinkResponse) Reset() {
 	*x = SendPaymentLinkResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[122]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[124]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11639,7 +11864,7 @@ func (x *SendPaymentLinkResponse) String() string {
 func (*SendPaymentLinkResponse) ProtoMessage() {}
 
 func (x *SendPaymentLinkResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[122]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[124]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11652,7 +11877,7 @@ func (x *SendPaymentLinkResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendPaymentLinkResponse.ProtoReflect.Descriptor instead.
 func (*SendPaymentLinkResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{122}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{124}
 }
 
 func (x *SendPaymentLinkResponse) GetPedidos() []*Pedido {
@@ -11679,7 +11904,7 @@ type WhatsappWebEnvio struct {
 
 func (x *WhatsappWebEnvio) Reset() {
 	*x = WhatsappWebEnvio{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[123]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[125]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11691,7 +11916,7 @@ func (x *WhatsappWebEnvio) String() string {
 func (*WhatsappWebEnvio) ProtoMessage() {}
 
 func (x *WhatsappWebEnvio) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[123]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[125]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11704,7 +11929,7 @@ func (x *WhatsappWebEnvio) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhatsappWebEnvio.ProtoReflect.Descriptor instead.
 func (*WhatsappWebEnvio) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{123}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{125}
 }
 
 func (x *WhatsappWebEnvio) GetNumero() string {
@@ -11734,7 +11959,7 @@ type MesclaPedidosRequest struct {
 
 func (x *MesclaPedidosRequest) Reset() {
 	*x = MesclaPedidosRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[124]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[126]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11746,7 +11971,7 @@ func (x *MesclaPedidosRequest) String() string {
 func (*MesclaPedidosRequest) ProtoMessage() {}
 
 func (x *MesclaPedidosRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[124]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[126]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11759,7 +11984,7 @@ func (x *MesclaPedidosRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MesclaPedidosRequest.ProtoReflect.Descriptor instead.
 func (*MesclaPedidosRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{124}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{126}
 }
 
 func (x *MesclaPedidosRequest) GetTipo() string {
@@ -11799,7 +12024,7 @@ type MesclaPedidosResponse struct {
 
 func (x *MesclaPedidosResponse) Reset() {
 	*x = MesclaPedidosResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[125]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[127]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11811,7 +12036,7 @@ func (x *MesclaPedidosResponse) String() string {
 func (*MesclaPedidosResponse) ProtoMessage() {}
 
 func (x *MesclaPedidosResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[125]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[127]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11824,7 +12049,7 @@ func (x *MesclaPedidosResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MesclaPedidosResponse.ProtoReflect.Descriptor instead.
 func (*MesclaPedidosResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{125}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{127}
 }
 
 func (x *MesclaPedidosResponse) GetPedido() *Pedido {
@@ -11845,7 +12070,7 @@ type AddPedidoVinculadoRequest struct {
 
 func (x *AddPedidoVinculadoRequest) Reset() {
 	*x = AddPedidoVinculadoRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[126]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[128]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11857,7 +12082,7 @@ func (x *AddPedidoVinculadoRequest) String() string {
 func (*AddPedidoVinculadoRequest) ProtoMessage() {}
 
 func (x *AddPedidoVinculadoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[126]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[128]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11870,7 +12095,7 @@ func (x *AddPedidoVinculadoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPedidoVinculadoRequest.ProtoReflect.Descriptor instead.
 func (*AddPedidoVinculadoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{126}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{128}
 }
 
 func (x *AddPedidoVinculadoRequest) GetId() string {
@@ -11896,7 +12121,7 @@ type AddPedidoVinculadoResponse struct {
 
 func (x *AddPedidoVinculadoResponse) Reset() {
 	*x = AddPedidoVinculadoResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[127]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[129]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11908,7 +12133,7 @@ func (x *AddPedidoVinculadoResponse) String() string {
 func (*AddPedidoVinculadoResponse) ProtoMessage() {}
 
 func (x *AddPedidoVinculadoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[127]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[129]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11921,7 +12146,7 @@ func (x *AddPedidoVinculadoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPedidoVinculadoResponse.ProtoReflect.Descriptor instead.
 func (*AddPedidoVinculadoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{127}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{129}
 }
 
 func (x *AddPedidoVinculadoResponse) GetPedido() *Pedido {
@@ -11942,7 +12167,7 @@ type DeletePedidoVinculadoRequest struct {
 
 func (x *DeletePedidoVinculadoRequest) Reset() {
 	*x = DeletePedidoVinculadoRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[128]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[130]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11954,7 +12179,7 @@ func (x *DeletePedidoVinculadoRequest) String() string {
 func (*DeletePedidoVinculadoRequest) ProtoMessage() {}
 
 func (x *DeletePedidoVinculadoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[128]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[130]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11967,7 +12192,7 @@ func (x *DeletePedidoVinculadoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePedidoVinculadoRequest.ProtoReflect.Descriptor instead.
 func (*DeletePedidoVinculadoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{128}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{130}
 }
 
 func (x *DeletePedidoVinculadoRequest) GetId() string {
@@ -11993,7 +12218,7 @@ type DeletePedidoVinculadoResponse struct {
 
 func (x *DeletePedidoVinculadoResponse) Reset() {
 	*x = DeletePedidoVinculadoResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[129]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[131]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12005,7 +12230,7 @@ func (x *DeletePedidoVinculadoResponse) String() string {
 func (*DeletePedidoVinculadoResponse) ProtoMessage() {}
 
 func (x *DeletePedidoVinculadoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[129]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[131]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12018,7 +12243,7 @@ func (x *DeletePedidoVinculadoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePedidoVinculadoResponse.ProtoReflect.Descriptor instead.
 func (*DeletePedidoVinculadoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{129}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{131}
 }
 
 func (x *DeletePedidoVinculadoResponse) GetPedido() *Pedido {
@@ -12041,7 +12266,7 @@ type EnviaNFeRequest struct {
 
 func (x *EnviaNFeRequest) Reset() {
 	*x = EnviaNFeRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[130]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[132]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12053,7 +12278,7 @@ func (x *EnviaNFeRequest) String() string {
 func (*EnviaNFeRequest) ProtoMessage() {}
 
 func (x *EnviaNFeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[130]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[132]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12066,7 +12291,7 @@ func (x *EnviaNFeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnviaNFeRequest.ProtoReflect.Descriptor instead.
 func (*EnviaNFeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{130}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{132}
 }
 
 func (x *EnviaNFeRequest) GetIds() []string {
@@ -12106,7 +12331,7 @@ type EnviaNFeResponse struct {
 
 func (x *EnviaNFeResponse) Reset() {
 	*x = EnviaNFeResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[131]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[133]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12118,7 +12343,7 @@ func (x *EnviaNFeResponse) String() string {
 func (*EnviaNFeResponse) ProtoMessage() {}
 
 func (x *EnviaNFeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[131]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[133]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12131,7 +12356,7 @@ func (x *EnviaNFeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnviaNFeResponse.ProtoReflect.Descriptor instead.
 func (*EnviaNFeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{131}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{133}
 }
 
 func (x *EnviaNFeResponse) GetPedido() *Pedido {
@@ -12151,7 +12376,7 @@ type SincronizaNFeRequest struct {
 
 func (x *SincronizaNFeRequest) Reset() {
 	*x = SincronizaNFeRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[132]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[134]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12163,7 +12388,7 @@ func (x *SincronizaNFeRequest) String() string {
 func (*SincronizaNFeRequest) ProtoMessage() {}
 
 func (x *SincronizaNFeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[132]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[134]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12176,7 +12401,7 @@ func (x *SincronizaNFeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SincronizaNFeRequest.ProtoReflect.Descriptor instead.
 func (*SincronizaNFeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{132}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{134}
 }
 
 func (x *SincronizaNFeRequest) GetId() string {
@@ -12195,7 +12420,7 @@ type SincronizaNFeResponse struct {
 
 func (x *SincronizaNFeResponse) Reset() {
 	*x = SincronizaNFeResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[133]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[135]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12207,7 +12432,7 @@ func (x *SincronizaNFeResponse) String() string {
 func (*SincronizaNFeResponse) ProtoMessage() {}
 
 func (x *SincronizaNFeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[133]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[135]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12220,7 +12445,7 @@ func (x *SincronizaNFeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SincronizaNFeResponse.ProtoReflect.Descriptor instead.
 func (*SincronizaNFeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{133}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{135}
 }
 
 func (x *SincronizaNFeResponse) GetPedido() *Pedido {
@@ -12240,7 +12465,7 @@ type SincronizaPessoaRequest struct {
 
 func (x *SincronizaPessoaRequest) Reset() {
 	*x = SincronizaPessoaRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[134]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[136]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12252,7 +12477,7 @@ func (x *SincronizaPessoaRequest) String() string {
 func (*SincronizaPessoaRequest) ProtoMessage() {}
 
 func (x *SincronizaPessoaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[134]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[136]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12265,7 +12490,7 @@ func (x *SincronizaPessoaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SincronizaPessoaRequest.ProtoReflect.Descriptor instead.
 func (*SincronizaPessoaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{134}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{136}
 }
 
 func (x *SincronizaPessoaRequest) GetId() string {
@@ -12284,7 +12509,7 @@ type SincronizaPessoaResponse struct {
 
 func (x *SincronizaPessoaResponse) Reset() {
 	*x = SincronizaPessoaResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[135]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[137]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12296,7 +12521,7 @@ func (x *SincronizaPessoaResponse) String() string {
 func (*SincronizaPessoaResponse) ProtoMessage() {}
 
 func (x *SincronizaPessoaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[135]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[137]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12309,7 +12534,7 @@ func (x *SincronizaPessoaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SincronizaPessoaResponse.ProtoReflect.Descriptor instead.
 func (*SincronizaPessoaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{135}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{137}
 }
 
 func (x *SincronizaPessoaResponse) GetPedido() *Pedido {
@@ -12331,7 +12556,7 @@ type VinculoNfManualRequest struct {
 
 func (x *VinculoNfManualRequest) Reset() {
 	*x = VinculoNfManualRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[136]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[138]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12343,7 +12568,7 @@ func (x *VinculoNfManualRequest) String() string {
 func (*VinculoNfManualRequest) ProtoMessage() {}
 
 func (x *VinculoNfManualRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[136]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[138]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12356,7 +12581,7 @@ func (x *VinculoNfManualRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VinculoNfManualRequest.ProtoReflect.Descriptor instead.
 func (*VinculoNfManualRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{136}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{138}
 }
 
 func (x *VinculoNfManualRequest) GetId() string {
@@ -12389,7 +12614,7 @@ type VinculoNfManualResponse struct {
 
 func (x *VinculoNfManualResponse) Reset() {
 	*x = VinculoNfManualResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[137]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[139]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12401,7 +12626,7 @@ func (x *VinculoNfManualResponse) String() string {
 func (*VinculoNfManualResponse) ProtoMessage() {}
 
 func (x *VinculoNfManualResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[137]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[139]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12414,7 +12639,7 @@ func (x *VinculoNfManualResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VinculoNfManualResponse.ProtoReflect.Descriptor instead.
 func (*VinculoNfManualResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{137}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{139}
 }
 
 func (x *VinculoNfManualResponse) GetPedido() *Pedido {
@@ -12438,7 +12663,7 @@ type PrintPedidoRequest struct {
 
 func (x *PrintPedidoRequest) Reset() {
 	*x = PrintPedidoRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[138]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[140]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12450,7 +12675,7 @@ func (x *PrintPedidoRequest) String() string {
 func (*PrintPedidoRequest) ProtoMessage() {}
 
 func (x *PrintPedidoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[138]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[140]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12463,7 +12688,7 @@ func (x *PrintPedidoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrintPedidoRequest.ProtoReflect.Descriptor instead.
 func (*PrintPedidoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{138}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{140}
 }
 
 func (x *PrintPedidoRequest) GetIds() []string {
@@ -12510,7 +12735,7 @@ type PrintPedidoResponse struct {
 
 func (x *PrintPedidoResponse) Reset() {
 	*x = PrintPedidoResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[139]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[141]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12522,7 +12747,7 @@ func (x *PrintPedidoResponse) String() string {
 func (*PrintPedidoResponse) ProtoMessage() {}
 
 func (x *PrintPedidoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[139]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[141]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12535,7 +12760,7 @@ func (x *PrintPedidoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrintPedidoResponse.ProtoReflect.Descriptor instead.
 func (*PrintPedidoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{139}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{141}
 }
 
 func (x *PrintPedidoResponse) GetResponse() *report.Response {
@@ -12558,7 +12783,7 @@ type CorrecaoMovimentacaoRequest struct {
 
 func (x *CorrecaoMovimentacaoRequest) Reset() {
 	*x = CorrecaoMovimentacaoRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[140]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[142]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12570,7 +12795,7 @@ func (x *CorrecaoMovimentacaoRequest) String() string {
 func (*CorrecaoMovimentacaoRequest) ProtoMessage() {}
 
 func (x *CorrecaoMovimentacaoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[140]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[142]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12583,7 +12808,7 @@ func (x *CorrecaoMovimentacaoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CorrecaoMovimentacaoRequest.ProtoReflect.Descriptor instead.
 func (*CorrecaoMovimentacaoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{140}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{142}
 }
 
 func (x *CorrecaoMovimentacaoRequest) GetIds() []string {
@@ -12629,7 +12854,7 @@ type CorrecaoMovimentacaoResponse struct {
 
 func (x *CorrecaoMovimentacaoResponse) Reset() {
 	*x = CorrecaoMovimentacaoResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[141]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[143]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12641,7 +12866,7 @@ func (x *CorrecaoMovimentacaoResponse) String() string {
 func (*CorrecaoMovimentacaoResponse) ProtoMessage() {}
 
 func (x *CorrecaoMovimentacaoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[141]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[143]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12654,7 +12879,7 @@ func (x *CorrecaoMovimentacaoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CorrecaoMovimentacaoResponse.ProtoReflect.Descriptor instead.
 func (*CorrecaoMovimentacaoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{141}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{143}
 }
 
 // Informações de entrega do pedido para ecommerce
@@ -12684,7 +12909,7 @@ type DeliveryInfo struct {
 
 func (x *DeliveryInfo) Reset() {
 	*x = DeliveryInfo{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[142]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[144]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12696,7 +12921,7 @@ func (x *DeliveryInfo) String() string {
 func (*DeliveryInfo) ProtoMessage() {}
 
 func (x *DeliveryInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[142]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[144]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12709,7 +12934,7 @@ func (x *DeliveryInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeliveryInfo.ProtoReflect.Descriptor instead.
 func (*DeliveryInfo) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{142}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{144}
 }
 
 func (x *DeliveryInfo) GetDeliveryMethod() DeliveryMethod {
@@ -12837,7 +13062,7 @@ type DeliveryStatusHistory struct {
 
 func (x *DeliveryStatusHistory) Reset() {
 	*x = DeliveryStatusHistory{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[143]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[145]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12849,7 +13074,7 @@ func (x *DeliveryStatusHistory) String() string {
 func (*DeliveryStatusHistory) ProtoMessage() {}
 
 func (x *DeliveryStatusHistory) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[143]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[145]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12862,7 +13087,7 @@ func (x *DeliveryStatusHistory) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeliveryStatusHistory.ProtoReflect.Descriptor instead.
 func (*DeliveryStatusHistory) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{143}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{145}
 }
 
 func (x *DeliveryStatusHistory) GetStatus() string {
@@ -12913,7 +13138,7 @@ type DeliveryAddress struct {
 
 func (x *DeliveryAddress) Reset() {
 	*x = DeliveryAddress{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[144]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[146]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -12925,7 +13150,7 @@ func (x *DeliveryAddress) String() string {
 func (*DeliveryAddress) ProtoMessage() {}
 
 func (x *DeliveryAddress) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[144]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[146]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -12938,7 +13163,7 @@ func (x *DeliveryAddress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeliveryAddress.ProtoReflect.Descriptor instead.
 func (*DeliveryAddress) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{144}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{146}
 }
 
 func (x *DeliveryAddress) GetRecipientName() string {
@@ -13029,7 +13254,7 @@ type ReorderItemsRequest struct {
 
 func (x *ReorderItemsRequest) Reset() {
 	*x = ReorderItemsRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[145]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[147]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13041,7 +13266,7 @@ func (x *ReorderItemsRequest) String() string {
 func (*ReorderItemsRequest) ProtoMessage() {}
 
 func (x *ReorderItemsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[145]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[147]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13054,7 +13279,7 @@ func (x *ReorderItemsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReorderItemsRequest.ProtoReflect.Descriptor instead.
 func (*ReorderItemsRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{145}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{147}
 }
 
 func (x *ReorderItemsRequest) GetId() string {
@@ -13087,7 +13312,7 @@ type ReorderItemsResponse struct {
 
 func (x *ReorderItemsResponse) Reset() {
 	*x = ReorderItemsResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[146]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[148]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13099,7 +13324,7 @@ func (x *ReorderItemsResponse) String() string {
 func (*ReorderItemsResponse) ProtoMessage() {}
 
 func (x *ReorderItemsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[146]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[148]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13112,7 +13337,7 @@ func (x *ReorderItemsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReorderItemsResponse.ProtoReflect.Descriptor instead.
 func (*ReorderItemsResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{146}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{148}
 }
 
 func (x *ReorderItemsResponse) GetPedido() *Pedido {
@@ -13134,7 +13359,7 @@ type FaixaResumoVendas struct {
 
 func (x *FaixaResumoVendas) Reset() {
 	*x = FaixaResumoVendas{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[147]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[149]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13146,7 +13371,7 @@ func (x *FaixaResumoVendas) String() string {
 func (*FaixaResumoVendas) ProtoMessage() {}
 
 func (x *FaixaResumoVendas) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[147]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[149]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13159,7 +13384,7 @@ func (x *FaixaResumoVendas) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FaixaResumoVendas.ProtoReflect.Descriptor instead.
 func (*FaixaResumoVendas) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{147}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{149}
 }
 
 func (x *FaixaResumoVendas) GetChave() string {
@@ -13196,7 +13421,7 @@ type ResumoVendasPorVendedorRequest struct {
 
 func (x *ResumoVendasPorVendedorRequest) Reset() {
 	*x = ResumoVendasPorVendedorRequest{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[148]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[150]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13208,7 +13433,7 @@ func (x *ResumoVendasPorVendedorRequest) String() string {
 func (*ResumoVendasPorVendedorRequest) ProtoMessage() {}
 
 func (x *ResumoVendasPorVendedorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[148]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[150]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13221,7 +13446,7 @@ func (x *ResumoVendasPorVendedorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoVendasPorVendedorRequest.ProtoReflect.Descriptor instead.
 func (*ResumoVendasPorVendedorRequest) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{148}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{150}
 }
 
 func (x *ResumoVendasPorVendedorRequest) GetSellerIds() []string {
@@ -13264,7 +13489,7 @@ type TotalVendasVendedor struct {
 
 func (x *TotalVendasVendedor) Reset() {
 	*x = TotalVendasVendedor{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[149]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[151]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13276,7 +13501,7 @@ func (x *TotalVendasVendedor) String() string {
 func (*TotalVendasVendedor) ProtoMessage() {}
 
 func (x *TotalVendasVendedor) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[149]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[151]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13289,7 +13514,7 @@ func (x *TotalVendasVendedor) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TotalVendasVendedor.ProtoReflect.Descriptor instead.
 func (*TotalVendasVendedor) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{149}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{151}
 }
 
 func (x *TotalVendasVendedor) GetSellerId() string {
@@ -13329,7 +13554,7 @@ type ResumoVendasPorVendedorResponse struct {
 
 func (x *ResumoVendasPorVendedorResponse) Reset() {
 	*x = ResumoVendasPorVendedorResponse{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[150]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[152]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13341,7 +13566,7 @@ func (x *ResumoVendasPorVendedorResponse) String() string {
 func (*ResumoVendasPorVendedorResponse) ProtoMessage() {}
 
 func (x *ResumoVendasPorVendedorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[150]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[152]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13354,7 +13579,7 @@ func (x *ResumoVendasPorVendedorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoVendasPorVendedorResponse.ProtoReflect.Descriptor instead.
 func (*ResumoVendasPorVendedorResponse) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{150}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{152}
 }
 
 func (x *ResumoVendasPorVendedorResponse) GetTotais() []*TotalVendasVendedor {
@@ -13374,7 +13599,7 @@ type Contract_LastAccess struct {
 
 func (x *Contract_LastAccess) Reset() {
 	*x = Contract_LastAccess{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[152]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[154]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13386,7 +13611,7 @@ func (x *Contract_LastAccess) String() string {
 func (*Contract_LastAccess) ProtoMessage() {}
 
 func (x *Contract_LastAccess) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[152]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[154]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13426,7 +13651,7 @@ type LicenciamentoModel_UltimoAcesso struct {
 
 func (x *LicenciamentoModel_UltimoAcesso) Reset() {
 	*x = LicenciamentoModel_UltimoAcesso{}
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[153]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[155]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -13438,7 +13663,7 @@ func (x *LicenciamentoModel_UltimoAcesso) String() string {
 func (*LicenciamentoModel_UltimoAcesso) ProtoMessage() {}
 
 func (x *LicenciamentoModel_UltimoAcesso) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[153]
+	mi := &file_apps_vendas_pedido_pedido_proto_msgTypes[155]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -13451,7 +13676,7 @@ func (x *LicenciamentoModel_UltimoAcesso) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LicenciamentoModel_UltimoAcesso.ProtoReflect.Descriptor instead.
 func (*LicenciamentoModel_UltimoAcesso) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{105, 0}
+	return file_apps_vendas_pedido_pedido_proto_rawDescGZIP(), []int{107, 0}
 }
 
 func (x *LicenciamentoModel_UltimoAcesso) GetLastDate() *timestamppb.Timestamp {
@@ -13472,7 +13697,7 @@ var File_apps_vendas_pedido_pedido_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\n" +
-	"\x1fapps/vendas/pedido/pedido.proto\x12\x06pedido\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x18apps/report/report.proto\x1a-apps/vendas/rentcar/model/rentcar_model.proto\x1a%apps/vendas/pedido/pedido_otica.proto\x1a$apps/vendas/pedido/pedido_mesa.proto\x1a\"apps/filemanager/filemanager.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a)apps/vendas/billingplan/billingplan.proto\x1a\x15imports/imports.proto\x1a\x15exports/exports.proto\"C\n" +
+	"\x1fapps/vendas/pedido/pedido.proto\x12\x06pedido\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x18apps/report/report.proto\x1a-apps/vendas/rentcar/model/rentcar_model.proto\x1a%apps/vendas/pedido/pedido_otica.proto\x1a$apps/vendas/pedido/pedido_mesa.proto\x1a\"apps/filemanager/filemanager.proto\x1a3apps/vendas/readjustmentplan/readjustmentplan.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a)apps/vendas/billingplan/billingplan.proto\x1a\x15imports/imports.proto\x1a\x15exports/exports.proto\"C\n" +
 	"\x17GetQuickProdutosRequest\x12\x12\n" +
 	"\x04dias\x18\x01 \x01(\x05R\x04dias\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\"\xf4\x01\n" +
@@ -14033,7 +14258,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x13os_terceiros_numero\x18\x1b \x01(\tR\x11osTerceirosNumero\x120\n" +
 	"\x14os_fabricante_numero\x18\x1c \x01(\tR\x12osFabricanteNumero\x125\n" +
 	"\x17os_terceiros_emissor_id\x18\x1d \x01(\tR\x14osTerceirosEmissorId\x129\n" +
-	"\x19os_terceiros_emissor_nome\x18\x1e \x01(\tR\x16osTerceirosEmissorNome\"\xc7\t\n" +
+	"\x19os_terceiros_emissor_nome\x18\x1e \x01(\tR\x16osTerceirosEmissorNome\"\xe7\n" +
+	"\n" +
 	"\bContract\x12\x16\n" +
 	"\x06number\x18\x01 \x01(\tR\x06number\x12(\n" +
 	"\x04type\x18\x02 \x01(\x0e2\x14.pedido.ContractTypeR\x04type\x12?\n" +
@@ -14061,11 +14287,32 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x11previous_due_date\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\x0fpreviousDueDate\x12A\n" +
 	"\x0ereleased_until\x18\x15 \x01(\v2\x1a.google.protobuf.TimestampR\rreleasedUntil\x12>\n" +
 	"\rtrial_ends_at\x18\x16 \x01(\v2\x1a.google.protobuf.TimestampR\vtrialEndsAt\x12*\n" +
-	"\x11full_period_total\x18\x17 \x01(\x01R\x0ffullPeriodTotal\x1ab\n" +
+	"\x11full_period_total\x18\x17 \x01(\x01R\x0ffullPeriodTotal\x12@\n" +
+	"\freadjustment\x18\x18 \x01(\v2\x1c.pedido.ContractReadjustmentR\freadjustment\x12\\\n" +
+	"\x14readjustment_applied\x18\x19 \x01(\v2#.pedido.ContractReadjustmentAppliedB\x04\xe2A\x01\x03R\x13readjustmentApplied\x1ab\n" +
 	"\n" +
 	"LastAccess\x127\n" +
 	"\tlast_date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\blastDate\x12\x1b\n" +
-	"\tuser_name\x18\x02 \x01(\tR\buserName\"\xea\x01\n" +
+	"\tuser_name\x18\x02 \x01(\tR\buserName\"\xf6\x03\n" +
+	"\x14ContractReadjustment\x12\x17\n" +
+	"\aplan_id\x18\x01 \x01(\tR\x06planId\x12!\n" +
+	"\tplan_name\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\bplanName\x122\n" +
+	"\x04type\x18\x03 \x01(\x0e2\x1e.readjustmentplan.TipoReajusteR\x04type\x12\x14\n" +
+	"\x05value\x18\x04 \x01(\x01R\x05value\x12'\n" +
+	"\x0finterval_months\x18\x05 \x01(\x05R\x0eintervalMonths\x12\x1f\n" +
+	"\vnotice_days\x18\x06 \x01(\x05R\n" +
+	"noticeDays\x127\n" +
+	"\tnext_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bnextDate\x12H\n" +
+	"\x0fnotice_sent_for\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\rnoticeSentFor\x12L\n" +
+	"\x11reminder_sent_for\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x0freminderSentFor\x12=\n" +
+	"\tlast_date\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\blastDate\"\xd0\x01\n" +
+	"\x1bContractReadjustmentApplied\x12.\n" +
+	"\x04date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04date\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12%\n" +
+	"\x0eprevious_total\x18\x03 \x01(\x01R\rpreviousTotal\x12\x1b\n" +
+	"\tnew_total\x18\x04 \x01(\x01R\bnewTotal\x12\x1b\n" +
+	"\tplan_name\x18\x05 \x01(\tR\bplanName\"\xea\x01\n" +
 	"\tBatchInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12!\n" +
 	"\fbatch_number\x18\x02 \x01(\tR\vbatchNumber\x12C\n" +
@@ -14075,7 +14322,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\n" +
 	"SerialInfo\x12\x10\n" +
 	"\x03ids\x18\x01 \x03(\tR\x03ids\x12%\n" +
-	"\x0eserial_numbers\x18\x02 \x03(\tR\rserialNumbers\"\xa7\x16\n" +
+	"\x0eserial_numbers\x18\x02 \x03(\tR\rserialNumbers\"\xc1\x16\n" +
 	"\aProduto\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x128\n" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
@@ -14164,7 +14411,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\n" +
 	"observacao\x18E \x01(\tR\n" +
 	"observacao\x12,\n" +
-	"\x12pedido_compra_item\x18F \x01(\x05R\x10pedidoCompraItem\"\xa4\x03\n" +
+	"\x12pedido_compra_item\x18F \x01(\x05R\x10pedidoCompraItem\x12\x18\n" +
+	"\alocacao\x18J \x01(\bR\alocacao\"\xa4\x03\n" +
 	"\fItemProducao\x12\x18\n" +
 	"\aenviado\x18\x01 \x01(\bR\aenviado\x12@\n" +
 	"\rdataHoraEnvio\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\rdataHoraEnvio\x12\"\n" +
@@ -14804,7 +15052,7 @@ func file_apps_vendas_pedido_pedido_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_vendas_pedido_pedido_proto_enumTypes = make([]protoimpl.EnumInfo, 15)
-var file_apps_vendas_pedido_pedido_proto_msgTypes = make([]protoimpl.MessageInfo, 154)
+var file_apps_vendas_pedido_pedido_proto_msgTypes = make([]protoimpl.MessageInfo, 156)
 var file_apps_vendas_pedido_pedido_proto_goTypes = []any{
 	(RespostaCliente)(0),                       // 0: pedido.RespostaCliente
 	(ReportType)(0),                            // 1: pedido.ReportType
@@ -14913,84 +15161,87 @@ var file_apps_vendas_pedido_pedido_proto_goTypes = []any{
 	(*CheckoutPaymentSelection)(nil),           // 104: pedido.CheckoutPaymentSelection
 	(*OrdemServico)(nil),                       // 105: pedido.OrdemServico
 	(*Contract)(nil),                           // 106: pedido.Contract
-	(*BatchInfo)(nil),                          // 107: pedido.BatchInfo
-	(*SerialInfo)(nil),                         // 108: pedido.SerialInfo
-	(*Produto)(nil),                            // 109: pedido.Produto
-	(*ItemProducao)(nil),                       // 110: pedido.ItemProducao
-	(*Servico)(nil),                            // 111: pedido.Servico
-	(*ComposicaoServico)(nil),                  // 112: pedido.ComposicaoServico
-	(*Pagamento)(nil),                          // 113: pedido.Pagamento
-	(*Parcelas)(nil),                           // 114: pedido.Parcelas
-	(*Pessoa)(nil),                             // 115: pedido.Pessoa
-	(*Dfe)(nil),                                // 116: pedido.Dfe
-	(*Nfe)(nil),                                // 117: pedido.Nfe
-	(*Nfce)(nil),                               // 118: pedido.Nfce
-	(*Nfse)(nil),                               // 119: pedido.Nfse
-	(*LicenciamentoModel)(nil),                 // 120: pedido.LicenciamentoModel
-	(*PedidoVinculado)(nil),                    // 121: pedido.PedidoVinculado
-	(*DescontoAplicadosModel)(nil),             // 122: pedido.DescontoAplicadosModel
-	(*CupomAplicadoModel)(nil),                 // 123: pedido.CupomAplicadoModel
-	(*DescontoItemAplicado)(nil),               // 124: pedido.DescontoItemAplicado
-	(*CashbackAplicadosModel)(nil),             // 125: pedido.CashbackAplicadosModel
-	(*Partnership)(nil),                        // 126: pedido.Partnership
-	(*ConfirmationOrderReceipt)(nil),           // 127: pedido.ConfirmationOrderReceipt
-	(*CuponsSorteio)(nil),                      // 128: pedido.CuponsSorteio
-	(*DfeDanfeRequest)(nil),                    // 129: pedido.DfeDanfeRequest
-	(*DfeDanfeResponse)(nil),                   // 130: pedido.DfeDanfeResponse
-	(*ImportRequest)(nil),                      // 131: pedido.ImportRequest
-	(*ImportResponse)(nil),                     // 132: pedido.ImportResponse
-	(*SendPaymentLinkRequest)(nil),             // 133: pedido.SendPaymentLinkRequest
-	(*SimulaCobrancaRequest)(nil),              // 134: pedido.SimulaCobrancaRequest
-	(*SimulaCobrancaResponse)(nil),             // 135: pedido.SimulaCobrancaResponse
-	(*SimulaCobrancaItem)(nil),                 // 136: pedido.SimulaCobrancaItem
-	(*SendPaymentLinkResponse)(nil),            // 137: pedido.SendPaymentLinkResponse
-	(*WhatsappWebEnvio)(nil),                   // 138: pedido.WhatsappWebEnvio
-	(*MesclaPedidosRequest)(nil),               // 139: pedido.MesclaPedidosRequest
-	(*MesclaPedidosResponse)(nil),              // 140: pedido.MesclaPedidosResponse
-	(*AddPedidoVinculadoRequest)(nil),          // 141: pedido.AddPedidoVinculadoRequest
-	(*AddPedidoVinculadoResponse)(nil),         // 142: pedido.AddPedidoVinculadoResponse
-	(*DeletePedidoVinculadoRequest)(nil),       // 143: pedido.DeletePedidoVinculadoRequest
-	(*DeletePedidoVinculadoResponse)(nil),      // 144: pedido.DeletePedidoVinculadoResponse
-	(*EnviaNFeRequest)(nil),                    // 145: pedido.EnviaNFeRequest
-	(*EnviaNFeResponse)(nil),                   // 146: pedido.EnviaNFeResponse
-	(*SincronizaNFeRequest)(nil),               // 147: pedido.SincronizaNFeRequest
-	(*SincronizaNFeResponse)(nil),              // 148: pedido.SincronizaNFeResponse
-	(*SincronizaPessoaRequest)(nil),            // 149: pedido.SincronizaPessoaRequest
-	(*SincronizaPessoaResponse)(nil),           // 150: pedido.SincronizaPessoaResponse
-	(*VinculoNfManualRequest)(nil),             // 151: pedido.VinculoNfManualRequest
-	(*VinculoNfManualResponse)(nil),            // 152: pedido.VinculoNfManualResponse
-	(*PrintPedidoRequest)(nil),                 // 153: pedido.PrintPedidoRequest
-	(*PrintPedidoResponse)(nil),                // 154: pedido.PrintPedidoResponse
-	(*CorrecaoMovimentacaoRequest)(nil),        // 155: pedido.CorrecaoMovimentacaoRequest
-	(*CorrecaoMovimentacaoResponse)(nil),       // 156: pedido.CorrecaoMovimentacaoResponse
-	(*DeliveryInfo)(nil),                       // 157: pedido.DeliveryInfo
-	(*DeliveryStatusHistory)(nil),              // 158: pedido.DeliveryStatusHistory
-	(*DeliveryAddress)(nil),                    // 159: pedido.DeliveryAddress
-	(*ReorderItemsRequest)(nil),                // 160: pedido.ReorderItemsRequest
-	(*ReorderItemsResponse)(nil),               // 161: pedido.ReorderItemsResponse
-	(*FaixaResumoVendas)(nil),                  // 162: pedido.FaixaResumoVendas
-	(*ResumoVendasPorVendedorRequest)(nil),     // 163: pedido.ResumoVendasPorVendedorRequest
-	(*TotalVendasVendedor)(nil),                // 164: pedido.TotalVendasVendedor
-	(*ResumoVendasPorVendedorResponse)(nil),    // 165: pedido.ResumoVendasPorVendedorResponse
-	nil,                                        // 166: pedido.Pedido.CustomFieldsEntry
-	(*Contract_LastAccess)(nil),                // 167: pedido.Contract.LastAccess
-	(*LicenciamentoModel_UltimoAcesso)(nil),    // 168: pedido.LicenciamentoModel.UltimoAcesso
-	(*metadata.FieldMask)(nil),                 // 169: metadata.FieldMask
-	(metadata.Boolean)(0),                      // 170: metadata.Boolean
-	(*timestamppb.Timestamp)(nil),              // 171: google.protobuf.Timestamp
-	(*filter.Filter)(nil),                      // 172: Filter
-	(*filemanager.File)(nil),                   // 173: filemanager.File
-	(filemanager.FileApprovalStatus)(0),        // 174: filemanager.FileApprovalStatus
-	(exports.ExportFormat)(0),                  // 175: exports.ExportFormat
-	(*exports.ExportResponse)(nil),             // 176: exports.ExportResponse
-	(*PedidoEvent)(nil),                        // 177: pedido.PedidoEvent
-	(*report.Response)(nil),                    // 178: report.Response
-	(*metadata.BasicFields)(nil),               // 179: metadata.BasicFields
-	(*Otica)(nil),                              // 180: Otica
-	(*model.Reservation)(nil),                  // 181: rentcarmodel.Reservation
-	(*ConsumptionControl)(nil),                 // 182: pedido.ConsumptionControl
-	(*imports.ImportResponse)(nil),             // 183: imports.ImportResponse
-	(*billingplan.BillingPlan)(nil),            // 184: billingplan.BillingPlan
+	(*ContractReadjustment)(nil),               // 107: pedido.ContractReadjustment
+	(*ContractReadjustmentApplied)(nil),        // 108: pedido.ContractReadjustmentApplied
+	(*BatchInfo)(nil),                          // 109: pedido.BatchInfo
+	(*SerialInfo)(nil),                         // 110: pedido.SerialInfo
+	(*Produto)(nil),                            // 111: pedido.Produto
+	(*ItemProducao)(nil),                       // 112: pedido.ItemProducao
+	(*Servico)(nil),                            // 113: pedido.Servico
+	(*ComposicaoServico)(nil),                  // 114: pedido.ComposicaoServico
+	(*Pagamento)(nil),                          // 115: pedido.Pagamento
+	(*Parcelas)(nil),                           // 116: pedido.Parcelas
+	(*Pessoa)(nil),                             // 117: pedido.Pessoa
+	(*Dfe)(nil),                                // 118: pedido.Dfe
+	(*Nfe)(nil),                                // 119: pedido.Nfe
+	(*Nfce)(nil),                               // 120: pedido.Nfce
+	(*Nfse)(nil),                               // 121: pedido.Nfse
+	(*LicenciamentoModel)(nil),                 // 122: pedido.LicenciamentoModel
+	(*PedidoVinculado)(nil),                    // 123: pedido.PedidoVinculado
+	(*DescontoAplicadosModel)(nil),             // 124: pedido.DescontoAplicadosModel
+	(*CupomAplicadoModel)(nil),                 // 125: pedido.CupomAplicadoModel
+	(*DescontoItemAplicado)(nil),               // 126: pedido.DescontoItemAplicado
+	(*CashbackAplicadosModel)(nil),             // 127: pedido.CashbackAplicadosModel
+	(*Partnership)(nil),                        // 128: pedido.Partnership
+	(*ConfirmationOrderReceipt)(nil),           // 129: pedido.ConfirmationOrderReceipt
+	(*CuponsSorteio)(nil),                      // 130: pedido.CuponsSorteio
+	(*DfeDanfeRequest)(nil),                    // 131: pedido.DfeDanfeRequest
+	(*DfeDanfeResponse)(nil),                   // 132: pedido.DfeDanfeResponse
+	(*ImportRequest)(nil),                      // 133: pedido.ImportRequest
+	(*ImportResponse)(nil),                     // 134: pedido.ImportResponse
+	(*SendPaymentLinkRequest)(nil),             // 135: pedido.SendPaymentLinkRequest
+	(*SimulaCobrancaRequest)(nil),              // 136: pedido.SimulaCobrancaRequest
+	(*SimulaCobrancaResponse)(nil),             // 137: pedido.SimulaCobrancaResponse
+	(*SimulaCobrancaItem)(nil),                 // 138: pedido.SimulaCobrancaItem
+	(*SendPaymentLinkResponse)(nil),            // 139: pedido.SendPaymentLinkResponse
+	(*WhatsappWebEnvio)(nil),                   // 140: pedido.WhatsappWebEnvio
+	(*MesclaPedidosRequest)(nil),               // 141: pedido.MesclaPedidosRequest
+	(*MesclaPedidosResponse)(nil),              // 142: pedido.MesclaPedidosResponse
+	(*AddPedidoVinculadoRequest)(nil),          // 143: pedido.AddPedidoVinculadoRequest
+	(*AddPedidoVinculadoResponse)(nil),         // 144: pedido.AddPedidoVinculadoResponse
+	(*DeletePedidoVinculadoRequest)(nil),       // 145: pedido.DeletePedidoVinculadoRequest
+	(*DeletePedidoVinculadoResponse)(nil),      // 146: pedido.DeletePedidoVinculadoResponse
+	(*EnviaNFeRequest)(nil),                    // 147: pedido.EnviaNFeRequest
+	(*EnviaNFeResponse)(nil),                   // 148: pedido.EnviaNFeResponse
+	(*SincronizaNFeRequest)(nil),               // 149: pedido.SincronizaNFeRequest
+	(*SincronizaNFeResponse)(nil),              // 150: pedido.SincronizaNFeResponse
+	(*SincronizaPessoaRequest)(nil),            // 151: pedido.SincronizaPessoaRequest
+	(*SincronizaPessoaResponse)(nil),           // 152: pedido.SincronizaPessoaResponse
+	(*VinculoNfManualRequest)(nil),             // 153: pedido.VinculoNfManualRequest
+	(*VinculoNfManualResponse)(nil),            // 154: pedido.VinculoNfManualResponse
+	(*PrintPedidoRequest)(nil),                 // 155: pedido.PrintPedidoRequest
+	(*PrintPedidoResponse)(nil),                // 156: pedido.PrintPedidoResponse
+	(*CorrecaoMovimentacaoRequest)(nil),        // 157: pedido.CorrecaoMovimentacaoRequest
+	(*CorrecaoMovimentacaoResponse)(nil),       // 158: pedido.CorrecaoMovimentacaoResponse
+	(*DeliveryInfo)(nil),                       // 159: pedido.DeliveryInfo
+	(*DeliveryStatusHistory)(nil),              // 160: pedido.DeliveryStatusHistory
+	(*DeliveryAddress)(nil),                    // 161: pedido.DeliveryAddress
+	(*ReorderItemsRequest)(nil),                // 162: pedido.ReorderItemsRequest
+	(*ReorderItemsResponse)(nil),               // 163: pedido.ReorderItemsResponse
+	(*FaixaResumoVendas)(nil),                  // 164: pedido.FaixaResumoVendas
+	(*ResumoVendasPorVendedorRequest)(nil),     // 165: pedido.ResumoVendasPorVendedorRequest
+	(*TotalVendasVendedor)(nil),                // 166: pedido.TotalVendasVendedor
+	(*ResumoVendasPorVendedorResponse)(nil),    // 167: pedido.ResumoVendasPorVendedorResponse
+	nil,                                        // 168: pedido.Pedido.CustomFieldsEntry
+	(*Contract_LastAccess)(nil),                // 169: pedido.Contract.LastAccess
+	(*LicenciamentoModel_UltimoAcesso)(nil),    // 170: pedido.LicenciamentoModel.UltimoAcesso
+	(*metadata.FieldMask)(nil),                 // 171: metadata.FieldMask
+	(metadata.Boolean)(0),                      // 172: metadata.Boolean
+	(*timestamppb.Timestamp)(nil),              // 173: google.protobuf.Timestamp
+	(*filter.Filter)(nil),                      // 174: Filter
+	(*filemanager.File)(nil),                   // 175: filemanager.File
+	(filemanager.FileApprovalStatus)(0),        // 176: filemanager.FileApprovalStatus
+	(exports.ExportFormat)(0),                  // 177: exports.ExportFormat
+	(*exports.ExportResponse)(nil),             // 178: exports.ExportResponse
+	(*PedidoEvent)(nil),                        // 179: pedido.PedidoEvent
+	(*report.Response)(nil),                    // 180: report.Response
+	(*metadata.BasicFields)(nil),               // 181: metadata.BasicFields
+	(*Otica)(nil),                              // 182: Otica
+	(*model.Reservation)(nil),                  // 183: rentcarmodel.Reservation
+	(*ConsumptionControl)(nil),                 // 184: pedido.ConsumptionControl
+	(readjustmentplan.TipoReajuste)(0),         // 185: readjustmentplan.TipoReajuste
+	(*imports.ImportResponse)(nil),             // 186: imports.ImportResponse
+	(*billingplan.BillingPlan)(nil),            // 187: billingplan.BillingPlan
 }
 var file_apps_vendas_pedido_pedido_proto_depIdxs = []int32{
 	16,  // 0: pedido.GetQuickProdutosResponse.maisVendidos:type_name -> pedido.QuickProduto
@@ -15002,332 +15253,340 @@ var file_apps_vendas_pedido_pedido_proto_depIdxs = []int32{
 	97,  // 6: pedido.CreatePedidoRequest.pedido:type_name -> pedido.Pedido
 	97,  // 7: pedido.CreatePedidoResponse.pedido:type_name -> pedido.Pedido
 	97,  // 8: pedido.UpdatePedidoRequest.pedido:type_name -> pedido.Pedido
-	169, // 9: pedido.UpdatePedidoRequest.update_mask:type_name -> metadata.FieldMask
+	171, // 9: pedido.UpdatePedidoRequest.update_mask:type_name -> metadata.FieldMask
 	97,  // 10: pedido.UpdatePedidoResponse.pedido:type_name -> pedido.Pedido
 	97,  // 11: pedido.ListPedidoRequest.pedido:type_name -> pedido.Pedido
-	170, // 12: pedido.ListPedidoRequest.merged:type_name -> metadata.Boolean
-	170, // 13: pedido.ListPedidoRequest.seller_only:type_name -> metadata.Boolean
-	170, // 14: pedido.ListPedidoRequest.generated_nfe:type_name -> metadata.Boolean
-	170, // 15: pedido.ListPedidoRequest.generated_nfce:type_name -> metadata.Boolean
-	171, // 16: pedido.ListPedidoRequest.due_date_gte:type_name -> google.protobuf.Timestamp
-	171, // 17: pedido.ListPedidoRequest.due_date_lte:type_name -> google.protobuf.Timestamp
-	171, // 18: pedido.ListPedidoRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	171, // 19: pedido.ListPedidoRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	171, // 20: pedido.ListPedidoRequest.closeDateGte:type_name -> google.protobuf.Timestamp
-	171, // 21: pedido.ListPedidoRequest.closeDateLte:type_name -> google.protobuf.Timestamp
-	171, // 22: pedido.ListPedidoRequest.deliveryDateGte:type_name -> google.protobuf.Timestamp
-	171, // 23: pedido.ListPedidoRequest.deliveryDateLte:type_name -> google.protobuf.Timestamp
-	171, // 24: pedido.ListPedidoRequest.recurrenceDateGte:type_name -> google.protobuf.Timestamp
-	171, // 25: pedido.ListPedidoRequest.recurrenceDateLte:type_name -> google.protobuf.Timestamp
-	171, // 26: pedido.ListPedidoRequest.dataHoraRegistroGte:type_name -> google.protobuf.Timestamp
-	171, // 27: pedido.ListPedidoRequest.dataHoraRegistroLte:type_name -> google.protobuf.Timestamp
-	172, // 28: pedido.ListPedidoRequest.filter:type_name -> Filter
+	172, // 12: pedido.ListPedidoRequest.merged:type_name -> metadata.Boolean
+	172, // 13: pedido.ListPedidoRequest.seller_only:type_name -> metadata.Boolean
+	172, // 14: pedido.ListPedidoRequest.generated_nfe:type_name -> metadata.Boolean
+	172, // 15: pedido.ListPedidoRequest.generated_nfce:type_name -> metadata.Boolean
+	173, // 16: pedido.ListPedidoRequest.due_date_gte:type_name -> google.protobuf.Timestamp
+	173, // 17: pedido.ListPedidoRequest.due_date_lte:type_name -> google.protobuf.Timestamp
+	173, // 18: pedido.ListPedidoRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	173, // 19: pedido.ListPedidoRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	173, // 20: pedido.ListPedidoRequest.closeDateGte:type_name -> google.protobuf.Timestamp
+	173, // 21: pedido.ListPedidoRequest.closeDateLte:type_name -> google.protobuf.Timestamp
+	173, // 22: pedido.ListPedidoRequest.deliveryDateGte:type_name -> google.protobuf.Timestamp
+	173, // 23: pedido.ListPedidoRequest.deliveryDateLte:type_name -> google.protobuf.Timestamp
+	173, // 24: pedido.ListPedidoRequest.recurrenceDateGte:type_name -> google.protobuf.Timestamp
+	173, // 25: pedido.ListPedidoRequest.recurrenceDateLte:type_name -> google.protobuf.Timestamp
+	173, // 26: pedido.ListPedidoRequest.dataHoraRegistroGte:type_name -> google.protobuf.Timestamp
+	173, // 27: pedido.ListPedidoRequest.dataHoraRegistroLte:type_name -> google.protobuf.Timestamp
+	174, // 28: pedido.ListPedidoRequest.filter:type_name -> Filter
 	97,  // 29: pedido.CancelPedidoResponse.pedido:type_name -> pedido.Pedido
 	97,  // 30: pedido.ClonePedidoResponse.pedido:type_name -> pedido.Pedido
 	97,  // 31: pedido.ConfirmOrderReceiptResponse.pedido:type_name -> pedido.Pedido
-	173, // 32: pedido.AddFilesRequest.files:type_name -> filemanager.File
+	175, // 32: pedido.AddFilesRequest.files:type_name -> filemanager.File
 	97,  // 33: pedido.AddFilesResponse.pedido:type_name -> pedido.Pedido
 	97,  // 34: pedido.RemoveFilesResponse.pedido:type_name -> pedido.Pedido
-	174, // 35: pedido.SetFileApprovalRequest.status:type_name -> filemanager.FileApprovalStatus
+	176, // 35: pedido.SetFileApprovalRequest.status:type_name -> filemanager.FileApprovalStatus
 	97,  // 36: pedido.SetFileApprovalResponse.pedido:type_name -> pedido.Pedido
-	175, // 37: pedido.ExportOrdersRequest.format:type_name -> exports.ExportFormat
-	172, // 38: pedido.ExportOrdersRequest.filter:type_name -> Filter
-	176, // 39: pedido.ExportOrdersResponse.export:type_name -> exports.ExportResponse
+	177, // 37: pedido.ExportOrdersRequest.format:type_name -> exports.ExportFormat
+	174, // 38: pedido.ExportOrdersRequest.filter:type_name -> Filter
+	178, // 39: pedido.ExportOrdersResponse.export:type_name -> exports.ExportResponse
 	97,  // 40: pedido.GetPedidoResponse.pedido:type_name -> pedido.Pedido
 	2,   // 41: pedido.GenerateFromOrcamentoRequest.type:type_name -> pedido.TipoMovimentacao
 	54,  // 42: pedido.GenerateFromOrcamentoRequest.itens_serial:type_name -> pedido.OrcamentoItemSerial
-	108, // 43: pedido.OrcamentoItemSerial.serial:type_name -> pedido.SerialInfo
+	110, // 43: pedido.OrcamentoItemSerial.serial:type_name -> pedido.SerialInfo
 	97,  // 44: pedido.GenerateFromOrcamentoResponse.pedido:type_name -> pedido.Pedido
 	97,  // 45: pedido.ListPedidoResponse.pedidoList:type_name -> pedido.Pedido
 	2,   // 46: pedido.AddProductRequest.type:type_name -> pedido.TipoMovimentacao
-	109, // 47: pedido.AddProductRequest.product:type_name -> pedido.Produto
+	111, // 47: pedido.AddProductRequest.product:type_name -> pedido.Produto
 	97,  // 48: pedido.AddProductResponse.pedido:type_name -> pedido.Pedido
-	109, // 49: pedido.AddProductResponse.product:type_name -> pedido.Produto
-	109, // 50: pedido.UpdateProductRequest.product:type_name -> pedido.Produto
+	111, // 49: pedido.AddProductResponse.product:type_name -> pedido.Produto
+	111, // 50: pedido.UpdateProductRequest.product:type_name -> pedido.Produto
 	97,  // 51: pedido.UpdateProductResponse.pedido:type_name -> pedido.Pedido
-	109, // 52: pedido.UpdateProductResponse.product:type_name -> pedido.Produto
+	111, // 52: pedido.UpdateProductResponse.product:type_name -> pedido.Produto
 	97,  // 53: pedido.DeleteProductResponse.pedido:type_name -> pedido.Pedido
 	2,   // 54: pedido.AddServiceRequest.type:type_name -> pedido.TipoMovimentacao
-	111, // 55: pedido.AddServiceRequest.service:type_name -> pedido.Servico
+	113, // 55: pedido.AddServiceRequest.service:type_name -> pedido.Servico
 	97,  // 56: pedido.AddServiceResponse.pedido:type_name -> pedido.Pedido
-	111, // 57: pedido.AddServiceResponse.service:type_name -> pedido.Servico
-	111, // 58: pedido.UpdateServiceRequest.service:type_name -> pedido.Servico
+	113, // 57: pedido.AddServiceResponse.service:type_name -> pedido.Servico
+	113, // 58: pedido.UpdateServiceRequest.service:type_name -> pedido.Servico
 	97,  // 59: pedido.UpdateServiceResponse.pedido:type_name -> pedido.Pedido
-	111, // 60: pedido.UpdateServiceResponse.service:type_name -> pedido.Servico
+	113, // 60: pedido.UpdateServiceResponse.service:type_name -> pedido.Servico
 	97,  // 61: pedido.DeleteServiceResponse.pedido:type_name -> pedido.Pedido
-	113, // 62: pedido.AddPaymentRequest.payments:type_name -> pedido.Pagamento
+	115, // 62: pedido.AddPaymentRequest.payments:type_name -> pedido.Pagamento
 	97,  // 63: pedido.AddPaymentResponse.pedido:type_name -> pedido.Pedido
-	113, // 64: pedido.AddPaymentResponse.pagamento:type_name -> pedido.Pagamento
+	115, // 64: pedido.AddPaymentResponse.pagamento:type_name -> pedido.Pagamento
 	97,  // 65: pedido.AddPaymentResponse.pedidos:type_name -> pedido.Pedido
 	97,  // 66: pedido.DeletePaymentResponse.pedido:type_name -> pedido.Pedido
 	97,  // 67: pedido.CancelPaymentResponse.pedido:type_name -> pedido.Pedido
 	97,  // 68: pedido.EffectuatePaymentsResponse.pedido:type_name -> pedido.Pedido
-	177, // 69: pedido.SendReminderResponse.event:type_name -> pedido.PedidoEvent
+	179, // 69: pedido.SendReminderResponse.event:type_name -> pedido.PedidoEvent
 	97,  // 70: pedido.AplicaTabelaPrecoResponse.pedido:type_name -> pedido.Pedido
 	97,  // 71: pedido.RecalcularComissaoResponse.pedidos:type_name -> pedido.Pedido
-	171, // 72: pedido.Billing.next_billing_date:type_name -> google.protobuf.Timestamp
-	171, // 73: pedido.Billing.last_billing_date:type_name -> google.protobuf.Timestamp
+	173, // 72: pedido.Billing.next_billing_date:type_name -> google.protobuf.Timestamp
+	173, // 73: pedido.Billing.last_billing_date:type_name -> google.protobuf.Timestamp
 	34,  // 74: pedido.ReportRequest.list_request:type_name -> pedido.ListPedidoRequest
 	1,   // 75: pedido.ReportRequest.reportType:type_name -> pedido.ReportType
-	178, // 76: pedido.ReportResponse.response:type_name -> report.Response
+	180, // 76: pedido.ReportResponse.response:type_name -> report.Response
 	4,   // 77: pedido.OriginInfo.origin_type:type_name -> pedido.Origin
 	94,  // 78: pedido.SetAcompanhamentoResponse.acompanhamento:type_name -> pedido.OrderAcompanhamento
-	171, // 79: pedido.Pedido.createdAt:type_name -> google.protobuf.Timestamp
-	171, // 80: pedido.Pedido.updatedAt:type_name -> google.protobuf.Timestamp
-	179, // 81: pedido.Pedido.fields:type_name -> metadata.BasicFields
+	173, // 79: pedido.Pedido.createdAt:type_name -> google.protobuf.Timestamp
+	173, // 80: pedido.Pedido.updatedAt:type_name -> google.protobuf.Timestamp
+	181, // 81: pedido.Pedido.fields:type_name -> metadata.BasicFields
 	93,  // 82: pedido.Pedido.tags:type_name -> pedido.OrderTag
-	171, // 83: pedido.Pedido.importadoEm:type_name -> google.protobuf.Timestamp
-	115, // 84: pedido.Pedido.pessoa:type_name -> pedido.Pessoa
-	115, // 85: pedido.Pedido.vendedor:type_name -> pedido.Pessoa
-	171, // 86: pedido.Pedido.dataHoraRegistro:type_name -> google.protobuf.Timestamp
-	171, // 87: pedido.Pedido.dataHoraFechamento:type_name -> google.protobuf.Timestamp
-	171, // 88: pedido.Pedido.previsaoEntrega:type_name -> google.protobuf.Timestamp
-	171, // 89: pedido.Pedido.dataHoraInicio:type_name -> google.protobuf.Timestamp
-	171, // 90: pedido.Pedido.dataHoraEntrega:type_name -> google.protobuf.Timestamp
-	171, // 91: pedido.Pedido.nfeDataHoraEmissao:type_name -> google.protobuf.Timestamp
-	171, // 92: pedido.Pedido.nfceDataHoraEmissao:type_name -> google.protobuf.Timestamp
-	171, // 93: pedido.Pedido.cancelamentoDataHora:type_name -> google.protobuf.Timestamp
-	109, // 94: pedido.Pedido.produtos:type_name -> pedido.Produto
-	111, // 95: pedido.Pedido.servicos:type_name -> pedido.Servico
-	113, // 96: pedido.Pedido.pagamentos:type_name -> pedido.Pagamento
+	173, // 83: pedido.Pedido.importadoEm:type_name -> google.protobuf.Timestamp
+	117, // 84: pedido.Pedido.pessoa:type_name -> pedido.Pessoa
+	117, // 85: pedido.Pedido.vendedor:type_name -> pedido.Pessoa
+	173, // 86: pedido.Pedido.dataHoraRegistro:type_name -> google.protobuf.Timestamp
+	173, // 87: pedido.Pedido.dataHoraFechamento:type_name -> google.protobuf.Timestamp
+	173, // 88: pedido.Pedido.previsaoEntrega:type_name -> google.protobuf.Timestamp
+	173, // 89: pedido.Pedido.dataHoraInicio:type_name -> google.protobuf.Timestamp
+	173, // 90: pedido.Pedido.dataHoraEntrega:type_name -> google.protobuf.Timestamp
+	173, // 91: pedido.Pedido.nfeDataHoraEmissao:type_name -> google.protobuf.Timestamp
+	173, // 92: pedido.Pedido.nfceDataHoraEmissao:type_name -> google.protobuf.Timestamp
+	173, // 93: pedido.Pedido.cancelamentoDataHora:type_name -> google.protobuf.Timestamp
+	111, // 94: pedido.Pedido.produtos:type_name -> pedido.Produto
+	113, // 95: pedido.Pedido.servicos:type_name -> pedido.Servico
+	115, // 96: pedido.Pedido.pagamentos:type_name -> pedido.Pagamento
 	102, // 97: pedido.Pedido.transactions_online:type_name -> pedido.TransactionsOnline
-	121, // 98: pedido.Pedido.pedidosVinculados:type_name -> pedido.PedidoVinculado
-	122, // 99: pedido.Pedido.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
-	125, // 100: pedido.Pedido.cashbackAplicado:type_name -> pedido.CashbackAplicadosModel
-	120, // 101: pedido.Pedido.licenciamento:type_name -> pedido.LicenciamentoModel
+	123, // 98: pedido.Pedido.pedidosVinculados:type_name -> pedido.PedidoVinculado
+	124, // 99: pedido.Pedido.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
+	127, // 100: pedido.Pedido.cashbackAplicado:type_name -> pedido.CashbackAplicadosModel
+	122, // 101: pedido.Pedido.licenciamento:type_name -> pedido.LicenciamentoModel
 	105, // 102: pedido.Pedido.os:type_name -> pedido.OrdemServico
-	180, // 103: pedido.Pedido.otica:type_name -> Otica
-	126, // 104: pedido.Pedido.partnership:type_name -> pedido.Partnership
-	128, // 105: pedido.Pedido.cuponsSorteios:type_name -> pedido.CuponsSorteio
-	181, // 106: pedido.Pedido.rentCar:type_name -> rentcarmodel.Reservation
+	182, // 103: pedido.Pedido.otica:type_name -> Otica
+	128, // 104: pedido.Pedido.partnership:type_name -> pedido.Partnership
+	130, // 105: pedido.Pedido.cuponsSorteios:type_name -> pedido.CuponsSorteio
+	183, // 106: pedido.Pedido.rentCar:type_name -> rentcarmodel.Reservation
 	106, // 107: pedido.Pedido.contract:type_name -> pedido.Contract
-	173, // 108: pedido.Pedido.files:type_name -> filemanager.File
-	127, // 109: pedido.Pedido.confirmation_receipt:type_name -> pedido.ConfirmationOrderReceipt
+	175, // 108: pedido.Pedido.files:type_name -> filemanager.File
+	129, // 109: pedido.Pedido.confirmation_receipt:type_name -> pedido.ConfirmationOrderReceipt
 	92,  // 110: pedido.Pedido.origin:type_name -> pedido.OriginInfo
 	89,  // 111: pedido.Pedido.billing:type_name -> pedido.Billing
-	157, // 112: pedido.Pedido.delivery:type_name -> pedido.DeliveryInfo
+	159, // 112: pedido.Pedido.delivery:type_name -> pedido.DeliveryInfo
 	104, // 113: pedido.Pedido.checkout_payment_selection:type_name -> pedido.CheckoutPaymentSelection
-	116, // 114: pedido.Pedido.dfe:type_name -> pedido.Dfe
-	182, // 115: pedido.Pedido.consumption_control:type_name -> pedido.ConsumptionControl
-	177, // 116: pedido.Pedido.events:type_name -> pedido.PedidoEvent
-	171, // 117: pedido.Pedido.dataFimGarantia:type_name -> google.protobuf.Timestamp
+	118, // 114: pedido.Pedido.dfe:type_name -> pedido.Dfe
+	184, // 115: pedido.Pedido.consumption_control:type_name -> pedido.ConsumptionControl
+	179, // 116: pedido.Pedido.events:type_name -> pedido.PedidoEvent
+	173, // 117: pedido.Pedido.dataFimGarantia:type_name -> google.protobuf.Timestamp
 	100, // 118: pedido.Pedido.warranty:type_name -> pedido.Warranty
 	97,  // 119: pedido.Pedido.recorrencias:type_name -> pedido.Pedido
 	99,  // 120: pedido.Pedido.webhooks:type_name -> pedido.PedidoWebhook
 	94,  // 121: pedido.Pedido.acompanhamento:type_name -> pedido.OrderAcompanhamento
-	123, // 122: pedido.Pedido.cupomAplicado:type_name -> pedido.CupomAplicadoModel
-	171, // 123: pedido.Pedido.validade:type_name -> google.protobuf.Timestamp
+	125, // 122: pedido.Pedido.cupomAplicado:type_name -> pedido.CupomAplicadoModel
+	173, // 123: pedido.Pedido.validade:type_name -> google.protobuf.Timestamp
 	98,  // 124: pedido.Pedido.qr_code_documento:type_name -> pedido.QrCodeDocumento
 	0,   // 125: pedido.Pedido.resposta_cliente:type_name -> pedido.RespostaCliente
-	166, // 126: pedido.Pedido.custom_fields:type_name -> pedido.Pedido.CustomFieldsEntry
-	171, // 127: pedido.PedidoWebhook.last_attempt_at:type_name -> google.protobuf.Timestamp
-	171, // 128: pedido.Warranty.active_until:type_name -> google.protobuf.Timestamp
+	168, // 126: pedido.Pedido.custom_fields:type_name -> pedido.Pedido.CustomFieldsEntry
+	173, // 127: pedido.PedidoWebhook.last_attempt_at:type_name -> google.protobuf.Timestamp
+	173, // 128: pedido.Warranty.active_until:type_name -> google.protobuf.Timestamp
 	103, // 129: pedido.OnlineTransactionLink.payment_methods:type_name -> pedido.PaymentMethod
-	171, // 130: pedido.OnlineTransactionLink.preferred_due_date:type_name -> google.protobuf.Timestamp
-	171, // 131: pedido.OnlineTransactionLink.payment_link_expiration_date:type_name -> google.protobuf.Timestamp
-	171, // 132: pedido.TransactionsOnline.preferred_due_date:type_name -> google.protobuf.Timestamp
-	171, // 133: pedido.TransactionsOnline.payment_link_expiration_date:type_name -> google.protobuf.Timestamp
+	173, // 130: pedido.OnlineTransactionLink.preferred_due_date:type_name -> google.protobuf.Timestamp
+	173, // 131: pedido.OnlineTransactionLink.payment_link_expiration_date:type_name -> google.protobuf.Timestamp
+	173, // 132: pedido.TransactionsOnline.preferred_due_date:type_name -> google.protobuf.Timestamp
+	173, // 133: pedido.TransactionsOnline.payment_link_expiration_date:type_name -> google.protobuf.Timestamp
 	103, // 134: pedido.TransactionsOnline.payment_methods:type_name -> pedido.PaymentMethod
 	101, // 135: pedido.TransactionsOnline.links:type_name -> pedido.OnlineTransactionLink
 	6,   // 136: pedido.CheckoutPaymentSelection.charge_mode:type_name -> pedido.CheckoutPaymentChargeMode
 	7,   // 137: pedido.CheckoutPaymentSelection.context:type_name -> pedido.CheckoutPaymentContext
-	171, // 138: pedido.CheckoutPaymentSelection.selected_at:type_name -> google.protobuf.Timestamp
-	171, // 139: pedido.OrdemServico.data_compra:type_name -> google.protobuf.Timestamp
+	173, // 138: pedido.CheckoutPaymentSelection.selected_at:type_name -> google.protobuf.Timestamp
+	173, // 139: pedido.OrdemServico.data_compra:type_name -> google.protobuf.Timestamp
 	8,   // 140: pedido.Contract.type:type_name -> pedido.ContractType
 	3,   // 141: pedido.Contract.recurrence_type:type_name -> pedido.RecurrenceType
-	171, // 142: pedido.Contract.recurrence_due_date:type_name -> google.protobuf.Timestamp
+	173, // 142: pedido.Contract.recurrence_due_date:type_name -> google.protobuf.Timestamp
 	9,   // 143: pedido.Contract.status:type_name -> pedido.ContractStatus
-	167, // 144: pedido.Contract.last_access:type_name -> pedido.Contract.LastAccess
-	171, // 145: pedido.Contract.start_date:type_name -> google.protobuf.Timestamp
-	171, // 146: pedido.Contract.released_at:type_name -> google.protobuf.Timestamp
-	171, // 147: pedido.Contract.previous_due_date:type_name -> google.protobuf.Timestamp
-	171, // 148: pedido.Contract.released_until:type_name -> google.protobuf.Timestamp
-	171, // 149: pedido.Contract.trial_ends_at:type_name -> google.protobuf.Timestamp
-	171, // 150: pedido.BatchInfo.expiration_date:type_name -> google.protobuf.Timestamp
-	171, // 151: pedido.BatchInfo.manufacturing_date:type_name -> google.protobuf.Timestamp
-	171, // 152: pedido.Produto.createdAt:type_name -> google.protobuf.Timestamp
-	171, // 153: pedido.Produto.updatedAt:type_name -> google.protobuf.Timestamp
-	122, // 154: pedido.Produto.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
-	109, // 155: pedido.Produto.composicao:type_name -> pedido.Produto
-	107, // 156: pedido.Produto.batch:type_name -> pedido.BatchInfo
-	171, // 157: pedido.Produto.review_date:type_name -> google.protobuf.Timestamp
-	108, // 158: pedido.Produto.serial:type_name -> pedido.SerialInfo
-	171, // 159: pedido.Produto.dataFimGarantia:type_name -> google.protobuf.Timestamp
-	5,   // 160: pedido.Produto.tipoGarantia:type_name -> pedido.TipoGarantia
-	110, // 161: pedido.Produto.producao:type_name -> pedido.ItemProducao
-	171, // 162: pedido.ItemProducao.dataHoraEnvio:type_name -> google.protobuf.Timestamp
-	171, // 163: pedido.ItemProducao.dataHoraImpressao:type_name -> google.protobuf.Timestamp
-	171, // 164: pedido.ItemProducao.dataHoraEntrega:type_name -> google.protobuf.Timestamp
-	171, // 165: pedido.Servico.createdAt:type_name -> google.protobuf.Timestamp
-	171, // 166: pedido.Servico.updatedAt:type_name -> google.protobuf.Timestamp
-	122, // 167: pedido.Servico.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
-	112, // 168: pedido.Servico.composicao:type_name -> pedido.ComposicaoServico
-	171, // 169: pedido.Servico.dataFimGarantia:type_name -> google.protobuf.Timestamp
-	10,  // 170: pedido.Servico.categoria:type_name -> pedido.ServicoCategoria
-	171, // 171: pedido.Servico.hora_inicio:type_name -> google.protobuf.Timestamp
-	171, // 172: pedido.Servico.hora_fim:type_name -> google.protobuf.Timestamp
-	171, // 173: pedido.Pagamento.createdAt:type_name -> google.protobuf.Timestamp
-	171, // 174: pedido.Pagamento.updatedAt:type_name -> google.protobuf.Timestamp
-	114, // 175: pedido.Pagamento.parcelas:type_name -> pedido.Parcelas
-	171, // 176: pedido.Pagamento.dataHoraCancelamento:type_name -> google.protobuf.Timestamp
-	14,  // 177: pedido.Pagamento.origin:type_name -> pedido.Pagamento.paymentOrigin
-	171, // 178: pedido.Parcelas.vencimento:type_name -> google.protobuf.Timestamp
-	113, // 179: pedido.Parcelas.pedidoPagamento:type_name -> pedido.Pagamento
-	117, // 180: pedido.Dfe.nfe:type_name -> pedido.Nfe
-	118, // 181: pedido.Dfe.nfce:type_name -> pedido.Nfce
-	119, // 182: pedido.Dfe.nfse:type_name -> pedido.Nfse
-	171, // 183: pedido.Nfe.dataHoraEmissao:type_name -> google.protobuf.Timestamp
-	168, // 184: pedido.LicenciamentoModel.ultimoAcesso:type_name -> pedido.LicenciamentoModel.UltimoAcesso
-	171, // 185: pedido.PedidoVinculado.data:type_name -> google.protobuf.Timestamp
-	171, // 186: pedido.DescontoAplicadosModel.createdAt:type_name -> google.protobuf.Timestamp
-	171, // 187: pedido.DescontoAplicadosModel.updatedAt:type_name -> google.protobuf.Timestamp
-	124, // 188: pedido.DescontoAplicadosModel.itens:type_name -> pedido.DescontoItemAplicado
-	171, // 189: pedido.CupomAplicadoModel.aplicadoEm:type_name -> google.protobuf.Timestamp
-	124, // 190: pedido.CupomAplicadoModel.itens:type_name -> pedido.DescontoItemAplicado
-	171, // 191: pedido.CashbackAplicadosModel.createdAt:type_name -> google.protobuf.Timestamp
-	171, // 192: pedido.CashbackAplicadosModel.updatedAt:type_name -> google.protobuf.Timestamp
-	171, // 193: pedido.ConfirmationOrderReceipt.date_time:type_name -> google.protobuf.Timestamp
-	11,  // 194: pedido.DfeDanfeRequest.format:type_name -> pedido.DanfeFormat
-	178, // 195: pedido.DfeDanfeResponse.response:type_name -> report.Response
-	97,  // 196: pedido.ImportRequest.orders:type_name -> pedido.Pedido
-	183, // 197: pedido.ImportResponse.report:type_name -> imports.ImportResponse
-	97,  // 198: pedido.SendPaymentLinkRequest.pedidos:type_name -> pedido.Pedido
-	184, // 199: pedido.SimulaCobrancaRequest.billing_plan:type_name -> billingplan.BillingPlan
-	171, // 200: pedido.SimulaCobrancaRequest.data:type_name -> google.protobuf.Timestamp
-	136, // 201: pedido.SimulaCobrancaResponse.itens:type_name -> pedido.SimulaCobrancaItem
-	171, // 202: pedido.SimulaCobrancaItem.referencia:type_name -> google.protobuf.Timestamp
-	97,  // 203: pedido.SendPaymentLinkResponse.pedidos:type_name -> pedido.Pedido
-	138, // 204: pedido.SendPaymentLinkResponse.whatsapp_web:type_name -> pedido.WhatsappWebEnvio
-	97,  // 205: pedido.MesclaPedidosResponse.pedido:type_name -> pedido.Pedido
-	121, // 206: pedido.AddPedidoVinculadoRequest.pedido_vinculado:type_name -> pedido.PedidoVinculado
-	97,  // 207: pedido.AddPedidoVinculadoResponse.pedido:type_name -> pedido.Pedido
-	97,  // 208: pedido.DeletePedidoVinculadoResponse.pedido:type_name -> pedido.Pedido
-	97,  // 209: pedido.EnviaNFeResponse.pedido:type_name -> pedido.Pedido
-	97,  // 210: pedido.SincronizaNFeResponse.pedido:type_name -> pedido.Pedido
-	97,  // 211: pedido.SincronizaPessoaResponse.pedido:type_name -> pedido.Pedido
-	97,  // 212: pedido.VinculoNfManualResponse.pedido:type_name -> pedido.Pedido
-	178, // 213: pedido.PrintPedidoResponse.response:type_name -> report.Response
-	12,  // 214: pedido.DeliveryInfo.delivery_method:type_name -> pedido.DeliveryMethod
-	171, // 215: pedido.DeliveryInfo.estimated_delivery_date:type_name -> google.protobuf.Timestamp
-	158, // 216: pedido.DeliveryInfo.status_history:type_name -> pedido.DeliveryStatusHistory
-	159, // 217: pedido.DeliveryInfo.address:type_name -> pedido.DeliveryAddress
-	171, // 218: pedido.DeliveryInfo.pickup_scheduled_date:type_name -> google.protobuf.Timestamp
-	171, // 219: pedido.DeliveryStatusHistory.timestamp:type_name -> google.protobuf.Timestamp
-	97,  // 220: pedido.ReorderItemsResponse.pedido:type_name -> pedido.Pedido
-	171, // 221: pedido.FaixaResumoVendas.inicio:type_name -> google.protobuf.Timestamp
-	171, // 222: pedido.FaixaResumoVendas.fim:type_name -> google.protobuf.Timestamp
-	162, // 223: pedido.ResumoVendasPorVendedorRequest.faixas:type_name -> pedido.FaixaResumoVendas
-	13,  // 224: pedido.ResumoVendasPorVendedorRequest.base:type_name -> pedido.BaseApuracao
-	164, // 225: pedido.ResumoVendasPorVendedorResponse.totais:type_name -> pedido.TotalVendasVendedor
-	171, // 226: pedido.Contract.LastAccess.last_date:type_name -> google.protobuf.Timestamp
-	171, // 227: pedido.LicenciamentoModel.UltimoAcesso.lastDate:type_name -> google.protobuf.Timestamp
-	28,  // 228: pedido.PedidoService.Create:input_type -> pedido.CreatePedidoRequest
-	28,  // 229: pedido.PedidoService.CreateValidated:input_type -> pedido.CreatePedidoRequest
-	30,  // 230: pedido.PedidoService.Update:input_type -> pedido.UpdatePedidoRequest
-	95,  // 231: pedido.PedidoService.SetAcompanhamento:input_type -> pedido.SetAcompanhamentoRequest
-	160, // 232: pedido.PedidoService.ReorderItems:input_type -> pedido.ReorderItemsRequest
-	32,  // 233: pedido.PedidoService.Delete:input_type -> pedido.DeletePedidoRequest
-	51,  // 234: pedido.PedidoService.Get:input_type -> pedido.GetPedidoRequest
-	34,  // 235: pedido.PedidoService.List:input_type -> pedido.ListPedidoRequest
-	90,  // 236: pedido.PedidoService.Report:input_type -> pedido.ReportRequest
-	153, // 237: pedido.PedidoService.Print:input_type -> pedido.PrintPedidoRequest
-	53,  // 238: pedido.PedidoService.GenerateFromOrcamento:input_type -> pedido.GenerateFromOrcamentoRequest
-	35,  // 239: pedido.PedidoService.Cancel:input_type -> pedido.CancelPedidoRequest
-	37,  // 240: pedido.PedidoService.Clone:input_type -> pedido.ClonePedidoRequest
-	57,  // 241: pedido.PedidoService.AddProduct:input_type -> pedido.AddProductRequest
-	59,  // 242: pedido.PedidoService.UpdateProduct:input_type -> pedido.UpdateProductRequest
-	61,  // 243: pedido.PedidoService.DeleteProduct:input_type -> pedido.DeleteProductRequest
-	63,  // 244: pedido.PedidoService.AddService:input_type -> pedido.AddServiceRequest
-	65,  // 245: pedido.PedidoService.UpdateService:input_type -> pedido.UpdateServiceRequest
-	67,  // 246: pedido.PedidoService.DeleteService:input_type -> pedido.DeleteServiceRequest
-	69,  // 247: pedido.PedidoService.AddPayment:input_type -> pedido.AddPaymentRequest
-	71,  // 248: pedido.PedidoService.DeletePayment:input_type -> pedido.DeletePaymentRequest
-	73,  // 249: pedido.PedidoService.CancelPayment:input_type -> pedido.CancelPaymentRequest
-	75,  // 250: pedido.PedidoService.EffectuatePayments:input_type -> pedido.EffectuatePaymentsRequest
-	77,  // 251: pedido.PedidoService.SendByEmail:input_type -> pedido.SendByEmailRequest
-	81,  // 252: pedido.PedidoService.DownloadPdfPublico:input_type -> pedido.DownloadPdfPublicoRequest
-	83,  // 253: pedido.PedidoService.AplicaTabelaPreco:input_type -> pedido.AplicaTabelaPrecoRequest
-	129, // 254: pedido.PedidoService.DfeDanfe:input_type -> pedido.DfeDanfeRequest
-	131, // 255: pedido.PedidoService.Import:input_type -> pedido.ImportRequest
-	139, // 256: pedido.PedidoService.MesclaPedidos:input_type -> pedido.MesclaPedidosRequest
-	141, // 257: pedido.PedidoService.AddPedidoVinculado:input_type -> pedido.AddPedidoVinculadoRequest
-	143, // 258: pedido.PedidoService.DeletePedidoVinculado:input_type -> pedido.DeletePedidoVinculadoRequest
-	145, // 259: pedido.PedidoService.EnviaNFe:input_type -> pedido.EnviaNFeRequest
-	147, // 260: pedido.PedidoService.SincronizaNFe:input_type -> pedido.SincronizaNFeRequest
-	149, // 261: pedido.PedidoService.SincronizaPessoa:input_type -> pedido.SincronizaPessoaRequest
-	151, // 262: pedido.PedidoService.VinculaNFManual:input_type -> pedido.VinculoNfManualRequest
-	133, // 263: pedido.PedidoService.SendPaymentLink:input_type -> pedido.SendPaymentLinkRequest
-	134, // 264: pedido.PedidoService.SimulaCobranca:input_type -> pedido.SimulaCobrancaRequest
-	155, // 265: pedido.PedidoService.CorrecaoMovimentacao:input_type -> pedido.CorrecaoMovimentacaoRequest
-	39,  // 266: pedido.PedidoService.ConfirmOrderReceipt:input_type -> pedido.ConfirmOrderReceiptRequest
-	41,  // 267: pedido.PedidoService.AddFiles:input_type -> pedido.AddFilesRequest
-	43,  // 268: pedido.PedidoService.RemoveFiles:input_type -> pedido.RemoveFilesRequest
-	45,  // 269: pedido.PedidoService.SetFileApproval:input_type -> pedido.SetFileApprovalRequest
-	47,  // 270: pedido.PedidoService.Export:input_type -> pedido.ExportOrdersRequest
-	49,  // 271: pedido.PedidoService.SendReviewEmail:input_type -> pedido.SendReviewEmailRequest
-	85,  // 272: pedido.PedidoService.RecalcularComissao:input_type -> pedido.RecalcularComissaoRequest
-	87,  // 273: pedido.PedidoService.Renumber:input_type -> pedido.RenumberRequest
-	18,  // 274: pedido.PedidoService.EnviarProducao:input_type -> pedido.EnviarProducaoRequest
-	24,  // 275: pedido.PedidoService.ConfirmarImpressaoProducao:input_type -> pedido.ConfirmarImpressaoProducaoRequest
-	26,  // 276: pedido.PedidoService.MarcarItemEntregue:input_type -> pedido.MarcarItemEntregueRequest
-	15,  // 277: pedido.PedidoService.GetQuickProdutos:input_type -> pedido.GetQuickProdutosRequest
-	163, // 278: pedido.PedidoService.ResumoVendasPorVendedor:input_type -> pedido.ResumoVendasPorVendedorRequest
-	29,  // 279: pedido.PedidoService.Create:output_type -> pedido.CreatePedidoResponse
-	29,  // 280: pedido.PedidoService.CreateValidated:output_type -> pedido.CreatePedidoResponse
-	31,  // 281: pedido.PedidoService.Update:output_type -> pedido.UpdatePedidoResponse
-	96,  // 282: pedido.PedidoService.SetAcompanhamento:output_type -> pedido.SetAcompanhamentoResponse
-	161, // 283: pedido.PedidoService.ReorderItems:output_type -> pedido.ReorderItemsResponse
-	33,  // 284: pedido.PedidoService.Delete:output_type -> pedido.DeletePedidoResponse
-	52,  // 285: pedido.PedidoService.Get:output_type -> pedido.GetPedidoResponse
-	56,  // 286: pedido.PedidoService.List:output_type -> pedido.ListPedidoResponse
-	91,  // 287: pedido.PedidoService.Report:output_type -> pedido.ReportResponse
-	154, // 288: pedido.PedidoService.Print:output_type -> pedido.PrintPedidoResponse
-	55,  // 289: pedido.PedidoService.GenerateFromOrcamento:output_type -> pedido.GenerateFromOrcamentoResponse
-	36,  // 290: pedido.PedidoService.Cancel:output_type -> pedido.CancelPedidoResponse
-	38,  // 291: pedido.PedidoService.Clone:output_type -> pedido.ClonePedidoResponse
-	58,  // 292: pedido.PedidoService.AddProduct:output_type -> pedido.AddProductResponse
-	60,  // 293: pedido.PedidoService.UpdateProduct:output_type -> pedido.UpdateProductResponse
-	62,  // 294: pedido.PedidoService.DeleteProduct:output_type -> pedido.DeleteProductResponse
-	64,  // 295: pedido.PedidoService.AddService:output_type -> pedido.AddServiceResponse
-	66,  // 296: pedido.PedidoService.UpdateService:output_type -> pedido.UpdateServiceResponse
-	68,  // 297: pedido.PedidoService.DeleteService:output_type -> pedido.DeleteServiceResponse
-	70,  // 298: pedido.PedidoService.AddPayment:output_type -> pedido.AddPaymentResponse
-	72,  // 299: pedido.PedidoService.DeletePayment:output_type -> pedido.DeletePaymentResponse
-	74,  // 300: pedido.PedidoService.CancelPayment:output_type -> pedido.CancelPaymentResponse
-	76,  // 301: pedido.PedidoService.EffectuatePayments:output_type -> pedido.EffectuatePaymentsResponse
-	78,  // 302: pedido.PedidoService.SendByEmail:output_type -> pedido.SendByEmailResponse
-	82,  // 303: pedido.PedidoService.DownloadPdfPublico:output_type -> pedido.DownloadPdfPublicoResponse
-	84,  // 304: pedido.PedidoService.AplicaTabelaPreco:output_type -> pedido.AplicaTabelaPrecoResponse
-	130, // 305: pedido.PedidoService.DfeDanfe:output_type -> pedido.DfeDanfeResponse
-	132, // 306: pedido.PedidoService.Import:output_type -> pedido.ImportResponse
-	140, // 307: pedido.PedidoService.MesclaPedidos:output_type -> pedido.MesclaPedidosResponse
-	142, // 308: pedido.PedidoService.AddPedidoVinculado:output_type -> pedido.AddPedidoVinculadoResponse
-	144, // 309: pedido.PedidoService.DeletePedidoVinculado:output_type -> pedido.DeletePedidoVinculadoResponse
-	146, // 310: pedido.PedidoService.EnviaNFe:output_type -> pedido.EnviaNFeResponse
-	148, // 311: pedido.PedidoService.SincronizaNFe:output_type -> pedido.SincronizaNFeResponse
-	150, // 312: pedido.PedidoService.SincronizaPessoa:output_type -> pedido.SincronizaPessoaResponse
-	152, // 313: pedido.PedidoService.VinculaNFManual:output_type -> pedido.VinculoNfManualResponse
-	137, // 314: pedido.PedidoService.SendPaymentLink:output_type -> pedido.SendPaymentLinkResponse
-	135, // 315: pedido.PedidoService.SimulaCobranca:output_type -> pedido.SimulaCobrancaResponse
-	156, // 316: pedido.PedidoService.CorrecaoMovimentacao:output_type -> pedido.CorrecaoMovimentacaoResponse
-	40,  // 317: pedido.PedidoService.ConfirmOrderReceipt:output_type -> pedido.ConfirmOrderReceiptResponse
-	42,  // 318: pedido.PedidoService.AddFiles:output_type -> pedido.AddFilesResponse
-	44,  // 319: pedido.PedidoService.RemoveFiles:output_type -> pedido.RemoveFilesResponse
-	46,  // 320: pedido.PedidoService.SetFileApproval:output_type -> pedido.SetFileApprovalResponse
-	48,  // 321: pedido.PedidoService.Export:output_type -> pedido.ExportOrdersResponse
-	50,  // 322: pedido.PedidoService.SendReviewEmail:output_type -> pedido.SendReviewEmailResponse
-	86,  // 323: pedido.PedidoService.RecalcularComissao:output_type -> pedido.RecalcularComissaoResponse
-	88,  // 324: pedido.PedidoService.Renumber:output_type -> pedido.RenumberResponse
-	22,  // 325: pedido.PedidoService.EnviarProducao:output_type -> pedido.EnviarProducaoResponse
-	25,  // 326: pedido.PedidoService.ConfirmarImpressaoProducao:output_type -> pedido.ConfirmarImpressaoProducaoResponse
-	27,  // 327: pedido.PedidoService.MarcarItemEntregue:output_type -> pedido.MarcarItemEntregueResponse
-	17,  // 328: pedido.PedidoService.GetQuickProdutos:output_type -> pedido.GetQuickProdutosResponse
-	165, // 329: pedido.PedidoService.ResumoVendasPorVendedor:output_type -> pedido.ResumoVendasPorVendedorResponse
-	279, // [279:330] is the sub-list for method output_type
-	228, // [228:279] is the sub-list for method input_type
-	228, // [228:228] is the sub-list for extension type_name
-	228, // [228:228] is the sub-list for extension extendee
-	0,   // [0:228] is the sub-list for field type_name
+	169, // 144: pedido.Contract.last_access:type_name -> pedido.Contract.LastAccess
+	173, // 145: pedido.Contract.start_date:type_name -> google.protobuf.Timestamp
+	173, // 146: pedido.Contract.released_at:type_name -> google.protobuf.Timestamp
+	173, // 147: pedido.Contract.previous_due_date:type_name -> google.protobuf.Timestamp
+	173, // 148: pedido.Contract.released_until:type_name -> google.protobuf.Timestamp
+	173, // 149: pedido.Contract.trial_ends_at:type_name -> google.protobuf.Timestamp
+	107, // 150: pedido.Contract.readjustment:type_name -> pedido.ContractReadjustment
+	108, // 151: pedido.Contract.readjustment_applied:type_name -> pedido.ContractReadjustmentApplied
+	185, // 152: pedido.ContractReadjustment.type:type_name -> readjustmentplan.TipoReajuste
+	173, // 153: pedido.ContractReadjustment.next_date:type_name -> google.protobuf.Timestamp
+	173, // 154: pedido.ContractReadjustment.notice_sent_for:type_name -> google.protobuf.Timestamp
+	173, // 155: pedido.ContractReadjustment.reminder_sent_for:type_name -> google.protobuf.Timestamp
+	173, // 156: pedido.ContractReadjustment.last_date:type_name -> google.protobuf.Timestamp
+	173, // 157: pedido.ContractReadjustmentApplied.date:type_name -> google.protobuf.Timestamp
+	173, // 158: pedido.BatchInfo.expiration_date:type_name -> google.protobuf.Timestamp
+	173, // 159: pedido.BatchInfo.manufacturing_date:type_name -> google.protobuf.Timestamp
+	173, // 160: pedido.Produto.createdAt:type_name -> google.protobuf.Timestamp
+	173, // 161: pedido.Produto.updatedAt:type_name -> google.protobuf.Timestamp
+	124, // 162: pedido.Produto.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
+	111, // 163: pedido.Produto.composicao:type_name -> pedido.Produto
+	109, // 164: pedido.Produto.batch:type_name -> pedido.BatchInfo
+	173, // 165: pedido.Produto.review_date:type_name -> google.protobuf.Timestamp
+	110, // 166: pedido.Produto.serial:type_name -> pedido.SerialInfo
+	173, // 167: pedido.Produto.dataFimGarantia:type_name -> google.protobuf.Timestamp
+	5,   // 168: pedido.Produto.tipoGarantia:type_name -> pedido.TipoGarantia
+	112, // 169: pedido.Produto.producao:type_name -> pedido.ItemProducao
+	173, // 170: pedido.ItemProducao.dataHoraEnvio:type_name -> google.protobuf.Timestamp
+	173, // 171: pedido.ItemProducao.dataHoraImpressao:type_name -> google.protobuf.Timestamp
+	173, // 172: pedido.ItemProducao.dataHoraEntrega:type_name -> google.protobuf.Timestamp
+	173, // 173: pedido.Servico.createdAt:type_name -> google.protobuf.Timestamp
+	173, // 174: pedido.Servico.updatedAt:type_name -> google.protobuf.Timestamp
+	124, // 175: pedido.Servico.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
+	114, // 176: pedido.Servico.composicao:type_name -> pedido.ComposicaoServico
+	173, // 177: pedido.Servico.dataFimGarantia:type_name -> google.protobuf.Timestamp
+	10,  // 178: pedido.Servico.categoria:type_name -> pedido.ServicoCategoria
+	173, // 179: pedido.Servico.hora_inicio:type_name -> google.protobuf.Timestamp
+	173, // 180: pedido.Servico.hora_fim:type_name -> google.protobuf.Timestamp
+	173, // 181: pedido.Pagamento.createdAt:type_name -> google.protobuf.Timestamp
+	173, // 182: pedido.Pagamento.updatedAt:type_name -> google.protobuf.Timestamp
+	116, // 183: pedido.Pagamento.parcelas:type_name -> pedido.Parcelas
+	173, // 184: pedido.Pagamento.dataHoraCancelamento:type_name -> google.protobuf.Timestamp
+	14,  // 185: pedido.Pagamento.origin:type_name -> pedido.Pagamento.paymentOrigin
+	173, // 186: pedido.Parcelas.vencimento:type_name -> google.protobuf.Timestamp
+	115, // 187: pedido.Parcelas.pedidoPagamento:type_name -> pedido.Pagamento
+	119, // 188: pedido.Dfe.nfe:type_name -> pedido.Nfe
+	120, // 189: pedido.Dfe.nfce:type_name -> pedido.Nfce
+	121, // 190: pedido.Dfe.nfse:type_name -> pedido.Nfse
+	173, // 191: pedido.Nfe.dataHoraEmissao:type_name -> google.protobuf.Timestamp
+	170, // 192: pedido.LicenciamentoModel.ultimoAcesso:type_name -> pedido.LicenciamentoModel.UltimoAcesso
+	173, // 193: pedido.PedidoVinculado.data:type_name -> google.protobuf.Timestamp
+	173, // 194: pedido.DescontoAplicadosModel.createdAt:type_name -> google.protobuf.Timestamp
+	173, // 195: pedido.DescontoAplicadosModel.updatedAt:type_name -> google.protobuf.Timestamp
+	126, // 196: pedido.DescontoAplicadosModel.itens:type_name -> pedido.DescontoItemAplicado
+	173, // 197: pedido.CupomAplicadoModel.aplicadoEm:type_name -> google.protobuf.Timestamp
+	126, // 198: pedido.CupomAplicadoModel.itens:type_name -> pedido.DescontoItemAplicado
+	173, // 199: pedido.CashbackAplicadosModel.createdAt:type_name -> google.protobuf.Timestamp
+	173, // 200: pedido.CashbackAplicadosModel.updatedAt:type_name -> google.protobuf.Timestamp
+	173, // 201: pedido.ConfirmationOrderReceipt.date_time:type_name -> google.protobuf.Timestamp
+	11,  // 202: pedido.DfeDanfeRequest.format:type_name -> pedido.DanfeFormat
+	180, // 203: pedido.DfeDanfeResponse.response:type_name -> report.Response
+	97,  // 204: pedido.ImportRequest.orders:type_name -> pedido.Pedido
+	186, // 205: pedido.ImportResponse.report:type_name -> imports.ImportResponse
+	97,  // 206: pedido.SendPaymentLinkRequest.pedidos:type_name -> pedido.Pedido
+	187, // 207: pedido.SimulaCobrancaRequest.billing_plan:type_name -> billingplan.BillingPlan
+	173, // 208: pedido.SimulaCobrancaRequest.data:type_name -> google.protobuf.Timestamp
+	138, // 209: pedido.SimulaCobrancaResponse.itens:type_name -> pedido.SimulaCobrancaItem
+	173, // 210: pedido.SimulaCobrancaItem.referencia:type_name -> google.protobuf.Timestamp
+	97,  // 211: pedido.SendPaymentLinkResponse.pedidos:type_name -> pedido.Pedido
+	140, // 212: pedido.SendPaymentLinkResponse.whatsapp_web:type_name -> pedido.WhatsappWebEnvio
+	97,  // 213: pedido.MesclaPedidosResponse.pedido:type_name -> pedido.Pedido
+	123, // 214: pedido.AddPedidoVinculadoRequest.pedido_vinculado:type_name -> pedido.PedidoVinculado
+	97,  // 215: pedido.AddPedidoVinculadoResponse.pedido:type_name -> pedido.Pedido
+	97,  // 216: pedido.DeletePedidoVinculadoResponse.pedido:type_name -> pedido.Pedido
+	97,  // 217: pedido.EnviaNFeResponse.pedido:type_name -> pedido.Pedido
+	97,  // 218: pedido.SincronizaNFeResponse.pedido:type_name -> pedido.Pedido
+	97,  // 219: pedido.SincronizaPessoaResponse.pedido:type_name -> pedido.Pedido
+	97,  // 220: pedido.VinculoNfManualResponse.pedido:type_name -> pedido.Pedido
+	180, // 221: pedido.PrintPedidoResponse.response:type_name -> report.Response
+	12,  // 222: pedido.DeliveryInfo.delivery_method:type_name -> pedido.DeliveryMethod
+	173, // 223: pedido.DeliveryInfo.estimated_delivery_date:type_name -> google.protobuf.Timestamp
+	160, // 224: pedido.DeliveryInfo.status_history:type_name -> pedido.DeliveryStatusHistory
+	161, // 225: pedido.DeliveryInfo.address:type_name -> pedido.DeliveryAddress
+	173, // 226: pedido.DeliveryInfo.pickup_scheduled_date:type_name -> google.protobuf.Timestamp
+	173, // 227: pedido.DeliveryStatusHistory.timestamp:type_name -> google.protobuf.Timestamp
+	97,  // 228: pedido.ReorderItemsResponse.pedido:type_name -> pedido.Pedido
+	173, // 229: pedido.FaixaResumoVendas.inicio:type_name -> google.protobuf.Timestamp
+	173, // 230: pedido.FaixaResumoVendas.fim:type_name -> google.protobuf.Timestamp
+	164, // 231: pedido.ResumoVendasPorVendedorRequest.faixas:type_name -> pedido.FaixaResumoVendas
+	13,  // 232: pedido.ResumoVendasPorVendedorRequest.base:type_name -> pedido.BaseApuracao
+	166, // 233: pedido.ResumoVendasPorVendedorResponse.totais:type_name -> pedido.TotalVendasVendedor
+	173, // 234: pedido.Contract.LastAccess.last_date:type_name -> google.protobuf.Timestamp
+	173, // 235: pedido.LicenciamentoModel.UltimoAcesso.lastDate:type_name -> google.protobuf.Timestamp
+	28,  // 236: pedido.PedidoService.Create:input_type -> pedido.CreatePedidoRequest
+	28,  // 237: pedido.PedidoService.CreateValidated:input_type -> pedido.CreatePedidoRequest
+	30,  // 238: pedido.PedidoService.Update:input_type -> pedido.UpdatePedidoRequest
+	95,  // 239: pedido.PedidoService.SetAcompanhamento:input_type -> pedido.SetAcompanhamentoRequest
+	162, // 240: pedido.PedidoService.ReorderItems:input_type -> pedido.ReorderItemsRequest
+	32,  // 241: pedido.PedidoService.Delete:input_type -> pedido.DeletePedidoRequest
+	51,  // 242: pedido.PedidoService.Get:input_type -> pedido.GetPedidoRequest
+	34,  // 243: pedido.PedidoService.List:input_type -> pedido.ListPedidoRequest
+	90,  // 244: pedido.PedidoService.Report:input_type -> pedido.ReportRequest
+	155, // 245: pedido.PedidoService.Print:input_type -> pedido.PrintPedidoRequest
+	53,  // 246: pedido.PedidoService.GenerateFromOrcamento:input_type -> pedido.GenerateFromOrcamentoRequest
+	35,  // 247: pedido.PedidoService.Cancel:input_type -> pedido.CancelPedidoRequest
+	37,  // 248: pedido.PedidoService.Clone:input_type -> pedido.ClonePedidoRequest
+	57,  // 249: pedido.PedidoService.AddProduct:input_type -> pedido.AddProductRequest
+	59,  // 250: pedido.PedidoService.UpdateProduct:input_type -> pedido.UpdateProductRequest
+	61,  // 251: pedido.PedidoService.DeleteProduct:input_type -> pedido.DeleteProductRequest
+	63,  // 252: pedido.PedidoService.AddService:input_type -> pedido.AddServiceRequest
+	65,  // 253: pedido.PedidoService.UpdateService:input_type -> pedido.UpdateServiceRequest
+	67,  // 254: pedido.PedidoService.DeleteService:input_type -> pedido.DeleteServiceRequest
+	69,  // 255: pedido.PedidoService.AddPayment:input_type -> pedido.AddPaymentRequest
+	71,  // 256: pedido.PedidoService.DeletePayment:input_type -> pedido.DeletePaymentRequest
+	73,  // 257: pedido.PedidoService.CancelPayment:input_type -> pedido.CancelPaymentRequest
+	75,  // 258: pedido.PedidoService.EffectuatePayments:input_type -> pedido.EffectuatePaymentsRequest
+	77,  // 259: pedido.PedidoService.SendByEmail:input_type -> pedido.SendByEmailRequest
+	81,  // 260: pedido.PedidoService.DownloadPdfPublico:input_type -> pedido.DownloadPdfPublicoRequest
+	83,  // 261: pedido.PedidoService.AplicaTabelaPreco:input_type -> pedido.AplicaTabelaPrecoRequest
+	131, // 262: pedido.PedidoService.DfeDanfe:input_type -> pedido.DfeDanfeRequest
+	133, // 263: pedido.PedidoService.Import:input_type -> pedido.ImportRequest
+	141, // 264: pedido.PedidoService.MesclaPedidos:input_type -> pedido.MesclaPedidosRequest
+	143, // 265: pedido.PedidoService.AddPedidoVinculado:input_type -> pedido.AddPedidoVinculadoRequest
+	145, // 266: pedido.PedidoService.DeletePedidoVinculado:input_type -> pedido.DeletePedidoVinculadoRequest
+	147, // 267: pedido.PedidoService.EnviaNFe:input_type -> pedido.EnviaNFeRequest
+	149, // 268: pedido.PedidoService.SincronizaNFe:input_type -> pedido.SincronizaNFeRequest
+	151, // 269: pedido.PedidoService.SincronizaPessoa:input_type -> pedido.SincronizaPessoaRequest
+	153, // 270: pedido.PedidoService.VinculaNFManual:input_type -> pedido.VinculoNfManualRequest
+	135, // 271: pedido.PedidoService.SendPaymentLink:input_type -> pedido.SendPaymentLinkRequest
+	136, // 272: pedido.PedidoService.SimulaCobranca:input_type -> pedido.SimulaCobrancaRequest
+	157, // 273: pedido.PedidoService.CorrecaoMovimentacao:input_type -> pedido.CorrecaoMovimentacaoRequest
+	39,  // 274: pedido.PedidoService.ConfirmOrderReceipt:input_type -> pedido.ConfirmOrderReceiptRequest
+	41,  // 275: pedido.PedidoService.AddFiles:input_type -> pedido.AddFilesRequest
+	43,  // 276: pedido.PedidoService.RemoveFiles:input_type -> pedido.RemoveFilesRequest
+	45,  // 277: pedido.PedidoService.SetFileApproval:input_type -> pedido.SetFileApprovalRequest
+	47,  // 278: pedido.PedidoService.Export:input_type -> pedido.ExportOrdersRequest
+	49,  // 279: pedido.PedidoService.SendReviewEmail:input_type -> pedido.SendReviewEmailRequest
+	85,  // 280: pedido.PedidoService.RecalcularComissao:input_type -> pedido.RecalcularComissaoRequest
+	87,  // 281: pedido.PedidoService.Renumber:input_type -> pedido.RenumberRequest
+	18,  // 282: pedido.PedidoService.EnviarProducao:input_type -> pedido.EnviarProducaoRequest
+	24,  // 283: pedido.PedidoService.ConfirmarImpressaoProducao:input_type -> pedido.ConfirmarImpressaoProducaoRequest
+	26,  // 284: pedido.PedidoService.MarcarItemEntregue:input_type -> pedido.MarcarItemEntregueRequest
+	15,  // 285: pedido.PedidoService.GetQuickProdutos:input_type -> pedido.GetQuickProdutosRequest
+	165, // 286: pedido.PedidoService.ResumoVendasPorVendedor:input_type -> pedido.ResumoVendasPorVendedorRequest
+	29,  // 287: pedido.PedidoService.Create:output_type -> pedido.CreatePedidoResponse
+	29,  // 288: pedido.PedidoService.CreateValidated:output_type -> pedido.CreatePedidoResponse
+	31,  // 289: pedido.PedidoService.Update:output_type -> pedido.UpdatePedidoResponse
+	96,  // 290: pedido.PedidoService.SetAcompanhamento:output_type -> pedido.SetAcompanhamentoResponse
+	163, // 291: pedido.PedidoService.ReorderItems:output_type -> pedido.ReorderItemsResponse
+	33,  // 292: pedido.PedidoService.Delete:output_type -> pedido.DeletePedidoResponse
+	52,  // 293: pedido.PedidoService.Get:output_type -> pedido.GetPedidoResponse
+	56,  // 294: pedido.PedidoService.List:output_type -> pedido.ListPedidoResponse
+	91,  // 295: pedido.PedidoService.Report:output_type -> pedido.ReportResponse
+	156, // 296: pedido.PedidoService.Print:output_type -> pedido.PrintPedidoResponse
+	55,  // 297: pedido.PedidoService.GenerateFromOrcamento:output_type -> pedido.GenerateFromOrcamentoResponse
+	36,  // 298: pedido.PedidoService.Cancel:output_type -> pedido.CancelPedidoResponse
+	38,  // 299: pedido.PedidoService.Clone:output_type -> pedido.ClonePedidoResponse
+	58,  // 300: pedido.PedidoService.AddProduct:output_type -> pedido.AddProductResponse
+	60,  // 301: pedido.PedidoService.UpdateProduct:output_type -> pedido.UpdateProductResponse
+	62,  // 302: pedido.PedidoService.DeleteProduct:output_type -> pedido.DeleteProductResponse
+	64,  // 303: pedido.PedidoService.AddService:output_type -> pedido.AddServiceResponse
+	66,  // 304: pedido.PedidoService.UpdateService:output_type -> pedido.UpdateServiceResponse
+	68,  // 305: pedido.PedidoService.DeleteService:output_type -> pedido.DeleteServiceResponse
+	70,  // 306: pedido.PedidoService.AddPayment:output_type -> pedido.AddPaymentResponse
+	72,  // 307: pedido.PedidoService.DeletePayment:output_type -> pedido.DeletePaymentResponse
+	74,  // 308: pedido.PedidoService.CancelPayment:output_type -> pedido.CancelPaymentResponse
+	76,  // 309: pedido.PedidoService.EffectuatePayments:output_type -> pedido.EffectuatePaymentsResponse
+	78,  // 310: pedido.PedidoService.SendByEmail:output_type -> pedido.SendByEmailResponse
+	82,  // 311: pedido.PedidoService.DownloadPdfPublico:output_type -> pedido.DownloadPdfPublicoResponse
+	84,  // 312: pedido.PedidoService.AplicaTabelaPreco:output_type -> pedido.AplicaTabelaPrecoResponse
+	132, // 313: pedido.PedidoService.DfeDanfe:output_type -> pedido.DfeDanfeResponse
+	134, // 314: pedido.PedidoService.Import:output_type -> pedido.ImportResponse
+	142, // 315: pedido.PedidoService.MesclaPedidos:output_type -> pedido.MesclaPedidosResponse
+	144, // 316: pedido.PedidoService.AddPedidoVinculado:output_type -> pedido.AddPedidoVinculadoResponse
+	146, // 317: pedido.PedidoService.DeletePedidoVinculado:output_type -> pedido.DeletePedidoVinculadoResponse
+	148, // 318: pedido.PedidoService.EnviaNFe:output_type -> pedido.EnviaNFeResponse
+	150, // 319: pedido.PedidoService.SincronizaNFe:output_type -> pedido.SincronizaNFeResponse
+	152, // 320: pedido.PedidoService.SincronizaPessoa:output_type -> pedido.SincronizaPessoaResponse
+	154, // 321: pedido.PedidoService.VinculaNFManual:output_type -> pedido.VinculoNfManualResponse
+	139, // 322: pedido.PedidoService.SendPaymentLink:output_type -> pedido.SendPaymentLinkResponse
+	137, // 323: pedido.PedidoService.SimulaCobranca:output_type -> pedido.SimulaCobrancaResponse
+	158, // 324: pedido.PedidoService.CorrecaoMovimentacao:output_type -> pedido.CorrecaoMovimentacaoResponse
+	40,  // 325: pedido.PedidoService.ConfirmOrderReceipt:output_type -> pedido.ConfirmOrderReceiptResponse
+	42,  // 326: pedido.PedidoService.AddFiles:output_type -> pedido.AddFilesResponse
+	44,  // 327: pedido.PedidoService.RemoveFiles:output_type -> pedido.RemoveFilesResponse
+	46,  // 328: pedido.PedidoService.SetFileApproval:output_type -> pedido.SetFileApprovalResponse
+	48,  // 329: pedido.PedidoService.Export:output_type -> pedido.ExportOrdersResponse
+	50,  // 330: pedido.PedidoService.SendReviewEmail:output_type -> pedido.SendReviewEmailResponse
+	86,  // 331: pedido.PedidoService.RecalcularComissao:output_type -> pedido.RecalcularComissaoResponse
+	88,  // 332: pedido.PedidoService.Renumber:output_type -> pedido.RenumberResponse
+	22,  // 333: pedido.PedidoService.EnviarProducao:output_type -> pedido.EnviarProducaoResponse
+	25,  // 334: pedido.PedidoService.ConfirmarImpressaoProducao:output_type -> pedido.ConfirmarImpressaoProducaoResponse
+	27,  // 335: pedido.PedidoService.MarcarItemEntregue:output_type -> pedido.MarcarItemEntregueResponse
+	17,  // 336: pedido.PedidoService.GetQuickProdutos:output_type -> pedido.GetQuickProdutosResponse
+	167, // 337: pedido.PedidoService.ResumoVendasPorVendedor:output_type -> pedido.ResumoVendasPorVendedorResponse
+	287, // [287:338] is the sub-list for method output_type
+	236, // [236:287] is the sub-list for method input_type
+	236, // [236:236] is the sub-list for extension type_name
+	236, // [236:236] is the sub-list for extension extendee
+	0,   // [0:236] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_pedido_pedido_proto_init() }
@@ -15343,7 +15602,7 @@ func file_apps_vendas_pedido_pedido_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_vendas_pedido_pedido_proto_rawDesc), len(file_apps_vendas_pedido_pedido_proto_rawDesc)),
 			NumEnums:      15,
-			NumMessages:   154,
+			NumMessages:   156,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

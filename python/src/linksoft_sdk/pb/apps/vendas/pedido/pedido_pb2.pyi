@@ -11,6 +11,7 @@ from linksoft_sdk.pb.apps.vendas.rentcar.model import rentcar_model_pb2 as _rent
 from linksoft_sdk.pb.apps.vendas.pedido import pedido_otica_pb2 as _pedido_otica_pb2
 from linksoft_sdk.pb.apps.vendas.pedido import pedido_mesa_pb2 as _pedido_mesa_pb2
 from linksoft_sdk.pb.apps.filemanager import filemanager_pb2 as _filemanager_pb2
+from linksoft_sdk.pb.apps.vendas.readjustmentplan import readjustmentplan_pb2 as _readjustmentplan_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from linksoft_sdk.pb.apps.vendas.billingplan import billingplan_pb2 as _billingplan_pb2
 from linksoft_sdk.pb.imports import imports_pb2 as _imports_pb2
@@ -1452,7 +1453,7 @@ class OrdemServico(_message.Message):
     def __init__(self, situacao: _Optional[str] = ..., numeroSerie: _Optional[str] = ..., chassi: _Optional[str] = ..., km: _Optional[str] = ..., tipoObjetoId: _Optional[str] = ..., tipoObjetoNome: _Optional[str] = ..., marcaId: _Optional[str] = ..., marcaNome: _Optional[str] = ..., modelo: _Optional[str] = ..., defeitoReclamado: _Optional[str] = ..., acessorios: _Optional[str] = ..., parecerTecnico: _Optional[str] = ..., responsavelTecnicoId: _Optional[str] = ..., responsavelTecnicoNome: _Optional[str] = ..., observacoes_internas: _Optional[str] = ..., garantidor_id: _Optional[str] = ..., garantidor_nome: _Optional[str] = ..., garantidor_senha: _Optional[str] = ..., nf_venda_numero: _Optional[str] = ..., certificado_garantia_numero: _Optional[str] = ..., data_compra: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revendedor: _Optional[str] = ..., nf_entrada_numero: _Optional[str] = ..., nf_entrada_valor: _Optional[float] = ..., nf_entrada_emissor_id: _Optional[str] = ..., nf_entrada_emissor_nome: _Optional[str] = ..., os_terceiros_numero: _Optional[str] = ..., os_fabricante_numero: _Optional[str] = ..., os_terceiros_emissor_id: _Optional[str] = ..., os_terceiros_emissor_nome: _Optional[str] = ...) -> None: ...
 
 class Contract(_message.Message):
-    __slots__ = ("number", "type", "recurrence_type", "recurrence_increment", "recurrence_due_date", "status", "block_reason", "last_access", "recurrence_created_id", "recurrence_created_number", "start_date", "courtesy", "renewal_number", "grace_period_days", "auto_renew_disabled", "status_reason", "released_at", "trial_days", "previous_due_date", "released_until", "trial_ends_at", "full_period_total")
+    __slots__ = ("number", "type", "recurrence_type", "recurrence_increment", "recurrence_due_date", "status", "block_reason", "last_access", "recurrence_created_id", "recurrence_created_number", "start_date", "courtesy", "renewal_number", "grace_period_days", "auto_renew_disabled", "status_reason", "released_at", "trial_days", "previous_due_date", "released_until", "trial_ends_at", "full_period_total", "readjustment", "readjustment_applied")
     class LastAccess(_message.Message):
         __slots__ = ("last_date", "user_name")
         LAST_DATE_FIELD_NUMBER: _ClassVar[int]
@@ -1482,6 +1483,8 @@ class Contract(_message.Message):
     RELEASED_UNTIL_FIELD_NUMBER: _ClassVar[int]
     TRIAL_ENDS_AT_FIELD_NUMBER: _ClassVar[int]
     FULL_PERIOD_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    READJUSTMENT_FIELD_NUMBER: _ClassVar[int]
+    READJUSTMENT_APPLIED_FIELD_NUMBER: _ClassVar[int]
     number: str
     type: ContractType
     recurrence_type: RecurrenceType
@@ -1504,7 +1507,47 @@ class Contract(_message.Message):
     released_until: _timestamp_pb2.Timestamp
     trial_ends_at: _timestamp_pb2.Timestamp
     full_period_total: float
-    def __init__(self, number: _Optional[str] = ..., type: _Optional[_Union[ContractType, str]] = ..., recurrence_type: _Optional[_Union[RecurrenceType, str]] = ..., recurrence_increment: _Optional[int] = ..., recurrence_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., status: _Optional[_Union[ContractStatus, str]] = ..., block_reason: _Optional[str] = ..., last_access: _Optional[_Union[Contract.LastAccess, _Mapping]] = ..., recurrence_created_id: _Optional[str] = ..., recurrence_created_number: _Optional[str] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., courtesy: _Optional[bool] = ..., renewal_number: _Optional[int] = ..., grace_period_days: _Optional[int] = ..., auto_renew_disabled: _Optional[bool] = ..., status_reason: _Optional[str] = ..., released_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_days: _Optional[int] = ..., previous_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., released_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_ends_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., full_period_total: _Optional[float] = ...) -> None: ...
+    readjustment: ContractReadjustment
+    readjustment_applied: ContractReadjustmentApplied
+    def __init__(self, number: _Optional[str] = ..., type: _Optional[_Union[ContractType, str]] = ..., recurrence_type: _Optional[_Union[RecurrenceType, str]] = ..., recurrence_increment: _Optional[int] = ..., recurrence_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., status: _Optional[_Union[ContractStatus, str]] = ..., block_reason: _Optional[str] = ..., last_access: _Optional[_Union[Contract.LastAccess, _Mapping]] = ..., recurrence_created_id: _Optional[str] = ..., recurrence_created_number: _Optional[str] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., courtesy: _Optional[bool] = ..., renewal_number: _Optional[int] = ..., grace_period_days: _Optional[int] = ..., auto_renew_disabled: _Optional[bool] = ..., status_reason: _Optional[str] = ..., released_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_days: _Optional[int] = ..., previous_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., released_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_ends_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., full_period_total: _Optional[float] = ..., readjustment: _Optional[_Union[ContractReadjustment, _Mapping]] = ..., readjustment_applied: _Optional[_Union[ContractReadjustmentApplied, _Mapping]] = ...) -> None: ...
+
+class ContractReadjustment(_message.Message):
+    __slots__ = ("plan_id", "plan_name", "type", "value", "interval_months", "notice_days", "next_date", "notice_sent_for", "reminder_sent_for", "last_date")
+    PLAN_ID_FIELD_NUMBER: _ClassVar[int]
+    PLAN_NAME_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    INTERVAL_MONTHS_FIELD_NUMBER: _ClassVar[int]
+    NOTICE_DAYS_FIELD_NUMBER: _ClassVar[int]
+    NEXT_DATE_FIELD_NUMBER: _ClassVar[int]
+    NOTICE_SENT_FOR_FIELD_NUMBER: _ClassVar[int]
+    REMINDER_SENT_FOR_FIELD_NUMBER: _ClassVar[int]
+    LAST_DATE_FIELD_NUMBER: _ClassVar[int]
+    plan_id: str
+    plan_name: str
+    type: _readjustmentplan_pb2.TipoReajuste
+    value: float
+    interval_months: int
+    notice_days: int
+    next_date: _timestamp_pb2.Timestamp
+    notice_sent_for: _timestamp_pb2.Timestamp
+    reminder_sent_for: _timestamp_pb2.Timestamp
+    last_date: _timestamp_pb2.Timestamp
+    def __init__(self, plan_id: _Optional[str] = ..., plan_name: _Optional[str] = ..., type: _Optional[_Union[_readjustmentplan_pb2.TipoReajuste, str]] = ..., value: _Optional[float] = ..., interval_months: _Optional[int] = ..., notice_days: _Optional[int] = ..., next_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., notice_sent_for: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., reminder_sent_for: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ContractReadjustmentApplied(_message.Message):
+    __slots__ = ("date", "description", "previous_total", "new_total", "plan_name")
+    DATE_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    PREVIOUS_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    NEW_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    PLAN_NAME_FIELD_NUMBER: _ClassVar[int]
+    date: _timestamp_pb2.Timestamp
+    description: str
+    previous_total: float
+    new_total: float
+    plan_name: str
+    def __init__(self, date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., description: _Optional[str] = ..., previous_total: _Optional[float] = ..., new_total: _Optional[float] = ..., plan_name: _Optional[str] = ...) -> None: ...
 
 class BatchInfo(_message.Message):
     __slots__ = ("id", "batch_number", "expiration_date", "manufacturing_date", "quantity")
@@ -1529,7 +1572,7 @@ class SerialInfo(_message.Message):
     def __init__(self, ids: _Optional[_Iterable[str]] = ..., serial_numbers: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Produto(_message.Message):
-    __slots__ = ("id", "createdAt", "updatedAt", "userId", "userName", "tipo", "nome", "descricao", "produtoId", "pedidoId", "pedidoProdutoId", "codigo", "un", "codigoAnp", "codigoAnpDescricao", "postoNumBico", "postoNumBomba", "postoNumTanque", "postoEncerranteInicial", "postoEncerranteFinal", "postoAbastecimentoIds", "postoFrentistaId", "postoFrentistaNome", "ncm", "obs", "vendedorId", "vendedorNome", "comissaoValor", "comissaoPercentual", "comprimento", "largura", "medida", "profundidade", "quantidade", "tabelaPreco", "valorUnitario", "diferencaValorVenda", "valorUnitarioOriginal", "custoUnitario", "lucroBrutoUnitario", "lucroLiquidoUnitario", "descontoValor", "descontoAplicado", "acrescimoValor", "valorSubtotal", "valorTotal", "ValorCompra", "descontoRateado", "pesoUnitario", "composto", "compostoString", "composicao", "color", "size", "referencia", "batch", "review_date", "variation_product_id", "serial", "diasGarantia", "dataFimGarantia", "comissao_manual", "tipoGarantia", "comodato", "valor_reposicao", "stock_decrease_applied", "skip_stock_decrease", "producao", "imagemUrl", "precoPromocionalAplicado", "numero_item", "observacao", "pedido_compra_item")
+    __slots__ = ("id", "createdAt", "updatedAt", "userId", "userName", "tipo", "nome", "descricao", "produtoId", "pedidoId", "pedidoProdutoId", "codigo", "un", "codigoAnp", "codigoAnpDescricao", "postoNumBico", "postoNumBomba", "postoNumTanque", "postoEncerranteInicial", "postoEncerranteFinal", "postoAbastecimentoIds", "postoFrentistaId", "postoFrentistaNome", "ncm", "obs", "vendedorId", "vendedorNome", "comissaoValor", "comissaoPercentual", "comprimento", "largura", "medida", "profundidade", "quantidade", "tabelaPreco", "valorUnitario", "diferencaValorVenda", "valorUnitarioOriginal", "custoUnitario", "lucroBrutoUnitario", "lucroLiquidoUnitario", "descontoValor", "descontoAplicado", "acrescimoValor", "valorSubtotal", "valorTotal", "ValorCompra", "descontoRateado", "pesoUnitario", "composto", "compostoString", "composicao", "color", "size", "referencia", "batch", "review_date", "variation_product_id", "serial", "diasGarantia", "dataFimGarantia", "comissao_manual", "tipoGarantia", "comodato", "valor_reposicao", "stock_decrease_applied", "skip_stock_decrease", "producao", "imagemUrl", "precoPromocionalAplicado", "numero_item", "observacao", "pedido_compra_item", "locacao")
     ID_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
     UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
@@ -1603,6 +1646,7 @@ class Produto(_message.Message):
     NUMERO_ITEM_FIELD_NUMBER: _ClassVar[int]
     OBSERVACAO_FIELD_NUMBER: _ClassVar[int]
     PEDIDO_COMPRA_ITEM_FIELD_NUMBER: _ClassVar[int]
+    LOCACAO_FIELD_NUMBER: _ClassVar[int]
     id: str
     createdAt: _timestamp_pb2.Timestamp
     updatedAt: _timestamp_pb2.Timestamp
@@ -1676,7 +1720,8 @@ class Produto(_message.Message):
     numero_item: int
     observacao: str
     pedido_compra_item: int
-    def __init__(self, id: _Optional[str] = ..., createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., tipo: _Optional[str] = ..., nome: _Optional[str] = ..., descricao: _Optional[str] = ..., produtoId: _Optional[str] = ..., pedidoId: _Optional[str] = ..., pedidoProdutoId: _Optional[str] = ..., codigo: _Optional[str] = ..., un: _Optional[str] = ..., codigoAnp: _Optional[str] = ..., codigoAnpDescricao: _Optional[str] = ..., postoNumBico: _Optional[str] = ..., postoNumBomba: _Optional[str] = ..., postoNumTanque: _Optional[str] = ..., postoEncerranteInicial: _Optional[float] = ..., postoEncerranteFinal: _Optional[float] = ..., postoAbastecimentoIds: _Optional[_Iterable[str]] = ..., postoFrentistaId: _Optional[str] = ..., postoFrentistaNome: _Optional[str] = ..., ncm: _Optional[str] = ..., obs: _Optional[str] = ..., vendedorId: _Optional[str] = ..., vendedorNome: _Optional[str] = ..., comissaoValor: _Optional[float] = ..., comissaoPercentual: _Optional[float] = ..., comprimento: _Optional[float] = ..., largura: _Optional[float] = ..., medida: _Optional[float] = ..., profundidade: _Optional[float] = ..., quantidade: _Optional[float] = ..., tabelaPreco: _Optional[str] = ..., valorUnitario: _Optional[float] = ..., diferencaValorVenda: _Optional[float] = ..., valorUnitarioOriginal: _Optional[float] = ..., custoUnitario: _Optional[float] = ..., lucroBrutoUnitario: _Optional[float] = ..., lucroLiquidoUnitario: _Optional[float] = ..., descontoValor: _Optional[float] = ..., descontoAplicado: _Optional[_Union[DescontoAplicadosModel, _Mapping]] = ..., acrescimoValor: _Optional[float] = ..., valorSubtotal: _Optional[float] = ..., valorTotal: _Optional[float] = ..., ValorCompra: _Optional[float] = ..., descontoRateado: _Optional[float] = ..., pesoUnitario: _Optional[float] = ..., composto: _Optional[bool] = ..., compostoString: _Optional[str] = ..., composicao: _Optional[_Iterable[_Union[Produto, _Mapping]]] = ..., color: _Optional[str] = ..., size: _Optional[str] = ..., referencia: _Optional[str] = ..., batch: _Optional[_Union[BatchInfo, _Mapping]] = ..., review_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., variation_product_id: _Optional[str] = ..., serial: _Optional[_Union[SerialInfo, _Mapping]] = ..., diasGarantia: _Optional[float] = ..., dataFimGarantia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., comissao_manual: _Optional[bool] = ..., tipoGarantia: _Optional[_Union[TipoGarantia, str]] = ..., comodato: _Optional[bool] = ..., valor_reposicao: _Optional[float] = ..., stock_decrease_applied: _Optional[bool] = ..., skip_stock_decrease: _Optional[bool] = ..., producao: _Optional[_Union[ItemProducao, _Mapping]] = ..., imagemUrl: _Optional[str] = ..., precoPromocionalAplicado: _Optional[bool] = ..., numero_item: _Optional[int] = ..., observacao: _Optional[str] = ..., pedido_compra_item: _Optional[int] = ...) -> None: ...
+    locacao: bool
+    def __init__(self, id: _Optional[str] = ..., createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., tipo: _Optional[str] = ..., nome: _Optional[str] = ..., descricao: _Optional[str] = ..., produtoId: _Optional[str] = ..., pedidoId: _Optional[str] = ..., pedidoProdutoId: _Optional[str] = ..., codigo: _Optional[str] = ..., un: _Optional[str] = ..., codigoAnp: _Optional[str] = ..., codigoAnpDescricao: _Optional[str] = ..., postoNumBico: _Optional[str] = ..., postoNumBomba: _Optional[str] = ..., postoNumTanque: _Optional[str] = ..., postoEncerranteInicial: _Optional[float] = ..., postoEncerranteFinal: _Optional[float] = ..., postoAbastecimentoIds: _Optional[_Iterable[str]] = ..., postoFrentistaId: _Optional[str] = ..., postoFrentistaNome: _Optional[str] = ..., ncm: _Optional[str] = ..., obs: _Optional[str] = ..., vendedorId: _Optional[str] = ..., vendedorNome: _Optional[str] = ..., comissaoValor: _Optional[float] = ..., comissaoPercentual: _Optional[float] = ..., comprimento: _Optional[float] = ..., largura: _Optional[float] = ..., medida: _Optional[float] = ..., profundidade: _Optional[float] = ..., quantidade: _Optional[float] = ..., tabelaPreco: _Optional[str] = ..., valorUnitario: _Optional[float] = ..., diferencaValorVenda: _Optional[float] = ..., valorUnitarioOriginal: _Optional[float] = ..., custoUnitario: _Optional[float] = ..., lucroBrutoUnitario: _Optional[float] = ..., lucroLiquidoUnitario: _Optional[float] = ..., descontoValor: _Optional[float] = ..., descontoAplicado: _Optional[_Union[DescontoAplicadosModel, _Mapping]] = ..., acrescimoValor: _Optional[float] = ..., valorSubtotal: _Optional[float] = ..., valorTotal: _Optional[float] = ..., ValorCompra: _Optional[float] = ..., descontoRateado: _Optional[float] = ..., pesoUnitario: _Optional[float] = ..., composto: _Optional[bool] = ..., compostoString: _Optional[str] = ..., composicao: _Optional[_Iterable[_Union[Produto, _Mapping]]] = ..., color: _Optional[str] = ..., size: _Optional[str] = ..., referencia: _Optional[str] = ..., batch: _Optional[_Union[BatchInfo, _Mapping]] = ..., review_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., variation_product_id: _Optional[str] = ..., serial: _Optional[_Union[SerialInfo, _Mapping]] = ..., diasGarantia: _Optional[float] = ..., dataFimGarantia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., comissao_manual: _Optional[bool] = ..., tipoGarantia: _Optional[_Union[TipoGarantia, str]] = ..., comodato: _Optional[bool] = ..., valor_reposicao: _Optional[float] = ..., stock_decrease_applied: _Optional[bool] = ..., skip_stock_decrease: _Optional[bool] = ..., producao: _Optional[_Union[ItemProducao, _Mapping]] = ..., imagemUrl: _Optional[str] = ..., precoPromocionalAplicado: _Optional[bool] = ..., numero_item: _Optional[int] = ..., observacao: _Optional[str] = ..., pedido_compra_item: _Optional[int] = ..., locacao: _Optional[bool] = ...) -> None: ...
 
 class ItemProducao(_message.Message):
     __slots__ = ("enviado", "dataHoraEnvio", "impressoraId", "impressoraNome", "impresso", "dataHoraImpressao", "erroImpressao", "entregue", "dataHoraEntrega")
