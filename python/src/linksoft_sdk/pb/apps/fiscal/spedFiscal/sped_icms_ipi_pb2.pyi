@@ -168,10 +168,12 @@ class GeraRequest(_message.Message):
     def __init__(self, id: _Optional[str] = ...) -> None: ...
 
 class GeraResponse(_message.Message):
-    __slots__ = ("sped_fiscal",)
+    __slots__ = ("sped_fiscal", "avisos")
     SPED_FISCAL_FIELD_NUMBER: _ClassVar[int]
+    AVISOS_FIELD_NUMBER: _ClassVar[int]
     sped_fiscal: SpedFiscal
-    def __init__(self, sped_fiscal: _Optional[_Union[SpedFiscal, _Mapping]] = ...) -> None: ...
+    avisos: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, sped_fiscal: _Optional[_Union[SpedFiscal, _Mapping]] = ..., avisos: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class EnviarEmailRequest(_message.Message):
     __slots__ = ("id", "email", "nome_destinatario", "automatico")

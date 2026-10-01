@@ -938,8 +938,10 @@ func (x *GeraRequest) GetId() string {
 }
 
 type GeraResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SpedFiscal    *SpedFiscal            `protobuf:"bytes,1,opt,name=sped_fiscal,json=spedFiscal,proto3" json:"sped_fiscal,omitempty"`
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	SpedFiscal *SpedFiscal            `protobuf:"bytes,1,opt,name=sped_fiscal,json=spedFiscal,proto3" json:"sped_fiscal,omitempty"`
+	// Ocorrências da geração que não impedem o arquivo (ex.: registros deixados de fora)
+	Avisos        []string `protobuf:"bytes,2,rep,name=avisos,proto3" json:"avisos,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -977,6 +979,13 @@ func (*GeraResponse) Descriptor() ([]byte, []int) {
 func (x *GeraResponse) GetSpedFiscal() *SpedFiscal {
 	if x != nil {
 		return x.SpedFiscal
+	}
+	return nil
+}
+
+func (x *GeraResponse) GetAvisos() []string {
+	if x != nil {
+		return x.Avisos
 	}
 	return nil
 }
@@ -1160,10 +1169,11 @@ const file_apps_fiscal_spedFiscal_sped_icms_ipi_proto_rawDesc = "" +
 	"\x10sped_fiscal_list\x18\x01 \x03(\v2\x16.spedfiscal.SpedFiscalR\x0espedFiscalList\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x1d\n" +
 	"\vGeraRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"G\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"_\n" +
 	"\fGeraResponse\x127\n" +
 	"\vsped_fiscal\x18\x01 \x01(\v2\x16.spedfiscal.SpedFiscalR\n" +
-	"spedFiscal\"\x87\x01\n" +
+	"spedFiscal\x12\x16\n" +
+	"\x06avisos\x18\x02 \x03(\tR\x06avisos\"\x87\x01\n" +
 	"\x12EnviarEmailRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05email\x18\x02 \x01(\tR\x05email\x12+\n" +
