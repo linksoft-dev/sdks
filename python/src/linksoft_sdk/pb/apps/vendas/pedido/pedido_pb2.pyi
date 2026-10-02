@@ -140,6 +140,13 @@ class ServicoCategoria(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SERVICO_CATEGORIA_TERCEIROS: _ClassVar[ServicoCategoria]
     SERVICO_CATEGORIA_OUTROS: _ClassVar[ServicoCategoria]
 
+class MomentoEmissao(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    MOMENTO_EMISSAO_PAGAMENTO: _ClassVar[MomentoEmissao]
+    MOMENTO_EMISSAO_DIAS_ANTES_VENCIMENTO: _ClassVar[MomentoEmissao]
+    MOMENTO_EMISSAO_COBRANCA: _ClassVar[MomentoEmissao]
+    MOMENTO_EMISSAO_DIA_DO_MES: _ClassVar[MomentoEmissao]
+
 class DanfeFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     DANFE_FORMAT_UNSPECIFIED: _ClassVar[DanfeFormat]
@@ -244,6 +251,10 @@ SERVICO_CATEGORIA_UNSPECIFIED: ServicoCategoria
 SERVICO_CATEGORIA_DESLOCAMENTO: ServicoCategoria
 SERVICO_CATEGORIA_TERCEIROS: ServicoCategoria
 SERVICO_CATEGORIA_OUTROS: ServicoCategoria
+MOMENTO_EMISSAO_PAGAMENTO: MomentoEmissao
+MOMENTO_EMISSAO_DIAS_ANTES_VENCIMENTO: MomentoEmissao
+MOMENTO_EMISSAO_COBRANCA: MomentoEmissao
+MOMENTO_EMISSAO_DIA_DO_MES: MomentoEmissao
 DANFE_FORMAT_UNSPECIFIED: DanfeFormat
 DANFE_FORMAT_PDF: DanfeFormat
 DANFE_FORMAT_REPORT: DanfeFormat
@@ -2018,17 +2029,29 @@ class Pessoa(_message.Message):
     def __init__(self, id: _Optional[str] = ..., revenda: _Optional[bool] = ..., cpfCnpj: _Optional[str] = ..., ie: _Optional[str] = ..., nome: _Optional[str] = ..., nome2: _Optional[str] = ..., usuarioId: _Optional[str] = ..., usuarioNome: _Optional[str] = ..., comissao: _Optional[float] = ..., endId: _Optional[str] = ..., endNome: _Optional[str] = ..., endCep: _Optional[str] = ..., endEndereco: _Optional[str] = ..., endNumero: _Optional[str] = ..., endBairro: _Optional[str] = ..., endCidade: _Optional[str] = ..., endCidadeCodigo: _Optional[str] = ..., endUf: _Optional[str] = ..., endComplemento: _Optional[str] = ..., telefone: _Optional[str] = ..., email: _Optional[str] = ..., dataNascimento: _Optional[str] = ..., genero: _Optional[str] = ..., desconto_maximo: _Optional[float] = ...) -> None: ...
 
 class Dfe(_message.Message):
-    __slots__ = ("nfe", "nfce", "nfse")
+    __slots__ = ("nfe", "nfce", "nfse", "emissao_automatica")
     NFE_FIELD_NUMBER: _ClassVar[int]
     NFCE_FIELD_NUMBER: _ClassVar[int]
     NFSE_FIELD_NUMBER: _ClassVar[int]
+    EMISSAO_AUTOMATICA_FIELD_NUMBER: _ClassVar[int]
     nfe: Nfe
     nfce: Nfce
     nfse: Nfse
-    def __init__(self, nfe: _Optional[_Union[Nfe, _Mapping]] = ..., nfce: _Optional[_Union[Nfce, _Mapping]] = ..., nfse: _Optional[_Union[Nfse, _Mapping]] = ...) -> None: ...
+    emissao_automatica: EmissaoAutomatica
+    def __init__(self, nfe: _Optional[_Union[Nfe, _Mapping]] = ..., nfce: _Optional[_Union[Nfce, _Mapping]] = ..., nfse: _Optional[_Union[Nfse, _Mapping]] = ..., emissao_automatica: _Optional[_Union[EmissaoAutomatica, _Mapping]] = ...) -> None: ...
+
+class EmissaoAutomatica(_message.Message):
+    __slots__ = ("momento", "dias_antes", "dia_do_mes")
+    MOMENTO_FIELD_NUMBER: _ClassVar[int]
+    DIAS_ANTES_FIELD_NUMBER: _ClassVar[int]
+    DIA_DO_MES_FIELD_NUMBER: _ClassVar[int]
+    momento: MomentoEmissao
+    dias_antes: int
+    dia_do_mes: int
+    def __init__(self, momento: _Optional[_Union[MomentoEmissao, str]] = ..., dias_antes: _Optional[int] = ..., dia_do_mes: _Optional[int] = ...) -> None: ...
 
 class Nfe(_message.Message):
-    __slots__ = ("id", "tipo", "situacao", "chave", "url_danfe", "serie", "numero", "forma_emissao", "dataHoraEmissao")
+    __slots__ = ("id", "tipo", "situacao", "chave", "url_danfe", "serie", "numero", "forma_emissao", "dataHoraEmissao", "nfe_auto_emite")
     ID_FIELD_NUMBER: _ClassVar[int]
     TIPO_FIELD_NUMBER: _ClassVar[int]
     SITUACAO_FIELD_NUMBER: _ClassVar[int]
@@ -2038,6 +2061,7 @@ class Nfe(_message.Message):
     NUMERO_FIELD_NUMBER: _ClassVar[int]
     FORMA_EMISSAO_FIELD_NUMBER: _ClassVar[int]
     DATAHORAEMISSAO_FIELD_NUMBER: _ClassVar[int]
+    NFE_AUTO_EMITE_FIELD_NUMBER: _ClassVar[int]
     id: str
     tipo: str
     situacao: str
@@ -2047,7 +2071,8 @@ class Nfe(_message.Message):
     numero: int
     forma_emissao: str
     dataHoraEmissao: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., tipo: _Optional[str] = ..., situacao: _Optional[str] = ..., chave: _Optional[str] = ..., url_danfe: _Optional[str] = ..., serie: _Optional[int] = ..., numero: _Optional[int] = ..., forma_emissao: _Optional[str] = ..., dataHoraEmissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    nfe_auto_emite: bool
+    def __init__(self, id: _Optional[str] = ..., tipo: _Optional[str] = ..., situacao: _Optional[str] = ..., chave: _Optional[str] = ..., url_danfe: _Optional[str] = ..., serie: _Optional[int] = ..., numero: _Optional[int] = ..., forma_emissao: _Optional[str] = ..., dataHoraEmissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., nfe_auto_emite: _Optional[bool] = ...) -> None: ...
 
 class Nfce(_message.Message):
     __slots__ = ("nfce_numero", "nfce_url_danfe", "nfce_url_xml", "nfce_serie", "nfce_chave", "nfce_id", "nfce_situacao", "nfce_forma_emissao")
