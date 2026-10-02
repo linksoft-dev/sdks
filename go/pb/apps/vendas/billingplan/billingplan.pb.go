@@ -262,7 +262,14 @@ type BillingPlan struct {
 	// Envio que cairia em feriado nacional sai no próximo dia útil
 	PularFeriados bool `protobuf:"varint,28,opt,name=pular_feriados,json=pularFeriados,proto3" json:"pular_feriados,omitempty"`
 	// Hora do envio, de 6 a 22 (horário de Brasília). Zero = 10h
-	Hora          int32 `protobuf:"varint,29,opt,name=hora,proto3" json:"hora,omitempty"`
+	Hora int32 `protobuf:"varint,29,opt,name=hora,proto3" json:"hora,omitempty"`
+	// Critérios sobre o documento. Tags: cobra só o documento com ao menos uma delas
+	Tags []string `protobuf:"bytes,30,rep,name=tags,proto3" json:"tags,omitempty"`
+	// Faixa de valor do documento. Zero = sem limite
+	ValorMinimo float64 `protobuf:"fixed64,31,opt,name=valor_minimo,json=valorMinimo,proto3" json:"valor_minimo,omitempty"`
+	ValorMaximo float64 `protobuf:"fixed64,32,opt,name=valor_maximo,json=valorMaximo,proto3" json:"valor_maximo,omitempty"`
+	// Layouts de impressão do documento que vão em PDF anexos ao e-mail da cobrança
+	Anexos        []string `protobuf:"bytes,33,rep,name=anexos,proto3" json:"anexos,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -486,11 +493,39 @@ func (x *BillingPlan) GetHora() int32 {
 	return 0
 }
 
+func (x *BillingPlan) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+func (x *BillingPlan) GetValorMinimo() float64 {
+	if x != nil {
+		return x.ValorMinimo
+	}
+	return 0
+}
+
+func (x *BillingPlan) GetValorMaximo() float64 {
+	if x != nil {
+		return x.ValorMaximo
+	}
+	return 0
+}
+
+func (x *BillingPlan) GetAnexos() []string {
+	if x != nil {
+		return x.Anexos
+	}
+	return nil
+}
+
 var File_apps_vendas_billingplan_billingplan_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\n" +
-	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc3\b\n" +
+	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb5\t\n" +
 	"\vBillingPlan\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -526,7 +561,11 @@ const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"diasLimite\x12-\n" +
 	"\x13pular_fim_de_semana\x18\x1b \x01(\bR\x10pularFimDeSemana\x12%\n" +
 	"\x0epular_feriados\x18\x1c \x01(\bR\rpularFeriados\x12\x12\n" +
-	"\x04hora\x18\x1d \x01(\x05R\x04hora:\x03\xc0>\x01*N\n" +
+	"\x04hora\x18\x1d \x01(\x05R\x04hora\x12\x12\n" +
+	"\x04tags\x18\x1e \x03(\tR\x04tags\x12!\n" +
+	"\fvalor_minimo\x18\x1f \x01(\x01R\vvalorMinimo\x12!\n" +
+	"\fvalor_maximo\x18  \x01(\x01R\vvalorMaximo\x12\x16\n" +
+	"\x06anexos\x18! \x03(\tR\x06anexos:\x03\xc0>\x01*N\n" +
 	"\bSituacao\x12\x18\n" +
 	"\x14SITUACAO_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eSITUACAO_ATIVO\x10\x01\x12\x14\n" +
