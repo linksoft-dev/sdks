@@ -5257,8 +5257,9 @@ type Billing struct {
 	// Deprecated: Marked as deprecated in apps/vendas/pedido/pedido.proto.
 	BillingPlanId string `protobuf:"bytes,2,opt,name=billing_plan_id,json=billingPlanId,proto3" json:"billing_plan_id,omitempty"`
 	// Deprecated: Marked as deprecated in apps/vendas/pedido/pedido.proto.
-	BillingPlanName string                 `protobuf:"bytes,3,opt,name=billing_plan_name,json=billingPlanName,proto3" json:"billing_plan_name,omitempty"`
-	NextBillingDate *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=next_billing_date,json=nextBillingDate,proto3" json:"next_billing_date,omitempty"`
+	BillingPlanName string `protobuf:"bytes,3,opt,name=billing_plan_name,json=billingPlanName,proto3" json:"billing_plan_name,omitempty"`
+	// Deprecated: Marked as deprecated in apps/vendas/pedido/pedido.proto.
+	NextBillingDate *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=next_billing_date,json=nextBillingDate,proto3" json:"next_billing_date,omitempty"` // a próxima cobrança é calculada pelo plano de cobrança: última cobrança + intervalo
 	// O historico de envios vive no modulo apps/vendas/billing. Os campos
 	// abaixo sao denormalizados aqui para suportar a regra de envio automatico
 	// (limite de cobrancas e calculo da proxima data) sem precisar listar
@@ -5329,6 +5330,7 @@ func (x *Billing) GetBillingPlanName() string {
 	return ""
 }
 
+// Deprecated: Marked as deprecated in apps/vendas/pedido/pedido.proto.
 func (x *Billing) GetNextBillingDate() *timestamppb.Timestamp {
 	if x != nil {
 		return x.NextBillingDate
@@ -14000,12 +14002,12 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"renumbered\x18\x01 \x01(\x05R\n" +
 	"renumbered\x12\x1f\n" +
 	"\vlast_number\x18\x02 \x01(\x05R\n" +
-	"lastNumber\"\xc7\x03\n" +
+	"lastNumber\"\xcb\x03\n" +
 	"\aBilling\x12\x1c\n" +
 	"\aenabled\x18\x01 \x01(\bB\x02\x18\x01R\aenabled\x12*\n" +
 	"\x0fbilling_plan_id\x18\x02 \x01(\tB\x02\x18\x01R\rbillingPlanId\x12.\n" +
-	"\x11billing_plan_name\x18\x03 \x01(\tB\x02\x18\x01R\x0fbillingPlanName\x12F\n" +
-	"\x11next_billing_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0fnextBillingDate\x12%\n" +
+	"\x11billing_plan_name\x18\x03 \x01(\tB\x02\x18\x01R\x0fbillingPlanName\x12J\n" +
+	"\x11next_billing_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x02\x18\x01R\x0fnextBillingDate\x12%\n" +
 	"\x0ebillings_count\x18\x06 \x01(\x05R\rbillingsCount\x12F\n" +
 	"\x11last_billing_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x0flastBillingDate\x12#\n" +
 	"\rsend_whatsapp\x18\b \x01(\bR\fsendWhatsapp\x126\n" +
