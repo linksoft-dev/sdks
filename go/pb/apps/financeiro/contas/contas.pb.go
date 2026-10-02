@@ -4035,8 +4035,12 @@ type DashboardResponse struct {
 	Receber            *ResumoPagarReceber    `protobuf:"bytes,3,opt,name=receber,proto3" json:"receber,omitempty"`
 	Recebido           *ResumoPagoRecebido    `protobuf:"bytes,4,opt,name=recebido,proto3" json:"recebido,omitempty"`
 	PagarReceberPorMes []*ResumoMesAno        `protobuf:"bytes,5,rep,name=pagar_receber_por_mes,json=pagarReceberPorMes,proto3" json:"pagar_receber_por_mes,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// Valor em aberto a receber e a pagar por dia de vencimento, de hoje aos próximos 30 dias.
+	ProximosDias []*ResumoDia `protobuf:"bytes,6,rep,name=proximos_dias,json=proximosDias,proto3" json:"proximos_dias,omitempty"`
+	// Contas vencidas há mais tempo, até 5 a receber e 5 a pagar.
+	MaioresAtrasos []*ContaAtrasada `protobuf:"bytes,7,rep,name=maiores_atrasos,json=maioresAtrasos,proto3" json:"maiores_atrasos,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *DashboardResponse) Reset() {
@@ -4104,6 +4108,184 @@ func (x *DashboardResponse) GetPagarReceberPorMes() []*ResumoMesAno {
 	return nil
 }
 
+func (x *DashboardResponse) GetProximosDias() []*ResumoDia {
+	if x != nil {
+		return x.ProximosDias
+	}
+	return nil
+}
+
+func (x *DashboardResponse) GetMaioresAtrasos() []*ContaAtrasada {
+	if x != nil {
+		return x.MaioresAtrasos
+	}
+	return nil
+}
+
+type ResumoDia struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Dia do vencimento (AAAA-MM-DD).
+	Dia           string  `protobuf:"bytes,1,opt,name=dia,proto3" json:"dia,omitempty"`
+	Receber       float64 `protobuf:"fixed64,2,opt,name=receber,proto3" json:"receber,omitempty"`
+	Pagar         float64 `protobuf:"fixed64,3,opt,name=pagar,proto3" json:"pagar,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResumoDia) Reset() {
+	*x = ResumoDia{}
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResumoDia) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResumoDia) ProtoMessage() {}
+
+func (x *ResumoDia) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResumoDia.ProtoReflect.Descriptor instead.
+func (*ResumoDia) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *ResumoDia) GetDia() string {
+	if x != nil {
+		return x.Dia
+	}
+	return ""
+}
+
+func (x *ResumoDia) GetReceber() float64 {
+	if x != nil {
+		return x.Receber
+	}
+	return 0
+}
+
+func (x *ResumoDia) GetPagar() float64 {
+	if x != nil {
+		return x.Pagar
+	}
+	return 0
+}
+
+type ContaAtrasada struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// "rec" (a receber) ou "pag" (a pagar).
+	Tipo           string `protobuf:"bytes,2,opt,name=tipo,proto3" json:"tipo,omitempty"`
+	PessoaNome     string `protobuf:"bytes,3,opt,name=pessoa_nome,json=pessoaNome,proto3" json:"pessoa_nome,omitempty"`
+	Descricao      string `protobuf:"bytes,4,opt,name=descricao,proto3" json:"descricao,omitempty"`
+	PlanoContaNome string `protobuf:"bytes,5,opt,name=plano_conta_nome,json=planoContaNome,proto3" json:"plano_conta_nome,omitempty"`
+	// Vencimento (AAAA-MM-DD).
+	Vencimento string `protobuf:"bytes,6,opt,name=vencimento,proto3" json:"vencimento,omitempty"`
+	DiasAtraso int32  `protobuf:"varint,7,opt,name=dias_atraso,json=diasAtraso,proto3" json:"dias_atraso,omitempty"`
+	// Valor em aberto.
+	Valor         float64 `protobuf:"fixed64,8,opt,name=valor,proto3" json:"valor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ContaAtrasada) Reset() {
+	*x = ContaAtrasada{}
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ContaAtrasada) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ContaAtrasada) ProtoMessage() {}
+
+func (x *ContaAtrasada) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ContaAtrasada.ProtoReflect.Descriptor instead.
+func (*ContaAtrasada) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *ContaAtrasada) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ContaAtrasada) GetTipo() string {
+	if x != nil {
+		return x.Tipo
+	}
+	return ""
+}
+
+func (x *ContaAtrasada) GetPessoaNome() string {
+	if x != nil {
+		return x.PessoaNome
+	}
+	return ""
+}
+
+func (x *ContaAtrasada) GetDescricao() string {
+	if x != nil {
+		return x.Descricao
+	}
+	return ""
+}
+
+func (x *ContaAtrasada) GetPlanoContaNome() string {
+	if x != nil {
+		return x.PlanoContaNome
+	}
+	return ""
+}
+
+func (x *ContaAtrasada) GetVencimento() string {
+	if x != nil {
+		return x.Vencimento
+	}
+	return ""
+}
+
+func (x *ContaAtrasada) GetDiasAtraso() int32 {
+	if x != nil {
+		return x.DiasAtraso
+	}
+	return 0
+}
+
+func (x *ContaAtrasada) GetValor() float64 {
+	if x != nil {
+		return x.Valor
+	}
+	return 0
+}
+
 type ReportRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Type              Tipo                   `protobuf:"varint,1,opt,name=type,proto3,enum=contas.Tipo" json:"type,omitempty"`
@@ -4115,7 +4297,7 @@ type ReportRequest struct {
 
 func (x *ReportRequest) Reset() {
 	*x = ReportRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[51]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4127,7 +4309,7 @@ func (x *ReportRequest) String() string {
 func (*ReportRequest) ProtoMessage() {}
 
 func (x *ReportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[51]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4140,7 +4322,7 @@ func (x *ReportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportRequest.ProtoReflect.Descriptor instead.
 func (*ReportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{51}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *ReportRequest) GetType() Tipo {
@@ -4173,7 +4355,7 @@ type ReportResponse struct {
 
 func (x *ReportResponse) Reset() {
 	*x = ReportResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[52]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4185,7 +4367,7 @@ func (x *ReportResponse) String() string {
 func (*ReportResponse) ProtoMessage() {}
 
 func (x *ReportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[52]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4198,7 +4380,7 @@ func (x *ReportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportResponse.ProtoReflect.Descriptor instead.
 func (*ReportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{52}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *ReportResponse) GetResponse() *report.Response {
@@ -4217,7 +4399,7 @@ type CloneRequest struct {
 
 func (x *CloneRequest) Reset() {
 	*x = CloneRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[53]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4229,7 +4411,7 @@ func (x *CloneRequest) String() string {
 func (*CloneRequest) ProtoMessage() {}
 
 func (x *CloneRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[53]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4242,7 +4424,7 @@ func (x *CloneRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloneRequest.ProtoReflect.Descriptor instead.
 func (*CloneRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{53}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *CloneRequest) GetId() string {
@@ -4262,7 +4444,7 @@ type CloneResponse struct {
 
 func (x *CloneResponse) Reset() {
 	*x = CloneResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[54]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4274,7 +4456,7 @@ func (x *CloneResponse) String() string {
 func (*CloneResponse) ProtoMessage() {}
 
 func (x *CloneResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[54]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4287,7 +4469,7 @@ func (x *CloneResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloneResponse.ProtoReflect.Descriptor instead.
 func (*CloneResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{54}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *CloneResponse) GetResult() string {
@@ -4313,7 +4495,7 @@ type GetOutstandingBalanceRequest struct {
 
 func (x *GetOutstandingBalanceRequest) Reset() {
 	*x = GetOutstandingBalanceRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[55]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4325,7 +4507,7 @@ func (x *GetOutstandingBalanceRequest) String() string {
 func (*GetOutstandingBalanceRequest) ProtoMessage() {}
 
 func (x *GetOutstandingBalanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[55]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4338,7 +4520,7 @@ func (x *GetOutstandingBalanceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOutstandingBalanceRequest.ProtoReflect.Descriptor instead.
 func (*GetOutstandingBalanceRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{55}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *GetOutstandingBalanceRequest) GetPessoaId() string {
@@ -4357,7 +4539,7 @@ type GetOutstandingBalanceResponse struct {
 
 func (x *GetOutstandingBalanceResponse) Reset() {
 	*x = GetOutstandingBalanceResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[56]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4369,7 +4551,7 @@ func (x *GetOutstandingBalanceResponse) String() string {
 func (*GetOutstandingBalanceResponse) ProtoMessage() {}
 
 func (x *GetOutstandingBalanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[56]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4382,7 +4564,7 @@ func (x *GetOutstandingBalanceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOutstandingBalanceResponse.ProtoReflect.Descriptor instead.
 func (*GetOutstandingBalanceResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{56}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *GetOutstandingBalanceResponse) GetSaldo() float64 {
@@ -4403,7 +4585,7 @@ type DuplicataRequest struct {
 
 func (x *DuplicataRequest) Reset() {
 	*x = DuplicataRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[57]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4415,7 +4597,7 @@ func (x *DuplicataRequest) String() string {
 func (*DuplicataRequest) ProtoMessage() {}
 
 func (x *DuplicataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[57]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4428,7 +4610,7 @@ func (x *DuplicataRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DuplicataRequest.ProtoReflect.Descriptor instead.
 func (*DuplicataRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{57}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *DuplicataRequest) GetIds() []string {
@@ -4454,7 +4636,7 @@ type DuplicataResponse struct {
 
 func (x *DuplicataResponse) Reset() {
 	*x = DuplicataResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[58]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4466,7 +4648,7 @@ func (x *DuplicataResponse) String() string {
 func (*DuplicataResponse) ProtoMessage() {}
 
 func (x *DuplicataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[58]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4479,7 +4661,7 @@ func (x *DuplicataResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DuplicataResponse.ProtoReflect.Descriptor instead.
 func (*DuplicataResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{58}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *DuplicataResponse) GetResponse() *report.Response {
@@ -4502,7 +4684,7 @@ type ExportRequest struct {
 
 func (x *ExportRequest) Reset() {
 	*x = ExportRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[59]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4514,7 +4696,7 @@ func (x *ExportRequest) String() string {
 func (*ExportRequest) ProtoMessage() {}
 
 func (x *ExportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[59]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4527,7 +4709,7 @@ func (x *ExportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportRequest.ProtoReflect.Descriptor instead.
 func (*ExportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{59}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *ExportRequest) GetFormat() string {
@@ -4568,7 +4750,7 @@ type ExportResponse struct {
 
 func (x *ExportResponse) Reset() {
 	*x = ExportResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[60]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4580,7 +4762,7 @@ func (x *ExportResponse) String() string {
 func (*ExportResponse) ProtoMessage() {}
 
 func (x *ExportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[60]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4593,7 +4775,7 @@ func (x *ExportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportResponse.ProtoReflect.Descriptor instead.
 func (*ExportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{60}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *ExportResponse) GetStatus() string {
@@ -4623,7 +4805,7 @@ type ImprimirReciboRequest struct {
 
 func (x *ImprimirReciboRequest) Reset() {
 	*x = ImprimirReciboRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[61]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4635,7 +4817,7 @@ func (x *ImprimirReciboRequest) String() string {
 func (*ImprimirReciboRequest) ProtoMessage() {}
 
 func (x *ImprimirReciboRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[61]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4648,7 +4830,7 @@ func (x *ImprimirReciboRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImprimirReciboRequest.ProtoReflect.Descriptor instead.
 func (*ImprimirReciboRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{61}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *ImprimirReciboRequest) GetPagamentoId() string {
@@ -4674,7 +4856,7 @@ type ImprimirReciboResponse struct {
 
 func (x *ImprimirReciboResponse) Reset() {
 	*x = ImprimirReciboResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[62]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4686,7 +4868,7 @@ func (x *ImprimirReciboResponse) String() string {
 func (*ImprimirReciboResponse) ProtoMessage() {}
 
 func (x *ImprimirReciboResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[62]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4699,7 +4881,7 @@ func (x *ImprimirReciboResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImprimirReciboResponse.ProtoReflect.Descriptor instead.
 func (*ImprimirReciboResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{62}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *ImprimirReciboResponse) GetResponse() *report.Response {
@@ -5068,13 +5250,32 @@ const file_apps_financeiro_contas_contas_proto_rawDesc = "" +
 	"\batrasada\x18\x02 \x01(\v2\x13.contas.ResumoDadosR\batrasada\"=\n" +
 	"\x12ResumoPagoRecebido\x12'\n" +
 	"\x04hoje\x18\x01 \x01(\v2\x13.contas.ResumoDadosR\x04hoje\"\x12\n" +
-	"\x10DashboardRequest\"\xac\x02\n" +
+	"\x10DashboardRequest\"\xa4\x03\n" +
 	"\x11DashboardResponse\x120\n" +
 	"\x05pagar\x18\x01 \x01(\v2\x1a.contas.ResumoPagarReceberR\x05pagar\x12.\n" +
 	"\x04pago\x18\x02 \x01(\v2\x1a.contas.ResumoPagoRecebidoR\x04pago\x124\n" +
 	"\areceber\x18\x03 \x01(\v2\x1a.contas.ResumoPagarReceberR\areceber\x126\n" +
 	"\brecebido\x18\x04 \x01(\v2\x1a.contas.ResumoPagoRecebidoR\brecebido\x12G\n" +
-	"\x15pagar_receber_por_mes\x18\x05 \x03(\v2\x14.contas.ResumoMesAnoR\x12pagarReceberPorMes\"\xa3\x01\n" +
+	"\x15pagar_receber_por_mes\x18\x05 \x03(\v2\x14.contas.ResumoMesAnoR\x12pagarReceberPorMes\x126\n" +
+	"\rproximos_dias\x18\x06 \x03(\v2\x11.contas.ResumoDiaR\fproximosDias\x12>\n" +
+	"\x0fmaiores_atrasos\x18\a \x03(\v2\x15.contas.ContaAtrasadaR\x0emaioresAtrasos\"M\n" +
+	"\tResumoDia\x12\x10\n" +
+	"\x03dia\x18\x01 \x01(\tR\x03dia\x12\x18\n" +
+	"\areceber\x18\x02 \x01(\x01R\areceber\x12\x14\n" +
+	"\x05pagar\x18\x03 \x01(\x01R\x05pagar\"\xf3\x01\n" +
+	"\rContaAtrasada\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04tipo\x18\x02 \x01(\tR\x04tipo\x12\x1f\n" +
+	"\vpessoa_nome\x18\x03 \x01(\tR\n" +
+	"pessoaNome\x12\x1c\n" +
+	"\tdescricao\x18\x04 \x01(\tR\tdescricao\x12(\n" +
+	"\x10plano_conta_nome\x18\x05 \x01(\tR\x0eplanoContaNome\x12\x1e\n" +
+	"\n" +
+	"vencimento\x18\x06 \x01(\tR\n" +
+	"vencimento\x12\x1f\n" +
+	"\vdias_atraso\x18\a \x01(\x05R\n" +
+	"diasAtraso\x12\x14\n" +
+	"\x05valor\x18\b \x01(\x01R\x05valor\"\xa3\x01\n" +
 	"\rReportRequest\x12 \n" +
 	"\x04type\x18\x01 \x01(\x0e2\f.contas.TipoR\x04type\x12%\n" +
 	"\x0etipo_relatorio\x18\x02 \x01(\tR\rtipoRelatorio\x12I\n" +
@@ -5188,7 +5389,7 @@ func file_apps_financeiro_contas_contas_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_financeiro_contas_contas_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_apps_financeiro_contas_contas_proto_msgTypes = make([]protoimpl.MessageInfo, 66)
+var file_apps_financeiro_contas_contas_proto_msgTypes = make([]protoimpl.MessageInfo, 68)
 var file_apps_financeiro_contas_contas_proto_goTypes = []any{
 	(Tipo)(0),                             // 0: contas.Tipo
 	(Periodicidade)(0),                    // 1: contas.Periodicidade
@@ -5243,71 +5444,73 @@ var file_apps_financeiro_contas_contas_proto_goTypes = []any{
 	(*ResumoPagoRecebido)(nil),            // 50: contas.ResumoPagoRecebido
 	(*DashboardRequest)(nil),              // 51: contas.DashboardRequest
 	(*DashboardResponse)(nil),             // 52: contas.DashboardResponse
-	(*ReportRequest)(nil),                 // 53: contas.ReportRequest
-	(*ReportResponse)(nil),                // 54: contas.ReportResponse
-	(*CloneRequest)(nil),                  // 55: contas.CloneRequest
-	(*CloneResponse)(nil),                 // 56: contas.CloneResponse
-	(*GetOutstandingBalanceRequest)(nil),  // 57: contas.GetOutstandingBalanceRequest
-	(*GetOutstandingBalanceResponse)(nil), // 58: contas.GetOutstandingBalanceResponse
-	(*DuplicataRequest)(nil),              // 59: contas.DuplicataRequest
-	(*DuplicataResponse)(nil),             // 60: contas.DuplicataResponse
-	(*ExportRequest)(nil),                 // 61: contas.ExportRequest
-	(*ExportResponse)(nil),                // 62: contas.ExportResponse
-	(*ImprimirReciboRequest)(nil),         // 63: contas.ImprimirReciboRequest
-	(*ImprimirReciboResponse)(nil),        // 64: contas.ImprimirReciboResponse
-	nil,                                   // 65: contas.Contas.CustomFieldsEntry
-	nil,                                   // 66: contas.ImportResponse.ErrosByCategoryEntry
-	nil,                                   // 67: contas.ResumoDados.PessoasMapEntry
-	(*timestamppb.Timestamp)(nil),         // 68: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),          // 69: metadata.BasicFields
-	(*metadata.FieldMask)(nil),            // 70: metadata.FieldMask
-	(*filter.Filter)(nil),                 // 71: Filter
-	(*filter.OrderBy)(nil),                // 72: OrderBy
-	(*report.Response)(nil),               // 73: report.Response
-	(*metadata.CustomField)(nil),          // 74: metadata.CustomField
+	(*ResumoDia)(nil),                     // 53: contas.ResumoDia
+	(*ContaAtrasada)(nil),                 // 54: contas.ContaAtrasada
+	(*ReportRequest)(nil),                 // 55: contas.ReportRequest
+	(*ReportResponse)(nil),                // 56: contas.ReportResponse
+	(*CloneRequest)(nil),                  // 57: contas.CloneRequest
+	(*CloneResponse)(nil),                 // 58: contas.CloneResponse
+	(*GetOutstandingBalanceRequest)(nil),  // 59: contas.GetOutstandingBalanceRequest
+	(*GetOutstandingBalanceResponse)(nil), // 60: contas.GetOutstandingBalanceResponse
+	(*DuplicataRequest)(nil),              // 61: contas.DuplicataRequest
+	(*DuplicataResponse)(nil),             // 62: contas.DuplicataResponse
+	(*ExportRequest)(nil),                 // 63: contas.ExportRequest
+	(*ExportResponse)(nil),                // 64: contas.ExportResponse
+	(*ImprimirReciboRequest)(nil),         // 65: contas.ImprimirReciboRequest
+	(*ImprimirReciboResponse)(nil),        // 66: contas.ImprimirReciboResponse
+	nil,                                   // 67: contas.Contas.CustomFieldsEntry
+	nil,                                   // 68: contas.ImportResponse.ErrosByCategoryEntry
+	nil,                                   // 69: contas.ResumoDados.PessoasMapEntry
+	(*timestamppb.Timestamp)(nil),         // 70: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),          // 71: metadata.BasicFields
+	(*metadata.FieldMask)(nil),            // 72: metadata.FieldMask
+	(*filter.Filter)(nil),                 // 73: Filter
+	(*filter.OrderBy)(nil),                // 74: OrderBy
+	(*report.Response)(nil),               // 75: report.Response
+	(*metadata.CustomField)(nil),          // 76: metadata.CustomField
 }
 var file_apps_financeiro_contas_contas_proto_depIdxs = []int32{
-	68,  // 0: contas.FaturaRequest.vencimento:type_name -> google.protobuf.Timestamp
+	70,  // 0: contas.FaturaRequest.vencimento:type_name -> google.protobuf.Timestamp
 	10,  // 1: contas.FaturaResponse.contas:type_name -> contas.Contas
 	10,  // 2: contas.GeraBoletoResponse.contas:type_name -> contas.Contas
 	7,   // 3: contas.SendPaymentLinkRequest.destinatarios:type_name -> contas.DestinatarioCobranca
 	10,  // 4: contas.SendPaymentLinkResponse.contasList:type_name -> contas.Contas
 	9,   // 5: contas.SendPaymentLinkResponse.whatsapp_web:type_name -> contas.WhatsappWebEnvio
-	68,  // 6: contas.Contas.created_at:type_name -> google.protobuf.Timestamp
-	68,  // 7: contas.Contas.updated_at:type_name -> google.protobuf.Timestamp
-	68,  // 8: contas.Contas.importado_em:type_name -> google.protobuf.Timestamp
+	70,  // 6: contas.Contas.created_at:type_name -> google.protobuf.Timestamp
+	70,  // 7: contas.Contas.updated_at:type_name -> google.protobuf.Timestamp
+	70,  // 8: contas.Contas.importado_em:type_name -> google.protobuf.Timestamp
 	14,  // 9: contas.Contas.forma_pagamento_padrao:type_name -> contas.FormaPagamentoPadrao
-	68,  // 10: contas.Contas.desconto_data_ate:type_name -> google.protobuf.Timestamp
-	68,  // 11: contas.Contas.cancelamento_data_hora:type_name -> google.protobuf.Timestamp
-	68,  // 12: contas.Contas.data_hora_quitacao:type_name -> google.protobuf.Timestamp
-	68,  // 13: contas.Contas.vencimento:type_name -> google.protobuf.Timestamp
-	68,  // 14: contas.Contas.date_competence:type_name -> google.protobuf.Timestamp
-	68,  // 15: contas.Contas.previsao_pagamento:type_name -> google.protobuf.Timestamp
+	70,  // 10: contas.Contas.desconto_data_ate:type_name -> google.protobuf.Timestamp
+	70,  // 11: contas.Contas.cancelamento_data_hora:type_name -> google.protobuf.Timestamp
+	70,  // 12: contas.Contas.data_hora_quitacao:type_name -> google.protobuf.Timestamp
+	70,  // 13: contas.Contas.vencimento:type_name -> google.protobuf.Timestamp
+	70,  // 14: contas.Contas.date_competence:type_name -> google.protobuf.Timestamp
+	70,  // 15: contas.Contas.previsao_pagamento:type_name -> google.protobuf.Timestamp
 	12,  // 16: contas.Contas.pagamentos:type_name -> contas.Pagamento
-	65,  // 17: contas.Contas.custom_fields:type_name -> contas.Contas.CustomFieldsEntry
+	67,  // 17: contas.Contas.custom_fields:type_name -> contas.Contas.CustomFieldsEntry
 	1,   // 18: contas.Contas.periodicidade:type_name -> contas.Periodicidade
 	11,  // 19: contas.Contas.taxas:type_name -> contas.Taxa
-	69,  // 20: contas.Contas.fields:type_name -> metadata.BasicFields
-	68,  // 21: contas.Contas.boleto_vencimento:type_name -> google.protobuf.Timestamp
-	68,  // 22: contas.Pagamento.created_at:type_name -> google.protobuf.Timestamp
-	68,  // 23: contas.Pagamento.updated_at:type_name -> google.protobuf.Timestamp
-	68,  // 24: contas.Pagamento.data_hora:type_name -> google.protobuf.Timestamp
+	71,  // 20: contas.Contas.fields:type_name -> metadata.BasicFields
+	70,  // 21: contas.Contas.boleto_vencimento:type_name -> google.protobuf.Timestamp
+	70,  // 22: contas.Pagamento.created_at:type_name -> google.protobuf.Timestamp
+	70,  // 23: contas.Pagamento.updated_at:type_name -> google.protobuf.Timestamp
+	70,  // 24: contas.Pagamento.data_hora:type_name -> google.protobuf.Timestamp
 	13,  // 25: contas.Pagamento.comprovante:type_name -> contas.Comprovante
 	10,  // 26: contas.CreateContasRequest.contas:type_name -> contas.Contas
 	10,  // 27: contas.CreateContasResponse.contas:type_name -> contas.Contas
 	10,  // 28: contas.UpdateContasRequest.contas:type_name -> contas.Contas
-	70,  // 29: contas.UpdateContasRequest.update_mask:type_name -> metadata.FieldMask
+	72,  // 29: contas.UpdateContasRequest.update_mask:type_name -> metadata.FieldMask
 	10,  // 30: contas.UpdateContasResponse.contas:type_name -> contas.Contas
 	10,  // 31: contas.GetContasResponse.contas:type_name -> contas.Contas
-	71,  // 32: contas.ListContasRequest.filter:type_name -> Filter
+	73,  // 32: contas.ListContasRequest.filter:type_name -> Filter
 	10,  // 33: contas.ListContasRequest.contas:type_name -> contas.Contas
-	68,  // 34: contas.ListContasRequest.emissao_gte:type_name -> google.protobuf.Timestamp
-	68,  // 35: contas.ListContasRequest.emissao_lte:type_name -> google.protobuf.Timestamp
-	68,  // 36: contas.ListContasRequest.vencimento_gte:type_name -> google.protobuf.Timestamp
-	68,  // 37: contas.ListContasRequest.vencimento_lte:type_name -> google.protobuf.Timestamp
-	68,  // 38: contas.ListContasRequest.quitacao_gte:type_name -> google.protobuf.Timestamp
-	68,  // 39: contas.ListContasRequest.quitacao_lte:type_name -> google.protobuf.Timestamp
-	72,  // 40: contas.ListContasRequest.order_by:type_name -> OrderBy
+	70,  // 34: contas.ListContasRequest.emissao_gte:type_name -> google.protobuf.Timestamp
+	70,  // 35: contas.ListContasRequest.emissao_lte:type_name -> google.protobuf.Timestamp
+	70,  // 36: contas.ListContasRequest.vencimento_gte:type_name -> google.protobuf.Timestamp
+	70,  // 37: contas.ListContasRequest.vencimento_lte:type_name -> google.protobuf.Timestamp
+	70,  // 38: contas.ListContasRequest.quitacao_gte:type_name -> google.protobuf.Timestamp
+	70,  // 39: contas.ListContasRequest.quitacao_lte:type_name -> google.protobuf.Timestamp
+	74,  // 40: contas.ListContasRequest.order_by:type_name -> OrderBy
 	10,  // 41: contas.ListContasResponse.contas_list:type_name -> contas.Contas
 	10,  // 42: contas.CancelarResponse.contas:type_name -> contas.Contas
 	12,  // 43: contas.AddPagamentoRequest.pagamento:type_name -> contas.Pagamento
@@ -5319,12 +5522,12 @@ var file_apps_financeiro_contas_contas_proto_depIdxs = []int32{
 	10,  // 49: contas.DeletePagamentoResponse.contas:type_name -> contas.Contas
 	10,  // 50: contas.AtualizaComprovanteResponse.contas:type_name -> contas.Contas
 	10,  // 51: contas.ImportRequest.accounts:type_name -> contas.Contas
-	66,  // 52: contas.ImportResponse.erros_by_category:type_name -> contas.ImportResponse.ErrosByCategoryEntry
+	68,  // 52: contas.ImportResponse.erros_by_category:type_name -> contas.ImportResponse.ErrosByCategoryEntry
 	38,  // 53: contas.ImportErrorGroup.errors:type_name -> contas.ImportError
-	68,  // 54: contas.AlteracaoConjunta.vencimento:type_name -> google.protobuf.Timestamp
+	70,  // 54: contas.AlteracaoConjunta.vencimento:type_name -> google.protobuf.Timestamp
 	23,  // 55: contas.AlteracaoConjuntaRequest.list_contas_request:type_name -> contas.ListContasRequest
 	39,  // 56: contas.AlteracaoConjuntaRequest.alteracao:type_name -> contas.AlteracaoConjunta
-	67,  // 57: contas.ResumoDados.pessoasMap:type_name -> contas.ResumoDados.PessoasMapEntry
+	69,  // 57: contas.ResumoDados.pessoasMap:type_name -> contas.ResumoDados.PessoasMapEntry
 	46,  // 58: contas.ResumoDados.pessoas:type_name -> contas.ResumoPessoa
 	47,  // 59: contas.ResumoPagarReceber.hoje:type_name -> contas.ResumoDados
 	47,  // 60: contas.ResumoPagarReceber.atrasada:type_name -> contas.ResumoDados
@@ -5334,113 +5537,115 @@ var file_apps_financeiro_contas_contas_proto_depIdxs = []int32{
 	49,  // 64: contas.DashboardResponse.receber:type_name -> contas.ResumoPagarReceber
 	50,  // 65: contas.DashboardResponse.recebido:type_name -> contas.ResumoPagoRecebido
 	48,  // 66: contas.DashboardResponse.pagar_receber_por_mes:type_name -> contas.ResumoMesAno
-	0,   // 67: contas.ReportRequest.type:type_name -> contas.Tipo
-	23,  // 68: contas.ReportRequest.list_contas_request:type_name -> contas.ListContasRequest
-	73,  // 69: contas.ReportResponse.response:type_name -> report.Response
-	10,  // 70: contas.CloneResponse.contas:type_name -> contas.Contas
-	73,  // 71: contas.DuplicataResponse.response:type_name -> report.Response
-	71,  // 72: contas.ExportRequest.filter:type_name -> Filter
-	73,  // 73: contas.ImprimirReciboResponse.response:type_name -> report.Response
-	74,  // 74: contas.Contas.CustomFieldsEntry.value:type_name -> metadata.CustomField
-	37,  // 75: contas.ImportResponse.ErrosByCategoryEntry.value:type_name -> contas.ImportErrorGroup
-	46,  // 76: contas.ResumoDados.PessoasMapEntry.value:type_name -> contas.ResumoPessoa
-	15,  // 77: contas.ContasReceberService.Create:input_type -> contas.CreateContasRequest
-	17,  // 78: contas.ContasReceberService.Update:input_type -> contas.UpdateContasRequest
-	19,  // 79: contas.ContasReceberService.Delete:input_type -> contas.DeleteContasRequest
-	21,  // 80: contas.ContasReceberService.Get:input_type -> contas.GetContasRequest
-	23,  // 81: contas.ContasReceberService.List:input_type -> contas.ListContasRequest
-	25,  // 82: contas.ContasReceberService.Cancelar:input_type -> contas.CancelarRequest
-	27,  // 83: contas.ContasReceberService.AddPagamento:input_type -> contas.AddPagamentoRequest
-	29,  // 84: contas.ContasReceberService.UpdatePagamento:input_type -> contas.UpdatePagamentoRequest
-	31,  // 85: contas.ContasReceberService.DeletePagamento:input_type -> contas.DeletePagamentoRequest
-	33,  // 86: contas.ContasReceberService.AtualizaComprovante:input_type -> contas.AtualizaComprovanteRequest
-	35,  // 87: contas.ContasReceberService.Import:input_type -> contas.ImportRequest
-	40,  // 88: contas.ContasReceberService.AlteracaoConjunta:input_type -> contas.AlteracaoConjuntaRequest
-	42,  // 89: contas.ContasReceberService.FaturamentoConjunto:input_type -> contas.FaturamentoConjuntoRequest
-	44,  // 90: contas.ContasReceberService.MesclaContas:input_type -> contas.MesclaContasRequest
-	51,  // 91: contas.ContasReceberService.Dashboard:input_type -> contas.DashboardRequest
-	53,  // 92: contas.ContasReceberService.Report:input_type -> contas.ReportRequest
-	59,  // 93: contas.ContasReceberService.Duplicata:input_type -> contas.DuplicataRequest
-	55,  // 94: contas.ContasReceberService.Clone:input_type -> contas.CloneRequest
-	57,  // 95: contas.ContasReceberService.GetOutstandingBalance:input_type -> contas.GetOutstandingBalanceRequest
-	61,  // 96: contas.ContasReceberService.Export:input_type -> contas.ExportRequest
-	63,  // 97: contas.ContasReceberService.ImprimirRecibo:input_type -> contas.ImprimirReciboRequest
-	6,   // 98: contas.ContasReceberService.SendPaymentLink:input_type -> contas.SendPaymentLinkRequest
-	4,   // 99: contas.ContasReceberService.GeraBoleto:input_type -> contas.GeraBoletoRequest
-	2,   // 100: contas.ContasReceberService.Fatura:input_type -> contas.FaturaRequest
-	15,  // 101: contas.ContasPagarService.Create:input_type -> contas.CreateContasRequest
-	17,  // 102: contas.ContasPagarService.Update:input_type -> contas.UpdateContasRequest
-	19,  // 103: contas.ContasPagarService.Delete:input_type -> contas.DeleteContasRequest
-	21,  // 104: contas.ContasPagarService.Get:input_type -> contas.GetContasRequest
-	23,  // 105: contas.ContasPagarService.List:input_type -> contas.ListContasRequest
-	25,  // 106: contas.ContasPagarService.Cancelar:input_type -> contas.CancelarRequest
-	27,  // 107: contas.ContasPagarService.AddPagamento:input_type -> contas.AddPagamentoRequest
-	29,  // 108: contas.ContasPagarService.UpdatePagamento:input_type -> contas.UpdatePagamentoRequest
-	31,  // 109: contas.ContasPagarService.DeletePagamento:input_type -> contas.DeletePagamentoRequest
-	33,  // 110: contas.ContasPagarService.AtualizaComprovante:input_type -> contas.AtualizaComprovanteRequest
-	35,  // 111: contas.ContasPagarService.Import:input_type -> contas.ImportRequest
-	40,  // 112: contas.ContasPagarService.AlteracaoConjunta:input_type -> contas.AlteracaoConjuntaRequest
-	42,  // 113: contas.ContasPagarService.FaturamentoConjunto:input_type -> contas.FaturamentoConjuntoRequest
-	44,  // 114: contas.ContasPagarService.MesclaContas:input_type -> contas.MesclaContasRequest
-	51,  // 115: contas.ContasPagarService.Dashboard:input_type -> contas.DashboardRequest
-	53,  // 116: contas.ContasPagarService.Report:input_type -> contas.ReportRequest
-	59,  // 117: contas.ContasPagarService.Duplicata:input_type -> contas.DuplicataRequest
-	55,  // 118: contas.ContasPagarService.Clone:input_type -> contas.CloneRequest
-	57,  // 119: contas.ContasPagarService.GetOutstandingBalance:input_type -> contas.GetOutstandingBalanceRequest
-	61,  // 120: contas.ContasPagarService.Export:input_type -> contas.ExportRequest
-	63,  // 121: contas.ContasPagarService.ImprimirRecibo:input_type -> contas.ImprimirReciboRequest
-	53,  // 122: contas.ContasService.Report:input_type -> contas.ReportRequest
-	16,  // 123: contas.ContasReceberService.Create:output_type -> contas.CreateContasResponse
-	18,  // 124: contas.ContasReceberService.Update:output_type -> contas.UpdateContasResponse
-	20,  // 125: contas.ContasReceberService.Delete:output_type -> contas.DeleteContasResponse
-	22,  // 126: contas.ContasReceberService.Get:output_type -> contas.GetContasResponse
-	24,  // 127: contas.ContasReceberService.List:output_type -> contas.ListContasResponse
-	26,  // 128: contas.ContasReceberService.Cancelar:output_type -> contas.CancelarResponse
-	28,  // 129: contas.ContasReceberService.AddPagamento:output_type -> contas.AddPagamentoResponse
-	30,  // 130: contas.ContasReceberService.UpdatePagamento:output_type -> contas.UpdatePagamentoResponse
-	32,  // 131: contas.ContasReceberService.DeletePagamento:output_type -> contas.DeletePagamentoResponse
-	34,  // 132: contas.ContasReceberService.AtualizaComprovante:output_type -> contas.AtualizaComprovanteResponse
-	36,  // 133: contas.ContasReceberService.Import:output_type -> contas.ImportResponse
-	41,  // 134: contas.ContasReceberService.AlteracaoConjunta:output_type -> contas.AlteracaoConjuntaResponse
-	43,  // 135: contas.ContasReceberService.FaturamentoConjunto:output_type -> contas.FaturamentoConjuntoResponse
-	45,  // 136: contas.ContasReceberService.MesclaContas:output_type -> contas.MesclaContasResponse
-	52,  // 137: contas.ContasReceberService.Dashboard:output_type -> contas.DashboardResponse
-	54,  // 138: contas.ContasReceberService.Report:output_type -> contas.ReportResponse
-	60,  // 139: contas.ContasReceberService.Duplicata:output_type -> contas.DuplicataResponse
-	56,  // 140: contas.ContasReceberService.Clone:output_type -> contas.CloneResponse
-	58,  // 141: contas.ContasReceberService.GetOutstandingBalance:output_type -> contas.GetOutstandingBalanceResponse
-	62,  // 142: contas.ContasReceberService.Export:output_type -> contas.ExportResponse
-	64,  // 143: contas.ContasReceberService.ImprimirRecibo:output_type -> contas.ImprimirReciboResponse
-	8,   // 144: contas.ContasReceberService.SendPaymentLink:output_type -> contas.SendPaymentLinkResponse
-	5,   // 145: contas.ContasReceberService.GeraBoleto:output_type -> contas.GeraBoletoResponse
-	3,   // 146: contas.ContasReceberService.Fatura:output_type -> contas.FaturaResponse
-	16,  // 147: contas.ContasPagarService.Create:output_type -> contas.CreateContasResponse
-	18,  // 148: contas.ContasPagarService.Update:output_type -> contas.UpdateContasResponse
-	20,  // 149: contas.ContasPagarService.Delete:output_type -> contas.DeleteContasResponse
-	22,  // 150: contas.ContasPagarService.Get:output_type -> contas.GetContasResponse
-	24,  // 151: contas.ContasPagarService.List:output_type -> contas.ListContasResponse
-	26,  // 152: contas.ContasPagarService.Cancelar:output_type -> contas.CancelarResponse
-	28,  // 153: contas.ContasPagarService.AddPagamento:output_type -> contas.AddPagamentoResponse
-	30,  // 154: contas.ContasPagarService.UpdatePagamento:output_type -> contas.UpdatePagamentoResponse
-	32,  // 155: contas.ContasPagarService.DeletePagamento:output_type -> contas.DeletePagamentoResponse
-	34,  // 156: contas.ContasPagarService.AtualizaComprovante:output_type -> contas.AtualizaComprovanteResponse
-	36,  // 157: contas.ContasPagarService.Import:output_type -> contas.ImportResponse
-	41,  // 158: contas.ContasPagarService.AlteracaoConjunta:output_type -> contas.AlteracaoConjuntaResponse
-	43,  // 159: contas.ContasPagarService.FaturamentoConjunto:output_type -> contas.FaturamentoConjuntoResponse
-	45,  // 160: contas.ContasPagarService.MesclaContas:output_type -> contas.MesclaContasResponse
-	52,  // 161: contas.ContasPagarService.Dashboard:output_type -> contas.DashboardResponse
-	54,  // 162: contas.ContasPagarService.Report:output_type -> contas.ReportResponse
-	60,  // 163: contas.ContasPagarService.Duplicata:output_type -> contas.DuplicataResponse
-	56,  // 164: contas.ContasPagarService.Clone:output_type -> contas.CloneResponse
-	58,  // 165: contas.ContasPagarService.GetOutstandingBalance:output_type -> contas.GetOutstandingBalanceResponse
-	62,  // 166: contas.ContasPagarService.Export:output_type -> contas.ExportResponse
-	64,  // 167: contas.ContasPagarService.ImprimirRecibo:output_type -> contas.ImprimirReciboResponse
-	54,  // 168: contas.ContasService.Report:output_type -> contas.ReportResponse
-	123, // [123:169] is the sub-list for method output_type
-	77,  // [77:123] is the sub-list for method input_type
-	77,  // [77:77] is the sub-list for extension type_name
-	77,  // [77:77] is the sub-list for extension extendee
-	0,   // [0:77] is the sub-list for field type_name
+	53,  // 67: contas.DashboardResponse.proximos_dias:type_name -> contas.ResumoDia
+	54,  // 68: contas.DashboardResponse.maiores_atrasos:type_name -> contas.ContaAtrasada
+	0,   // 69: contas.ReportRequest.type:type_name -> contas.Tipo
+	23,  // 70: contas.ReportRequest.list_contas_request:type_name -> contas.ListContasRequest
+	75,  // 71: contas.ReportResponse.response:type_name -> report.Response
+	10,  // 72: contas.CloneResponse.contas:type_name -> contas.Contas
+	75,  // 73: contas.DuplicataResponse.response:type_name -> report.Response
+	73,  // 74: contas.ExportRequest.filter:type_name -> Filter
+	75,  // 75: contas.ImprimirReciboResponse.response:type_name -> report.Response
+	76,  // 76: contas.Contas.CustomFieldsEntry.value:type_name -> metadata.CustomField
+	37,  // 77: contas.ImportResponse.ErrosByCategoryEntry.value:type_name -> contas.ImportErrorGroup
+	46,  // 78: contas.ResumoDados.PessoasMapEntry.value:type_name -> contas.ResumoPessoa
+	15,  // 79: contas.ContasReceberService.Create:input_type -> contas.CreateContasRequest
+	17,  // 80: contas.ContasReceberService.Update:input_type -> contas.UpdateContasRequest
+	19,  // 81: contas.ContasReceberService.Delete:input_type -> contas.DeleteContasRequest
+	21,  // 82: contas.ContasReceberService.Get:input_type -> contas.GetContasRequest
+	23,  // 83: contas.ContasReceberService.List:input_type -> contas.ListContasRequest
+	25,  // 84: contas.ContasReceberService.Cancelar:input_type -> contas.CancelarRequest
+	27,  // 85: contas.ContasReceberService.AddPagamento:input_type -> contas.AddPagamentoRequest
+	29,  // 86: contas.ContasReceberService.UpdatePagamento:input_type -> contas.UpdatePagamentoRequest
+	31,  // 87: contas.ContasReceberService.DeletePagamento:input_type -> contas.DeletePagamentoRequest
+	33,  // 88: contas.ContasReceberService.AtualizaComprovante:input_type -> contas.AtualizaComprovanteRequest
+	35,  // 89: contas.ContasReceberService.Import:input_type -> contas.ImportRequest
+	40,  // 90: contas.ContasReceberService.AlteracaoConjunta:input_type -> contas.AlteracaoConjuntaRequest
+	42,  // 91: contas.ContasReceberService.FaturamentoConjunto:input_type -> contas.FaturamentoConjuntoRequest
+	44,  // 92: contas.ContasReceberService.MesclaContas:input_type -> contas.MesclaContasRequest
+	51,  // 93: contas.ContasReceberService.Dashboard:input_type -> contas.DashboardRequest
+	55,  // 94: contas.ContasReceberService.Report:input_type -> contas.ReportRequest
+	61,  // 95: contas.ContasReceberService.Duplicata:input_type -> contas.DuplicataRequest
+	57,  // 96: contas.ContasReceberService.Clone:input_type -> contas.CloneRequest
+	59,  // 97: contas.ContasReceberService.GetOutstandingBalance:input_type -> contas.GetOutstandingBalanceRequest
+	63,  // 98: contas.ContasReceberService.Export:input_type -> contas.ExportRequest
+	65,  // 99: contas.ContasReceberService.ImprimirRecibo:input_type -> contas.ImprimirReciboRequest
+	6,   // 100: contas.ContasReceberService.SendPaymentLink:input_type -> contas.SendPaymentLinkRequest
+	4,   // 101: contas.ContasReceberService.GeraBoleto:input_type -> contas.GeraBoletoRequest
+	2,   // 102: contas.ContasReceberService.Fatura:input_type -> contas.FaturaRequest
+	15,  // 103: contas.ContasPagarService.Create:input_type -> contas.CreateContasRequest
+	17,  // 104: contas.ContasPagarService.Update:input_type -> contas.UpdateContasRequest
+	19,  // 105: contas.ContasPagarService.Delete:input_type -> contas.DeleteContasRequest
+	21,  // 106: contas.ContasPagarService.Get:input_type -> contas.GetContasRequest
+	23,  // 107: contas.ContasPagarService.List:input_type -> contas.ListContasRequest
+	25,  // 108: contas.ContasPagarService.Cancelar:input_type -> contas.CancelarRequest
+	27,  // 109: contas.ContasPagarService.AddPagamento:input_type -> contas.AddPagamentoRequest
+	29,  // 110: contas.ContasPagarService.UpdatePagamento:input_type -> contas.UpdatePagamentoRequest
+	31,  // 111: contas.ContasPagarService.DeletePagamento:input_type -> contas.DeletePagamentoRequest
+	33,  // 112: contas.ContasPagarService.AtualizaComprovante:input_type -> contas.AtualizaComprovanteRequest
+	35,  // 113: contas.ContasPagarService.Import:input_type -> contas.ImportRequest
+	40,  // 114: contas.ContasPagarService.AlteracaoConjunta:input_type -> contas.AlteracaoConjuntaRequest
+	42,  // 115: contas.ContasPagarService.FaturamentoConjunto:input_type -> contas.FaturamentoConjuntoRequest
+	44,  // 116: contas.ContasPagarService.MesclaContas:input_type -> contas.MesclaContasRequest
+	51,  // 117: contas.ContasPagarService.Dashboard:input_type -> contas.DashboardRequest
+	55,  // 118: contas.ContasPagarService.Report:input_type -> contas.ReportRequest
+	61,  // 119: contas.ContasPagarService.Duplicata:input_type -> contas.DuplicataRequest
+	57,  // 120: contas.ContasPagarService.Clone:input_type -> contas.CloneRequest
+	59,  // 121: contas.ContasPagarService.GetOutstandingBalance:input_type -> contas.GetOutstandingBalanceRequest
+	63,  // 122: contas.ContasPagarService.Export:input_type -> contas.ExportRequest
+	65,  // 123: contas.ContasPagarService.ImprimirRecibo:input_type -> contas.ImprimirReciboRequest
+	55,  // 124: contas.ContasService.Report:input_type -> contas.ReportRequest
+	16,  // 125: contas.ContasReceberService.Create:output_type -> contas.CreateContasResponse
+	18,  // 126: contas.ContasReceberService.Update:output_type -> contas.UpdateContasResponse
+	20,  // 127: contas.ContasReceberService.Delete:output_type -> contas.DeleteContasResponse
+	22,  // 128: contas.ContasReceberService.Get:output_type -> contas.GetContasResponse
+	24,  // 129: contas.ContasReceberService.List:output_type -> contas.ListContasResponse
+	26,  // 130: contas.ContasReceberService.Cancelar:output_type -> contas.CancelarResponse
+	28,  // 131: contas.ContasReceberService.AddPagamento:output_type -> contas.AddPagamentoResponse
+	30,  // 132: contas.ContasReceberService.UpdatePagamento:output_type -> contas.UpdatePagamentoResponse
+	32,  // 133: contas.ContasReceberService.DeletePagamento:output_type -> contas.DeletePagamentoResponse
+	34,  // 134: contas.ContasReceberService.AtualizaComprovante:output_type -> contas.AtualizaComprovanteResponse
+	36,  // 135: contas.ContasReceberService.Import:output_type -> contas.ImportResponse
+	41,  // 136: contas.ContasReceberService.AlteracaoConjunta:output_type -> contas.AlteracaoConjuntaResponse
+	43,  // 137: contas.ContasReceberService.FaturamentoConjunto:output_type -> contas.FaturamentoConjuntoResponse
+	45,  // 138: contas.ContasReceberService.MesclaContas:output_type -> contas.MesclaContasResponse
+	52,  // 139: contas.ContasReceberService.Dashboard:output_type -> contas.DashboardResponse
+	56,  // 140: contas.ContasReceberService.Report:output_type -> contas.ReportResponse
+	62,  // 141: contas.ContasReceberService.Duplicata:output_type -> contas.DuplicataResponse
+	58,  // 142: contas.ContasReceberService.Clone:output_type -> contas.CloneResponse
+	60,  // 143: contas.ContasReceberService.GetOutstandingBalance:output_type -> contas.GetOutstandingBalanceResponse
+	64,  // 144: contas.ContasReceberService.Export:output_type -> contas.ExportResponse
+	66,  // 145: contas.ContasReceberService.ImprimirRecibo:output_type -> contas.ImprimirReciboResponse
+	8,   // 146: contas.ContasReceberService.SendPaymentLink:output_type -> contas.SendPaymentLinkResponse
+	5,   // 147: contas.ContasReceberService.GeraBoleto:output_type -> contas.GeraBoletoResponse
+	3,   // 148: contas.ContasReceberService.Fatura:output_type -> contas.FaturaResponse
+	16,  // 149: contas.ContasPagarService.Create:output_type -> contas.CreateContasResponse
+	18,  // 150: contas.ContasPagarService.Update:output_type -> contas.UpdateContasResponse
+	20,  // 151: contas.ContasPagarService.Delete:output_type -> contas.DeleteContasResponse
+	22,  // 152: contas.ContasPagarService.Get:output_type -> contas.GetContasResponse
+	24,  // 153: contas.ContasPagarService.List:output_type -> contas.ListContasResponse
+	26,  // 154: contas.ContasPagarService.Cancelar:output_type -> contas.CancelarResponse
+	28,  // 155: contas.ContasPagarService.AddPagamento:output_type -> contas.AddPagamentoResponse
+	30,  // 156: contas.ContasPagarService.UpdatePagamento:output_type -> contas.UpdatePagamentoResponse
+	32,  // 157: contas.ContasPagarService.DeletePagamento:output_type -> contas.DeletePagamentoResponse
+	34,  // 158: contas.ContasPagarService.AtualizaComprovante:output_type -> contas.AtualizaComprovanteResponse
+	36,  // 159: contas.ContasPagarService.Import:output_type -> contas.ImportResponse
+	41,  // 160: contas.ContasPagarService.AlteracaoConjunta:output_type -> contas.AlteracaoConjuntaResponse
+	43,  // 161: contas.ContasPagarService.FaturamentoConjunto:output_type -> contas.FaturamentoConjuntoResponse
+	45,  // 162: contas.ContasPagarService.MesclaContas:output_type -> contas.MesclaContasResponse
+	52,  // 163: contas.ContasPagarService.Dashboard:output_type -> contas.DashboardResponse
+	56,  // 164: contas.ContasPagarService.Report:output_type -> contas.ReportResponse
+	62,  // 165: contas.ContasPagarService.Duplicata:output_type -> contas.DuplicataResponse
+	58,  // 166: contas.ContasPagarService.Clone:output_type -> contas.CloneResponse
+	60,  // 167: contas.ContasPagarService.GetOutstandingBalance:output_type -> contas.GetOutstandingBalanceResponse
+	64,  // 168: contas.ContasPagarService.Export:output_type -> contas.ExportResponse
+	66,  // 169: contas.ContasPagarService.ImprimirRecibo:output_type -> contas.ImprimirReciboResponse
+	56,  // 170: contas.ContasService.Report:output_type -> contas.ReportResponse
+	125, // [125:171] is the sub-list for method output_type
+	79,  // [79:125] is the sub-list for method input_type
+	79,  // [79:79] is the sub-list for extension type_name
+	79,  // [79:79] is the sub-list for extension extendee
+	0,   // [0:79] is the sub-list for field type_name
 }
 
 func init() { file_apps_financeiro_contas_contas_proto_init() }
@@ -5454,7 +5659,7 @@ func file_apps_financeiro_contas_contas_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_financeiro_contas_contas_proto_rawDesc), len(file_apps_financeiro_contas_contas_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   66,
+			NumMessages:   68,
 			NumExtensions: 0,
 			NumServices:   3,
 		},

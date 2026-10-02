@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada,
+// Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada, NFS-e,
 // MDF-e e Inutilizacoes em uma unica resposta.
 type DfeDashboardServiceClient interface {
 	// GetSummary retorna o payload do dashboard para o periodo informado.
@@ -56,7 +56,7 @@ func (c *dfeDashboardServiceClient) GetSummary(ctx context.Context, in *GetSumma
 // All implementations must embed UnimplementedDfeDashboardServiceServer
 // for forward compatibility.
 //
-// Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada,
+// Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada, NFS-e,
 // MDF-e e Inutilizacoes em uma unica resposta.
 type DfeDashboardServiceServer interface {
 	// GetSummary retorna o payload do dashboard para o periodo informado.

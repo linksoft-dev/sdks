@@ -65,6 +65,11 @@ class MovimentoCaixaServiceStub:
                 request_serializer=apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.ResumoMovimentoCaixaRequest.SerializeToString,
                 response_deserializer=apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.ResumoMovimentoCaixaResponse.FromString,
                 _registered_method=True)
+        self.Dashboard = channel.unary_unary(
+                '/movimentocaixa.MovimentoCaixaService/Dashboard',
+                request_serializer=apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.DashboardMovimentoCaixaRequest.SerializeToString,
+                response_deserializer=apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.DashboardMovimentoCaixaResponse.FromString,
+                _registered_method=True)
 
 
 class MovimentoCaixaServiceServicer:
@@ -131,6 +136,14 @@ class MovimentoCaixaServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Dashboard(self, request, context):
+        """Fluxo de caixa do período por caixa: saldo inicial, entradas, saídas e saldo final,
+        com a série diária e os totais por plano de contas e por tipo de pagamento.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MovimentoCaixaServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -183,6 +196,11 @@ def add_MovimentoCaixaServiceServicer_to_server(servicer, server):
                     servicer.Resumo,
                     request_deserializer=apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.ResumoMovimentoCaixaRequest.FromString,
                     response_serializer=apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.ResumoMovimentoCaixaResponse.SerializeToString,
+            ),
+            'Dashboard': grpc.unary_unary_rpc_method_handler(
+                    servicer.Dashboard,
+                    request_deserializer=apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.DashboardMovimentoCaixaRequest.FromString,
+                    response_serializer=apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.DashboardMovimentoCaixaResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -456,6 +474,33 @@ class MovimentoCaixaService:
             '/movimentocaixa.MovimentoCaixaService/Resumo',
             apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.ResumoMovimentoCaixaRequest.SerializeToString,
             apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.ResumoMovimentoCaixaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Dashboard(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/movimentocaixa.MovimentoCaixaService/Dashboard',
+            apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.DashboardMovimentoCaixaRequest.SerializeToString,
+            apps_dot_financeiro_dot_movimentocaixa_dot_movimento__caixa__pb2.DashboardMovimentoCaixaResponse.FromString,
             options,
             channel_credentials,
             insecure,

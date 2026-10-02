@@ -15,6 +15,72 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class DashboardMovimentoCaixaRequest(_message.Message):
+    __slots__ = ("data_inicial", "data_final", "caixa")
+    DATA_INICIAL_FIELD_NUMBER: _ClassVar[int]
+    DATA_FINAL_FIELD_NUMBER: _ClassVar[int]
+    CAIXA_FIELD_NUMBER: _ClassVar[int]
+    data_inicial: _timestamp_pb2.Timestamp
+    data_final: _timestamp_pb2.Timestamp
+    caixa: str
+    def __init__(self, data_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., caixa: _Optional[str] = ...) -> None: ...
+
+class DashboardMovimentoCaixaResponse(_message.Message):
+    __slots__ = ("data_inicial", "data_final", "total", "caixas", "dias", "por_plano_conta", "por_tipo_pagamento")
+    DATA_INICIAL_FIELD_NUMBER: _ClassVar[int]
+    DATA_FINAL_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_FIELD_NUMBER: _ClassVar[int]
+    CAIXAS_FIELD_NUMBER: _ClassVar[int]
+    DIAS_FIELD_NUMBER: _ClassVar[int]
+    POR_PLANO_CONTA_FIELD_NUMBER: _ClassVar[int]
+    POR_TIPO_PAGAMENTO_FIELD_NUMBER: _ClassVar[int]
+    data_inicial: _timestamp_pb2.Timestamp
+    data_final: _timestamp_pb2.Timestamp
+    total: FluxoCaixaConta
+    caixas: _containers.RepeatedCompositeFieldContainer[FluxoCaixaConta]
+    dias: _containers.RepeatedCompositeFieldContainer[FluxoCaixaDia]
+    por_plano_conta: _containers.RepeatedCompositeFieldContainer[FluxoCaixaGrupo]
+    por_tipo_pagamento: _containers.RepeatedCompositeFieldContainer[FluxoCaixaGrupo]
+    def __init__(self, data_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., total: _Optional[_Union[FluxoCaixaConta, _Mapping]] = ..., caixas: _Optional[_Iterable[_Union[FluxoCaixaConta, _Mapping]]] = ..., dias: _Optional[_Iterable[_Union[FluxoCaixaDia, _Mapping]]] = ..., por_plano_conta: _Optional[_Iterable[_Union[FluxoCaixaGrupo, _Mapping]]] = ..., por_tipo_pagamento: _Optional[_Iterable[_Union[FluxoCaixaGrupo, _Mapping]]] = ...) -> None: ...
+
+class FluxoCaixaConta(_message.Message):
+    __slots__ = ("caixa", "caixa_nome", "saldo_inicial", "entradas", "saidas", "saldo_final")
+    CAIXA_FIELD_NUMBER: _ClassVar[int]
+    CAIXA_NOME_FIELD_NUMBER: _ClassVar[int]
+    SALDO_INICIAL_FIELD_NUMBER: _ClassVar[int]
+    ENTRADAS_FIELD_NUMBER: _ClassVar[int]
+    SAIDAS_FIELD_NUMBER: _ClassVar[int]
+    SALDO_FINAL_FIELD_NUMBER: _ClassVar[int]
+    caixa: str
+    caixa_nome: str
+    saldo_inicial: float
+    entradas: float
+    saidas: float
+    saldo_final: float
+    def __init__(self, caixa: _Optional[str] = ..., caixa_nome: _Optional[str] = ..., saldo_inicial: _Optional[float] = ..., entradas: _Optional[float] = ..., saidas: _Optional[float] = ..., saldo_final: _Optional[float] = ...) -> None: ...
+
+class FluxoCaixaDia(_message.Message):
+    __slots__ = ("dia", "entradas", "saidas", "saldo")
+    DIA_FIELD_NUMBER: _ClassVar[int]
+    ENTRADAS_FIELD_NUMBER: _ClassVar[int]
+    SAIDAS_FIELD_NUMBER: _ClassVar[int]
+    SALDO_FIELD_NUMBER: _ClassVar[int]
+    dia: str
+    entradas: float
+    saidas: float
+    saldo: float
+    def __init__(self, dia: _Optional[str] = ..., entradas: _Optional[float] = ..., saidas: _Optional[float] = ..., saldo: _Optional[float] = ...) -> None: ...
+
+class FluxoCaixaGrupo(_message.Message):
+    __slots__ = ("nome", "entradas", "saidas")
+    NOME_FIELD_NUMBER: _ClassVar[int]
+    ENTRADAS_FIELD_NUMBER: _ClassVar[int]
+    SAIDAS_FIELD_NUMBER: _ClassVar[int]
+    nome: str
+    entradas: float
+    saidas: float
+    def __init__(self, nome: _Optional[str] = ..., entradas: _Optional[float] = ..., saidas: _Optional[float] = ...) -> None: ...
+
 class MovimentoCaixa(_message.Message):
     __slots__ = ("created_at", "updated_at", "competence", "user_id", "user_name", "id", "code", "descricao", "pessoa_id", "pessoa_nome", "plano_conta_id", "plano_conta_nome", "centro_custo_id", "centro_custo_nome", "forma_pagamento_id", "forma_pagamento_nome", "tipo_pagamento", "caixa_nome", "caixa", "wallet_nome", "wallet_id", "tipo_moeda", "operacao", "valor", "saldo", "obs", "source", "source_id", "doc_number", "reverse_reason", "data_hora_inicial", "data_hora_final")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]

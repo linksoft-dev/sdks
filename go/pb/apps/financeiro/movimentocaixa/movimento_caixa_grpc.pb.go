@@ -29,6 +29,7 @@ const (
 	MovimentoCaixaService_TransferenciaCaixa_FullMethodName = "/movimentocaixa.MovimentoCaixaService/TransferenciaCaixa"
 	MovimentoCaixaService_BatchUpdate_FullMethodName        = "/movimentocaixa.MovimentoCaixaService/BatchUpdate"
 	MovimentoCaixaService_Resumo_FullMethodName             = "/movimentocaixa.MovimentoCaixaService/Resumo"
+	MovimentoCaixaService_Dashboard_FullMethodName          = "/movimentocaixa.MovimentoCaixaService/Dashboard"
 )
 
 // MovimentoCaixaServiceClient is the client API for MovimentoCaixaService service.
@@ -47,6 +48,9 @@ type MovimentoCaixaServiceClient interface {
 	TransferenciaCaixa(ctx context.Context, in *TransferenciaCaixaRequest, opts ...grpc.CallOption) (*TransferenciaCaixaResponse, error)
 	BatchUpdate(ctx context.Context, in *BatchUpdateRequest, opts ...grpc.CallOption) (*BatchUpdateResponse, error)
 	Resumo(ctx context.Context, in *ResumoMovimentoCaixaRequest, opts ...grpc.CallOption) (*ResumoMovimentoCaixaResponse, error)
+	// Fluxo de caixa do período por caixa: saldo inicial, entradas, saídas e saldo final,
+	// com a série diária e os totais por plano de contas e por tipo de pagamento.
+	Dashboard(ctx context.Context, in *DashboardMovimentoCaixaRequest, opts ...grpc.CallOption) (*DashboardMovimentoCaixaResponse, error)
 }
 
 type movimentoCaixaServiceClient struct {
@@ -157,6 +161,16 @@ func (c *movimentoCaixaServiceClient) Resumo(ctx context.Context, in *ResumoMovi
 	return out, nil
 }
 
+func (c *movimentoCaixaServiceClient) Dashboard(ctx context.Context, in *DashboardMovimentoCaixaRequest, opts ...grpc.CallOption) (*DashboardMovimentoCaixaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DashboardMovimentoCaixaResponse)
+	err := c.cc.Invoke(ctx, MovimentoCaixaService_Dashboard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MovimentoCaixaServiceServer is the server API for MovimentoCaixaService service.
 // All implementations must embed UnimplementedMovimentoCaixaServiceServer
 // for forward compatibility.
@@ -173,6 +187,9 @@ type MovimentoCaixaServiceServer interface {
 	TransferenciaCaixa(context.Context, *TransferenciaCaixaRequest) (*TransferenciaCaixaResponse, error)
 	BatchUpdate(context.Context, *BatchUpdateRequest) (*BatchUpdateResponse, error)
 	Resumo(context.Context, *ResumoMovimentoCaixaRequest) (*ResumoMovimentoCaixaResponse, error)
+	// Fluxo de caixa do período por caixa: saldo inicial, entradas, saídas e saldo final,
+	// com a série diária e os totais por plano de contas e por tipo de pagamento.
+	Dashboard(context.Context, *DashboardMovimentoCaixaRequest) (*DashboardMovimentoCaixaResponse, error)
 	mustEmbedUnimplementedMovimentoCaixaServiceServer()
 }
 
@@ -212,6 +229,9 @@ func (UnimplementedMovimentoCaixaServiceServer) BatchUpdate(context.Context, *Ba
 }
 func (UnimplementedMovimentoCaixaServiceServer) Resumo(context.Context, *ResumoMovimentoCaixaRequest) (*ResumoMovimentoCaixaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Resumo not implemented")
+}
+func (UnimplementedMovimentoCaixaServiceServer) Dashboard(context.Context, *DashboardMovimentoCaixaRequest) (*DashboardMovimentoCaixaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Dashboard not implemented")
 }
 func (UnimplementedMovimentoCaixaServiceServer) mustEmbedUnimplementedMovimentoCaixaServiceServer() {}
 func (UnimplementedMovimentoCaixaServiceServer) testEmbeddedByValue()                               {}
@@ -414,6 +434,24 @@ func _MovimentoCaixaService_Resumo_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MovimentoCaixaService_Dashboard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DashboardMovimentoCaixaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MovimentoCaixaServiceServer).Dashboard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MovimentoCaixaService_Dashboard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MovimentoCaixaServiceServer).Dashboard(ctx, req.(*DashboardMovimentoCaixaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MovimentoCaixaService_ServiceDesc is the grpc.ServiceDesc for MovimentoCaixaService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -460,6 +498,10 @@ var MovimentoCaixaService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Resumo",
 			Handler:    _MovimentoCaixaService_Resumo_Handler,
+		},
+		{
+			MethodName: "Dashboard",
+			Handler:    _MovimentoCaixaService_Dashboard_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

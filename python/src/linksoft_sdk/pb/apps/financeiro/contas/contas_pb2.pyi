@@ -774,18 +774,52 @@ class DashboardRequest(_message.Message):
     def __init__(self) -> None: ...
 
 class DashboardResponse(_message.Message):
-    __slots__ = ("pagar", "pago", "receber", "recebido", "pagar_receber_por_mes")
+    __slots__ = ("pagar", "pago", "receber", "recebido", "pagar_receber_por_mes", "proximos_dias", "maiores_atrasos")
     PAGAR_FIELD_NUMBER: _ClassVar[int]
     PAGO_FIELD_NUMBER: _ClassVar[int]
     RECEBER_FIELD_NUMBER: _ClassVar[int]
     RECEBIDO_FIELD_NUMBER: _ClassVar[int]
     PAGAR_RECEBER_POR_MES_FIELD_NUMBER: _ClassVar[int]
+    PROXIMOS_DIAS_FIELD_NUMBER: _ClassVar[int]
+    MAIORES_ATRASOS_FIELD_NUMBER: _ClassVar[int]
     pagar: ResumoPagarReceber
     pago: ResumoPagoRecebido
     receber: ResumoPagarReceber
     recebido: ResumoPagoRecebido
     pagar_receber_por_mes: _containers.RepeatedCompositeFieldContainer[ResumoMesAno]
-    def __init__(self, pagar: _Optional[_Union[ResumoPagarReceber, _Mapping]] = ..., pago: _Optional[_Union[ResumoPagoRecebido, _Mapping]] = ..., receber: _Optional[_Union[ResumoPagarReceber, _Mapping]] = ..., recebido: _Optional[_Union[ResumoPagoRecebido, _Mapping]] = ..., pagar_receber_por_mes: _Optional[_Iterable[_Union[ResumoMesAno, _Mapping]]] = ...) -> None: ...
+    proximos_dias: _containers.RepeatedCompositeFieldContainer[ResumoDia]
+    maiores_atrasos: _containers.RepeatedCompositeFieldContainer[ContaAtrasada]
+    def __init__(self, pagar: _Optional[_Union[ResumoPagarReceber, _Mapping]] = ..., pago: _Optional[_Union[ResumoPagoRecebido, _Mapping]] = ..., receber: _Optional[_Union[ResumoPagarReceber, _Mapping]] = ..., recebido: _Optional[_Union[ResumoPagoRecebido, _Mapping]] = ..., pagar_receber_por_mes: _Optional[_Iterable[_Union[ResumoMesAno, _Mapping]]] = ..., proximos_dias: _Optional[_Iterable[_Union[ResumoDia, _Mapping]]] = ..., maiores_atrasos: _Optional[_Iterable[_Union[ContaAtrasada, _Mapping]]] = ...) -> None: ...
+
+class ResumoDia(_message.Message):
+    __slots__ = ("dia", "receber", "pagar")
+    DIA_FIELD_NUMBER: _ClassVar[int]
+    RECEBER_FIELD_NUMBER: _ClassVar[int]
+    PAGAR_FIELD_NUMBER: _ClassVar[int]
+    dia: str
+    receber: float
+    pagar: float
+    def __init__(self, dia: _Optional[str] = ..., receber: _Optional[float] = ..., pagar: _Optional[float] = ...) -> None: ...
+
+class ContaAtrasada(_message.Message):
+    __slots__ = ("id", "tipo", "pessoa_nome", "descricao", "plano_conta_nome", "vencimento", "dias_atraso", "valor")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    TIPO_FIELD_NUMBER: _ClassVar[int]
+    PESSOA_NOME_FIELD_NUMBER: _ClassVar[int]
+    DESCRICAO_FIELD_NUMBER: _ClassVar[int]
+    PLANO_CONTA_NOME_FIELD_NUMBER: _ClassVar[int]
+    VENCIMENTO_FIELD_NUMBER: _ClassVar[int]
+    DIAS_ATRASO_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    tipo: str
+    pessoa_nome: str
+    descricao: str
+    plano_conta_nome: str
+    vencimento: str
+    dias_atraso: int
+    valor: float
+    def __init__(self, id: _Optional[str] = ..., tipo: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., descricao: _Optional[str] = ..., plano_conta_nome: _Optional[str] = ..., vencimento: _Optional[str] = ..., dias_atraso: _Optional[int] = ..., valor: _Optional[float] = ...) -> None: ...
 
 class ReportRequest(_message.Message):
     __slots__ = ("type", "tipo_relatorio", "list_contas_request")

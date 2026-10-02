@@ -109,34 +109,22 @@ class Resumos(_message.Message):
     def __init__(self, nfe: _Optional[_Union[ResumoItem, _Mapping]] = ..., nfce: _Optional[_Union[ResumoItem, _Mapping]] = ..., entrada: _Optional[_Union[ResumoItem, _Mapping]] = ..., nfse: _Optional[_Union[ResumoItem, _Mapping]] = ..., mdfe: _Optional[_Union[ResumoItem, _Mapping]] = ..., inutilizacoes: _Optional[int] = ...) -> None: ...
 
 class StatusMensalItem(_message.Message):
-    __slots__ = ("mes", "nfe_autorizada", "nfe_pendente", "nfe_cancelada", "nfe_autorizada_valor", "nfe_pendente_valor", "nfe_cancelada_valor", "nfce_autorizada", "nfce_pendente", "nfce_cancelada", "nfce_autorizada_valor", "nfce_pendente_valor", "nfce_cancelada_valor")
+    __slots__ = ("mes", "nfe_autorizada", "nfe_autorizada_valor", "nfce_autorizada", "nfce_autorizada_valor", "nfse_autorizada", "nfse_autorizada_valor")
     MES_FIELD_NUMBER: _ClassVar[int]
     NFE_AUTORIZADA_FIELD_NUMBER: _ClassVar[int]
-    NFE_PENDENTE_FIELD_NUMBER: _ClassVar[int]
-    NFE_CANCELADA_FIELD_NUMBER: _ClassVar[int]
     NFE_AUTORIZADA_VALOR_FIELD_NUMBER: _ClassVar[int]
-    NFE_PENDENTE_VALOR_FIELD_NUMBER: _ClassVar[int]
-    NFE_CANCELADA_VALOR_FIELD_NUMBER: _ClassVar[int]
     NFCE_AUTORIZADA_FIELD_NUMBER: _ClassVar[int]
-    NFCE_PENDENTE_FIELD_NUMBER: _ClassVar[int]
-    NFCE_CANCELADA_FIELD_NUMBER: _ClassVar[int]
     NFCE_AUTORIZADA_VALOR_FIELD_NUMBER: _ClassVar[int]
-    NFCE_PENDENTE_VALOR_FIELD_NUMBER: _ClassVar[int]
-    NFCE_CANCELADA_VALOR_FIELD_NUMBER: _ClassVar[int]
+    NFSE_AUTORIZADA_FIELD_NUMBER: _ClassVar[int]
+    NFSE_AUTORIZADA_VALOR_FIELD_NUMBER: _ClassVar[int]
     mes: str
     nfe_autorizada: int
-    nfe_pendente: int
-    nfe_cancelada: int
     nfe_autorizada_valor: float
-    nfe_pendente_valor: float
-    nfe_cancelada_valor: float
     nfce_autorizada: int
-    nfce_pendente: int
-    nfce_cancelada: int
     nfce_autorizada_valor: float
-    nfce_pendente_valor: float
-    nfce_cancelada_valor: float
-    def __init__(self, mes: _Optional[str] = ..., nfe_autorizada: _Optional[int] = ..., nfe_pendente: _Optional[int] = ..., nfe_cancelada: _Optional[int] = ..., nfe_autorizada_valor: _Optional[float] = ..., nfe_pendente_valor: _Optional[float] = ..., nfe_cancelada_valor: _Optional[float] = ..., nfce_autorizada: _Optional[int] = ..., nfce_pendente: _Optional[int] = ..., nfce_cancelada: _Optional[int] = ..., nfce_autorizada_valor: _Optional[float] = ..., nfce_pendente_valor: _Optional[float] = ..., nfce_cancelada_valor: _Optional[float] = ...) -> None: ...
+    nfse_autorizada: int
+    nfse_autorizada_valor: float
+    def __init__(self, mes: _Optional[str] = ..., nfe_autorizada: _Optional[int] = ..., nfe_autorizada_valor: _Optional[float] = ..., nfce_autorizada: _Optional[int] = ..., nfce_autorizada_valor: _Optional[float] = ..., nfse_autorizada: _Optional[int] = ..., nfse_autorizada_valor: _Optional[float] = ...) -> None: ...
 
 class ImpostosItem(_message.Message):
     __slots__ = ("mes", "icms", "pis", "cofins")

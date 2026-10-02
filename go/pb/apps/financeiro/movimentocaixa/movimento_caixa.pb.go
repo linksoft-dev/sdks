@@ -28,6 +28,375 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type DashboardMovimentoCaixaRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Primeiro e último dia do período, inclusive. Vazios: mês corrente.
+	DataInicial *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=data_inicial,json=dataInicial,proto3" json:"data_inicial,omitempty"`
+	DataFinal   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=data_final,json=dataFinal,proto3" json:"data_final,omitempty"`
+	// Caixa a considerar; vazio soma todos.
+	Caixa         string `protobuf:"bytes,3,opt,name=caixa,proto3" json:"caixa,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DashboardMovimentoCaixaRequest) Reset() {
+	*x = DashboardMovimentoCaixaRequest{}
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DashboardMovimentoCaixaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DashboardMovimentoCaixaRequest) ProtoMessage() {}
+
+func (x *DashboardMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DashboardMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
+func (*DashboardMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *DashboardMovimentoCaixaRequest) GetDataInicial() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataInicial
+	}
+	return nil
+}
+
+func (x *DashboardMovimentoCaixaRequest) GetDataFinal() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataFinal
+	}
+	return nil
+}
+
+func (x *DashboardMovimentoCaixaRequest) GetCaixa() string {
+	if x != nil {
+		return x.Caixa
+	}
+	return ""
+}
+
+type DashboardMovimentoCaixaResponse struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	DataInicial      *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=data_inicial,json=dataInicial,proto3" json:"data_inicial,omitempty"`
+	DataFinal        *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=data_final,json=dataFinal,proto3" json:"data_final,omitempty"`
+	Total            *FluxoCaixaConta       `protobuf:"bytes,3,opt,name=total,proto3" json:"total,omitempty"`
+	Caixas           []*FluxoCaixaConta     `protobuf:"bytes,4,rep,name=caixas,proto3" json:"caixas,omitempty"`
+	Dias             []*FluxoCaixaDia       `protobuf:"bytes,5,rep,name=dias,proto3" json:"dias,omitempty"`
+	PorPlanoConta    []*FluxoCaixaGrupo     `protobuf:"bytes,6,rep,name=por_plano_conta,json=porPlanoConta,proto3" json:"por_plano_conta,omitempty"`
+	PorTipoPagamento []*FluxoCaixaGrupo     `protobuf:"bytes,7,rep,name=por_tipo_pagamento,json=porTipoPagamento,proto3" json:"por_tipo_pagamento,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *DashboardMovimentoCaixaResponse) Reset() {
+	*x = DashboardMovimentoCaixaResponse{}
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DashboardMovimentoCaixaResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DashboardMovimentoCaixaResponse) ProtoMessage() {}
+
+func (x *DashboardMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DashboardMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
+func (*DashboardMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DashboardMovimentoCaixaResponse) GetDataInicial() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataInicial
+	}
+	return nil
+}
+
+func (x *DashboardMovimentoCaixaResponse) GetDataFinal() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataFinal
+	}
+	return nil
+}
+
+func (x *DashboardMovimentoCaixaResponse) GetTotal() *FluxoCaixaConta {
+	if x != nil {
+		return x.Total
+	}
+	return nil
+}
+
+func (x *DashboardMovimentoCaixaResponse) GetCaixas() []*FluxoCaixaConta {
+	if x != nil {
+		return x.Caixas
+	}
+	return nil
+}
+
+func (x *DashboardMovimentoCaixaResponse) GetDias() []*FluxoCaixaDia {
+	if x != nil {
+		return x.Dias
+	}
+	return nil
+}
+
+func (x *DashboardMovimentoCaixaResponse) GetPorPlanoConta() []*FluxoCaixaGrupo {
+	if x != nil {
+		return x.PorPlanoConta
+	}
+	return nil
+}
+
+func (x *DashboardMovimentoCaixaResponse) GetPorTipoPagamento() []*FluxoCaixaGrupo {
+	if x != nil {
+		return x.PorTipoPagamento
+	}
+	return nil
+}
+
+// Saldos de um caixa (ou da soma deles) no período. Saídas em valor positivo.
+type FluxoCaixaConta struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Caixa         string                 `protobuf:"bytes,1,opt,name=caixa,proto3" json:"caixa,omitempty"`
+	CaixaNome     string                 `protobuf:"bytes,2,opt,name=caixa_nome,json=caixaNome,proto3" json:"caixa_nome,omitempty"`
+	SaldoInicial  float64                `protobuf:"fixed64,3,opt,name=saldo_inicial,json=saldoInicial,proto3" json:"saldo_inicial,omitempty"`
+	Entradas      float64                `protobuf:"fixed64,4,opt,name=entradas,proto3" json:"entradas,omitempty"`
+	Saidas        float64                `protobuf:"fixed64,5,opt,name=saidas,proto3" json:"saidas,omitempty"`
+	SaldoFinal    float64                `protobuf:"fixed64,6,opt,name=saldo_final,json=saldoFinal,proto3" json:"saldo_final,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FluxoCaixaConta) Reset() {
+	*x = FluxoCaixaConta{}
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FluxoCaixaConta) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FluxoCaixaConta) ProtoMessage() {}
+
+func (x *FluxoCaixaConta) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FluxoCaixaConta.ProtoReflect.Descriptor instead.
+func (*FluxoCaixaConta) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *FluxoCaixaConta) GetCaixa() string {
+	if x != nil {
+		return x.Caixa
+	}
+	return ""
+}
+
+func (x *FluxoCaixaConta) GetCaixaNome() string {
+	if x != nil {
+		return x.CaixaNome
+	}
+	return ""
+}
+
+func (x *FluxoCaixaConta) GetSaldoInicial() float64 {
+	if x != nil {
+		return x.SaldoInicial
+	}
+	return 0
+}
+
+func (x *FluxoCaixaConta) GetEntradas() float64 {
+	if x != nil {
+		return x.Entradas
+	}
+	return 0
+}
+
+func (x *FluxoCaixaConta) GetSaidas() float64 {
+	if x != nil {
+		return x.Saidas
+	}
+	return 0
+}
+
+func (x *FluxoCaixaConta) GetSaldoFinal() float64 {
+	if x != nil {
+		return x.SaldoFinal
+	}
+	return 0
+}
+
+type FluxoCaixaDia struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// AAAA-MM-DD
+	Dia      string  `protobuf:"bytes,1,opt,name=dia,proto3" json:"dia,omitempty"`
+	Entradas float64 `protobuf:"fixed64,2,opt,name=entradas,proto3" json:"entradas,omitempty"`
+	Saidas   float64 `protobuf:"fixed64,3,opt,name=saidas,proto3" json:"saidas,omitempty"`
+	// Saldo ao fim do dia.
+	Saldo         float64 `protobuf:"fixed64,4,opt,name=saldo,proto3" json:"saldo,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FluxoCaixaDia) Reset() {
+	*x = FluxoCaixaDia{}
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FluxoCaixaDia) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FluxoCaixaDia) ProtoMessage() {}
+
+func (x *FluxoCaixaDia) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FluxoCaixaDia.ProtoReflect.Descriptor instead.
+func (*FluxoCaixaDia) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *FluxoCaixaDia) GetDia() string {
+	if x != nil {
+		return x.Dia
+	}
+	return ""
+}
+
+func (x *FluxoCaixaDia) GetEntradas() float64 {
+	if x != nil {
+		return x.Entradas
+	}
+	return 0
+}
+
+func (x *FluxoCaixaDia) GetSaidas() float64 {
+	if x != nil {
+		return x.Saidas
+	}
+	return 0
+}
+
+func (x *FluxoCaixaDia) GetSaldo() float64 {
+	if x != nil {
+		return x.Saldo
+	}
+	return 0
+}
+
+type FluxoCaixaGrupo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Nome          string                 `protobuf:"bytes,1,opt,name=nome,proto3" json:"nome,omitempty"`
+	Entradas      float64                `protobuf:"fixed64,2,opt,name=entradas,proto3" json:"entradas,omitempty"`
+	Saidas        float64                `protobuf:"fixed64,3,opt,name=saidas,proto3" json:"saidas,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FluxoCaixaGrupo) Reset() {
+	*x = FluxoCaixaGrupo{}
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FluxoCaixaGrupo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FluxoCaixaGrupo) ProtoMessage() {}
+
+func (x *FluxoCaixaGrupo) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FluxoCaixaGrupo.ProtoReflect.Descriptor instead.
+func (*FluxoCaixaGrupo) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *FluxoCaixaGrupo) GetNome() string {
+	if x != nil {
+		return x.Nome
+	}
+	return ""
+}
+
+func (x *FluxoCaixaGrupo) GetEntradas() float64 {
+	if x != nil {
+		return x.Entradas
+	}
+	return 0
+}
+
+func (x *FluxoCaixaGrupo) GetSaidas() float64 {
+	if x != nil {
+		return x.Saidas
+	}
+	return 0
+}
+
 // Dados do MovimentoCaixa
 type MovimentoCaixa struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
@@ -69,7 +438,7 @@ type MovimentoCaixa struct {
 
 func (x *MovimentoCaixa) Reset() {
 	*x = MovimentoCaixa{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[0]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -81,7 +450,7 @@ func (x *MovimentoCaixa) String() string {
 func (*MovimentoCaixa) ProtoMessage() {}
 
 func (x *MovimentoCaixa) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[0]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -94,7 +463,7 @@ func (x *MovimentoCaixa) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MovimentoCaixa.ProtoReflect.Descriptor instead.
 func (*MovimentoCaixa) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{0}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *MovimentoCaixa) GetCreatedAt() *timestamppb.Timestamp {
@@ -331,7 +700,7 @@ type ResumoMovimentoCaixaRequest struct {
 
 func (x *ResumoMovimentoCaixaRequest) Reset() {
 	*x = ResumoMovimentoCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[1]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -343,7 +712,7 @@ func (x *ResumoMovimentoCaixaRequest) String() string {
 func (*ResumoMovimentoCaixaRequest) ProtoMessage() {}
 
 func (x *ResumoMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[1]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -356,7 +725,7 @@ func (x *ResumoMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
 func (*ResumoMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{1}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ResumoMovimentoCaixaRequest) GetList() *ListMovimentoCaixaRequest {
@@ -389,7 +758,7 @@ type ResumoMovimentoCaixaResponse struct {
 
 func (x *ResumoMovimentoCaixaResponse) Reset() {
 	*x = ResumoMovimentoCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[2]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -401,7 +770,7 @@ func (x *ResumoMovimentoCaixaResponse) String() string {
 func (*ResumoMovimentoCaixaResponse) ProtoMessage() {}
 
 func (x *ResumoMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[2]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -414,7 +783,7 @@ func (x *ResumoMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
 func (*ResumoMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{2}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ResumoMovimentoCaixaResponse) GetAberturaEspecie() float64 {
@@ -511,7 +880,7 @@ type ResumoPorTipo struct {
 
 func (x *ResumoPorTipo) Reset() {
 	*x = ResumoPorTipo{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[3]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -523,7 +892,7 @@ func (x *ResumoPorTipo) String() string {
 func (*ResumoPorTipo) ProtoMessage() {}
 
 func (x *ResumoPorTipo) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[3]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -536,7 +905,7 @@ func (x *ResumoPorTipo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoPorTipo.ProtoReflect.Descriptor instead.
 func (*ResumoPorTipo) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{3}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ResumoPorTipo) GetTipoPagamento() string {
@@ -568,7 +937,7 @@ type ResumoGrupo struct {
 
 func (x *ResumoGrupo) Reset() {
 	*x = ResumoGrupo{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[4]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -580,7 +949,7 @@ func (x *ResumoGrupo) String() string {
 func (*ResumoGrupo) ProtoMessage() {}
 
 func (x *ResumoGrupo) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[4]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -593,7 +962,7 @@ func (x *ResumoGrupo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoGrupo.ProtoReflect.Descriptor instead.
 func (*ResumoGrupo) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{4}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ResumoGrupo) GetCategoria() string {
@@ -641,7 +1010,7 @@ type CreateMovimentoCaixaRequest struct {
 
 func (x *CreateMovimentoCaixaRequest) Reset() {
 	*x = CreateMovimentoCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[5]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -653,7 +1022,7 @@ func (x *CreateMovimentoCaixaRequest) String() string {
 func (*CreateMovimentoCaixaRequest) ProtoMessage() {}
 
 func (x *CreateMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[5]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -666,7 +1035,7 @@ func (x *CreateMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
 func (*CreateMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{5}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CreateMovimentoCaixaRequest) GetMovimentoCaixa() *MovimentoCaixa {
@@ -685,7 +1054,7 @@ type CreateMovimentoCaixaResponse struct {
 
 func (x *CreateMovimentoCaixaResponse) Reset() {
 	*x = CreateMovimentoCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[6]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -697,7 +1066,7 @@ func (x *CreateMovimentoCaixaResponse) String() string {
 func (*CreateMovimentoCaixaResponse) ProtoMessage() {}
 
 func (x *CreateMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[6]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -710,7 +1079,7 @@ func (x *CreateMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
 func (*CreateMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{6}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CreateMovimentoCaixaResponse) GetMovimentoCaixa() *MovimentoCaixa {
@@ -732,7 +1101,7 @@ type UpdateMovimentoCaixaRequest struct {
 
 func (x *UpdateMovimentoCaixaRequest) Reset() {
 	*x = UpdateMovimentoCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[7]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -744,7 +1113,7 @@ func (x *UpdateMovimentoCaixaRequest) String() string {
 func (*UpdateMovimentoCaixaRequest) ProtoMessage() {}
 
 func (x *UpdateMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[7]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -757,7 +1126,7 @@ func (x *UpdateMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{7}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *UpdateMovimentoCaixaRequest) GetId() string {
@@ -791,7 +1160,7 @@ type UpdateMovimentoCaixaResponse struct {
 
 func (x *UpdateMovimentoCaixaResponse) Reset() {
 	*x = UpdateMovimentoCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[8]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -803,7 +1172,7 @@ func (x *UpdateMovimentoCaixaResponse) String() string {
 func (*UpdateMovimentoCaixaResponse) ProtoMessage() {}
 
 func (x *UpdateMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[8]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -816,7 +1185,7 @@ func (x *UpdateMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{8}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *UpdateMovimentoCaixaResponse) GetMovimentoCaixa() *MovimentoCaixa {
@@ -837,7 +1206,7 @@ type DeleteMovimentoCaixaRequest struct {
 
 func (x *DeleteMovimentoCaixaRequest) Reset() {
 	*x = DeleteMovimentoCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[9]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -849,7 +1218,7 @@ func (x *DeleteMovimentoCaixaRequest) String() string {
 func (*DeleteMovimentoCaixaRequest) ProtoMessage() {}
 
 func (x *DeleteMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[9]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -862,7 +1231,7 @@ func (x *DeleteMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{9}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *DeleteMovimentoCaixaRequest) GetId() string {
@@ -888,7 +1257,7 @@ type DeleteMovimentoCaixaResponse struct {
 
 func (x *DeleteMovimentoCaixaResponse) Reset() {
 	*x = DeleteMovimentoCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[10]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -900,7 +1269,7 @@ func (x *DeleteMovimentoCaixaResponse) String() string {
 func (*DeleteMovimentoCaixaResponse) ProtoMessage() {}
 
 func (x *DeleteMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[10]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -913,7 +1282,7 @@ func (x *DeleteMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
 func (*DeleteMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{10}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *DeleteMovimentoCaixaResponse) GetId() string {
@@ -933,7 +1302,7 @@ type GetMovimentoCaixaRequest struct {
 
 func (x *GetMovimentoCaixaRequest) Reset() {
 	*x = GetMovimentoCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[11]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -945,7 +1314,7 @@ func (x *GetMovimentoCaixaRequest) String() string {
 func (*GetMovimentoCaixaRequest) ProtoMessage() {}
 
 func (x *GetMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[11]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -958,7 +1327,7 @@ func (x *GetMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
 func (*GetMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{11}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *GetMovimentoCaixaRequest) GetId() string {
@@ -978,7 +1347,7 @@ type GetMovimentoCaixaResponse struct {
 
 func (x *GetMovimentoCaixaResponse) Reset() {
 	*x = GetMovimentoCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[12]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -990,7 +1359,7 @@ func (x *GetMovimentoCaixaResponse) String() string {
 func (*GetMovimentoCaixaResponse) ProtoMessage() {}
 
 func (x *GetMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[12]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1003,7 +1372,7 @@ func (x *GetMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
 func (*GetMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{12}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *GetMovimentoCaixaResponse) GetMovimentoCaixa() *MovimentoCaixa {
@@ -1046,7 +1415,7 @@ type ListMovimentoCaixaRequest struct {
 
 func (x *ListMovimentoCaixaRequest) Reset() {
 	*x = ListMovimentoCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[13]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1058,7 +1427,7 @@ func (x *ListMovimentoCaixaRequest) String() string {
 func (*ListMovimentoCaixaRequest) ProtoMessage() {}
 
 func (x *ListMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[13]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1071,7 +1440,7 @@ func (x *ListMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
 func (*ListMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{13}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ListMovimentoCaixaRequest) GetIds() []string {
@@ -1252,7 +1621,7 @@ type ListMovimentoCaixaResponse struct {
 
 func (x *ListMovimentoCaixaResponse) Reset() {
 	*x = ListMovimentoCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[14]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1264,7 +1633,7 @@ func (x *ListMovimentoCaixaResponse) String() string {
 func (*ListMovimentoCaixaResponse) ProtoMessage() {}
 
 func (x *ListMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[14]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1277,7 +1646,7 @@ func (x *ListMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
 func (*ListMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{14}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ListMovimentoCaixaResponse) GetMovimentoCaixaList() []*MovimentoCaixa {
@@ -1304,7 +1673,7 @@ type ReportMovimentoCaixaRequest struct {
 
 func (x *ReportMovimentoCaixaRequest) Reset() {
 	*x = ReportMovimentoCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[15]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1316,7 +1685,7 @@ func (x *ReportMovimentoCaixaRequest) String() string {
 func (*ReportMovimentoCaixaRequest) ProtoMessage() {}
 
 func (x *ReportMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[15]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1329,7 +1698,7 @@ func (x *ReportMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
 func (*ReportMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{15}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ReportMovimentoCaixaRequest) GetTipoRelatorio() string {
@@ -1355,7 +1724,7 @@ type ReportMovimentoCaixaResponse struct {
 
 func (x *ReportMovimentoCaixaResponse) Reset() {
 	*x = ReportMovimentoCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[16]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1367,7 +1736,7 @@ func (x *ReportMovimentoCaixaResponse) String() string {
 func (*ReportMovimentoCaixaResponse) ProtoMessage() {}
 
 func (x *ReportMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[16]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1380,7 +1749,7 @@ func (x *ReportMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
 func (*ReportMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{16}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ReportMovimentoCaixaResponse) GetResponse() *report.Response {
@@ -1401,7 +1770,7 @@ type GetSaldoMovimentoCaixaRequest struct {
 
 func (x *GetSaldoMovimentoCaixaRequest) Reset() {
 	*x = GetSaldoMovimentoCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[17]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1413,7 +1782,7 @@ func (x *GetSaldoMovimentoCaixaRequest) String() string {
 func (*GetSaldoMovimentoCaixaRequest) ProtoMessage() {}
 
 func (x *GetSaldoMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[17]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1426,7 +1795,7 @@ func (x *GetSaldoMovimentoCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSaldoMovimentoCaixaRequest.ProtoReflect.Descriptor instead.
 func (*GetSaldoMovimentoCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{17}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetSaldoMovimentoCaixaRequest) GetCaixaId() string {
@@ -1459,7 +1828,7 @@ type GetSaldoMovimentoCaixaResponse struct {
 
 func (x *GetSaldoMovimentoCaixaResponse) Reset() {
 	*x = GetSaldoMovimentoCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[18]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1471,7 +1840,7 @@ func (x *GetSaldoMovimentoCaixaResponse) String() string {
 func (*GetSaldoMovimentoCaixaResponse) ProtoMessage() {}
 
 func (x *GetSaldoMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[18]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1484,7 +1853,7 @@ func (x *GetSaldoMovimentoCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSaldoMovimentoCaixaResponse.ProtoReflect.Descriptor instead.
 func (*GetSaldoMovimentoCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{18}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *GetSaldoMovimentoCaixaResponse) GetSaldo() float64 {
@@ -1507,7 +1876,7 @@ type TransferenciaCaixaRequest struct {
 
 func (x *TransferenciaCaixaRequest) Reset() {
 	*x = TransferenciaCaixaRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[19]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1519,7 +1888,7 @@ func (x *TransferenciaCaixaRequest) String() string {
 func (*TransferenciaCaixaRequest) ProtoMessage() {}
 
 func (x *TransferenciaCaixaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[19]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1532,7 +1901,7 @@ func (x *TransferenciaCaixaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransferenciaCaixaRequest.ProtoReflect.Descriptor instead.
 func (*TransferenciaCaixaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{19}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *TransferenciaCaixaRequest) GetCaixaOrigemId() string {
@@ -1581,7 +1950,7 @@ type TransferenciaItem struct {
 
 func (x *TransferenciaItem) Reset() {
 	*x = TransferenciaItem{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[20]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1593,7 +1962,7 @@ func (x *TransferenciaItem) String() string {
 func (*TransferenciaItem) ProtoMessage() {}
 
 func (x *TransferenciaItem) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[20]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1606,7 +1975,7 @@ func (x *TransferenciaItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransferenciaItem.ProtoReflect.Descriptor instead.
 func (*TransferenciaItem) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{20}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *TransferenciaItem) GetTipoPagamento() string {
@@ -1632,7 +2001,7 @@ type TransferenciaCaixaResponse struct {
 
 func (x *TransferenciaCaixaResponse) Reset() {
 	*x = TransferenciaCaixaResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[21]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1644,7 +2013,7 @@ func (x *TransferenciaCaixaResponse) String() string {
 func (*TransferenciaCaixaResponse) ProtoMessage() {}
 
 func (x *TransferenciaCaixaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[21]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1657,7 +2026,7 @@ func (x *TransferenciaCaixaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TransferenciaCaixaResponse.ProtoReflect.Descriptor instead.
 func (*TransferenciaCaixaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{21}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *TransferenciaCaixaResponse) GetId() string {
@@ -1680,7 +2049,7 @@ type BatchUpdateRequest struct {
 
 func (x *BatchUpdateRequest) Reset() {
 	*x = BatchUpdateRequest{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[22]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1692,7 +2061,7 @@ func (x *BatchUpdateRequest) String() string {
 func (*BatchUpdateRequest) ProtoMessage() {}
 
 func (x *BatchUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[22]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1705,7 +2074,7 @@ func (x *BatchUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchUpdateRequest.ProtoReflect.Descriptor instead.
 func (*BatchUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{22}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *BatchUpdateRequest) GetOrigemIds() []string {
@@ -1753,7 +2122,7 @@ type BatchUpdateResponse struct {
 
 func (x *BatchUpdateResponse) Reset() {
 	*x = BatchUpdateResponse{}
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[23]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1765,7 +2134,7 @@ func (x *BatchUpdateResponse) String() string {
 func (*BatchUpdateResponse) ProtoMessage() {}
 
 func (x *BatchUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[23]
+	mi := &file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1778,7 +2147,7 @@ func (x *BatchUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchUpdateResponse.ProtoReflect.Descriptor instead.
 func (*BatchUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{23}
+	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *BatchUpdateResponse) GetUpdatedCount() int32 {
@@ -1799,7 +2168,39 @@ var File_apps_financeiro_movimentocaixa_movimento_caixa_proto protoreflect.FileD
 
 const file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDesc = "" +
 	"\n" +
-	"4apps/financeiro/movimentocaixa/movimento_caixa.proto\x12\x0emovimentocaixa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xa6\t\n" +
+	"4apps/financeiro/movimentocaixa/movimento_caixa.proto\x12\x0emovimentocaixa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xb0\x01\n" +
+	"\x1eDashboardMovimentoCaixaRequest\x12=\n" +
+	"\fdata_inicial\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\vdataInicial\x129\n" +
+	"\n" +
+	"data_final\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tdataFinal\x12\x14\n" +
+	"\x05caixa\x18\x03 \x01(\tR\x05caixa\"\xd6\x03\n" +
+	"\x1fDashboardMovimentoCaixaResponse\x12=\n" +
+	"\fdata_inicial\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\vdataInicial\x129\n" +
+	"\n" +
+	"data_final\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tdataFinal\x125\n" +
+	"\x05total\x18\x03 \x01(\v2\x1f.movimentocaixa.FluxoCaixaContaR\x05total\x127\n" +
+	"\x06caixas\x18\x04 \x03(\v2\x1f.movimentocaixa.FluxoCaixaContaR\x06caixas\x121\n" +
+	"\x04dias\x18\x05 \x03(\v2\x1d.movimentocaixa.FluxoCaixaDiaR\x04dias\x12G\n" +
+	"\x0fpor_plano_conta\x18\x06 \x03(\v2\x1f.movimentocaixa.FluxoCaixaGrupoR\rporPlanoConta\x12M\n" +
+	"\x12por_tipo_pagamento\x18\a \x03(\v2\x1f.movimentocaixa.FluxoCaixaGrupoR\x10porTipoPagamento\"\xc0\x01\n" +
+	"\x0fFluxoCaixaConta\x12\x14\n" +
+	"\x05caixa\x18\x01 \x01(\tR\x05caixa\x12\x1d\n" +
+	"\n" +
+	"caixa_nome\x18\x02 \x01(\tR\tcaixaNome\x12#\n" +
+	"\rsaldo_inicial\x18\x03 \x01(\x01R\fsaldoInicial\x12\x1a\n" +
+	"\bentradas\x18\x04 \x01(\x01R\bentradas\x12\x16\n" +
+	"\x06saidas\x18\x05 \x01(\x01R\x06saidas\x12\x1f\n" +
+	"\vsaldo_final\x18\x06 \x01(\x01R\n" +
+	"saldoFinal\"k\n" +
+	"\rFluxoCaixaDia\x12\x10\n" +
+	"\x03dia\x18\x01 \x01(\tR\x03dia\x12\x1a\n" +
+	"\bentradas\x18\x02 \x01(\x01R\bentradas\x12\x16\n" +
+	"\x06saidas\x18\x03 \x01(\x01R\x06saidas\x12\x14\n" +
+	"\x05saldo\x18\x04 \x01(\x01R\x05saldo\"Y\n" +
+	"\x0fFluxoCaixaGrupo\x12\x12\n" +
+	"\x04nome\x18\x01 \x01(\tR\x04nome\x12\x1a\n" +
+	"\bentradas\x18\x02 \x01(\x01R\bentradas\x12\x16\n" +
+	"\x06saidas\x18\x03 \x01(\x01R\x06saidas\"\xa6\t\n" +
 	"\x0eMovimentoCaixa\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1952,7 +2353,7 @@ const file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDesc = "" +
 	"\x11centro_custo_nome\x18\x05 \x01(\tR\x0fcentroCustoNome\"T\n" +
 	"\x13BatchUpdateResponse\x12#\n" +
 	"\rupdated_count\x18\x01 \x01(\x05R\fupdatedCount\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage2\x83\v\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage2\x9d\f\n" +
 	"\x15MovimentoCaixaService\x12\x84\x01\n" +
 	"\x06Create\x12+.movimentocaixa.CreateMovimentoCaixaRequest\x1a,.movimentocaixa.CreateMovimentoCaixaResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/movimento-caixa\x12\x84\x01\n" +
 	"\x06Update\x12+.movimentocaixa.UpdateMovimentoCaixaRequest\x1a,.movimentocaixa.UpdateMovimentoCaixaResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\x1a\x14/api/movimento-caixa\x12\x86\x01\n" +
@@ -1963,7 +2364,8 @@ const file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDesc = "" +
 	"\bGetSaldo\x12-.movimentocaixa.GetSaldoMovimentoCaixaRequest\x1a..movimentocaixa.GetSaldoMovimentoCaixaResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/api/movimento-caixa/saldo\x12\x9a\x01\n" +
 	"\x12TransferenciaCaixa\x12).movimentocaixa.TransferenciaCaixaRequest\x1a*.movimentocaixa.TransferenciaCaixaResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/movimento-caixa/transferencia\x12\x84\x01\n" +
 	"\vBatchUpdate\x12\".movimentocaixa.BatchUpdateRequest\x1a#.movimentocaixa.BatchUpdateResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/api/movimento-caixa/batch-update\x12\x8b\x01\n" +
-	"\x06Resumo\x12+.movimentocaixa.ResumoMovimentoCaixaRequest\x1a,.movimentocaixa.ResumoMovimentoCaixaResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/movimento-caixa/resumoB\xc4\x01\n" +
+	"\x06Resumo\x12+.movimentocaixa.ResumoMovimentoCaixaRequest\x1a,.movimentocaixa.ResumoMovimentoCaixaResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/movimento-caixa/resumo\x12\x97\x01\n" +
+	"\tDashboard\x12..movimentocaixa.DashboardMovimentoCaixaRequest\x1a/.movimentocaixa.DashboardMovimentoCaixaResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/movimento-caixa/dashboardB\xc4\x01\n" +
 	"\x12com.movimentocaixaB\x13MovimentoCaixaProtoP\x01ZAgithub.com/linksoft-dev/sdks/go/pb/apps/financeiro/movimentocaixa\xa2\x02\x03MXX\xaa\x02\x0eMovimentocaixa\xca\x02\x0eMovimentocaixa\xe2\x02\x1aMovimentocaixa\\GPBMetadata\xea\x02\x0eMovimentocaixab\x06proto3"
 
 var (
@@ -1978,90 +2380,106 @@ func file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescGZIP() []b
 	return file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDescData
 }
 
-var file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_apps_financeiro_movimentocaixa_movimento_caixa_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_apps_financeiro_movimentocaixa_movimento_caixa_proto_goTypes = []any{
-	(*MovimentoCaixa)(nil),                 // 0: movimentocaixa.MovimentoCaixa
-	(*ResumoMovimentoCaixaRequest)(nil),    // 1: movimentocaixa.ResumoMovimentoCaixaRequest
-	(*ResumoMovimentoCaixaResponse)(nil),   // 2: movimentocaixa.ResumoMovimentoCaixaResponse
-	(*ResumoPorTipo)(nil),                  // 3: movimentocaixa.ResumoPorTipo
-	(*ResumoGrupo)(nil),                    // 4: movimentocaixa.ResumoGrupo
-	(*CreateMovimentoCaixaRequest)(nil),    // 5: movimentocaixa.CreateMovimentoCaixaRequest
-	(*CreateMovimentoCaixaResponse)(nil),   // 6: movimentocaixa.CreateMovimentoCaixaResponse
-	(*UpdateMovimentoCaixaRequest)(nil),    // 7: movimentocaixa.UpdateMovimentoCaixaRequest
-	(*UpdateMovimentoCaixaResponse)(nil),   // 8: movimentocaixa.UpdateMovimentoCaixaResponse
-	(*DeleteMovimentoCaixaRequest)(nil),    // 9: movimentocaixa.DeleteMovimentoCaixaRequest
-	(*DeleteMovimentoCaixaResponse)(nil),   // 10: movimentocaixa.DeleteMovimentoCaixaResponse
-	(*GetMovimentoCaixaRequest)(nil),       // 11: movimentocaixa.GetMovimentoCaixaRequest
-	(*GetMovimentoCaixaResponse)(nil),      // 12: movimentocaixa.GetMovimentoCaixaResponse
-	(*ListMovimentoCaixaRequest)(nil),      // 13: movimentocaixa.ListMovimentoCaixaRequest
-	(*ListMovimentoCaixaResponse)(nil),     // 14: movimentocaixa.ListMovimentoCaixaResponse
-	(*ReportMovimentoCaixaRequest)(nil),    // 15: movimentocaixa.ReportMovimentoCaixaRequest
-	(*ReportMovimentoCaixaResponse)(nil),   // 16: movimentocaixa.ReportMovimentoCaixaResponse
-	(*GetSaldoMovimentoCaixaRequest)(nil),  // 17: movimentocaixa.GetSaldoMovimentoCaixaRequest
-	(*GetSaldoMovimentoCaixaResponse)(nil), // 18: movimentocaixa.GetSaldoMovimentoCaixaResponse
-	(*TransferenciaCaixaRequest)(nil),      // 19: movimentocaixa.TransferenciaCaixaRequest
-	(*TransferenciaItem)(nil),              // 20: movimentocaixa.TransferenciaItem
-	(*TransferenciaCaixaResponse)(nil),     // 21: movimentocaixa.TransferenciaCaixaResponse
-	(*BatchUpdateRequest)(nil),             // 22: movimentocaixa.BatchUpdateRequest
-	(*BatchUpdateResponse)(nil),            // 23: movimentocaixa.BatchUpdateResponse
-	(*timestamppb.Timestamp)(nil),          // 24: google.protobuf.Timestamp
-	(*metadata.FieldMask)(nil),             // 25: metadata.FieldMask
-	(*filter.Filter)(nil),                  // 26: Filter
-	(*report.Response)(nil),                // 27: report.Response
+	(*DashboardMovimentoCaixaRequest)(nil),  // 0: movimentocaixa.DashboardMovimentoCaixaRequest
+	(*DashboardMovimentoCaixaResponse)(nil), // 1: movimentocaixa.DashboardMovimentoCaixaResponse
+	(*FluxoCaixaConta)(nil),                 // 2: movimentocaixa.FluxoCaixaConta
+	(*FluxoCaixaDia)(nil),                   // 3: movimentocaixa.FluxoCaixaDia
+	(*FluxoCaixaGrupo)(nil),                 // 4: movimentocaixa.FluxoCaixaGrupo
+	(*MovimentoCaixa)(nil),                  // 5: movimentocaixa.MovimentoCaixa
+	(*ResumoMovimentoCaixaRequest)(nil),     // 6: movimentocaixa.ResumoMovimentoCaixaRequest
+	(*ResumoMovimentoCaixaResponse)(nil),    // 7: movimentocaixa.ResumoMovimentoCaixaResponse
+	(*ResumoPorTipo)(nil),                   // 8: movimentocaixa.ResumoPorTipo
+	(*ResumoGrupo)(nil),                     // 9: movimentocaixa.ResumoGrupo
+	(*CreateMovimentoCaixaRequest)(nil),     // 10: movimentocaixa.CreateMovimentoCaixaRequest
+	(*CreateMovimentoCaixaResponse)(nil),    // 11: movimentocaixa.CreateMovimentoCaixaResponse
+	(*UpdateMovimentoCaixaRequest)(nil),     // 12: movimentocaixa.UpdateMovimentoCaixaRequest
+	(*UpdateMovimentoCaixaResponse)(nil),    // 13: movimentocaixa.UpdateMovimentoCaixaResponse
+	(*DeleteMovimentoCaixaRequest)(nil),     // 14: movimentocaixa.DeleteMovimentoCaixaRequest
+	(*DeleteMovimentoCaixaResponse)(nil),    // 15: movimentocaixa.DeleteMovimentoCaixaResponse
+	(*GetMovimentoCaixaRequest)(nil),        // 16: movimentocaixa.GetMovimentoCaixaRequest
+	(*GetMovimentoCaixaResponse)(nil),       // 17: movimentocaixa.GetMovimentoCaixaResponse
+	(*ListMovimentoCaixaRequest)(nil),       // 18: movimentocaixa.ListMovimentoCaixaRequest
+	(*ListMovimentoCaixaResponse)(nil),      // 19: movimentocaixa.ListMovimentoCaixaResponse
+	(*ReportMovimentoCaixaRequest)(nil),     // 20: movimentocaixa.ReportMovimentoCaixaRequest
+	(*ReportMovimentoCaixaResponse)(nil),    // 21: movimentocaixa.ReportMovimentoCaixaResponse
+	(*GetSaldoMovimentoCaixaRequest)(nil),   // 22: movimentocaixa.GetSaldoMovimentoCaixaRequest
+	(*GetSaldoMovimentoCaixaResponse)(nil),  // 23: movimentocaixa.GetSaldoMovimentoCaixaResponse
+	(*TransferenciaCaixaRequest)(nil),       // 24: movimentocaixa.TransferenciaCaixaRequest
+	(*TransferenciaItem)(nil),               // 25: movimentocaixa.TransferenciaItem
+	(*TransferenciaCaixaResponse)(nil),      // 26: movimentocaixa.TransferenciaCaixaResponse
+	(*BatchUpdateRequest)(nil),              // 27: movimentocaixa.BatchUpdateRequest
+	(*BatchUpdateResponse)(nil),             // 28: movimentocaixa.BatchUpdateResponse
+	(*timestamppb.Timestamp)(nil),           // 29: google.protobuf.Timestamp
+	(*metadata.FieldMask)(nil),              // 30: metadata.FieldMask
+	(*filter.Filter)(nil),                   // 31: Filter
+	(*report.Response)(nil),                 // 32: report.Response
 }
 var file_apps_financeiro_movimentocaixa_movimento_caixa_proto_depIdxs = []int32{
-	24, // 0: movimentocaixa.MovimentoCaixa.created_at:type_name -> google.protobuf.Timestamp
-	24, // 1: movimentocaixa.MovimentoCaixa.updated_at:type_name -> google.protobuf.Timestamp
-	24, // 2: movimentocaixa.MovimentoCaixa.competence:type_name -> google.protobuf.Timestamp
-	24, // 3: movimentocaixa.MovimentoCaixa.data_hora_inicial:type_name -> google.protobuf.Timestamp
-	24, // 4: movimentocaixa.MovimentoCaixa.data_hora_final:type_name -> google.protobuf.Timestamp
-	13, // 5: movimentocaixa.ResumoMovimentoCaixaRequest.list:type_name -> movimentocaixa.ListMovimentoCaixaRequest
-	3,  // 6: movimentocaixa.ResumoMovimentoCaixaResponse.recebiveis_por_tipo:type_name -> movimentocaixa.ResumoPorTipo
-	4,  // 7: movimentocaixa.ResumoMovimentoCaixaResponse.por_tipo_pagamento:type_name -> movimentocaixa.ResumoGrupo
-	4,  // 8: movimentocaixa.ResumoMovimentoCaixaResponse.por_plano_conta:type_name -> movimentocaixa.ResumoGrupo
-	0,  // 9: movimentocaixa.CreateMovimentoCaixaRequest.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
-	0,  // 10: movimentocaixa.CreateMovimentoCaixaResponse.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
-	0,  // 11: movimentocaixa.UpdateMovimentoCaixaRequest.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
-	25, // 12: movimentocaixa.UpdateMovimentoCaixaRequest.update_mask:type_name -> metadata.FieldMask
-	0,  // 13: movimentocaixa.UpdateMovimentoCaixaResponse.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
-	0,  // 14: movimentocaixa.GetMovimentoCaixaResponse.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
-	24, // 15: movimentocaixa.ListMovimentoCaixaRequest.dia_movimento:type_name -> google.protobuf.Timestamp
-	24, // 16: movimentocaixa.ListMovimentoCaixaRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	24, // 17: movimentocaixa.ListMovimentoCaixaRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	24, // 18: movimentocaixa.ListMovimentoCaixaRequest.competence_gte:type_name -> google.protobuf.Timestamp
-	24, // 19: movimentocaixa.ListMovimentoCaixaRequest.competence_lte:type_name -> google.protobuf.Timestamp
-	24, // 20: movimentocaixa.ListMovimentoCaixaRequest.created_at:type_name -> google.protobuf.Timestamp
-	26, // 21: movimentocaixa.ListMovimentoCaixaRequest.filter:type_name -> Filter
-	0,  // 22: movimentocaixa.ListMovimentoCaixaResponse.movimento_caixa_list:type_name -> movimentocaixa.MovimentoCaixa
-	13, // 23: movimentocaixa.ReportMovimentoCaixaRequest.list_movimento_caixa_request:type_name -> movimentocaixa.ListMovimentoCaixaRequest
-	27, // 24: movimentocaixa.ReportMovimentoCaixaResponse.response:type_name -> report.Response
-	24, // 25: movimentocaixa.GetSaldoMovimentoCaixaRequest.data:type_name -> google.protobuf.Timestamp
-	20, // 26: movimentocaixa.TransferenciaCaixaRequest.itens:type_name -> movimentocaixa.TransferenciaItem
-	5,  // 27: movimentocaixa.MovimentoCaixaService.Create:input_type -> movimentocaixa.CreateMovimentoCaixaRequest
-	7,  // 28: movimentocaixa.MovimentoCaixaService.Update:input_type -> movimentocaixa.UpdateMovimentoCaixaRequest
-	9,  // 29: movimentocaixa.MovimentoCaixaService.Delete:input_type -> movimentocaixa.DeleteMovimentoCaixaRequest
-	11, // 30: movimentocaixa.MovimentoCaixaService.Get:input_type -> movimentocaixa.GetMovimentoCaixaRequest
-	13, // 31: movimentocaixa.MovimentoCaixaService.List:input_type -> movimentocaixa.ListMovimentoCaixaRequest
-	15, // 32: movimentocaixa.MovimentoCaixaService.Report:input_type -> movimentocaixa.ReportMovimentoCaixaRequest
-	17, // 33: movimentocaixa.MovimentoCaixaService.GetSaldo:input_type -> movimentocaixa.GetSaldoMovimentoCaixaRequest
-	19, // 34: movimentocaixa.MovimentoCaixaService.TransferenciaCaixa:input_type -> movimentocaixa.TransferenciaCaixaRequest
-	22, // 35: movimentocaixa.MovimentoCaixaService.BatchUpdate:input_type -> movimentocaixa.BatchUpdateRequest
-	1,  // 36: movimentocaixa.MovimentoCaixaService.Resumo:input_type -> movimentocaixa.ResumoMovimentoCaixaRequest
-	6,  // 37: movimentocaixa.MovimentoCaixaService.Create:output_type -> movimentocaixa.CreateMovimentoCaixaResponse
-	8,  // 38: movimentocaixa.MovimentoCaixaService.Update:output_type -> movimentocaixa.UpdateMovimentoCaixaResponse
-	10, // 39: movimentocaixa.MovimentoCaixaService.Delete:output_type -> movimentocaixa.DeleteMovimentoCaixaResponse
-	12, // 40: movimentocaixa.MovimentoCaixaService.Get:output_type -> movimentocaixa.GetMovimentoCaixaResponse
-	14, // 41: movimentocaixa.MovimentoCaixaService.List:output_type -> movimentocaixa.ListMovimentoCaixaResponse
-	16, // 42: movimentocaixa.MovimentoCaixaService.Report:output_type -> movimentocaixa.ReportMovimentoCaixaResponse
-	18, // 43: movimentocaixa.MovimentoCaixaService.GetSaldo:output_type -> movimentocaixa.GetSaldoMovimentoCaixaResponse
-	21, // 44: movimentocaixa.MovimentoCaixaService.TransferenciaCaixa:output_type -> movimentocaixa.TransferenciaCaixaResponse
-	23, // 45: movimentocaixa.MovimentoCaixaService.BatchUpdate:output_type -> movimentocaixa.BatchUpdateResponse
-	2,  // 46: movimentocaixa.MovimentoCaixaService.Resumo:output_type -> movimentocaixa.ResumoMovimentoCaixaResponse
-	37, // [37:47] is the sub-list for method output_type
-	27, // [27:37] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	29, // 0: movimentocaixa.DashboardMovimentoCaixaRequest.data_inicial:type_name -> google.protobuf.Timestamp
+	29, // 1: movimentocaixa.DashboardMovimentoCaixaRequest.data_final:type_name -> google.protobuf.Timestamp
+	29, // 2: movimentocaixa.DashboardMovimentoCaixaResponse.data_inicial:type_name -> google.protobuf.Timestamp
+	29, // 3: movimentocaixa.DashboardMovimentoCaixaResponse.data_final:type_name -> google.protobuf.Timestamp
+	2,  // 4: movimentocaixa.DashboardMovimentoCaixaResponse.total:type_name -> movimentocaixa.FluxoCaixaConta
+	2,  // 5: movimentocaixa.DashboardMovimentoCaixaResponse.caixas:type_name -> movimentocaixa.FluxoCaixaConta
+	3,  // 6: movimentocaixa.DashboardMovimentoCaixaResponse.dias:type_name -> movimentocaixa.FluxoCaixaDia
+	4,  // 7: movimentocaixa.DashboardMovimentoCaixaResponse.por_plano_conta:type_name -> movimentocaixa.FluxoCaixaGrupo
+	4,  // 8: movimentocaixa.DashboardMovimentoCaixaResponse.por_tipo_pagamento:type_name -> movimentocaixa.FluxoCaixaGrupo
+	29, // 9: movimentocaixa.MovimentoCaixa.created_at:type_name -> google.protobuf.Timestamp
+	29, // 10: movimentocaixa.MovimentoCaixa.updated_at:type_name -> google.protobuf.Timestamp
+	29, // 11: movimentocaixa.MovimentoCaixa.competence:type_name -> google.protobuf.Timestamp
+	29, // 12: movimentocaixa.MovimentoCaixa.data_hora_inicial:type_name -> google.protobuf.Timestamp
+	29, // 13: movimentocaixa.MovimentoCaixa.data_hora_final:type_name -> google.protobuf.Timestamp
+	18, // 14: movimentocaixa.ResumoMovimentoCaixaRequest.list:type_name -> movimentocaixa.ListMovimentoCaixaRequest
+	8,  // 15: movimentocaixa.ResumoMovimentoCaixaResponse.recebiveis_por_tipo:type_name -> movimentocaixa.ResumoPorTipo
+	9,  // 16: movimentocaixa.ResumoMovimentoCaixaResponse.por_tipo_pagamento:type_name -> movimentocaixa.ResumoGrupo
+	9,  // 17: movimentocaixa.ResumoMovimentoCaixaResponse.por_plano_conta:type_name -> movimentocaixa.ResumoGrupo
+	5,  // 18: movimentocaixa.CreateMovimentoCaixaRequest.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
+	5,  // 19: movimentocaixa.CreateMovimentoCaixaResponse.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
+	5,  // 20: movimentocaixa.UpdateMovimentoCaixaRequest.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
+	30, // 21: movimentocaixa.UpdateMovimentoCaixaRequest.update_mask:type_name -> metadata.FieldMask
+	5,  // 22: movimentocaixa.UpdateMovimentoCaixaResponse.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
+	5,  // 23: movimentocaixa.GetMovimentoCaixaResponse.movimento_caixa:type_name -> movimentocaixa.MovimentoCaixa
+	29, // 24: movimentocaixa.ListMovimentoCaixaRequest.dia_movimento:type_name -> google.protobuf.Timestamp
+	29, // 25: movimentocaixa.ListMovimentoCaixaRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	29, // 26: movimentocaixa.ListMovimentoCaixaRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	29, // 27: movimentocaixa.ListMovimentoCaixaRequest.competence_gte:type_name -> google.protobuf.Timestamp
+	29, // 28: movimentocaixa.ListMovimentoCaixaRequest.competence_lte:type_name -> google.protobuf.Timestamp
+	29, // 29: movimentocaixa.ListMovimentoCaixaRequest.created_at:type_name -> google.protobuf.Timestamp
+	31, // 30: movimentocaixa.ListMovimentoCaixaRequest.filter:type_name -> Filter
+	5,  // 31: movimentocaixa.ListMovimentoCaixaResponse.movimento_caixa_list:type_name -> movimentocaixa.MovimentoCaixa
+	18, // 32: movimentocaixa.ReportMovimentoCaixaRequest.list_movimento_caixa_request:type_name -> movimentocaixa.ListMovimentoCaixaRequest
+	32, // 33: movimentocaixa.ReportMovimentoCaixaResponse.response:type_name -> report.Response
+	29, // 34: movimentocaixa.GetSaldoMovimentoCaixaRequest.data:type_name -> google.protobuf.Timestamp
+	25, // 35: movimentocaixa.TransferenciaCaixaRequest.itens:type_name -> movimentocaixa.TransferenciaItem
+	10, // 36: movimentocaixa.MovimentoCaixaService.Create:input_type -> movimentocaixa.CreateMovimentoCaixaRequest
+	12, // 37: movimentocaixa.MovimentoCaixaService.Update:input_type -> movimentocaixa.UpdateMovimentoCaixaRequest
+	14, // 38: movimentocaixa.MovimentoCaixaService.Delete:input_type -> movimentocaixa.DeleteMovimentoCaixaRequest
+	16, // 39: movimentocaixa.MovimentoCaixaService.Get:input_type -> movimentocaixa.GetMovimentoCaixaRequest
+	18, // 40: movimentocaixa.MovimentoCaixaService.List:input_type -> movimentocaixa.ListMovimentoCaixaRequest
+	20, // 41: movimentocaixa.MovimentoCaixaService.Report:input_type -> movimentocaixa.ReportMovimentoCaixaRequest
+	22, // 42: movimentocaixa.MovimentoCaixaService.GetSaldo:input_type -> movimentocaixa.GetSaldoMovimentoCaixaRequest
+	24, // 43: movimentocaixa.MovimentoCaixaService.TransferenciaCaixa:input_type -> movimentocaixa.TransferenciaCaixaRequest
+	27, // 44: movimentocaixa.MovimentoCaixaService.BatchUpdate:input_type -> movimentocaixa.BatchUpdateRequest
+	6,  // 45: movimentocaixa.MovimentoCaixaService.Resumo:input_type -> movimentocaixa.ResumoMovimentoCaixaRequest
+	0,  // 46: movimentocaixa.MovimentoCaixaService.Dashboard:input_type -> movimentocaixa.DashboardMovimentoCaixaRequest
+	11, // 47: movimentocaixa.MovimentoCaixaService.Create:output_type -> movimentocaixa.CreateMovimentoCaixaResponse
+	13, // 48: movimentocaixa.MovimentoCaixaService.Update:output_type -> movimentocaixa.UpdateMovimentoCaixaResponse
+	15, // 49: movimentocaixa.MovimentoCaixaService.Delete:output_type -> movimentocaixa.DeleteMovimentoCaixaResponse
+	17, // 50: movimentocaixa.MovimentoCaixaService.Get:output_type -> movimentocaixa.GetMovimentoCaixaResponse
+	19, // 51: movimentocaixa.MovimentoCaixaService.List:output_type -> movimentocaixa.ListMovimentoCaixaResponse
+	21, // 52: movimentocaixa.MovimentoCaixaService.Report:output_type -> movimentocaixa.ReportMovimentoCaixaResponse
+	23, // 53: movimentocaixa.MovimentoCaixaService.GetSaldo:output_type -> movimentocaixa.GetSaldoMovimentoCaixaResponse
+	26, // 54: movimentocaixa.MovimentoCaixaService.TransferenciaCaixa:output_type -> movimentocaixa.TransferenciaCaixaResponse
+	28, // 55: movimentocaixa.MovimentoCaixaService.BatchUpdate:output_type -> movimentocaixa.BatchUpdateResponse
+	7,  // 56: movimentocaixa.MovimentoCaixaService.Resumo:output_type -> movimentocaixa.ResumoMovimentoCaixaResponse
+	1,  // 57: movimentocaixa.MovimentoCaixaService.Dashboard:output_type -> movimentocaixa.DashboardMovimentoCaixaResponse
+	47, // [47:58] is the sub-list for method output_type
+	36, // [36:47] is the sub-list for method input_type
+	36, // [36:36] is the sub-list for extension type_name
+	36, // [36:36] is the sub-list for extension extendee
+	0,  // [0:36] is the sub-list for field type_name
 }
 
 func init() { file_apps_financeiro_movimentocaixa_movimento_caixa_proto_init() }
@@ -2075,7 +2493,7 @@ func file_apps_financeiro_movimentocaixa_movimento_caixa_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDesc), len(file_apps_financeiro_movimentocaixa_movimento_caixa_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   24,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

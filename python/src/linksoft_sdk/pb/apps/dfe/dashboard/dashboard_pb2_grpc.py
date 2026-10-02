@@ -6,7 +6,7 @@ from linksoft_sdk.pb.apps.dfe.dashboard import dashboard_pb2 as apps_dot_dfe_dot
 
 
 class DfeDashboardServiceStub:
-    """Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada,
+    """Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada, NFS-e,
     MDF-e e Inutilizacoes em uma unica resposta.
     """
 
@@ -24,7 +24,7 @@ class DfeDashboardServiceStub:
 
 
 class DfeDashboardServiceServicer:
-    """Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada,
+    """Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada, NFS-e,
     MDF-e e Inutilizacoes em uma unica resposta.
     """
 
@@ -53,7 +53,7 @@ def add_DfeDashboardServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class DfeDashboardService:
-    """Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada,
+    """Servico do painel /dfe/dashboard. Consolida NF-e, NFC-e, NF-e Entrada, NFS-e,
     MDF-e e Inutilizacoes em uma unica resposta.
     """
 

@@ -88,7 +88,7 @@ type GetSummaryResponse struct {
 	Impostos []*ImpostosItem `protobuf:"bytes,5,rep,name=impostos,proto3" json:"impostos,omitempty"`
 	// Top 50 CFOPs do periodo, ordenados por valor total decrescente.
 	Cfops []*CfopItem `protobuf:"bytes,6,rep,name=cfops,proto3" json:"cfops,omitempty"`
-	// Agregacao por tipo de documento (nfe/nfce/entrada) e finalidade de emissao
+	// Agregacao por tipo de documento (nfe/nfce/entrada/nfse) e finalidade de emissao
 	// (nor/comp/ajus/dev/outros). O rotulo amigavel e' resolvido no frontend.
 	ResumoPorFinalidade []*ResumoPorFinalidadeItem `protobuf:"bytes,7,rep,name=resumo_por_finalidade,json=resumoPorFinalidade,proto3" json:"resumo_por_finalidade,omitempty"`
 	unknownFields       protoimpl.UnknownFields
@@ -177,7 +177,7 @@ func (x *GetSummaryResponse) GetResumoPorFinalidade() []*ResumoPorFinalidadeItem
 // Agrupamento para tabela de resumo por tipo e finalidade da nota no periodo.
 type ResumoPorFinalidadeItem struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// Identificadores estaveis para i18n/rotulos no cliente: "nfe" | "nfce" | "entrada".
+	// Identificadores estaveis para i18n/rotulos no cliente: "nfe" | "nfce" | "entrada" | "nfse".
 	TipoDocumento string `protobuf:"bytes,1,opt,name=tipo_documento,json=tipoDocumento,proto3" json:"tipo_documento,omitempty"`
 	// Codigo da finalidade no doc: nor | dev | comp | ajus | outros.
 	FinalidadeCodigo string  `protobuf:"bytes,2,opt,name=finalidade_codigo,json=finalidadeCodigo,proto3" json:"finalidade_codigo,omitempty"`
@@ -597,22 +597,17 @@ func (x *Resumos) GetInutilizacoes() int32 {
 	return 0
 }
 
+// Documentos autorizados no mes, por tipo, pela data de emissao.
 type StatusMensalItem struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Label do mes, ex.: "Mai/26".
 	Mes                 string  `protobuf:"bytes,1,opt,name=mes,proto3" json:"mes,omitempty"`
 	NfeAutorizada       int32   `protobuf:"varint,2,opt,name=nfe_autorizada,json=nfeAutorizada,proto3" json:"nfe_autorizada,omitempty"`
-	NfePendente         int32   `protobuf:"varint,3,opt,name=nfe_pendente,json=nfePendente,proto3" json:"nfe_pendente,omitempty"`
-	NfeCancelada        int32   `protobuf:"varint,4,opt,name=nfe_cancelada,json=nfeCancelada,proto3" json:"nfe_cancelada,omitempty"`
-	NfeAutorizadaValor  float64 `protobuf:"fixed64,5,opt,name=nfe_autorizada_valor,json=nfeAutorizadaValor,proto3" json:"nfe_autorizada_valor,omitempty"`
-	NfePendenteValor    float64 `protobuf:"fixed64,6,opt,name=nfe_pendente_valor,json=nfePendenteValor,proto3" json:"nfe_pendente_valor,omitempty"`
-	NfeCanceladaValor   float64 `protobuf:"fixed64,7,opt,name=nfe_cancelada_valor,json=nfeCanceladaValor,proto3" json:"nfe_cancelada_valor,omitempty"`
-	NfceAutorizada      int32   `protobuf:"varint,8,opt,name=nfce_autorizada,json=nfceAutorizada,proto3" json:"nfce_autorizada,omitempty"`
-	NfcePendente        int32   `protobuf:"varint,9,opt,name=nfce_pendente,json=nfcePendente,proto3" json:"nfce_pendente,omitempty"`
-	NfceCancelada       int32   `protobuf:"varint,10,opt,name=nfce_cancelada,json=nfceCancelada,proto3" json:"nfce_cancelada,omitempty"`
-	NfceAutorizadaValor float64 `protobuf:"fixed64,11,opt,name=nfce_autorizada_valor,json=nfceAutorizadaValor,proto3" json:"nfce_autorizada_valor,omitempty"`
-	NfcePendenteValor   float64 `protobuf:"fixed64,12,opt,name=nfce_pendente_valor,json=nfcePendenteValor,proto3" json:"nfce_pendente_valor,omitempty"`
-	NfceCanceladaValor  float64 `protobuf:"fixed64,13,opt,name=nfce_cancelada_valor,json=nfceCanceladaValor,proto3" json:"nfce_cancelada_valor,omitempty"`
+	NfeAutorizadaValor  float64 `protobuf:"fixed64,3,opt,name=nfe_autorizada_valor,json=nfeAutorizadaValor,proto3" json:"nfe_autorizada_valor,omitempty"`
+	NfceAutorizada      int32   `protobuf:"varint,4,opt,name=nfce_autorizada,json=nfceAutorizada,proto3" json:"nfce_autorizada,omitempty"`
+	NfceAutorizadaValor float64 `protobuf:"fixed64,5,opt,name=nfce_autorizada_valor,json=nfceAutorizadaValor,proto3" json:"nfce_autorizada_valor,omitempty"`
+	NfseAutorizada      int32   `protobuf:"varint,6,opt,name=nfse_autorizada,json=nfseAutorizada,proto3" json:"nfse_autorizada,omitempty"`
+	NfseAutorizadaValor float64 `protobuf:"fixed64,7,opt,name=nfse_autorizada_valor,json=nfseAutorizadaValor,proto3" json:"nfse_autorizada_valor,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -661,37 +656,9 @@ func (x *StatusMensalItem) GetNfeAutorizada() int32 {
 	return 0
 }
 
-func (x *StatusMensalItem) GetNfePendente() int32 {
-	if x != nil {
-		return x.NfePendente
-	}
-	return 0
-}
-
-func (x *StatusMensalItem) GetNfeCancelada() int32 {
-	if x != nil {
-		return x.NfeCancelada
-	}
-	return 0
-}
-
 func (x *StatusMensalItem) GetNfeAutorizadaValor() float64 {
 	if x != nil {
 		return x.NfeAutorizadaValor
-	}
-	return 0
-}
-
-func (x *StatusMensalItem) GetNfePendenteValor() float64 {
-	if x != nil {
-		return x.NfePendenteValor
-	}
-	return 0
-}
-
-func (x *StatusMensalItem) GetNfeCanceladaValor() float64 {
-	if x != nil {
-		return x.NfeCanceladaValor
 	}
 	return 0
 }
@@ -703,20 +670,6 @@ func (x *StatusMensalItem) GetNfceAutorizada() int32 {
 	return 0
 }
 
-func (x *StatusMensalItem) GetNfcePendente() int32 {
-	if x != nil {
-		return x.NfcePendente
-	}
-	return 0
-}
-
-func (x *StatusMensalItem) GetNfceCancelada() int32 {
-	if x != nil {
-		return x.NfceCancelada
-	}
-	return 0
-}
-
 func (x *StatusMensalItem) GetNfceAutorizadaValor() float64 {
 	if x != nil {
 		return x.NfceAutorizadaValor
@@ -724,16 +677,16 @@ func (x *StatusMensalItem) GetNfceAutorizadaValor() float64 {
 	return 0
 }
 
-func (x *StatusMensalItem) GetNfcePendenteValor() float64 {
+func (x *StatusMensalItem) GetNfseAutorizada() int32 {
 	if x != nil {
-		return x.NfcePendenteValor
+		return x.NfseAutorizada
 	}
 	return 0
 }
 
-func (x *StatusMensalItem) GetNfceCanceladaValor() float64 {
+func (x *StatusMensalItem) GetNfseAutorizadaValor() float64 {
 	if x != nil {
-		return x.NfceCanceladaValor
+		return x.NfseAutorizadaValor
 	}
 	return 0
 }
@@ -1001,22 +954,15 @@ const file_apps_dfe_dashboard_dashboard_proto_rawDesc = "" +
 	"\aentrada\x18\x03 \x01(\v2\x18.dfedashboard.ResumoItemR\aentrada\x12,\n" +
 	"\x04nfse\x18\x04 \x01(\v2\x18.dfedashboard.ResumoItemR\x04nfse\x12,\n" +
 	"\x04mdfe\x18\x05 \x01(\v2\x18.dfedashboard.ResumoItemR\x04mdfe\x12$\n" +
-	"\rinutilizacoes\x18\x06 \x01(\x05R\rinutilizacoes\"\xae\x04\n" +
+	"\rinutilizacoes\x18\x06 \x01(\x05R\rinutilizacoes\"\xb7\x02\n" +
 	"\x10StatusMensalItem\x12\x10\n" +
 	"\x03mes\x18\x01 \x01(\tR\x03mes\x12%\n" +
-	"\x0enfe_autorizada\x18\x02 \x01(\x05R\rnfeAutorizada\x12!\n" +
-	"\fnfe_pendente\x18\x03 \x01(\x05R\vnfePendente\x12#\n" +
-	"\rnfe_cancelada\x18\x04 \x01(\x05R\fnfeCancelada\x120\n" +
-	"\x14nfe_autorizada_valor\x18\x05 \x01(\x01R\x12nfeAutorizadaValor\x12,\n" +
-	"\x12nfe_pendente_valor\x18\x06 \x01(\x01R\x10nfePendenteValor\x12.\n" +
-	"\x13nfe_cancelada_valor\x18\a \x01(\x01R\x11nfeCanceladaValor\x12'\n" +
-	"\x0fnfce_autorizada\x18\b \x01(\x05R\x0enfceAutorizada\x12#\n" +
-	"\rnfce_pendente\x18\t \x01(\x05R\fnfcePendente\x12%\n" +
-	"\x0enfce_cancelada\x18\n" +
-	" \x01(\x05R\rnfceCancelada\x122\n" +
-	"\x15nfce_autorizada_valor\x18\v \x01(\x01R\x13nfceAutorizadaValor\x12.\n" +
-	"\x13nfce_pendente_valor\x18\f \x01(\x01R\x11nfcePendenteValor\x120\n" +
-	"\x14nfce_cancelada_valor\x18\r \x01(\x01R\x12nfceCanceladaValor\"^\n" +
+	"\x0enfe_autorizada\x18\x02 \x01(\x05R\rnfeAutorizada\x120\n" +
+	"\x14nfe_autorizada_valor\x18\x03 \x01(\x01R\x12nfeAutorizadaValor\x12'\n" +
+	"\x0fnfce_autorizada\x18\x04 \x01(\x05R\x0enfceAutorizada\x122\n" +
+	"\x15nfce_autorizada_valor\x18\x05 \x01(\x01R\x13nfceAutorizadaValor\x12'\n" +
+	"\x0fnfse_autorizada\x18\x06 \x01(\x05R\x0enfseAutorizada\x122\n" +
+	"\x15nfse_autorizada_valor\x18\a \x01(\x01R\x13nfseAutorizadaValor\"^\n" +
 	"\fImpostosItem\x12\x10\n" +
 	"\x03mes\x18\x01 \x01(\tR\x03mes\x12\x12\n" +
 	"\x04icms\x18\x02 \x01(\x01R\x04icms\x12\x10\n" +
