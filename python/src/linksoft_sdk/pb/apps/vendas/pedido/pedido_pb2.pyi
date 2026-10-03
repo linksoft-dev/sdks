@@ -2340,24 +2340,28 @@ class SendPaymentLinkRequest(_message.Message):
     def __init__(self, ids: _Optional[_Iterable[str]] = ..., pedidos: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., email: _Optional[str] = ..., channel: _Optional[str] = ..., email_integration_id: _Optional[str] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., whatsapp_template_name: _Optional[str] = ..., whatsapp_template_language: _Optional[str] = ..., message_template_id: _Optional[str] = ...) -> None: ...
 
 class SimulaCobrancaRequest(_message.Message):
-    __slots__ = ("billing_plan", "data")
+    __slots__ = ("billing_plan", "data", "proxima")
     BILLING_PLAN_FIELD_NUMBER: _ClassVar[int]
     DATA_FIELD_NUMBER: _ClassVar[int]
+    PROXIMA_FIELD_NUMBER: _ClassVar[int]
     billing_plan: _billingplan_pb2.BillingPlan
     data: _timestamp_pb2.Timestamp
-    def __init__(self, billing_plan: _Optional[_Union[_billingplan_pb2.BillingPlan, _Mapping]] = ..., data: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    proxima: bool
+    def __init__(self, billing_plan: _Optional[_Union[_billingplan_pb2.BillingPlan, _Mapping]] = ..., data: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., proxima: _Optional[bool] = ...) -> None: ...
 
 class SimulaCobrancaResponse(_message.Message):
-    __slots__ = ("itens", "valor_total", "com_outro_plano", "sem_envio")
+    __slots__ = ("itens", "valor_total", "com_outro_plano", "sem_envio", "data")
     ITENS_FIELD_NUMBER: _ClassVar[int]
     VALOR_TOTAL_FIELD_NUMBER: _ClassVar[int]
     COM_OUTRO_PLANO_FIELD_NUMBER: _ClassVar[int]
     SEM_ENVIO_FIELD_NUMBER: _ClassVar[int]
+    DATA_FIELD_NUMBER: _ClassVar[int]
     itens: _containers.RepeatedCompositeFieldContainer[SimulaCobrancaItem]
     valor_total: float
     com_outro_plano: int
     sem_envio: str
-    def __init__(self, itens: _Optional[_Iterable[_Union[SimulaCobrancaItem, _Mapping]]] = ..., valor_total: _Optional[float] = ..., com_outro_plano: _Optional[int] = ..., sem_envio: _Optional[str] = ...) -> None: ...
+    data: _timestamp_pb2.Timestamp
+    def __init__(self, itens: _Optional[_Iterable[_Union[SimulaCobrancaItem, _Mapping]]] = ..., valor_total: _Optional[float] = ..., com_outro_plano: _Optional[int] = ..., sem_envio: _Optional[str] = ..., data: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SimulaCobrancaItem(_message.Message):
     __slots__ = ("documento_id", "tipo", "numero", "destinatario", "referencia", "valor", "envio")
