@@ -2248,10 +2248,12 @@ type ListProdutoRequest struct {
 	ExcludeInsumos bool `protobuf:"varint,37,opt,name=exclude_insumos,json=excludeInsumos,proto3" json:"exclude_insumos,omitempty"`
 	// Faixa de markup (preço à vista ÷ custo total). 2 = o preço cobre duas vezes
 	// o custo. Zero em qualquer das pontas deixa aquele lado aberto.
-	MarkupGte     float64 `protobuf:"fixed64,39,opt,name=markup_gte,json=markupGte,proto3" json:"markup_gte,omitempty"`
-	MarkupLte     float64 `protobuf:"fixed64,40,opt,name=markup_lte,json=markupLte,proto3" json:"markup_lte,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	MarkupGte float64 `protobuf:"fixed64,39,opt,name=markup_gte,json=markupGte,proto3" json:"markup_gte,omitempty"`
+	MarkupLte float64 `protobuf:"fixed64,40,opt,name=markup_lte,json=markupLte,proto3" json:"markup_lte,omitempty"`
+	// Com ids informados, devolve também os que estão na lixeira (excluídos).
+	IncludeDeleted bool `protobuf:"varint,41,opt,name=include_deleted,json=includeDeleted,proto3" json:"include_deleted,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *ListProdutoRequest) Reset() {
@@ -2562,6 +2564,13 @@ func (x *ListProdutoRequest) GetMarkupLte() float64 {
 		return x.MarkupLte
 	}
 	return 0
+}
+
+func (x *ListProdutoRequest) GetIncludeDeleted() bool {
+	if x != nil {
+		return x.IncludeDeleted
+	}
+	return false
 }
 
 type ListProdutoResponse struct {
@@ -6153,7 +6162,7 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\x11GetProdutoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"@\n" +
 	"\x12GetProdutoResponse\x12*\n" +
-	"\aproduto\x18\x01 \x01(\v2\x10.produto.ProdutoR\aproduto\"\x93\r\n" +
+	"\aproduto\x18\x01 \x01(\v2\x10.produto.ProdutoR\aproduto\"\xbc\r\n" +
 	"\x12ListProdutoRequest\x12\x10\n" +
 	"\x03ids\x18\x01 \x03(\tR\x03ids\x12\x14\n" +
 	"\x05names\x18\x02 \x03(\tR\x05names\x12\x1a\n" +
@@ -6198,7 +6207,8 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"markup_gte\x18' \x01(\x01R\tmarkupGte\x12\x1d\n" +
 	"\n" +
-	"markup_lte\x18( \x01(\x01R\tmarkupLte\"q\n" +
+	"markup_lte\x18( \x01(\x01R\tmarkupLte\x12'\n" +
+	"\x0finclude_deleted\x18) \x01(\bR\x0eincludeDeleted\"q\n" +
 	"\x13ListProdutoResponse\x122\n" +
 	"\vprodutoList\x18\x01 \x03(\v2\x10.produto.ProdutoR\vprodutoList\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"g\n" +

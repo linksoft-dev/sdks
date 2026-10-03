@@ -13035,6 +13035,11 @@ type DeliveryInfo struct {
 	PickupLocationId    string                 `protobuf:"bytes,14,opt,name=pickup_location_id,json=pickupLocationId,proto3" json:"pickup_location_id,omitempty"`          // ID do local de retirada
 	PickupLocationName  string                 `protobuf:"bytes,15,opt,name=pickup_location_name,json=pickupLocationName,proto3" json:"pickup_location_name,omitempty"`    // Nome do local
 	PickupScheduledDate *timestamppb.Timestamp `protobuf:"bytes,16,opt,name=pickup_scheduled_date,json=pickupScheduledDate,proto3" json:"pickup_scheduled_date,omitempty"` // Data agendada para retirada
+	CarrierPersonId     string                 `protobuf:"bytes,17,opt,name=carrier_person_id,json=carrierPersonId,proto3" json:"carrier_person_id,omitempty"`             // Transportador no cadastro de pessoas
+	FreightMode         string                 `protobuf:"bytes,18,opt,name=freight_mode,json=freightMode,proto3" json:"freight_mode,omitempty"`                           // Modalidade do frete da nota: "emi", "des", "ter" ou "sem"
+	VehiclePlate        string                 `protobuf:"bytes,19,opt,name=vehicle_plate,json=vehiclePlate,proto3" json:"vehicle_plate,omitempty"`                        // Placa do veículo do transporte
+	VehicleUf           string                 `protobuf:"bytes,20,opt,name=vehicle_uf,json=vehicleUf,proto3" json:"vehicle_uf,omitempty"`                                 // UF da placa
+	VehicleRntc         string                 `protobuf:"bytes,21,opt,name=vehicle_rntc,json=vehicleRntc,proto3" json:"vehicle_rntc,omitempty"`                           // Registro Nacional de Transportador de Carga
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -13179,6 +13184,41 @@ func (x *DeliveryInfo) GetPickupScheduledDate() *timestamppb.Timestamp {
 		return x.PickupScheduledDate
 	}
 	return nil
+}
+
+func (x *DeliveryInfo) GetCarrierPersonId() string {
+	if x != nil {
+		return x.CarrierPersonId
+	}
+	return ""
+}
+
+func (x *DeliveryInfo) GetFreightMode() string {
+	if x != nil {
+		return x.FreightMode
+	}
+	return ""
+}
+
+func (x *DeliveryInfo) GetVehiclePlate() string {
+	if x != nil {
+		return x.VehiclePlate
+	}
+	return ""
+}
+
+func (x *DeliveryInfo) GetVehicleUf() string {
+	if x != nil {
+		return x.VehicleUf
+	}
+	return ""
+}
+
+func (x *DeliveryInfo) GetVehicleRntc() string {
+	if x != nil {
+		return x.VehicleRntc
+	}
+	return ""
 }
 
 // Histórico de status de entrega
@@ -14941,7 +14981,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x13produto_origem_nome\x18\x03 \x01(\tR\x11produtoOrigemNome\x12,\n" +
 	"\x12produto_destino_id\x18\x04 \x01(\tR\x10produtoDestinoId\x120\n" +
 	"\x14produto_destino_nome\x18\x05 \x01(\tR\x12produtoDestinoNome\"\x1e\n" +
-	"\x1cCorrecaoMovimentacaoResponse\"\xb7\x06\n" +
+	"\x1cCorrecaoMovimentacaoResponse\"\xed\a\n" +
 	"\fDeliveryInfo\x12?\n" +
 	"\x0fdelivery_method\x18\x01 \x01(\x0e2\x16.pedido.DeliveryMethodR\x0edeliveryMethod\x12(\n" +
 	"\x10delivery_zone_id\x18\x02 \x01(\tR\x0edeliveryZoneId\x12,\n" +
@@ -14959,7 +14999,13 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\aaddress\x18\r \x01(\v2\x17.pedido.DeliveryAddressR\aaddress\x12,\n" +
 	"\x12pickup_location_id\x18\x0e \x01(\tR\x10pickupLocationId\x120\n" +
 	"\x14pickup_location_name\x18\x0f \x01(\tR\x12pickupLocationName\x12N\n" +
-	"\x15pickup_scheduled_date\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\x13pickupScheduledDate\"\xa7\x01\n" +
+	"\x15pickup_scheduled_date\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\x13pickupScheduledDate\x12*\n" +
+	"\x11carrier_person_id\x18\x11 \x01(\tR\x0fcarrierPersonId\x12!\n" +
+	"\ffreight_mode\x18\x12 \x01(\tR\vfreightMode\x12#\n" +
+	"\rvehicle_plate\x18\x13 \x01(\tR\fvehiclePlate\x12\x1d\n" +
+	"\n" +
+	"vehicle_uf\x18\x14 \x01(\tR\tvehicleUf\x12!\n" +
+	"\fvehicle_rntc\x18\x15 \x01(\tR\vvehicleRntc\"\xa7\x01\n" +
 	"\x15DeliveryStatusHistory\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x128\n" +

@@ -183,14 +183,26 @@ class Specialty(_message.Message):
     def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ...) -> None: ...
 
 class Carrier(_message.Message):
-    __slots__ = ("provider_code", "integration_id", "services")
+    __slots__ = ("provider_code", "integration_id", "services", "vehicles")
     PROVIDER_CODE_FIELD_NUMBER: _ClassVar[int]
     INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     SERVICES_FIELD_NUMBER: _ClassVar[int]
+    VEHICLES_FIELD_NUMBER: _ClassVar[int]
     provider_code: str
     integration_id: str
     services: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, provider_code: _Optional[str] = ..., integration_id: _Optional[str] = ..., services: _Optional[_Iterable[str]] = ...) -> None: ...
+    vehicles: _containers.RepeatedCompositeFieldContainer[CarrierVehicle]
+    def __init__(self, provider_code: _Optional[str] = ..., integration_id: _Optional[str] = ..., services: _Optional[_Iterable[str]] = ..., vehicles: _Optional[_Iterable[_Union[CarrierVehicle, _Mapping]]] = ...) -> None: ...
+
+class CarrierVehicle(_message.Message):
+    __slots__ = ("plate", "uf", "rntc")
+    PLATE_FIELD_NUMBER: _ClassVar[int]
+    UF_FIELD_NUMBER: _ClassVar[int]
+    RNTC_FIELD_NUMBER: _ClassVar[int]
+    plate: str
+    uf: str
+    rntc: str
+    def __init__(self, plate: _Optional[str] = ..., uf: _Optional[str] = ..., rntc: _Optional[str] = ...) -> None: ...
 
 class Lead(_message.Message):
     __slots__ = ("source", "source_provider", "stage", "qualification", "score", "assigned_to_id", "assigned_to_name", "expected_value", "expected_close_date", "loss_reason", "converted_at", "converted_deal_id", "sector", "company_size", "website", "rating", "notes")

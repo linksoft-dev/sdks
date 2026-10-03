@@ -2536,7 +2536,7 @@ class CorrecaoMovimentacaoResponse(_message.Message):
     def __init__(self) -> None: ...
 
 class DeliveryInfo(_message.Message):
-    __slots__ = ("delivery_method", "delivery_zone_id", "delivery_zone_name", "shipping_fee", "estimated_days", "estimated_delivery_date", "tracking_code", "tracking_url", "carrier_name", "carrier_service", "delivery_instructions", "status_history", "address", "pickup_location_id", "pickup_location_name", "pickup_scheduled_date")
+    __slots__ = ("delivery_method", "delivery_zone_id", "delivery_zone_name", "shipping_fee", "estimated_days", "estimated_delivery_date", "tracking_code", "tracking_url", "carrier_name", "carrier_service", "delivery_instructions", "status_history", "address", "pickup_location_id", "pickup_location_name", "pickup_scheduled_date", "carrier_person_id", "freight_mode", "vehicle_plate", "vehicle_uf", "vehicle_rntc")
     DELIVERY_METHOD_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_ZONE_ID_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_ZONE_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -2553,6 +2553,11 @@ class DeliveryInfo(_message.Message):
     PICKUP_LOCATION_ID_FIELD_NUMBER: _ClassVar[int]
     PICKUP_LOCATION_NAME_FIELD_NUMBER: _ClassVar[int]
     PICKUP_SCHEDULED_DATE_FIELD_NUMBER: _ClassVar[int]
+    CARRIER_PERSON_ID_FIELD_NUMBER: _ClassVar[int]
+    FREIGHT_MODE_FIELD_NUMBER: _ClassVar[int]
+    VEHICLE_PLATE_FIELD_NUMBER: _ClassVar[int]
+    VEHICLE_UF_FIELD_NUMBER: _ClassVar[int]
+    VEHICLE_RNTC_FIELD_NUMBER: _ClassVar[int]
     delivery_method: DeliveryMethod
     delivery_zone_id: str
     delivery_zone_name: str
@@ -2569,7 +2574,12 @@ class DeliveryInfo(_message.Message):
     pickup_location_id: str
     pickup_location_name: str
     pickup_scheduled_date: _timestamp_pb2.Timestamp
-    def __init__(self, delivery_method: _Optional[_Union[DeliveryMethod, str]] = ..., delivery_zone_id: _Optional[str] = ..., delivery_zone_name: _Optional[str] = ..., shipping_fee: _Optional[float] = ..., estimated_days: _Optional[int] = ..., estimated_delivery_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., tracking_code: _Optional[str] = ..., tracking_url: _Optional[str] = ..., carrier_name: _Optional[str] = ..., carrier_service: _Optional[str] = ..., delivery_instructions: _Optional[str] = ..., status_history: _Optional[_Iterable[_Union[DeliveryStatusHistory, _Mapping]]] = ..., address: _Optional[_Union[DeliveryAddress, _Mapping]] = ..., pickup_location_id: _Optional[str] = ..., pickup_location_name: _Optional[str] = ..., pickup_scheduled_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    carrier_person_id: str
+    freight_mode: str
+    vehicle_plate: str
+    vehicle_uf: str
+    vehicle_rntc: str
+    def __init__(self, delivery_method: _Optional[_Union[DeliveryMethod, str]] = ..., delivery_zone_id: _Optional[str] = ..., delivery_zone_name: _Optional[str] = ..., shipping_fee: _Optional[float] = ..., estimated_days: _Optional[int] = ..., estimated_delivery_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., tracking_code: _Optional[str] = ..., tracking_url: _Optional[str] = ..., carrier_name: _Optional[str] = ..., carrier_service: _Optional[str] = ..., delivery_instructions: _Optional[str] = ..., status_history: _Optional[_Iterable[_Union[DeliveryStatusHistory, _Mapping]]] = ..., address: _Optional[_Union[DeliveryAddress, _Mapping]] = ..., pickup_location_id: _Optional[str] = ..., pickup_location_name: _Optional[str] = ..., pickup_scheduled_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., carrier_person_id: _Optional[str] = ..., freight_mode: _Optional[str] = ..., vehicle_plate: _Optional[str] = ..., vehicle_uf: _Optional[str] = ..., vehicle_rntc: _Optional[str] = ...) -> None: ...
 
 class DeliveryStatusHistory(_message.Message):
     __slots__ = ("status", "description", "timestamp", "location")
