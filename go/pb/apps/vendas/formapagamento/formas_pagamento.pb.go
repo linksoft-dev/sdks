@@ -74,8 +74,11 @@ type PaymentMethod struct {
 	// Documento pago só com formas marcadas não emite a NFS-e automática ao fechar, mesmo com a
 	// emissão automática ligada. Pago também com outra forma, a nota sai.
 	NaoEmiteNfseAutomatica bool `protobuf:"varint,46,opt,name=nao_emite_nfse_automatica,json=naoEmiteNfseAutomatica,proto3" json:"nao_emite_nfse_automatica,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// Venda do PDV paga só com formas marcadas não emite a NFC-e automática ao fechar. Paga também
+	// com outra forma, a nota sai. A emissão manual continua disponível.
+	NaoEmiteNfce  bool `protobuf:"varint,47,opt,name=nao_emite_nfce,json=naoEmiteNfce,proto3" json:"nao_emite_nfce,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PaymentMethod) Reset() {
@@ -349,6 +352,13 @@ func (x *PaymentMethod) GetNaoVerificaLimiteCredito() bool {
 func (x *PaymentMethod) GetNaoEmiteNfseAutomatica() bool {
 	if x != nil {
 		return x.NaoEmiteNfseAutomatica
+	}
+	return false
+}
+
+func (x *PaymentMethod) GetNaoEmiteNfce() bool {
+	if x != nil {
+		return x.NaoEmiteNfce
 	}
 	return false
 }
@@ -1726,7 +1736,7 @@ var File_apps_vendas_formapagamento_formas_pagamento_proto protoreflect.FileDesc
 
 const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\n" +
-	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xa9\f\n" +
+	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xcf\f\n" +
 	"\rPaymentMethod\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1766,7 +1776,8 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x06fields\x18* \x01(\v2\x15.metadata.BasicFieldsR\x06fields\x12!\n" +
 	"\ftabela_preco\x18+ \x01(\tR\vtabelaPreco\x12=\n" +
 	"\x1bnao_verifica_limite_credito\x18- \x01(\bR\x18naoVerificaLimiteCredito\x129\n" +
-	"\x19nao_emite_nfse_automatica\x18. \x01(\bR\x16naoEmiteNfseAutomatica:\x03\xc0>\x01\"t\n" +
+	"\x19nao_emite_nfse_automatica\x18. \x01(\bR\x16naoEmiteNfseAutomatica\x12$\n" +
+	"\x0enao_emite_nfce\x18/ \x01(\bR\fnaoEmiteNfce:\x03\xc0>\x01\"t\n" +
 	"\x10FraudIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
