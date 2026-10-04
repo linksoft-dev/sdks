@@ -33,7 +33,7 @@ CASH_TYPE_BANK_TRANSFER: CashType
 CASH_TYPE_OTHER: CashType
 
 class Caixa(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "nome", "type", "logo", "tipo_moeda", "bank_account", "card", "monthly_budget", "monthly_budgets", "fields")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "nome", "type", "logo", "tipo_moeda", "bank_account", "card", "monthly_budget", "monthly_budgets", "fields", "integration_id")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -48,6 +48,7 @@ class Caixa(_message.Message):
     MONTHLY_BUDGET_FIELD_NUMBER: _ClassVar[int]
     MONTHLY_BUDGETS_FIELD_NUMBER: _ClassVar[int]
     FIELDS_FIELD_NUMBER: _ClassVar[int]
+    INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -62,7 +63,8 @@ class Caixa(_message.Message):
     monthly_budget: float
     monthly_budgets: _containers.RepeatedCompositeFieldContainer[MonthlyBudgetOverride]
     fields: _metadata_pb2.BasicFields
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., nome: _Optional[str] = ..., type: _Optional[_Union[CashType, str]] = ..., logo: _Optional[str] = ..., tipo_moeda: _Optional[str] = ..., bank_account: _Optional[_Union[BankAccount, _Mapping]] = ..., card: _Optional[_Union[Card, _Mapping]] = ..., monthly_budget: _Optional[float] = ..., monthly_budgets: _Optional[_Iterable[_Union[MonthlyBudgetOverride, _Mapping]]] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ...) -> None: ...
+    integration_id: str
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., nome: _Optional[str] = ..., type: _Optional[_Union[CashType, str]] = ..., logo: _Optional[str] = ..., tipo_moeda: _Optional[str] = ..., bank_account: _Optional[_Union[BankAccount, _Mapping]] = ..., card: _Optional[_Union[Card, _Mapping]] = ..., monthly_budget: _Optional[float] = ..., monthly_budgets: _Optional[_Iterable[_Union[MonthlyBudgetOverride, _Mapping]]] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., integration_id: _Optional[str] = ...) -> None: ...
 
 class BankAccount(_message.Message):
     __slots__ = ("id", "bank_name", "agency", "account")

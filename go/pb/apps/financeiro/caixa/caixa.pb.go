@@ -105,6 +105,7 @@ type Caixa struct {
 	MonthlyBudget  float64                  `protobuf:"fixed64,12,opt,name=monthly_budget,json=monthlyBudget,proto3" json:"monthly_budget,omitempty"`  // Orçamento mensal padrão do perfil/carteira
 	MonthlyBudgets []*MonthlyBudgetOverride `protobuf:"bytes,13,rep,name=monthly_budgets,json=monthlyBudgets,proto3" json:"monthly_budgets,omitempty"` // Substituições de orçamento por mês específico
 	Fields         *metadata.BasicFields    `protobuf:"bytes,14,opt,name=fields,proto3" json:"fields,omitempty"`
+	IntegrationId  string                   `protobuf:"bytes,15,opt,name=integration_id,json=integrationId,proto3" json:"integration_id,omitempty"` // Integração bancária que traz o extrato desta conta
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -235,6 +236,13 @@ func (x *Caixa) GetFields() *metadata.BasicFields {
 		return x.Fields
 	}
 	return nil
+}
+
+func (x *Caixa) GetIntegrationId() string {
+	if x != nil {
+		return x.IntegrationId
+	}
+	return ""
 }
 
 type BankAccount struct {
@@ -956,7 +964,7 @@ var File_apps_financeiro_caixa_caixa_proto protoreflect.FileDescriptor
 
 const file_apps_financeiro_caixa_caixa_proto_rawDesc = "" +
 	"\n" +
-	"!apps/financeiro/caixa/caixa.proto\x12\x05caixa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb7\x04\n" +
+	"!apps/financeiro/caixa/caixa.proto\x12\x05caixa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xde\x04\n" +
 	"\x05Caixa\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -975,7 +983,8 @@ const file_apps_financeiro_caixa_caixa_proto_rawDesc = "" +
 	"\x04card\x18\v \x01(\v2\v.caixa.CardR\x04card\x12%\n" +
 	"\x0emonthly_budget\x18\f \x01(\x01R\rmonthlyBudget\x12E\n" +
 	"\x0fmonthly_budgets\x18\r \x03(\v2\x1c.caixa.MonthlyBudgetOverrideR\x0emonthlyBudgets\x12-\n" +
-	"\x06fields\x18\x0e \x01(\v2\x15.metadata.BasicFieldsR\x06fields:\x06\xc0>\x01\xd0>\x01\"l\n" +
+	"\x06fields\x18\x0e \x01(\v2\x15.metadata.BasicFieldsR\x06fields\x12%\n" +
+	"\x0eintegration_id\x18\x0f \x01(\tR\rintegrationId:\x06\xc0>\x01\xd0>\x01\"l\n" +
 	"\vBankAccount\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
 	"\tbank_name\x18\x02 \x01(\tR\bbankName\x12\x16\n" +

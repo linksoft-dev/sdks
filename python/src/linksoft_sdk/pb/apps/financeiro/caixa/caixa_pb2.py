@@ -30,7 +30,7 @@ from linksoft_sdk.pb.common.metadata import metadata_pb2 as common_dot_metadata_
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n!apps/financeiro/caixa/caixa.proto\x12\x05\x63\x61ixa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13\x66ilter/filter.proto\x1a\x1e\x63ommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb7\x04\n\x05\x43\x61ixa\x12\x39\n\ncreated_at\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x39\n\nupdated_at\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x17\n\x07user_id\x18\x03 \x01(\tR\x06userId\x12\x1b\n\tuser_name\x18\x04 \x01(\tR\x08userName\x12\x0e\n\x02id\x18\x05 \x01(\tR\x02id\x12\x1d\n\x04nome\x18\x06 \x01(\tB\t\xfa\x42\x06r\x04\x10\x03\x18<R\x04nome\x12#\n\x04type\x18\x07 \x01(\x0e\x32\x0f.caixa.CashTypeR\x04type\x12\x12\n\x04logo\x18\x08 \x01(\tR\x04logo\x12\x1d\n\ntipo_moeda\x18\t \x01(\tR\ttipoMoeda\x12\x35\n\x0c\x62\x61nk_account\x18\n \x01(\x0b\x32\x12.caixa.BankAccountR\x0b\x62\x61nkAccount\x12\x1f\n\x04\x63\x61rd\x18\x0b \x01(\x0b\x32\x0b.caixa.CardR\x04\x63\x61rd\x12%\n\x0emonthly_budget\x18\x0c \x01(\x01R\rmonthlyBudget\x12\x45\n\x0fmonthly_budgets\x18\r \x03(\x0b\x32\x1c.caixa.MonthlyBudgetOverrideR\x0emonthlyBudgets\x12-\n\x06\x66ields\x18\x0e \x01(\x0b\x32\x15.metadata.BasicFieldsR\x06\x66ields:\x06\xc0>\x01\xd0>\x01\"l\n\x0b\x42\x61nkAccount\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n\tbank_name\x18\x02 \x01(\tR\x08\x62\x61nkName\x12\x16\n\x06\x61gency\x18\x03 \x01(\tR\x06\x61gency\x12\x18\n\x07\x61\x63\x63ount\x18\x04 \x01(\tR\x07\x61\x63\x63ount\"\xdf\x01\n\x04\x43\x61rd\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n\tcard_name\x18\x02 \x01(\tR\x08\x63\x61rdName\x12\x1f\n\x0b\x63\x61rd_number\x18\x03 \x01(\tR\ncardNumber\x12\x1d\n\ncard_brand\x18\x04 \x01(\tR\tcardBrand\x12\x30\n\x14\x63\x61rd_expiration_date\x18\x05 \x01(\tR\x12\x63\x61rdExpirationDate\x12\x19\n\x08\x63\x61rd_cvv\x18\x06 \x01(\tR\x07\x63\x61rdCvv\x12\x1d\n\ncard_token\x18\x07 \x01(\tR\tcardToken\"E\n\x15MonthlyBudgetOverride\x12\x14\n\x05month\x18\x01 \x01(\tR\x05month\x12\x16\n\x06\x62udget\x18\x02 \x01(\x01R\x06\x62udget\"8\n\x12\x43reateCaixaRequest\x12\"\n\x05\x63\x61ixa\x18\x01 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\"9\n\x13\x43reateCaixaResponse\x12\"\n\x05\x63\x61ixa\x18\x01 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\"~\n\x12UpdateCaixaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\"\n\x05\x63\x61ixa\x18\x02 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\x12\x34\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x13.metadata.FieldMaskR\nupdateMask\"9\n\x13UpdateCaixaResponse\x12\"\n\x05\x63\x61ixa\x18\x01 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\"8\n\x12\x44\x65leteCaixaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04hard\x18\x02 \x01(\x08R\x04hard\"%\n\x13\x44\x65leteCaixaResponse\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"!\n\x0fGetCaixaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"6\n\x10GetCaixaResponse\x12\"\n\x05\x63\x61ixa\x18\x01 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\"\x81\x01\n\x10ListCaixaRequest\x12\x10\n\x03ids\x18\x01 \x03(\tR\x03ids\x12\x1b\n\tpage_size\x18\x02 \x01(\rR\x08pageSize\x12\x1d\n\npage_token\x18\x03 \x01(\tR\tpageToken\x12\x1f\n\x06\x66ilter\x18\x05 \x01(\x0b\x32\x07.FilterR\x06\x66ilter\"g\n\x11ListCaixaResponse\x12*\n\tcaixaList\x18\x01 \x03(\x0b\x32\x0c.caixa.CaixaR\tcaixaList\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken*\xb5\x01\n\x08\x43\x61shType\x12\x19\n\x15\x43\x41SH_TYPE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x43\x41SH_TYPE_CAIXA\x10\x01\x12\x12\n\x0e\x43\x41SH_TYPE_CASH\x10\x02\x12\x19\n\x15\x43\x41SH_TYPE_CREDIT_CARD\x10\x03\x12\x18\n\x14\x43\x41SH_TYPE_DEBIT_CARD\x10\x04\x12\x1b\n\x17\x43\x41SH_TYPE_BANK_TRANSFER\x10\x05\x12\x13\n\x0f\x43\x41SH_TYPE_OTHER\x10\x06\x32\xd3\x03\n\x0c\x43\x61ixaService\x12^\n\x06\x43reate\x12\x19.caixa.CreateCaixaRequest\x1a\x1a.caixa.CreateCaixaResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/caixas/create\x12^\n\x06Update\x12\x19.caixa.UpdateCaixaRequest\x1a\x1a.caixa.UpdateCaixaResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\x1a\x12/api/caixas/update\x12Y\n\x06\x44\x65lete\x12\x19.caixa.DeleteCaixaRequest\x1a\x1a.caixa.DeleteCaixaResponse\"\x18\x82\xd3\xe4\x93\x02\x12*\x10/api/caixas/{id}\x12P\n\x03Get\x12\x16.caixa.GetCaixaRequest\x1a\x17.caixa.GetCaixaResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/caixas/{id}\x12V\n\x04List\x12\x17.caixa.ListCaixaRequest\x1a\x18.caixa.ListCaixaResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/caixas/listB Z\x1e\x63omps/pb/apps/financeiro/caixab\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n!apps/financeiro/caixa/caixa.proto\x12\x05\x63\x61ixa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13\x66ilter/filter.proto\x1a\x1e\x63ommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xde\x04\n\x05\x43\x61ixa\x12\x39\n\ncreated_at\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x39\n\nupdated_at\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x17\n\x07user_id\x18\x03 \x01(\tR\x06userId\x12\x1b\n\tuser_name\x18\x04 \x01(\tR\x08userName\x12\x0e\n\x02id\x18\x05 \x01(\tR\x02id\x12\x1d\n\x04nome\x18\x06 \x01(\tB\t\xfa\x42\x06r\x04\x10\x03\x18<R\x04nome\x12#\n\x04type\x18\x07 \x01(\x0e\x32\x0f.caixa.CashTypeR\x04type\x12\x12\n\x04logo\x18\x08 \x01(\tR\x04logo\x12\x1d\n\ntipo_moeda\x18\t \x01(\tR\ttipoMoeda\x12\x35\n\x0c\x62\x61nk_account\x18\n \x01(\x0b\x32\x12.caixa.BankAccountR\x0b\x62\x61nkAccount\x12\x1f\n\x04\x63\x61rd\x18\x0b \x01(\x0b\x32\x0b.caixa.CardR\x04\x63\x61rd\x12%\n\x0emonthly_budget\x18\x0c \x01(\x01R\rmonthlyBudget\x12\x45\n\x0fmonthly_budgets\x18\r \x03(\x0b\x32\x1c.caixa.MonthlyBudgetOverrideR\x0emonthlyBudgets\x12-\n\x06\x66ields\x18\x0e \x01(\x0b\x32\x15.metadata.BasicFieldsR\x06\x66ields\x12%\n\x0eintegration_id\x18\x0f \x01(\tR\rintegrationId:\x06\xc0>\x01\xd0>\x01\"l\n\x0b\x42\x61nkAccount\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n\tbank_name\x18\x02 \x01(\tR\x08\x62\x61nkName\x12\x16\n\x06\x61gency\x18\x03 \x01(\tR\x06\x61gency\x12\x18\n\x07\x61\x63\x63ount\x18\x04 \x01(\tR\x07\x61\x63\x63ount\"\xdf\x01\n\x04\x43\x61rd\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n\tcard_name\x18\x02 \x01(\tR\x08\x63\x61rdName\x12\x1f\n\x0b\x63\x61rd_number\x18\x03 \x01(\tR\ncardNumber\x12\x1d\n\ncard_brand\x18\x04 \x01(\tR\tcardBrand\x12\x30\n\x14\x63\x61rd_expiration_date\x18\x05 \x01(\tR\x12\x63\x61rdExpirationDate\x12\x19\n\x08\x63\x61rd_cvv\x18\x06 \x01(\tR\x07\x63\x61rdCvv\x12\x1d\n\ncard_token\x18\x07 \x01(\tR\tcardToken\"E\n\x15MonthlyBudgetOverride\x12\x14\n\x05month\x18\x01 \x01(\tR\x05month\x12\x16\n\x06\x62udget\x18\x02 \x01(\x01R\x06\x62udget\"8\n\x12\x43reateCaixaRequest\x12\"\n\x05\x63\x61ixa\x18\x01 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\"9\n\x13\x43reateCaixaResponse\x12\"\n\x05\x63\x61ixa\x18\x01 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\"~\n\x12UpdateCaixaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\"\n\x05\x63\x61ixa\x18\x02 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\x12\x34\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x13.metadata.FieldMaskR\nupdateMask\"9\n\x13UpdateCaixaResponse\x12\"\n\x05\x63\x61ixa\x18\x01 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\"8\n\x12\x44\x65leteCaixaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04hard\x18\x02 \x01(\x08R\x04hard\"%\n\x13\x44\x65leteCaixaResponse\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"!\n\x0fGetCaixaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"6\n\x10GetCaixaResponse\x12\"\n\x05\x63\x61ixa\x18\x01 \x01(\x0b\x32\x0c.caixa.CaixaR\x05\x63\x61ixa\"\x81\x01\n\x10ListCaixaRequest\x12\x10\n\x03ids\x18\x01 \x03(\tR\x03ids\x12\x1b\n\tpage_size\x18\x02 \x01(\rR\x08pageSize\x12\x1d\n\npage_token\x18\x03 \x01(\tR\tpageToken\x12\x1f\n\x06\x66ilter\x18\x05 \x01(\x0b\x32\x07.FilterR\x06\x66ilter\"g\n\x11ListCaixaResponse\x12*\n\tcaixaList\x18\x01 \x03(\x0b\x32\x0c.caixa.CaixaR\tcaixaList\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken*\xb5\x01\n\x08\x43\x61shType\x12\x19\n\x15\x43\x41SH_TYPE_UNSPECIFIED\x10\x00\x12\x13\n\x0f\x43\x41SH_TYPE_CAIXA\x10\x01\x12\x12\n\x0e\x43\x41SH_TYPE_CASH\x10\x02\x12\x19\n\x15\x43\x41SH_TYPE_CREDIT_CARD\x10\x03\x12\x18\n\x14\x43\x41SH_TYPE_DEBIT_CARD\x10\x04\x12\x1b\n\x17\x43\x41SH_TYPE_BANK_TRANSFER\x10\x05\x12\x13\n\x0f\x43\x41SH_TYPE_OTHER\x10\x06\x32\xd3\x03\n\x0c\x43\x61ixaService\x12^\n\x06\x43reate\x12\x19.caixa.CreateCaixaRequest\x1a\x1a.caixa.CreateCaixaResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/caixas/create\x12^\n\x06Update\x12\x19.caixa.UpdateCaixaRequest\x1a\x1a.caixa.UpdateCaixaResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\x1a\x12/api/caixas/update\x12Y\n\x06\x44\x65lete\x12\x19.caixa.DeleteCaixaRequest\x1a\x1a.caixa.DeleteCaixaResponse\"\x18\x82\xd3\xe4\x93\x02\x12*\x10/api/caixas/{id}\x12P\n\x03Get\x12\x16.caixa.GetCaixaRequest\x1a\x17.caixa.GetCaixaResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/api/caixas/{id}\x12V\n\x04List\x12\x17.caixa.ListCaixaRequest\x1a\x18.caixa.ListCaixaResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/caixas/listB Z\x1e\x63omps/pb/apps/financeiro/caixab\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -52,36 +52,36 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CAIXASERVICE'].methods_by_name['Get']._serialized_options = b'\202\323\344\223\002\022\022\020/api/caixas/{id}'
   _globals['_CAIXASERVICE'].methods_by_name['List']._loaded_options = None
   _globals['_CAIXASERVICE'].methods_by_name['List']._serialized_options = b'\202\323\344\223\002\025:\001*\"\020/api/caixas/list'
-  _globals['_CASHTYPE']._serialized_start=1931
-  _globals['_CASHTYPE']._serialized_end=2112
+  _globals['_CASHTYPE']._serialized_start=1970
+  _globals['_CASHTYPE']._serialized_end=2151
   _globals['_CAIXA']._serialized_start=225
-  _globals['_CAIXA']._serialized_end=792
-  _globals['_BANKACCOUNT']._serialized_start=794
-  _globals['_BANKACCOUNT']._serialized_end=902
-  _globals['_CARD']._serialized_start=905
-  _globals['_CARD']._serialized_end=1128
-  _globals['_MONTHLYBUDGETOVERRIDE']._serialized_start=1130
-  _globals['_MONTHLYBUDGETOVERRIDE']._serialized_end=1199
-  _globals['_CREATECAIXAREQUEST']._serialized_start=1201
-  _globals['_CREATECAIXAREQUEST']._serialized_end=1257
-  _globals['_CREATECAIXARESPONSE']._serialized_start=1259
-  _globals['_CREATECAIXARESPONSE']._serialized_end=1316
-  _globals['_UPDATECAIXAREQUEST']._serialized_start=1318
-  _globals['_UPDATECAIXAREQUEST']._serialized_end=1444
-  _globals['_UPDATECAIXARESPONSE']._serialized_start=1446
-  _globals['_UPDATECAIXARESPONSE']._serialized_end=1503
-  _globals['_DELETECAIXAREQUEST']._serialized_start=1505
-  _globals['_DELETECAIXAREQUEST']._serialized_end=1561
-  _globals['_DELETECAIXARESPONSE']._serialized_start=1563
-  _globals['_DELETECAIXARESPONSE']._serialized_end=1600
-  _globals['_GETCAIXAREQUEST']._serialized_start=1602
-  _globals['_GETCAIXAREQUEST']._serialized_end=1635
-  _globals['_GETCAIXARESPONSE']._serialized_start=1637
-  _globals['_GETCAIXARESPONSE']._serialized_end=1691
-  _globals['_LISTCAIXAREQUEST']._serialized_start=1694
-  _globals['_LISTCAIXAREQUEST']._serialized_end=1823
-  _globals['_LISTCAIXARESPONSE']._serialized_start=1825
-  _globals['_LISTCAIXARESPONSE']._serialized_end=1928
-  _globals['_CAIXASERVICE']._serialized_start=2115
-  _globals['_CAIXASERVICE']._serialized_end=2582
+  _globals['_CAIXA']._serialized_end=831
+  _globals['_BANKACCOUNT']._serialized_start=833
+  _globals['_BANKACCOUNT']._serialized_end=941
+  _globals['_CARD']._serialized_start=944
+  _globals['_CARD']._serialized_end=1167
+  _globals['_MONTHLYBUDGETOVERRIDE']._serialized_start=1169
+  _globals['_MONTHLYBUDGETOVERRIDE']._serialized_end=1238
+  _globals['_CREATECAIXAREQUEST']._serialized_start=1240
+  _globals['_CREATECAIXAREQUEST']._serialized_end=1296
+  _globals['_CREATECAIXARESPONSE']._serialized_start=1298
+  _globals['_CREATECAIXARESPONSE']._serialized_end=1355
+  _globals['_UPDATECAIXAREQUEST']._serialized_start=1357
+  _globals['_UPDATECAIXAREQUEST']._serialized_end=1483
+  _globals['_UPDATECAIXARESPONSE']._serialized_start=1485
+  _globals['_UPDATECAIXARESPONSE']._serialized_end=1542
+  _globals['_DELETECAIXAREQUEST']._serialized_start=1544
+  _globals['_DELETECAIXAREQUEST']._serialized_end=1600
+  _globals['_DELETECAIXARESPONSE']._serialized_start=1602
+  _globals['_DELETECAIXARESPONSE']._serialized_end=1639
+  _globals['_GETCAIXAREQUEST']._serialized_start=1641
+  _globals['_GETCAIXAREQUEST']._serialized_end=1674
+  _globals['_GETCAIXARESPONSE']._serialized_start=1676
+  _globals['_GETCAIXARESPONSE']._serialized_end=1730
+  _globals['_LISTCAIXAREQUEST']._serialized_start=1733
+  _globals['_LISTCAIXAREQUEST']._serialized_end=1862
+  _globals['_LISTCAIXARESPONSE']._serialized_start=1864
+  _globals['_LISTCAIXARESPONSE']._serialized_end=1967
+  _globals['_CAIXASERVICE']._serialized_start=2154
+  _globals['_CAIXASERVICE']._serialized_end=2621
 # @@protoc_insertion_point(module_scope)

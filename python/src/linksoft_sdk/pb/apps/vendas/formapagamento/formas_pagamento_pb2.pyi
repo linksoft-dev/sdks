@@ -7,6 +7,7 @@ from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as _metadata_pb2
 from google.protobuf.internal import containers as _containers
+from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Iterable as _Iterable, Mapping as _Mapping
@@ -14,8 +15,15 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class ModalidadeCartao(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    MODALIDADE_CARTAO_TRANSPARENTE: _ClassVar[ModalidadeCartao]
+    MODALIDADE_CARTAO_REDIRECIONAMENTO: _ClassVar[ModalidadeCartao]
+MODALIDADE_CARTAO_TRANSPARENTE: ModalidadeCartao
+MODALIDADE_CARTAO_REDIRECIONAMENTO: ModalidadeCartao
+
 class PaymentMethod(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "tipo_pagamento", "nome", "codigo", "padrao", "disponivel_checkout", "disponivel_venda", "usar_carteira_cashback", "lancar_contas_receber", "checkout_nome_tela", "adquirente_nome", "adquirente_cnpj", "adquirente_dias_recebimento_total", "tipo_moeda_baixa", "taxa_adm", "taxa_antecipacao", "taxa_valor_fixo", "juros", "valor_venda_maior_que", "parcelas", "integration", "antifraud_policy", "manual_review_policy", "caixa_id", "caixa_nome", "nao_movimenta_caixa", "nao_gera_comissao", "fields", "tabela_preco", "nao_verifica_limite_credito", "nao_emite_nfse_automatica", "nao_emite_nfce")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "tipo_pagamento", "nome", "padrao", "disponivel_checkout", "disponivel_venda", "usar_carteira_cashback", "lancar_contas_receber", "checkout_nome_tela", "adquirente_nome", "adquirente_cnpj", "adquirente_dias_recebimento_total", "tipo_moeda_baixa", "taxa_adm", "taxa_antecipacao", "taxa_valor_fixo", "juros", "valor_venda_maior_que", "parcelas", "integration", "antifraud_policy", "manual_review_policy", "caixa_id", "caixa_nome", "nao_movimenta_caixa", "nao_gera_comissao", "fields", "tabela_preco", "nao_verifica_limite_credito", "nao_emite_nfse_automatica", "nao_emite_nfce")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -23,7 +31,6 @@ class PaymentMethod(_message.Message):
     ID_FIELD_NUMBER: _ClassVar[int]
     TIPO_PAGAMENTO_FIELD_NUMBER: _ClassVar[int]
     NOME_FIELD_NUMBER: _ClassVar[int]
-    CODIGO_FIELD_NUMBER: _ClassVar[int]
     PADRAO_FIELD_NUMBER: _ClassVar[int]
     DISPONIVEL_CHECKOUT_FIELD_NUMBER: _ClassVar[int]
     DISPONIVEL_VENDA_FIELD_NUMBER: _ClassVar[int]
@@ -59,7 +66,6 @@ class PaymentMethod(_message.Message):
     id: str
     tipo_pagamento: str
     nome: str
-    codigo: int
     padrao: bool
     disponivel_checkout: bool
     disponivel_venda: bool
@@ -88,7 +94,7 @@ class PaymentMethod(_message.Message):
     nao_verifica_limite_credito: bool
     nao_emite_nfse_automatica: bool
     nao_emite_nfce: bool
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., tipo_pagamento: _Optional[str] = ..., nome: _Optional[str] = ..., codigo: _Optional[int] = ..., padrao: _Optional[bool] = ..., disponivel_checkout: _Optional[bool] = ..., disponivel_venda: _Optional[bool] = ..., usar_carteira_cashback: _Optional[bool] = ..., lancar_contas_receber: _Optional[bool] = ..., checkout_nome_tela: _Optional[str] = ..., adquirente_nome: _Optional[str] = ..., adquirente_cnpj: _Optional[str] = ..., adquirente_dias_recebimento_total: _Optional[int] = ..., tipo_moeda_baixa: _Optional[str] = ..., taxa_adm: _Optional[float] = ..., taxa_antecipacao: _Optional[float] = ..., taxa_valor_fixo: _Optional[float] = ..., juros: _Optional[float] = ..., valor_venda_maior_que: _Optional[float] = ..., parcelas: _Optional[_Iterable[_Union[Parcelas, _Mapping]]] = ..., integration: _Optional[_Union[Integration, _Mapping]] = ..., antifraud_policy: _Optional[_Union[FraudPolicy, _Mapping]] = ..., manual_review_policy: _Optional[_Union[ManualReviewPolicy, _Mapping]] = ..., caixa_id: _Optional[str] = ..., caixa_nome: _Optional[str] = ..., nao_movimenta_caixa: _Optional[bool] = ..., nao_gera_comissao: _Optional[bool] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., tabela_preco: _Optional[str] = ..., nao_verifica_limite_credito: _Optional[bool] = ..., nao_emite_nfse_automatica: _Optional[bool] = ..., nao_emite_nfce: _Optional[bool] = ...) -> None: ...
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., tipo_pagamento: _Optional[str] = ..., nome: _Optional[str] = ..., padrao: _Optional[bool] = ..., disponivel_checkout: _Optional[bool] = ..., disponivel_venda: _Optional[bool] = ..., usar_carteira_cashback: _Optional[bool] = ..., lancar_contas_receber: _Optional[bool] = ..., checkout_nome_tela: _Optional[str] = ..., adquirente_nome: _Optional[str] = ..., adquirente_cnpj: _Optional[str] = ..., adquirente_dias_recebimento_total: _Optional[int] = ..., tipo_moeda_baixa: _Optional[str] = ..., taxa_adm: _Optional[float] = ..., taxa_antecipacao: _Optional[float] = ..., taxa_valor_fixo: _Optional[float] = ..., juros: _Optional[float] = ..., valor_venda_maior_que: _Optional[float] = ..., parcelas: _Optional[_Iterable[_Union[Parcelas, _Mapping]]] = ..., integration: _Optional[_Union[Integration, _Mapping]] = ..., antifraud_policy: _Optional[_Union[FraudPolicy, _Mapping]] = ..., manual_review_policy: _Optional[_Union[ManualReviewPolicy, _Mapping]] = ..., caixa_id: _Optional[str] = ..., caixa_nome: _Optional[str] = ..., nao_movimenta_caixa: _Optional[bool] = ..., nao_gera_comissao: _Optional[bool] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., tabela_preco: _Optional[str] = ..., nao_verifica_limite_credito: _Optional[bool] = ..., nao_emite_nfse_automatica: _Optional[bool] = ..., nao_emite_nfce: _Optional[bool] = ...) -> None: ...
 
 class FraudIntegration(_message.Message):
     __slots__ = ("id", "name", "provider", "environment")
@@ -149,7 +155,7 @@ class ManualReviewPolicy(_message.Message):
     def __init__(self, enabled: _Optional[bool] = ..., required_after_antifraud: _Optional[bool] = ..., hold_payment_while_pending: _Optional[bool] = ..., min_amount: _Optional[float] = ..., min_installments: _Optional[int] = ..., reason_hint: _Optional[str] = ...) -> None: ...
 
 class Integration(_message.Message):
-    __slots__ = ("id", "name", "gateway", "gateway_ambiente", "gateway_nome_fatura_cartao", "gateway_dias_validade", "gateway_webhook_url", "gateway_pix")
+    __slots__ = ("id", "name", "gateway", "gateway_ambiente", "gateway_nome_fatura_cartao", "gateway_dias_validade", "gateway_webhook_url", "gateway_pix", "modalidade_cartao")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_FIELD_NUMBER: _ClassVar[int]
@@ -158,6 +164,7 @@ class Integration(_message.Message):
     GATEWAY_DIAS_VALIDADE_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_WEBHOOK_URL_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_PIX_FIELD_NUMBER: _ClassVar[int]
+    MODALIDADE_CARTAO_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     gateway: str
@@ -166,7 +173,8 @@ class Integration(_message.Message):
     gateway_dias_validade: int
     gateway_webhook_url: str
     gateway_pix: GatewayPix
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., gateway: _Optional[str] = ..., gateway_ambiente: _Optional[str] = ..., gateway_nome_fatura_cartao: _Optional[str] = ..., gateway_dias_validade: _Optional[int] = ..., gateway_webhook_url: _Optional[str] = ..., gateway_pix: _Optional[_Union[GatewayPix, _Mapping]] = ...) -> None: ...
+    modalidade_cartao: ModalidadeCartao
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., gateway: _Optional[str] = ..., gateway_ambiente: _Optional[str] = ..., gateway_nome_fatura_cartao: _Optional[str] = ..., gateway_dias_validade: _Optional[int] = ..., gateway_webhook_url: _Optional[str] = ..., gateway_pix: _Optional[_Union[GatewayPix, _Mapping]] = ..., modalidade_cartao: _Optional[_Union[ModalidadeCartao, str]] = ...) -> None: ...
 
 class GatewayPix(_message.Message):
     __slots__ = ("segundos_validos", "chave_pix", "certificado_pix", "cobranca_presencial")
@@ -261,22 +269,20 @@ class GetPaymentMethodResponse(_message.Message):
     def __init__(self, payment_method: _Optional[_Union[PaymentMethod, _Mapping]] = ...) -> None: ...
 
 class ListPaymentMethodRequest(_message.Message):
-    __slots__ = ("ids", "codigo", "disponivel_venda", "checkout_available", "page_size", "page_token", "filter")
+    __slots__ = ("ids", "disponivel_venda", "checkout_available", "page_size", "page_token", "filter")
     IDS_FIELD_NUMBER: _ClassVar[int]
-    CODIGO_FIELD_NUMBER: _ClassVar[int]
     DISPONIVEL_VENDA_FIELD_NUMBER: _ClassVar[int]
     CHECKOUT_AVAILABLE_FIELD_NUMBER: _ClassVar[int]
     PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
     PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
     FILTER_FIELD_NUMBER: _ClassVar[int]
     ids: _containers.RepeatedScalarFieldContainer[str]
-    codigo: str
     disponivel_venda: bool
     checkout_available: bool
     page_size: int
     page_token: str
     filter: _filter_pb2.Filter
-    def __init__(self, ids: _Optional[_Iterable[str]] = ..., codigo: _Optional[str] = ..., disponivel_venda: _Optional[bool] = ..., checkout_available: _Optional[bool] = ..., page_size: _Optional[int] = ..., page_token: _Optional[str] = ..., filter: _Optional[_Union[_filter_pb2.Filter, _Mapping]] = ...) -> None: ...
+    def __init__(self, ids: _Optional[_Iterable[str]] = ..., disponivel_venda: _Optional[bool] = ..., checkout_available: _Optional[bool] = ..., page_size: _Optional[int] = ..., page_token: _Optional[str] = ..., filter: _Optional[_Union[_filter_pb2.Filter, _Mapping]] = ...) -> None: ...
 
 class ListPaymentMethodResponse(_message.Message):
     __slots__ = ("payment_method_list", "next_page_token")

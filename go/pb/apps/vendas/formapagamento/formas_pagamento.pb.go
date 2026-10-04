@@ -27,6 +27,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Como o cliente informa o cartão no pagamento online.
+type ModalidadeCartao int32
+
+const (
+	// O cartão é digitado na tela do sistema e enviado já protegido pelo gateway.
+	ModalidadeCartao_MODALIDADE_CARTAO_TRANSPARENTE ModalidadeCartao = 0
+	// O cliente é levado à página do gateway, conclui o pagamento lá e volta.
+	ModalidadeCartao_MODALIDADE_CARTAO_REDIRECIONAMENTO ModalidadeCartao = 1
+)
+
+// Enum value maps for ModalidadeCartao.
+var (
+	ModalidadeCartao_name = map[int32]string{
+		0: "MODALIDADE_CARTAO_TRANSPARENTE",
+		1: "MODALIDADE_CARTAO_REDIRECIONAMENTO",
+	}
+	ModalidadeCartao_value = map[string]int32{
+		"MODALIDADE_CARTAO_TRANSPARENTE":     0,
+		"MODALIDADE_CARTAO_REDIRECIONAMENTO": 1,
+	}
+)
+
+func (x ModalidadeCartao) Enum() *ModalidadeCartao {
+	p := new(ModalidadeCartao)
+	*p = x
+	return p
+}
+
+func (x ModalidadeCartao) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ModalidadeCartao) Descriptor() protoreflect.EnumDescriptor {
+	return file_apps_vendas_formapagamento_formas_pagamento_proto_enumTypes[0].Descriptor()
+}
+
+func (ModalidadeCartao) Type() protoreflect.EnumType {
+	return &file_apps_vendas_formapagamento_formas_pagamento_proto_enumTypes[0]
+}
+
+func (x ModalidadeCartao) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ModalidadeCartao.Descriptor instead.
+func (ModalidadeCartao) EnumDescriptor() ([]byte, []int) {
+	return file_apps_vendas_formapagamento_formas_pagamento_proto_rawDescGZIP(), []int{0}
+}
+
 // PaymentMethod structure to represent payment methods on the service
 // PaymentMethod structure to represent payment methods on the service
 type PaymentMethod struct {
@@ -38,7 +87,6 @@ type PaymentMethod struct {
 	Id                             string                 `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
 	TipoPagamento                  string                 `protobuf:"bytes,6,opt,name=tipo_pagamento,json=tipoPagamento,proto3" json:"tipo_pagamento,omitempty"`
 	Nome                           string                 `protobuf:"bytes,7,opt,name=nome,proto3" json:"nome,omitempty"`
-	Codigo                         int32                  `protobuf:"varint,8,opt,name=codigo,proto3" json:"codigo,omitempty"`
 	Padrao                         bool                   `protobuf:"varint,9,opt,name=padrao,proto3" json:"padrao,omitempty"` // Indicates that this is a default payment method in the system
 	DisponivelCheckout             bool                   `protobuf:"varint,10,opt,name=disponivel_checkout,json=disponivelCheckout,proto3" json:"disponivel_checkout,omitempty"`
 	DisponivelVenda                bool                   `protobuf:"varint,11,opt,name=disponivel_venda,json=disponivelVenda,proto3" json:"disponivel_venda,omitempty"`
@@ -158,13 +206,6 @@ func (x *PaymentMethod) GetNome() string {
 		return x.Nome
 	}
 	return ""
-}
-
-func (x *PaymentMethod) GetCodigo() int32 {
-	if x != nil {
-		return x.Codigo
-	}
-	return 0
 }
 
 func (x *PaymentMethod) GetPadrao() bool {
@@ -685,6 +726,7 @@ type Integration struct {
 	GatewayDiasValidade     int32                  `protobuf:"varint,6,opt,name=gateway_dias_validade,json=gatewayDiasValidade,proto3" json:"gateway_dias_validade,omitempty"`
 	GatewayWebhookUrl       string                 `protobuf:"bytes,8,opt,name=gateway_webhook_url,json=gatewayWebhookUrl,proto3" json:"gateway_webhook_url,omitempty"`
 	GatewayPix              *GatewayPix            `protobuf:"bytes,9,opt,name=gateway_pix,json=gatewayPix,proto3" json:"gateway_pix,omitempty"`
+	ModalidadeCartao        ModalidadeCartao       `protobuf:"varint,10,opt,name=modalidade_cartao,json=modalidadeCartao,proto3,enum=PaymentMethod.ModalidadeCartao" json:"modalidade_cartao,omitempty"`
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -773,6 +815,13 @@ func (x *Integration) GetGatewayPix() *GatewayPix {
 		return x.GatewayPix
 	}
 	return nil
+}
+
+func (x *Integration) GetModalidadeCartao() ModalidadeCartao {
+	if x != nil {
+		return x.ModalidadeCartao
+	}
+	return ModalidadeCartao_MODALIDADE_CARTAO_TRANSPARENTE
 }
 
 type GatewayPix struct {
@@ -1374,7 +1423,6 @@ func (x *GetPaymentMethodResponse) GetPaymentMethod() *PaymentMethod {
 type ListPaymentMethodRequest struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Ids               []string               `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
-	Codigo            string                 `protobuf:"bytes,2,opt,name=codigo,proto3" json:"codigo,omitempty"`
 	DisponivelVenda   bool                   `protobuf:"varint,3,opt,name=disponivel_venda,json=disponivelVenda,proto3" json:"disponivel_venda,omitempty"`
 	CheckoutAvailable bool                   `protobuf:"varint,4,opt,name=checkout_available,json=checkoutAvailable,proto3" json:"checkout_available,omitempty"`
 	PageSize          uint32                 `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
@@ -1419,13 +1467,6 @@ func (x *ListPaymentMethodRequest) GetIds() []string {
 		return x.Ids
 	}
 	return nil
-}
-
-func (x *ListPaymentMethodRequest) GetCodigo() string {
-	if x != nil {
-		return x.Codigo
-	}
-	return ""
 }
 
 func (x *ListPaymentMethodRequest) GetDisponivelVenda() bool {
@@ -1736,7 +1777,7 @@ var File_apps_vendas_formapagamento_formas_pagamento_proto protoreflect.FileDesc
 
 const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\n" +
-	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xcf\f\n" +
+	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xbd\f\n" +
 	"\rPaymentMethod\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1747,7 +1788,6 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x02id\x18\x05 \x01(\tR\x02id\x12%\n" +
 	"\x0etipo_pagamento\x18\x06 \x01(\tR\rtipoPagamento\x12\x1d\n" +
 	"\x04nome\x18\a \x01(\tB\t\xfaB\x06r\x04\x10\x03\x18<R\x04nome\x12\x16\n" +
-	"\x06codigo\x18\b \x01(\x05R\x06codigo\x12\x16\n" +
 	"\x06padrao\x18\t \x01(\bR\x06padrao\x12/\n" +
 	"\x13disponivel_checkout\x18\n" +
 	" \x01(\bR\x12disponivelCheckout\x12)\n" +
@@ -1777,7 +1817,7 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\ftabela_preco\x18+ \x01(\tR\vtabelaPreco\x12=\n" +
 	"\x1bnao_verifica_limite_credito\x18- \x01(\bR\x18naoVerificaLimiteCredito\x129\n" +
 	"\x19nao_emite_nfse_automatica\x18. \x01(\bR\x16naoEmiteNfseAutomatica\x12$\n" +
-	"\x0enao_emite_nfce\x18/ \x01(\bR\fnaoEmiteNfce:\x03\xc0>\x01\"t\n" +
+	"\x0enao_emite_nfce\x18/ \x01(\bR\fnaoEmiteNfce:\x03\xc0>\x01J\x04\b\b\x10\t\"t\n" +
 	"\x10FraudIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
@@ -1806,7 +1846,7 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"min_amount\x18\x04 \x01(\x01R\tminAmount\x12)\n" +
 	"\x10min_installments\x18\x05 \x01(\x05R\x0fminInstallments\x12\x1f\n" +
 	"\vreason_hint\x18\x06 \x01(\tR\n" +
-	"reasonHint\"\xd3\x02\n" +
+	"reasonHint\"\xa1\x03\n" +
 	"\vIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
@@ -1816,7 +1856,9 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x15gateway_dias_validade\x18\x06 \x01(\x05R\x13gatewayDiasValidade\x12.\n" +
 	"\x13gateway_webhook_url\x18\b \x01(\tR\x11gatewayWebhookUrl\x12:\n" +
 	"\vgateway_pix\x18\t \x01(\v2\x19.PaymentMethod.GatewayPixR\n" +
-	"gatewayPix\"\xcd\x01\n" +
+	"gatewayPix\x12L\n" +
+	"\x11modalidade_cartao\x18\n" +
+	" \x01(\x0e2\x1f.PaymentMethod.ModalidadeCartaoR\x10modalidadeCartao\"\xcd\x01\n" +
 	"\n" +
 	"GatewayPix\x12)\n" +
 	"\x10segundos_validos\x18\x01 \x01(\x05R\x0fsegundosValidos\x12\x1b\n" +
@@ -1853,16 +1895,15 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x17GetPaymentMethodRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"_\n" +
 	"\x18GetPaymentMethodResponse\x12C\n" +
-	"\x0epayment_method\x18\x01 \x01(\v2\x1c.PaymentMethod.PaymentMethodR\rpaymentMethod\"\xfb\x01\n" +
+	"\x0epayment_method\x18\x01 \x01(\v2\x1c.PaymentMethod.PaymentMethodR\rpaymentMethod\"\xe9\x01\n" +
 	"\x18ListPaymentMethodRequest\x12\x10\n" +
-	"\x03ids\x18\x01 \x03(\tR\x03ids\x12\x16\n" +
-	"\x06codigo\x18\x02 \x01(\tR\x06codigo\x12)\n" +
+	"\x03ids\x18\x01 \x03(\tR\x03ids\x12)\n" +
 	"\x10disponivel_venda\x18\x03 \x01(\bR\x0fdisponivelVenda\x12-\n" +
 	"\x12checkout_available\x18\x04 \x01(\bR\x11checkoutAvailable\x12\x1b\n" +
 	"\tpage_size\x18\x05 \x01(\rR\bpageSize\x12\x1d\n" +
 	"\n" +
 	"page_token\x18\x06 \x01(\tR\tpageToken\x12\x1f\n" +
-	"\x06filter\x18\a \x01(\v2\a.FilterR\x06filter\"\x91\x01\n" +
+	"\x06filter\x18\a \x01(\v2\a.FilterR\x06filterJ\x04\b\x02\x10\x03\"\x91\x01\n" +
 	"\x19ListPaymentMethodResponse\x12L\n" +
 	"\x13payment_method_list\x18\x01 \x03(\v2\x1c.PaymentMethod.PaymentMethodR\x11paymentMethodList\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x8d\x01\n" +
@@ -1879,7 +1920,10 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x19ClonePaymentMethodRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"a\n" +
 	"\x1aClonePaymentMethodResponse\x12C\n" +
-	"\x0epayment_method\x18\x01 \x01(\v2\x1c.PaymentMethod.PaymentMethodR\rpaymentMethod2\xaa\a\n" +
+	"\x0epayment_method\x18\x01 \x01(\v2\x1c.PaymentMethod.PaymentMethodR\rpaymentMethod*^\n" +
+	"\x10ModalidadeCartao\x12\"\n" +
+	"\x1eMODALIDADE_CARTAO_TRANSPARENTE\x10\x00\x12&\n" +
+	"\"MODALIDADE_CARTAO_REDIRECIONAMENTO\x10\x012\xaa\a\n" +
 	"\x14PaymentMethodService\x12\x7f\n" +
 	"\x06Create\x12).PaymentMethod.CreatePaymentMethodRequest\x1a*.PaymentMethod.CreatePaymentMethodResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/payment-method\x12\x84\x01\n" +
 	"\x06Update\x12).PaymentMethod.UpdatePaymentMethodRequest\x1a*.PaymentMethod.UpdatePaymentMethodResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\x1a\x18/api/payment-method/{id}\x12\x81\x01\n" +
@@ -1902,78 +1946,81 @@ func file_apps_vendas_formapagamento_formas_pagamento_proto_rawDescGZIP() []byte
 	return file_apps_vendas_formapagamento_formas_pagamento_proto_rawDescData
 }
 
+var file_apps_vendas_formapagamento_formas_pagamento_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_apps_vendas_formapagamento_formas_pagamento_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_apps_vendas_formapagamento_formas_pagamento_proto_goTypes = []any{
-	(*PaymentMethod)(nil),               // 0: PaymentMethod.PaymentMethod
-	(*FraudIntegration)(nil),            // 1: PaymentMethod.FraudIntegration
-	(*AntifraudCriteria)(nil),           // 2: PaymentMethod.AntifraudCriteria
-	(*FraudPolicy)(nil),                 // 3: PaymentMethod.FraudPolicy
-	(*ManualReviewPolicy)(nil),          // 4: PaymentMethod.ManualReviewPolicy
-	(*Integration)(nil),                 // 5: PaymentMethod.Integration
-	(*GatewayPix)(nil),                  // 6: PaymentMethod.GatewayPix
-	(*CertificadoPix)(nil),              // 7: PaymentMethod.CertificadoPix
-	(*Parcelas)(nil),                    // 8: PaymentMethod.Parcelas
-	(*CreatePaymentMethodRequest)(nil),  // 9: PaymentMethod.CreatePaymentMethodRequest
-	(*CreatePaymentMethodResponse)(nil), // 10: PaymentMethod.CreatePaymentMethodResponse
-	(*UpdatePaymentMethodRequest)(nil),  // 11: PaymentMethod.UpdatePaymentMethodRequest
-	(*UpdatePaymentMethodResponse)(nil), // 12: PaymentMethod.UpdatePaymentMethodResponse
-	(*DeletePaymentMethodRequest)(nil),  // 13: PaymentMethod.DeletePaymentMethodRequest
-	(*DeletePaymentMethodResponse)(nil), // 14: PaymentMethod.DeletePaymentMethodResponse
-	(*GetPaymentMethodRequest)(nil),     // 15: PaymentMethod.GetPaymentMethodRequest
-	(*GetPaymentMethodResponse)(nil),    // 16: PaymentMethod.GetPaymentMethodResponse
-	(*ListPaymentMethodRequest)(nil),    // 17: PaymentMethod.ListPaymentMethodRequest
-	(*ListPaymentMethodResponse)(nil),   // 18: PaymentMethod.ListPaymentMethodResponse
-	(*ImportPaymentMethodRequest)(nil),  // 19: PaymentMethod.ImportPaymentMethodRequest
-	(*ImportPaymentMethodResponse)(nil), // 20: PaymentMethod.ImportPaymentMethodResponse
-	(*ClonePaymentMethodRequest)(nil),   // 21: PaymentMethod.ClonePaymentMethodRequest
-	(*ClonePaymentMethodResponse)(nil),  // 22: PaymentMethod.ClonePaymentMethodResponse
-	(*timestamppb.Timestamp)(nil),       // 23: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),        // 24: metadata.BasicFields
-	(*metadata.FieldMask)(nil),          // 25: metadata.FieldMask
-	(*filter.Filter)(nil),               // 26: Filter
+	(ModalidadeCartao)(0),               // 0: PaymentMethod.ModalidadeCartao
+	(*PaymentMethod)(nil),               // 1: PaymentMethod.PaymentMethod
+	(*FraudIntegration)(nil),            // 2: PaymentMethod.FraudIntegration
+	(*AntifraudCriteria)(nil),           // 3: PaymentMethod.AntifraudCriteria
+	(*FraudPolicy)(nil),                 // 4: PaymentMethod.FraudPolicy
+	(*ManualReviewPolicy)(nil),          // 5: PaymentMethod.ManualReviewPolicy
+	(*Integration)(nil),                 // 6: PaymentMethod.Integration
+	(*GatewayPix)(nil),                  // 7: PaymentMethod.GatewayPix
+	(*CertificadoPix)(nil),              // 8: PaymentMethod.CertificadoPix
+	(*Parcelas)(nil),                    // 9: PaymentMethod.Parcelas
+	(*CreatePaymentMethodRequest)(nil),  // 10: PaymentMethod.CreatePaymentMethodRequest
+	(*CreatePaymentMethodResponse)(nil), // 11: PaymentMethod.CreatePaymentMethodResponse
+	(*UpdatePaymentMethodRequest)(nil),  // 12: PaymentMethod.UpdatePaymentMethodRequest
+	(*UpdatePaymentMethodResponse)(nil), // 13: PaymentMethod.UpdatePaymentMethodResponse
+	(*DeletePaymentMethodRequest)(nil),  // 14: PaymentMethod.DeletePaymentMethodRequest
+	(*DeletePaymentMethodResponse)(nil), // 15: PaymentMethod.DeletePaymentMethodResponse
+	(*GetPaymentMethodRequest)(nil),     // 16: PaymentMethod.GetPaymentMethodRequest
+	(*GetPaymentMethodResponse)(nil),    // 17: PaymentMethod.GetPaymentMethodResponse
+	(*ListPaymentMethodRequest)(nil),    // 18: PaymentMethod.ListPaymentMethodRequest
+	(*ListPaymentMethodResponse)(nil),   // 19: PaymentMethod.ListPaymentMethodResponse
+	(*ImportPaymentMethodRequest)(nil),  // 20: PaymentMethod.ImportPaymentMethodRequest
+	(*ImportPaymentMethodResponse)(nil), // 21: PaymentMethod.ImportPaymentMethodResponse
+	(*ClonePaymentMethodRequest)(nil),   // 22: PaymentMethod.ClonePaymentMethodRequest
+	(*ClonePaymentMethodResponse)(nil),  // 23: PaymentMethod.ClonePaymentMethodResponse
+	(*timestamppb.Timestamp)(nil),       // 24: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),        // 25: metadata.BasicFields
+	(*metadata.FieldMask)(nil),          // 26: metadata.FieldMask
+	(*filter.Filter)(nil),               // 27: Filter
 }
 var file_apps_vendas_formapagamento_formas_pagamento_proto_depIdxs = []int32{
-	23, // 0: PaymentMethod.PaymentMethod.created_at:type_name -> google.protobuf.Timestamp
-	23, // 1: PaymentMethod.PaymentMethod.updated_at:type_name -> google.protobuf.Timestamp
-	8,  // 2: PaymentMethod.PaymentMethod.parcelas:type_name -> PaymentMethod.Parcelas
-	5,  // 3: PaymentMethod.PaymentMethod.integration:type_name -> PaymentMethod.Integration
-	3,  // 4: PaymentMethod.PaymentMethod.antifraud_policy:type_name -> PaymentMethod.FraudPolicy
-	4,  // 5: PaymentMethod.PaymentMethod.manual_review_policy:type_name -> PaymentMethod.ManualReviewPolicy
-	24, // 6: PaymentMethod.PaymentMethod.fields:type_name -> metadata.BasicFields
-	1,  // 7: PaymentMethod.FraudPolicy.integration:type_name -> PaymentMethod.FraudIntegration
-	2,  // 8: PaymentMethod.FraudPolicy.criteria:type_name -> PaymentMethod.AntifraudCriteria
-	6,  // 9: PaymentMethod.Integration.gateway_pix:type_name -> PaymentMethod.GatewayPix
-	7,  // 10: PaymentMethod.GatewayPix.certificado_pix:type_name -> PaymentMethod.CertificadoPix
-	0,  // 11: PaymentMethod.CreatePaymentMethodRequest.payment_method:type_name -> PaymentMethod.PaymentMethod
-	0,  // 12: PaymentMethod.CreatePaymentMethodResponse.payment_method:type_name -> PaymentMethod.PaymentMethod
-	0,  // 13: PaymentMethod.UpdatePaymentMethodRequest.payment_method:type_name -> PaymentMethod.PaymentMethod
-	25, // 14: PaymentMethod.UpdatePaymentMethodRequest.update_mask:type_name -> metadata.FieldMask
-	0,  // 15: PaymentMethod.UpdatePaymentMethodResponse.payment_method:type_name -> PaymentMethod.PaymentMethod
-	0,  // 16: PaymentMethod.GetPaymentMethodResponse.payment_method:type_name -> PaymentMethod.PaymentMethod
-	26, // 17: PaymentMethod.ListPaymentMethodRequest.filter:type_name -> Filter
-	0,  // 18: PaymentMethod.ListPaymentMethodResponse.payment_method_list:type_name -> PaymentMethod.PaymentMethod
-	0,  // 19: PaymentMethod.ImportPaymentMethodRequest.payment_methods:type_name -> PaymentMethod.PaymentMethod
-	0,  // 20: PaymentMethod.ImportPaymentMethodResponse.payment_methods:type_name -> PaymentMethod.PaymentMethod
-	0,  // 21: PaymentMethod.ClonePaymentMethodResponse.payment_method:type_name -> PaymentMethod.PaymentMethod
-	9,  // 22: PaymentMethod.PaymentMethodService.Create:input_type -> PaymentMethod.CreatePaymentMethodRequest
-	11, // 23: PaymentMethod.PaymentMethodService.Update:input_type -> PaymentMethod.UpdatePaymentMethodRequest
-	13, // 24: PaymentMethod.PaymentMethodService.Delete:input_type -> PaymentMethod.DeletePaymentMethodRequest
-	15, // 25: PaymentMethod.PaymentMethodService.Get:input_type -> PaymentMethod.GetPaymentMethodRequest
-	17, // 26: PaymentMethod.PaymentMethodService.List:input_type -> PaymentMethod.ListPaymentMethodRequest
-	19, // 27: PaymentMethod.PaymentMethodService.Import:input_type -> PaymentMethod.ImportPaymentMethodRequest
-	21, // 28: PaymentMethod.PaymentMethodService.Clone:input_type -> PaymentMethod.ClonePaymentMethodRequest
-	10, // 29: PaymentMethod.PaymentMethodService.Create:output_type -> PaymentMethod.CreatePaymentMethodResponse
-	12, // 30: PaymentMethod.PaymentMethodService.Update:output_type -> PaymentMethod.UpdatePaymentMethodResponse
-	14, // 31: PaymentMethod.PaymentMethodService.Delete:output_type -> PaymentMethod.DeletePaymentMethodResponse
-	16, // 32: PaymentMethod.PaymentMethodService.Get:output_type -> PaymentMethod.GetPaymentMethodResponse
-	18, // 33: PaymentMethod.PaymentMethodService.List:output_type -> PaymentMethod.ListPaymentMethodResponse
-	20, // 34: PaymentMethod.PaymentMethodService.Import:output_type -> PaymentMethod.ImportPaymentMethodResponse
-	22, // 35: PaymentMethod.PaymentMethodService.Clone:output_type -> PaymentMethod.ClonePaymentMethodResponse
-	29, // [29:36] is the sub-list for method output_type
-	22, // [22:29] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	24, // 0: PaymentMethod.PaymentMethod.created_at:type_name -> google.protobuf.Timestamp
+	24, // 1: PaymentMethod.PaymentMethod.updated_at:type_name -> google.protobuf.Timestamp
+	9,  // 2: PaymentMethod.PaymentMethod.parcelas:type_name -> PaymentMethod.Parcelas
+	6,  // 3: PaymentMethod.PaymentMethod.integration:type_name -> PaymentMethod.Integration
+	4,  // 4: PaymentMethod.PaymentMethod.antifraud_policy:type_name -> PaymentMethod.FraudPolicy
+	5,  // 5: PaymentMethod.PaymentMethod.manual_review_policy:type_name -> PaymentMethod.ManualReviewPolicy
+	25, // 6: PaymentMethod.PaymentMethod.fields:type_name -> metadata.BasicFields
+	2,  // 7: PaymentMethod.FraudPolicy.integration:type_name -> PaymentMethod.FraudIntegration
+	3,  // 8: PaymentMethod.FraudPolicy.criteria:type_name -> PaymentMethod.AntifraudCriteria
+	7,  // 9: PaymentMethod.Integration.gateway_pix:type_name -> PaymentMethod.GatewayPix
+	0,  // 10: PaymentMethod.Integration.modalidade_cartao:type_name -> PaymentMethod.ModalidadeCartao
+	8,  // 11: PaymentMethod.GatewayPix.certificado_pix:type_name -> PaymentMethod.CertificadoPix
+	1,  // 12: PaymentMethod.CreatePaymentMethodRequest.payment_method:type_name -> PaymentMethod.PaymentMethod
+	1,  // 13: PaymentMethod.CreatePaymentMethodResponse.payment_method:type_name -> PaymentMethod.PaymentMethod
+	1,  // 14: PaymentMethod.UpdatePaymentMethodRequest.payment_method:type_name -> PaymentMethod.PaymentMethod
+	26, // 15: PaymentMethod.UpdatePaymentMethodRequest.update_mask:type_name -> metadata.FieldMask
+	1,  // 16: PaymentMethod.UpdatePaymentMethodResponse.payment_method:type_name -> PaymentMethod.PaymentMethod
+	1,  // 17: PaymentMethod.GetPaymentMethodResponse.payment_method:type_name -> PaymentMethod.PaymentMethod
+	27, // 18: PaymentMethod.ListPaymentMethodRequest.filter:type_name -> Filter
+	1,  // 19: PaymentMethod.ListPaymentMethodResponse.payment_method_list:type_name -> PaymentMethod.PaymentMethod
+	1,  // 20: PaymentMethod.ImportPaymentMethodRequest.payment_methods:type_name -> PaymentMethod.PaymentMethod
+	1,  // 21: PaymentMethod.ImportPaymentMethodResponse.payment_methods:type_name -> PaymentMethod.PaymentMethod
+	1,  // 22: PaymentMethod.ClonePaymentMethodResponse.payment_method:type_name -> PaymentMethod.PaymentMethod
+	10, // 23: PaymentMethod.PaymentMethodService.Create:input_type -> PaymentMethod.CreatePaymentMethodRequest
+	12, // 24: PaymentMethod.PaymentMethodService.Update:input_type -> PaymentMethod.UpdatePaymentMethodRequest
+	14, // 25: PaymentMethod.PaymentMethodService.Delete:input_type -> PaymentMethod.DeletePaymentMethodRequest
+	16, // 26: PaymentMethod.PaymentMethodService.Get:input_type -> PaymentMethod.GetPaymentMethodRequest
+	18, // 27: PaymentMethod.PaymentMethodService.List:input_type -> PaymentMethod.ListPaymentMethodRequest
+	20, // 28: PaymentMethod.PaymentMethodService.Import:input_type -> PaymentMethod.ImportPaymentMethodRequest
+	22, // 29: PaymentMethod.PaymentMethodService.Clone:input_type -> PaymentMethod.ClonePaymentMethodRequest
+	11, // 30: PaymentMethod.PaymentMethodService.Create:output_type -> PaymentMethod.CreatePaymentMethodResponse
+	13, // 31: PaymentMethod.PaymentMethodService.Update:output_type -> PaymentMethod.UpdatePaymentMethodResponse
+	15, // 32: PaymentMethod.PaymentMethodService.Delete:output_type -> PaymentMethod.DeletePaymentMethodResponse
+	17, // 33: PaymentMethod.PaymentMethodService.Get:output_type -> PaymentMethod.GetPaymentMethodResponse
+	19, // 34: PaymentMethod.PaymentMethodService.List:output_type -> PaymentMethod.ListPaymentMethodResponse
+	21, // 35: PaymentMethod.PaymentMethodService.Import:output_type -> PaymentMethod.ImportPaymentMethodResponse
+	23, // 36: PaymentMethod.PaymentMethodService.Clone:output_type -> PaymentMethod.ClonePaymentMethodResponse
+	30, // [30:37] is the sub-list for method output_type
+	23, // [23:30] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_formapagamento_formas_pagamento_proto_init() }
@@ -1986,13 +2033,14 @@ func file_apps_vendas_formapagamento_formas_pagamento_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc), len(file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_apps_vendas_formapagamento_formas_pagamento_proto_goTypes,
 		DependencyIndexes: file_apps_vendas_formapagamento_formas_pagamento_proto_depIdxs,
+		EnumInfos:         file_apps_vendas_formapagamento_formas_pagamento_proto_enumTypes,
 		MessageInfos:      file_apps_vendas_formapagamento_formas_pagamento_proto_msgTypes,
 	}.Build()
 	File_apps_vendas_formapagamento_formas_pagamento_proto = out.File
