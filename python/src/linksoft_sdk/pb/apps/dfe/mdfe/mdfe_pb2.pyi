@@ -16,7 +16,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Rodoviario(_message.Message):
-    __slots__ = ("rntrc", "codigo_agendamento_porto", "tracao_cod_interno_veiculo", "tracao_tipo_carroceria", "tracao_placa", "tracao_tara", "tracao_renavam", "tracao_uf", "tracao_tipo_rodado", "tracao_capacidade_kg", "tracao_capacidade_m3", "tracao_proprietario_cpf_cnpj", "tracao_proprietario_nome", "tracao_proprietario_ie", "tracao_proprietario_uf", "tracao_proprietario_tipo")
+    __slots__ = ("rntrc", "codigo_agendamento_porto", "tracao_cod_interno_veiculo", "tracao_tipo_carroceria", "tracao_placa", "tracao_tara", "tracao_renavam", "tracao_uf", "tracao_tipo_rodado", "tracao_capacidade_kg", "tracao_capacidade_m3", "tracao_proprietario_cpf_cnpj", "tracao_proprietario_nome", "tracao_proprietario_ie", "tracao_proprietario_uf", "tracao_proprietario_tipo", "ciot", "ciot_cpf_cnpj", "tracao_proprietario_rntrc")
     RNTRC_FIELD_NUMBER: _ClassVar[int]
     CODIGO_AGENDAMENTO_PORTO_FIELD_NUMBER: _ClassVar[int]
     TRACAO_COD_INTERNO_VEICULO_FIELD_NUMBER: _ClassVar[int]
@@ -33,6 +33,9 @@ class Rodoviario(_message.Message):
     TRACAO_PROPRIETARIO_IE_FIELD_NUMBER: _ClassVar[int]
     TRACAO_PROPRIETARIO_UF_FIELD_NUMBER: _ClassVar[int]
     TRACAO_PROPRIETARIO_TIPO_FIELD_NUMBER: _ClassVar[int]
+    CIOT_FIELD_NUMBER: _ClassVar[int]
+    CIOT_CPF_CNPJ_FIELD_NUMBER: _ClassVar[int]
+    TRACAO_PROPRIETARIO_RNTRC_FIELD_NUMBER: _ClassVar[int]
     rntrc: str
     codigo_agendamento_porto: str
     tracao_cod_interno_veiculo: str
@@ -49,7 +52,10 @@ class Rodoviario(_message.Message):
     tracao_proprietario_ie: str
     tracao_proprietario_uf: str
     tracao_proprietario_tipo: int
-    def __init__(self, rntrc: _Optional[str] = ..., codigo_agendamento_porto: _Optional[str] = ..., tracao_cod_interno_veiculo: _Optional[str] = ..., tracao_tipo_carroceria: _Optional[str] = ..., tracao_placa: _Optional[str] = ..., tracao_tara: _Optional[float] = ..., tracao_renavam: _Optional[str] = ..., tracao_uf: _Optional[str] = ..., tracao_tipo_rodado: _Optional[str] = ..., tracao_capacidade_kg: _Optional[float] = ..., tracao_capacidade_m3: _Optional[float] = ..., tracao_proprietario_cpf_cnpj: _Optional[str] = ..., tracao_proprietario_nome: _Optional[str] = ..., tracao_proprietario_ie: _Optional[str] = ..., tracao_proprietario_uf: _Optional[str] = ..., tracao_proprietario_tipo: _Optional[int] = ...) -> None: ...
+    ciot: str
+    ciot_cpf_cnpj: str
+    tracao_proprietario_rntrc: str
+    def __init__(self, rntrc: _Optional[str] = ..., codigo_agendamento_porto: _Optional[str] = ..., tracao_cod_interno_veiculo: _Optional[str] = ..., tracao_tipo_carroceria: _Optional[str] = ..., tracao_placa: _Optional[str] = ..., tracao_tara: _Optional[float] = ..., tracao_renavam: _Optional[str] = ..., tracao_uf: _Optional[str] = ..., tracao_tipo_rodado: _Optional[str] = ..., tracao_capacidade_kg: _Optional[float] = ..., tracao_capacidade_m3: _Optional[float] = ..., tracao_proprietario_cpf_cnpj: _Optional[str] = ..., tracao_proprietario_nome: _Optional[str] = ..., tracao_proprietario_ie: _Optional[str] = ..., tracao_proprietario_uf: _Optional[str] = ..., tracao_proprietario_tipo: _Optional[int] = ..., ciot: _Optional[str] = ..., ciot_cpf_cnpj: _Optional[str] = ..., tracao_proprietario_rntrc: _Optional[str] = ...) -> None: ...
 
 class Pagamento(_message.Message):
     __slots__ = ("responsavel_pagamento_id", "responsavel_pagamento_nome", "responsavel_pagamento_cpf_cnpj", "componentes_pagamento", "valor_contrato", "forma_pagamento", "valor_adiantamento", "parcelamentos", "numero_banco", "numero_agencia", "cnpj_instituicao_pagamento_eletronico", "chave_pix")

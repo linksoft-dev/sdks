@@ -47,6 +47,9 @@ type Rodoviario struct {
 	TracaoProprietarioIe      string                 `protobuf:"bytes,14,opt,name=tracao_proprietario_ie,json=tracaoProprietarioIe,proto3" json:"tracao_proprietario_ie,omitempty"`
 	TracaoProprietarioUf      string                 `protobuf:"bytes,15,opt,name=tracao_proprietario_uf,json=tracaoProprietarioUf,proto3" json:"tracao_proprietario_uf,omitempty"`
 	TracaoProprietarioTipo    int32                  `protobuf:"varint,16,opt,name=tracao_proprietario_tipo,json=tracaoProprietarioTipo,proto3" json:"tracao_proprietario_tipo,omitempty"`
+	Ciot                      string                 `protobuf:"bytes,17,opt,name=ciot,proto3" json:"ciot,omitempty"`                                                                        // Código Identificador da Operação de Transporte (12 dígitos)
+	CiotCpfCnpj               string                 `protobuf:"bytes,18,opt,name=ciot_cpf_cnpj,json=ciotCpfCnpj,proto3" json:"ciot_cpf_cnpj,omitempty"`                                     // CPF/CNPJ de quem gerou o CIOT
+	TracaoProprietarioRntrc   string                 `protobuf:"bytes,19,opt,name=tracao_proprietario_rntrc,json=tracaoProprietarioRntrc,proto3" json:"tracao_proprietario_rntrc,omitempty"` // RNTRC do proprietário do veículo de tração
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -191,6 +194,27 @@ func (x *Rodoviario) GetTracaoProprietarioTipo() int32 {
 		return x.TracaoProprietarioTipo
 	}
 	return 0
+}
+
+func (x *Rodoviario) GetCiot() string {
+	if x != nil {
+		return x.Ciot
+	}
+	return ""
+}
+
+func (x *Rodoviario) GetCiotCpfCnpj() string {
+	if x != nil {
+		return x.CiotCpfCnpj
+	}
+	return ""
+}
+
+func (x *Rodoviario) GetTracaoProprietarioRntrc() string {
+	if x != nil {
+		return x.TracaoProprietarioRntrc
+	}
+	return ""
 }
 
 type Pagamento struct {
@@ -3252,7 +3276,7 @@ var File_apps_dfe_mdfe_mdfe_proto protoreflect.FileDescriptor
 
 const file_apps_dfe_mdfe_mdfe_proto_rawDesc = "" +
 	"\n" +
-	"\x18apps/dfe/mdfe/mdfe.proto\x12\x04mdfe\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fplugins/validate/validate.proto\x1a\x18apps/report/report.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\x8a\x06\n" +
+	"\x18apps/dfe/mdfe/mdfe.proto\x12\x04mdfe\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fplugins/validate/validate.proto\x1a\x18apps/report/report.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xfe\x06\n" +
 	"\n" +
 	"Rodoviario\x12\x14\n" +
 	"\x05rntrc\x18\x01 \x01(\tR\x05rntrc\x128\n" +
@@ -3272,7 +3296,10 @@ const file_apps_dfe_mdfe_mdfe_proto_rawDesc = "" +
 	"\x18tracao_proprietario_nome\x18\r \x01(\tR\x16tracaoProprietarioNome\x124\n" +
 	"\x16tracao_proprietario_ie\x18\x0e \x01(\tR\x14tracaoProprietarioIe\x124\n" +
 	"\x16tracao_proprietario_uf\x18\x0f \x01(\tR\x14tracaoProprietarioUf\x128\n" +
-	"\x18tracao_proprietario_tipo\x18\x10 \x01(\x05R\x16tracaoProprietarioTipo\"\x8b\x05\n" +
+	"\x18tracao_proprietario_tipo\x18\x10 \x01(\x05R\x16tracaoProprietarioTipo\x12\x12\n" +
+	"\x04ciot\x18\x11 \x01(\tR\x04ciot\x12\"\n" +
+	"\rciot_cpf_cnpj\x18\x12 \x01(\tR\vciotCpfCnpj\x12:\n" +
+	"\x19tracao_proprietario_rntrc\x18\x13 \x01(\tR\x17tracaoProprietarioRntrc\"\x8b\x05\n" +
 	"\tPagamento\x128\n" +
 	"\x18responsavel_pagamento_id\x18\x01 \x01(\tR\x16responsavelPagamentoId\x12<\n" +
 	"\x1aresponsavel_pagamento_nome\x18\x02 \x01(\tR\x18responsavelPagamentoNome\x12C\n" +
