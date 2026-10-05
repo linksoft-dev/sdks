@@ -70,6 +70,11 @@ class MdfeServiceStub:
                 request_serializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ImportaXmlRequest.SerializeToString,
                 response_deserializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ImportaXmlResponse.FromString,
                 _registered_method=True)
+        self.ExplainRejection = channel.unary_unary(
+                '/mdfe.MdfeService/ExplainRejection',
+                request_serializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionRequest.SerializeToString,
+                response_deserializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionResponse.FromString,
+                _registered_method=True)
 
 
 class MdfeServiceServicer:
@@ -143,6 +148,13 @@ class MdfeServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ExplainRejection(self, request, context):
+        """Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MdfeServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -200,6 +212,11 @@ def add_MdfeServiceServicer_to_server(servicer, server):
                     servicer.ImportaXml,
                     request_deserializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ImportaXmlRequest.FromString,
                     response_serializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ImportaXmlResponse.SerializeToString,
+            ),
+            'ExplainRejection': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExplainRejection,
+                    request_deserializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionRequest.FromString,
+                    response_serializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -500,6 +517,33 @@ class MdfeService:
             '/mdfe.MdfeService/ImportaXml',
             apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ImportaXmlRequest.SerializeToString,
             apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ImportaXmlResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ExplainRejection(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mdfe.MdfeService/ExplainRejection',
+            apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionRequest.SerializeToString,
+            apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionResponse.FromString,
             options,
             channel_credentials,
             insecure,

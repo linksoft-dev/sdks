@@ -37,6 +37,7 @@ const (
 	CteService_AddComponentePrestacao_FullMethodName      = "/cte.CteService/AddComponentePrestacao"
 	CteService_UpdateComponentePrestacao_FullMethodName   = "/cte.CteService/UpdateComponentePrestacao"
 	CteService_DeleteComponentePrestacao_FullMethodName   = "/cte.CteService/DeleteComponentePrestacao"
+	CteService_ExplainRejection_FullMethodName            = "/cte.CteService/ExplainRejection"
 )
 
 // CteServiceClient is the client API for CteService service.
@@ -64,6 +65,8 @@ type CteServiceClient interface {
 	AddComponentePrestacao(ctx context.Context, in *AddComponentePrestacaoRequest, opts ...grpc.CallOption) (*AddComponentePrestacaoResponse, error)
 	UpdateComponentePrestacao(ctx context.Context, in *UpdateComponentePrestacaoRequest, opts ...grpc.CallOption) (*UpdateComponentePrestacaoResponse, error)
 	DeleteComponentePrestacao(ctx context.Context, in *DeleteComponentePrestacaoRequest, opts ...grpc.CallOption) (*DeleteComponentePrestacaoResponse, error)
+	// Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
+	ExplainRejection(ctx context.Context, in *ExplainRejectionRequest, opts ...grpc.CallOption) (*ExplainRejectionResponse, error)
 }
 
 type cteServiceClient struct {
@@ -254,6 +257,16 @@ func (c *cteServiceClient) DeleteComponentePrestacao(ctx context.Context, in *De
 	return out, nil
 }
 
+func (c *cteServiceClient) ExplainRejection(ctx context.Context, in *ExplainRejectionRequest, opts ...grpc.CallOption) (*ExplainRejectionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExplainRejectionResponse)
+	err := c.cc.Invoke(ctx, CteService_ExplainRejection_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CteServiceServer is the server API for CteService service.
 // All implementations must embed UnimplementedCteServiceServer
 // for forward compatibility.
@@ -279,6 +292,8 @@ type CteServiceServer interface {
 	AddComponentePrestacao(context.Context, *AddComponentePrestacaoRequest) (*AddComponentePrestacaoResponse, error)
 	UpdateComponentePrestacao(context.Context, *UpdateComponentePrestacaoRequest) (*UpdateComponentePrestacaoResponse, error)
 	DeleteComponentePrestacao(context.Context, *DeleteComponentePrestacaoRequest) (*DeleteComponentePrestacaoResponse, error)
+	// Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
+	ExplainRejection(context.Context, *ExplainRejectionRequest) (*ExplainRejectionResponse, error)
 	mustEmbedUnimplementedCteServiceServer()
 }
 
@@ -342,6 +357,9 @@ func (UnimplementedCteServiceServer) UpdateComponentePrestacao(context.Context, 
 }
 func (UnimplementedCteServiceServer) DeleteComponentePrestacao(context.Context, *DeleteComponentePrestacaoRequest) (*DeleteComponentePrestacaoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteComponentePrestacao not implemented")
+}
+func (UnimplementedCteServiceServer) ExplainRejection(context.Context, *ExplainRejectionRequest) (*ExplainRejectionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ExplainRejection not implemented")
 }
 func (UnimplementedCteServiceServer) mustEmbedUnimplementedCteServiceServer() {}
 func (UnimplementedCteServiceServer) testEmbeddedByValue()                    {}
@@ -688,6 +706,24 @@ func _CteService_DeleteComponentePrestacao_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CteService_ExplainRejection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExplainRejectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CteServiceServer).ExplainRejection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CteService_ExplainRejection_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CteServiceServer).ExplainRejection(ctx, req.(*ExplainRejectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CteService_ServiceDesc is the grpc.ServiceDesc for CteService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -766,6 +802,10 @@ var CteService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteComponentePrestacao",
 			Handler:    _CteService_DeleteComponentePrestacao_Handler,
+		},
+		{
+			MethodName: "ExplainRejection",
+			Handler:    _CteService_ExplainRejection_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

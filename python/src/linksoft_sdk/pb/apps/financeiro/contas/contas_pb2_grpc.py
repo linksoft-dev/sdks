@@ -135,6 +135,11 @@ class ContasReceberServiceStub:
                 request_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.FaturaRequest.SerializeToString,
                 response_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.FaturaResponse.FromString,
                 _registered_method=True)
+        self.SugerePlanoContaIa = channel.unary_unary(
+                '/contas.ContasReceberService/SugerePlanoContaIa',
+                request_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaRequest.SerializeToString,
+                response_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaResponse.FromString,
+                _registered_method=True)
 
 
 class ContasReceberServiceServicer:
@@ -287,6 +292,13 @@ class ContasReceberServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SugerePlanoContaIa(self, request, context):
+        """Sugere com IA o plano de contas e o centro de custo dos lançamentos filtrados. Não grava.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ContasReceberServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -409,6 +421,11 @@ def add_ContasReceberServiceServicer_to_server(servicer, server):
                     servicer.Fatura,
                     request_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.FaturaRequest.FromString,
                     response_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.FaturaResponse.SerializeToString,
+            ),
+            'SugerePlanoContaIa': grpc.unary_unary_rpc_method_handler(
+                    servicer.SugerePlanoContaIa,
+                    request_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaRequest.FromString,
+                    response_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1070,6 +1087,33 @@ class ContasReceberService:
             metadata,
             _registered_method=True)
 
+    @staticmethod
+    def SugerePlanoContaIa(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/contas.ContasReceberService/SugerePlanoContaIa',
+            apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaRequest.SerializeToString,
+            apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
 
 class ContasPagarServiceStub:
     """Missing associated documentation comment in .proto file."""
@@ -1184,6 +1228,16 @@ class ContasPagarServiceStub:
                 '/contas.ContasPagarService/ImprimirRecibo',
                 request_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.ImprimirReciboRequest.SerializeToString,
                 response_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.ImprimirReciboResponse.FromString,
+                _registered_method=True)
+        self.SugerePlanoContaIa = channel.unary_unary(
+                '/contas.ContasPagarService/SugerePlanoContaIa',
+                request_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaRequest.SerializeToString,
+                response_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaResponse.FromString,
+                _registered_method=True)
+        self.LeDocumentoIa = channel.unary_unary(
+                '/contas.ContasPagarService/LeDocumentoIa',
+                request_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.LeDocumentoIaRequest.SerializeToString,
+                response_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.LeDocumentoIaResponse.FromString,
                 _registered_method=True)
 
 
@@ -1316,6 +1370,21 @@ class ContasPagarServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SugerePlanoContaIa(self, request, context):
+        """Sugere com IA o plano de contas e o centro de custo dos lançamentos filtrados. Não grava.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def LeDocumentoIa(self, request, context):
+        """Lê com IA a imagem de um boleto ou conta de consumo e devolve a conta a pagar preenchida
+        para conferir. Não grava.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ContasPagarServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -1423,6 +1492,16 @@ def add_ContasPagarServiceServicer_to_server(servicer, server):
                     servicer.ImprimirRecibo,
                     request_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.ImprimirReciboRequest.FromString,
                     response_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.ImprimirReciboResponse.SerializeToString,
+            ),
+            'SugerePlanoContaIa': grpc.unary_unary_rpc_method_handler(
+                    servicer.SugerePlanoContaIa,
+                    request_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaRequest.FromString,
+                    response_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaResponse.SerializeToString,
+            ),
+            'LeDocumentoIa': grpc.unary_unary_rpc_method_handler(
+                    servicer.LeDocumentoIa,
+                    request_deserializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.LeDocumentoIaRequest.FromString,
+                    response_serializer=apps_dot_financeiro_dot_contas_dot_contas__pb2.LeDocumentoIaResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1992,6 +2071,60 @@ class ContasPagarService:
             '/contas.ContasPagarService/ImprimirRecibo',
             apps_dot_financeiro_dot_contas_dot_contas__pb2.ImprimirReciboRequest.SerializeToString,
             apps_dot_financeiro_dot_contas_dot_contas__pb2.ImprimirReciboResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SugerePlanoContaIa(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/contas.ContasPagarService/SugerePlanoContaIa',
+            apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaRequest.SerializeToString,
+            apps_dot_financeiro_dot_contas_dot_contas__pb2.SugerePlanoContaIaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def LeDocumentoIa(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/contas.ContasPagarService/LeDocumentoIa',
+            apps_dot_financeiro_dot_contas_dot_contas__pb2.LeDocumentoIaRequest.SerializeToString,
+            apps_dot_financeiro_dot_contas_dot_contas__pb2.LeDocumentoIaResponse.FromString,
             options,
             channel_credentials,
             insecure,

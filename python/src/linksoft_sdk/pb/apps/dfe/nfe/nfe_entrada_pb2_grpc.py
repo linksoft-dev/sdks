@@ -161,6 +161,21 @@ class NfeEntradaServiceStub:
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaOperacaoNaoRealizadaRequest.SerializeToString,
                 response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaOperacaoNaoRealizadaResponse.FromString,
                 _registered_method=True)
+        self.NfeEntradaVinculaIa = channel.unary_unary(
+                '/nfe.NfeEntradaService/NfeEntradaVinculaIa',
+                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaVinculaIaRequest.SerializeToString,
+                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaVinculaIaResponse.FromString,
+                _registered_method=True)
+        self.NfeEntradaSugerePrecosIa = channel.unary_unary(
+                '/nfe.NfeEntradaService/NfeEntradaSugerePrecosIa',
+                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaSugerePrecosIaRequest.SerializeToString,
+                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaSugerePrecosIaResponse.FromString,
+                _registered_method=True)
+        self.NfeEntradaImportaImagem = channel.unary_unary(
+                '/nfe.NfeEntradaService/NfeEntradaImportaImagem',
+                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaImportaImagemRequest.SerializeToString,
+                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaImportaImagemResponse.FromString,
+                _registered_method=True)
 
 
 class NfeEntradaServiceServicer:
@@ -341,6 +356,28 @@ class NfeEntradaServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def NfeEntradaVinculaIa(self, request, context):
+        """Vincula com IA os itens ainda sem produto aos produtos do estoque e sugere categoria para os que serão cadastrados
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def NfeEntradaSugerePrecosIa(self, request, context):
+        """Sugere com IA o preço de venda à vista dos itens da nota, sem gravar
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def NfeEntradaImportaImagem(self, request, context):
+        """Importa a nota de entrada pela foto do DANFE ou do cupom da NFC-e. A chave de acesso lida é
+        conferida: NF-e segue a importação pela chave e NFC-e tem os itens lidos da foto.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_NfeEntradaServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -488,6 +525,21 @@ def add_NfeEntradaServiceServicer_to_server(servicer, server):
                     servicer.NfeEntradaOperacaoNaoRealizada,
                     request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaOperacaoNaoRealizadaRequest.FromString,
                     response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaOperacaoNaoRealizadaResponse.SerializeToString,
+            ),
+            'NfeEntradaVinculaIa': grpc.unary_unary_rpc_method_handler(
+                    servicer.NfeEntradaVinculaIa,
+                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaVinculaIaRequest.FromString,
+                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaVinculaIaResponse.SerializeToString,
+            ),
+            'NfeEntradaSugerePrecosIa': grpc.unary_unary_rpc_method_handler(
+                    servicer.NfeEntradaSugerePrecosIa,
+                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaSugerePrecosIaRequest.FromString,
+                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaSugerePrecosIaResponse.SerializeToString,
+            ),
+            'NfeEntradaImportaImagem': grpc.unary_unary_rpc_method_handler(
+                    servicer.NfeEntradaImportaImagem,
+                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaImportaImagemRequest.FromString,
+                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaImportaImagemResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1274,6 +1326,87 @@ class NfeEntradaService:
             '/nfe.NfeEntradaService/NfeEntradaOperacaoNaoRealizada',
             apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaOperacaoNaoRealizadaRequest.SerializeToString,
             apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaOperacaoNaoRealizadaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def NfeEntradaVinculaIa(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/nfe.NfeEntradaService/NfeEntradaVinculaIa',
+            apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaVinculaIaRequest.SerializeToString,
+            apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaVinculaIaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def NfeEntradaSugerePrecosIa(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/nfe.NfeEntradaService/NfeEntradaSugerePrecosIa',
+            apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaSugerePrecosIaRequest.SerializeToString,
+            apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaSugerePrecosIaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def NfeEntradaImportaImagem(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/nfe.NfeEntradaService/NfeEntradaImportaImagem',
+            apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaImportaImagemRequest.SerializeToString,
+            apps_dot_dfe_dot_nfe_dot_nfe__entrada__pb2.NfeEntradaImportaImagemResponse.FromString,
             options,
             channel_credentials,
             insecure,

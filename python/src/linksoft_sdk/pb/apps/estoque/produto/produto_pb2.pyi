@@ -81,6 +81,68 @@ STOCK_MOVEMENT_HAS_NF_ENTRADA: StockMovement
 STOCK_MOVEMENT_NEGATIVE: StockMovement
 STOCK_MOVEMENT_NOT_ZERO: StockMovement
 
+class SugereFiscalIaRequest(_message.Message):
+    __slots__ = ("ids", "produto", "ai_integration_id")
+    IDS_FIELD_NUMBER: _ClassVar[int]
+    PRODUTO_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    ids: _containers.RepeatedScalarFieldContainer[str]
+    produto: Produto
+    ai_integration_id: str
+    def __init__(self, ids: _Optional[_Iterable[str]] = ..., produto: _Optional[_Union[Produto, _Mapping]] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
+
+class NcmSugerido(_message.Message):
+    __slots__ = ("codigo", "descricao", "cest")
+    CODIGO_FIELD_NUMBER: _ClassVar[int]
+    DESCRICAO_FIELD_NUMBER: _ClassVar[int]
+    CEST_FIELD_NUMBER: _ClassVar[int]
+    codigo: str
+    descricao: str
+    cest: str
+    def __init__(self, codigo: _Optional[str] = ..., descricao: _Optional[str] = ..., cest: _Optional[str] = ...) -> None: ...
+
+class TributacaoSugerida(_message.Message):
+    __slots__ = ("id", "nome", "substituicao")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NOME_FIELD_NUMBER: _ClassVar[int]
+    SUBSTITUICAO_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    nome: str
+    substituicao: bool
+    def __init__(self, id: _Optional[str] = ..., nome: _Optional[str] = ..., substituicao: _Optional[bool] = ...) -> None: ...
+
+class SugestaoFiscal(_message.Message):
+    __slots__ = ("produto_id", "produto_nome", "ncms", "ncm_atual_situacao", "classificacao", "classificacao_nome", "artigo", "link", "tributacoes", "confianca", "motivo")
+    PRODUTO_ID_FIELD_NUMBER: _ClassVar[int]
+    PRODUTO_NOME_FIELD_NUMBER: _ClassVar[int]
+    NCMS_FIELD_NUMBER: _ClassVar[int]
+    NCM_ATUAL_SITUACAO_FIELD_NUMBER: _ClassVar[int]
+    CLASSIFICACAO_FIELD_NUMBER: _ClassVar[int]
+    CLASSIFICACAO_NOME_FIELD_NUMBER: _ClassVar[int]
+    ARTIGO_FIELD_NUMBER: _ClassVar[int]
+    LINK_FIELD_NUMBER: _ClassVar[int]
+    TRIBUTACOES_FIELD_NUMBER: _ClassVar[int]
+    CONFIANCA_FIELD_NUMBER: _ClassVar[int]
+    MOTIVO_FIELD_NUMBER: _ClassVar[int]
+    produto_id: str
+    produto_nome: str
+    ncms: _containers.RepeatedCompositeFieldContainer[NcmSugerido]
+    ncm_atual_situacao: str
+    classificacao: str
+    classificacao_nome: str
+    artigo: str
+    link: str
+    tributacoes: _containers.RepeatedCompositeFieldContainer[TributacaoSugerida]
+    confianca: str
+    motivo: str
+    def __init__(self, produto_id: _Optional[str] = ..., produto_nome: _Optional[str] = ..., ncms: _Optional[_Iterable[_Union[NcmSugerido, _Mapping]]] = ..., ncm_atual_situacao: _Optional[str] = ..., classificacao: _Optional[str] = ..., classificacao_nome: _Optional[str] = ..., artigo: _Optional[str] = ..., link: _Optional[str] = ..., tributacoes: _Optional[_Iterable[_Union[TributacaoSugerida, _Mapping]]] = ..., confianca: _Optional[str] = ..., motivo: _Optional[str] = ...) -> None: ...
+
+class SugereFiscalIaResponse(_message.Message):
+    __slots__ = ("sugestoes",)
+    SUGESTOES_FIELD_NUMBER: _ClassVar[int]
+    sugestoes: _containers.RepeatedCompositeFieldContainer[SugestaoFiscal]
+    def __init__(self, sugestoes: _Optional[_Iterable[_Union[SugestaoFiscal, _Mapping]]] = ...) -> None: ...
+
 class ProdutoTag(_message.Message):
     __slots__ = ("value", "color")
     VALUE_FIELD_NUMBER: _ClassVar[int]
@@ -840,7 +902,7 @@ class AlteracoesFiltro(_message.Message):
     def __init__(self, ids: _Optional[_Iterable[str]] = ..., fabricante: _Optional[_Union[AlteracaoCadastro, _Mapping]] = ..., categoria: _Optional[_Union[AlteracaoCadastro, _Mapping]] = ...) -> None: ...
 
 class AlteracoesConjuntasRequest(_message.Message):
-    __slots__ = ("filtro", "fabricante", "categoria", "unidade", "fracionavel", "naoFracionavel", "situacao", "reprecificacao")
+    __slots__ = ("filtro", "fabricante", "categoria", "unidade", "fracionavel", "naoFracionavel", "situacao", "reprecificacao", "ncm", "cest", "tributacao")
     FILTRO_FIELD_NUMBER: _ClassVar[int]
     FABRICANTE_FIELD_NUMBER: _ClassVar[int]
     CATEGORIA_FIELD_NUMBER: _ClassVar[int]
@@ -849,6 +911,9 @@ class AlteracoesConjuntasRequest(_message.Message):
     NAOFRACIONAVEL_FIELD_NUMBER: _ClassVar[int]
     SITUACAO_FIELD_NUMBER: _ClassVar[int]
     REPRECIFICACAO_FIELD_NUMBER: _ClassVar[int]
+    NCM_FIELD_NUMBER: _ClassVar[int]
+    CEST_FIELD_NUMBER: _ClassVar[int]
+    TRIBUTACAO_FIELD_NUMBER: _ClassVar[int]
     filtro: AlteracoesFiltro
     fabricante: AlteracaoCadastro
     categoria: AlteracaoCadastro
@@ -857,7 +922,10 @@ class AlteracoesConjuntasRequest(_message.Message):
     naoFracionavel: bool
     situacao: str
     reprecificacao: ReprecificacaoConjunta
-    def __init__(self, filtro: _Optional[_Union[AlteracoesFiltro, _Mapping]] = ..., fabricante: _Optional[_Union[AlteracaoCadastro, _Mapping]] = ..., categoria: _Optional[_Union[AlteracaoCadastro, _Mapping]] = ..., unidade: _Optional[str] = ..., fracionavel: _Optional[bool] = ..., naoFracionavel: _Optional[bool] = ..., situacao: _Optional[str] = ..., reprecificacao: _Optional[_Union[ReprecificacaoConjunta, _Mapping]] = ...) -> None: ...
+    ncm: str
+    cest: str
+    tributacao: AlteracaoCadastro
+    def __init__(self, filtro: _Optional[_Union[AlteracoesFiltro, _Mapping]] = ..., fabricante: _Optional[_Union[AlteracaoCadastro, _Mapping]] = ..., categoria: _Optional[_Union[AlteracaoCadastro, _Mapping]] = ..., unidade: _Optional[str] = ..., fracionavel: _Optional[bool] = ..., naoFracionavel: _Optional[bool] = ..., situacao: _Optional[str] = ..., reprecificacao: _Optional[_Union[ReprecificacaoConjunta, _Mapping]] = ..., ncm: _Optional[str] = ..., cest: _Optional[str] = ..., tributacao: _Optional[_Union[AlteracaoCadastro, _Mapping]] = ...) -> None: ...
 
 class ReprecificacaoConjunta(_message.Message):
     __slots__ = ("recalcularPrecos", "margemLucro", "margemCusto", "margemComissao", "margemOutrasDespesas", "margemLucroAprazo", "margemDescontoAtacado", "margemSobreVenda", "reajusteCustoPercentual")

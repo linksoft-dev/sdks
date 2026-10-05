@@ -120,6 +120,11 @@ class ProdutoServiceStub:
                 request_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.GenerateSeoMetaRequest.SerializeToString,
                 response_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.GenerateSeoMetaResponse.FromString,
                 _registered_method=True)
+        self.SugereFiscalIa = channel.unary_unary(
+                '/produto.ProdutoService/SugereFiscalIa',
+                request_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaRequest.SerializeToString,
+                response_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaResponse.FromString,
+                _registered_method=True)
 
 
 class ProdutoServiceServicer:
@@ -254,6 +259,14 @@ class ProdutoServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SugereFiscalIa(self, request, context):
+        """Sugere com IA o NCM, o CEST e a tributação dos produtos, conferidos na tabela oficial de NCM e no
+        cadastro de tributações. Não grava: quem aplica é quem chamou, depois de conferir.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ProdutoServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -361,6 +374,11 @@ def add_ProdutoServiceServicer_to_server(servicer, server):
                     servicer.GenerateSeoMeta,
                     request_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.GenerateSeoMetaRequest.FromString,
                     response_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.GenerateSeoMetaResponse.SerializeToString,
+            ),
+            'SugereFiscalIa': grpc.unary_unary_rpc_method_handler(
+                    servicer.SugereFiscalIa,
+                    request_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaRequest.FromString,
+                    response_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -931,6 +949,33 @@ class ProdutoService:
             '/produto.ProdutoService/GenerateSeoMeta',
             apps_dot_estoque_dot_produto_dot_produto__pb2.GenerateSeoMetaRequest.SerializeToString,
             apps_dot_estoque_dot_produto_dot_produto__pb2.GenerateSeoMetaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SugereFiscalIa(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/produto.ProdutoService/SugereFiscalIa',
+            apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaRequest.SerializeToString,
+            apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaResponse.FromString,
             options,
             channel_credentials,
             insecure,

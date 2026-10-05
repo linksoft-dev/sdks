@@ -996,8 +996,10 @@ type Nfe struct {
 	// Chaves de acesso das notas de débito de pagamento antecipado abatidas nesta nota (gPagAntecipado)
 	PagAntecipadoRefs []string `protobuf:"bytes,111,rep,name=pag_antecipado_refs,json=pagAntecipadoRefs,proto3" json:"pag_antecipado_refs,omitempty"`
 	IdempotencyKey    string   `protobuf:"bytes,112,opt,name=idempotency_key,json=idempotencyKey,proto3" json:"idempotency_key,omitempty"` // chave da emissão direta que criou a nota
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// A IA já tentou vincular os itens pendentes desta nota de entrada
+	EntradaIaVinculoExecutado bool `protobuf:"varint,113,opt,name=entrada_ia_vinculo_executado,json=entradaIaVinculoExecutado,proto3" json:"entrada_ia_vinculo_executado,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *Nfe) Reset() {
@@ -1807,6 +1809,13 @@ func (x *Nfe) GetIdempotencyKey() string {
 	return ""
 }
 
+func (x *Nfe) GetEntradaIaVinculoExecutado() bool {
+	if x != nil {
+		return x.EntradaIaVinculoExecutado
+	}
+	return false
+}
+
 type Pessoa struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Id                string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -2410,8 +2419,13 @@ type ItemModel struct {
 	EntradaCadastraProduto bool   `protobuf:"varint,78,opt,name=entrada_cadastra_produto,json=entradaCadastraProduto,proto3" json:"entrada_cadastra_produto,omitempty"`
 	PedidoCompra           string `protobuf:"bytes,80,opt,name=pedido_compra,json=pedidoCompra,proto3" json:"pedido_compra,omitempty"`                // Número do pedido que o destinatário usa para conferir a nota (xPed), até 15 caracteres
 	PedidoCompraItem       int32  `protobuf:"varint,81,opt,name=pedido_compra_item,json=pedidoCompraItem,proto3" json:"pedido_compra_item,omitempty"` // Número do item nesse pedido (nItemPed)
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	CategoriaNome          string `protobuf:"bytes,82,opt,name=categoria_nome,json=categoriaNome,proto3" json:"categoria_nome,omitempty"`
+	// GTIN, unidade e quantidade tributáveis como vieram no XML do fornecedor (cEANTrib, uTrib, qTrib)
+	CodigoEanTrib     string  `protobuf:"bytes,83,opt,name=codigo_ean_trib,json=codigoEanTrib,proto3" json:"codigo_ean_trib,omitempty"`
+	UnTribNfe         string  `protobuf:"bytes,84,opt,name=un_trib_nfe,json=unTribNfe,proto3" json:"un_trib_nfe,omitempty"`
+	QuantidadeTribNfe float64 `protobuf:"fixed64,85,opt,name=quantidade_trib_nfe,json=quantidadeTribNfe,proto3" json:"quantidade_trib_nfe,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *ItemModel) Reset() {
@@ -2965,6 +2979,34 @@ func (x *ItemModel) GetPedidoCompra() string {
 func (x *ItemModel) GetPedidoCompraItem() int32 {
 	if x != nil {
 		return x.PedidoCompraItem
+	}
+	return 0
+}
+
+func (x *ItemModel) GetCategoriaNome() string {
+	if x != nil {
+		return x.CategoriaNome
+	}
+	return ""
+}
+
+func (x *ItemModel) GetCodigoEanTrib() string {
+	if x != nil {
+		return x.CodigoEanTrib
+	}
+	return ""
+}
+
+func (x *ItemModel) GetUnTribNfe() string {
+	if x != nil {
+		return x.UnTribNfe
+	}
+	return ""
+}
+
+func (x *ItemModel) GetQuantidadeTribNfe() float64 {
+	if x != nil {
+		return x.QuantidadeTribNfe
 	}
 	return 0
 }
@@ -9170,7 +9212,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"cstsCofins\"]\n" +
 	"\x0fListNfeResponse\x12\"\n" +
 	"\anfeList\x18\x01 \x03(\v2\b.nfe.NfeR\anfeList\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x82+\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xc9+\n" +
 	"\x03Nfe\x12?\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
@@ -9300,7 +9342,8 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\x10tipo_nota_debito\x18m \x01(\tR\x0etipoNotaDebito\x12*\n" +
 	"\x11tipo_nota_credito\x18n \x01(\tR\x0ftipoNotaCredito\x12.\n" +
 	"\x13pag_antecipado_refs\x18o \x03(\tR\x11pagAntecipadoRefs\x12-\n" +
-	"\x0fidempotency_key\x18p \x01(\tB\x04\xe2A\x01\x03R\x0eidempotencyKey:\x03\xc0>\x01J\x04\bh\x10i\"\x9c\x04\n" +
+	"\x0fidempotency_key\x18p \x01(\tB\x04\xe2A\x01\x03R\x0eidempotencyKey\x12E\n" +
+	"\x1centrada_ia_vinculo_executado\x18q \x01(\bB\x04\xe2A\x01\x03R\x19entradaIaVinculoExecutado:\x03\xc0>\x01J\x04\bh\x10i\"\x9c\x04\n" +
 	"\x06Pessoa\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x14\n" +
@@ -9353,7 +9396,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\fbatch_number\x18\x02 \x01(\tR\vbatchNumber\x12C\n" +
 	"\x0fexpiration_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0eexpirationDate\x12I\n" +
 	"\x12manufacturing_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x11manufacturingDate\x12\x1a\n" +
-	"\bquantity\x18\x05 \x01(\x03R\bquantity\"\xdc\x17\n" +
+	"\bquantity\x18\x05 \x01(\x03R\bquantity\"\x8d\x19\n" +
 	"\tItemModel\x128\n" +
 	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
 	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x16\n" +
@@ -9439,7 +9482,11 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\fconversao_un\x18K \x01(\tR\vconversaoUn\x128\n" +
 	"\x18entrada_cadastra_produto\x18N \x01(\bR\x16entradaCadastraProduto\x12#\n" +
 	"\rpedido_compra\x18P \x01(\tR\fpedidoCompra\x12,\n" +
-	"\x12pedido_compra_item\x18Q \x01(\x05R\x10pedidoCompraItem\"\xf6\x03\n" +
+	"\x12pedido_compra_item\x18Q \x01(\x05R\x10pedidoCompraItem\x12%\n" +
+	"\x0ecategoria_nome\x18R \x01(\tR\rcategoriaNome\x12,\n" +
+	"\x0fcodigo_ean_trib\x18S \x01(\tB\x04\xe2A\x01\x03R\rcodigoEanTrib\x12$\n" +
+	"\vun_trib_nfe\x18T \x01(\tB\x04\xe2A\x01\x03R\tunTribNfe\x124\n" +
+	"\x13quantidade_trib_nfe\x18U \x01(\x01B\x04\xe2A\x01\x03R\x11quantidadeTribNfe\"\xf6\x03\n" +
 	"\n" +
 	"PostoDados\x12\x1c\n" +
 	"\tcodigoAnp\x18\x01 \x01(\tR\tcodigoAnp\x12.\n" +

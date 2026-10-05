@@ -43,6 +43,7 @@ const (
 	ContasReceberService_SendPaymentLink_FullMethodName       = "/contas.ContasReceberService/SendPaymentLink"
 	ContasReceberService_GeraBoleto_FullMethodName            = "/contas.ContasReceberService/GeraBoleto"
 	ContasReceberService_Fatura_FullMethodName                = "/contas.ContasReceberService/Fatura"
+	ContasReceberService_SugerePlanoContaIa_FullMethodName    = "/contas.ContasReceberService/SugerePlanoContaIa"
 )
 
 // ContasReceberServiceClient is the client API for ContasReceberService service.
@@ -77,6 +78,8 @@ type ContasReceberServiceClient interface {
 	// Junta títulos a receber pendentes, do mesmo cliente e sem pagamento, numa fatura com o
 	// vencimento informado. Os títulos saem da cobrança e voltam se a fatura for cancelada.
 	Fatura(ctx context.Context, in *FaturaRequest, opts ...grpc.CallOption) (*FaturaResponse, error)
+	// Sugere com IA o plano de contas e o centro de custo dos lançamentos filtrados. Não grava.
+	SugerePlanoContaIa(ctx context.Context, in *SugerePlanoContaIaRequest, opts ...grpc.CallOption) (*SugerePlanoContaIaResponse, error)
 }
 
 type contasReceberServiceClient struct {
@@ -327,6 +330,16 @@ func (c *contasReceberServiceClient) Fatura(ctx context.Context, in *FaturaReque
 	return out, nil
 }
 
+func (c *contasReceberServiceClient) SugerePlanoContaIa(ctx context.Context, in *SugerePlanoContaIaRequest, opts ...grpc.CallOption) (*SugerePlanoContaIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SugerePlanoContaIaResponse)
+	err := c.cc.Invoke(ctx, ContasReceberService_SugerePlanoContaIa_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContasReceberServiceServer is the server API for ContasReceberService service.
 // All implementations must embed UnimplementedContasReceberServiceServer
 // for forward compatibility.
@@ -359,6 +372,8 @@ type ContasReceberServiceServer interface {
 	// Junta títulos a receber pendentes, do mesmo cliente e sem pagamento, numa fatura com o
 	// vencimento informado. Os títulos saem da cobrança e voltam se a fatura for cancelada.
 	Fatura(context.Context, *FaturaRequest) (*FaturaResponse, error)
+	// Sugere com IA o plano de contas e o centro de custo dos lançamentos filtrados. Não grava.
+	SugerePlanoContaIa(context.Context, *SugerePlanoContaIaRequest) (*SugerePlanoContaIaResponse, error)
 	mustEmbedUnimplementedContasReceberServiceServer()
 }
 
@@ -440,6 +455,9 @@ func (UnimplementedContasReceberServiceServer) GeraBoleto(context.Context, *Gera
 }
 func (UnimplementedContasReceberServiceServer) Fatura(context.Context, *FaturaRequest) (*FaturaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Fatura not implemented")
+}
+func (UnimplementedContasReceberServiceServer) SugerePlanoContaIa(context.Context, *SugerePlanoContaIaRequest) (*SugerePlanoContaIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SugerePlanoContaIa not implemented")
 }
 func (UnimplementedContasReceberServiceServer) mustEmbedUnimplementedContasReceberServiceServer() {}
 func (UnimplementedContasReceberServiceServer) testEmbeddedByValue()                              {}
@@ -894,6 +912,24 @@ func _ContasReceberService_Fatura_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ContasReceberService_SugerePlanoContaIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SugerePlanoContaIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContasReceberServiceServer).SugerePlanoContaIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ContasReceberService_SugerePlanoContaIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContasReceberServiceServer).SugerePlanoContaIa(ctx, req.(*SugerePlanoContaIaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ContasReceberService_ServiceDesc is the grpc.ServiceDesc for ContasReceberService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -997,6 +1033,10 @@ var ContasReceberService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "Fatura",
 			Handler:    _ContasReceberService_Fatura_Handler,
 		},
+		{
+			MethodName: "SugerePlanoContaIa",
+			Handler:    _ContasReceberService_SugerePlanoContaIa_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "apps/financeiro/contas/contas.proto",
@@ -1024,6 +1064,8 @@ const (
 	ContasPagarService_GetOutstandingBalance_FullMethodName = "/contas.ContasPagarService/GetOutstandingBalance"
 	ContasPagarService_Export_FullMethodName                = "/contas.ContasPagarService/Export"
 	ContasPagarService_ImprimirRecibo_FullMethodName        = "/contas.ContasPagarService/ImprimirRecibo"
+	ContasPagarService_SugerePlanoContaIa_FullMethodName    = "/contas.ContasPagarService/SugerePlanoContaIa"
+	ContasPagarService_LeDocumentoIa_FullMethodName         = "/contas.ContasPagarService/LeDocumentoIa"
 )
 
 // ContasPagarServiceClient is the client API for ContasPagarService service.
@@ -1051,6 +1093,11 @@ type ContasPagarServiceClient interface {
 	GetOutstandingBalance(ctx context.Context, in *GetOutstandingBalanceRequest, opts ...grpc.CallOption) (*GetOutstandingBalanceResponse, error)
 	Export(ctx context.Context, in *ExportRequest, opts ...grpc.CallOption) (*ExportResponse, error)
 	ImprimirRecibo(ctx context.Context, in *ImprimirReciboRequest, opts ...grpc.CallOption) (*ImprimirReciboResponse, error)
+	// Sugere com IA o plano de contas e o centro de custo dos lançamentos filtrados. Não grava.
+	SugerePlanoContaIa(ctx context.Context, in *SugerePlanoContaIaRequest, opts ...grpc.CallOption) (*SugerePlanoContaIaResponse, error)
+	// Lê com IA a imagem de um boleto ou conta de consumo e devolve a conta a pagar preenchida
+	// para conferir. Não grava.
+	LeDocumentoIa(ctx context.Context, in *LeDocumentoIaRequest, opts ...grpc.CallOption) (*LeDocumentoIaResponse, error)
 }
 
 type contasPagarServiceClient struct {
@@ -1271,6 +1318,26 @@ func (c *contasPagarServiceClient) ImprimirRecibo(ctx context.Context, in *Impri
 	return out, nil
 }
 
+func (c *contasPagarServiceClient) SugerePlanoContaIa(ctx context.Context, in *SugerePlanoContaIaRequest, opts ...grpc.CallOption) (*SugerePlanoContaIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SugerePlanoContaIaResponse)
+	err := c.cc.Invoke(ctx, ContasPagarService_SugerePlanoContaIa_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *contasPagarServiceClient) LeDocumentoIa(ctx context.Context, in *LeDocumentoIaRequest, opts ...grpc.CallOption) (*LeDocumentoIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LeDocumentoIaResponse)
+	err := c.cc.Invoke(ctx, ContasPagarService_LeDocumentoIa_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ContasPagarServiceServer is the server API for ContasPagarService service.
 // All implementations must embed UnimplementedContasPagarServiceServer
 // for forward compatibility.
@@ -1296,6 +1363,11 @@ type ContasPagarServiceServer interface {
 	GetOutstandingBalance(context.Context, *GetOutstandingBalanceRequest) (*GetOutstandingBalanceResponse, error)
 	Export(context.Context, *ExportRequest) (*ExportResponse, error)
 	ImprimirRecibo(context.Context, *ImprimirReciboRequest) (*ImprimirReciboResponse, error)
+	// Sugere com IA o plano de contas e o centro de custo dos lançamentos filtrados. Não grava.
+	SugerePlanoContaIa(context.Context, *SugerePlanoContaIaRequest) (*SugerePlanoContaIaResponse, error)
+	// Lê com IA a imagem de um boleto ou conta de consumo e devolve a conta a pagar preenchida
+	// para conferir. Não grava.
+	LeDocumentoIa(context.Context, *LeDocumentoIaRequest) (*LeDocumentoIaResponse, error)
 	mustEmbedUnimplementedContasPagarServiceServer()
 }
 
@@ -1368,6 +1440,12 @@ func (UnimplementedContasPagarServiceServer) Export(context.Context, *ExportRequ
 }
 func (UnimplementedContasPagarServiceServer) ImprimirRecibo(context.Context, *ImprimirReciboRequest) (*ImprimirReciboResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ImprimirRecibo not implemented")
+}
+func (UnimplementedContasPagarServiceServer) SugerePlanoContaIa(context.Context, *SugerePlanoContaIaRequest) (*SugerePlanoContaIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SugerePlanoContaIa not implemented")
+}
+func (UnimplementedContasPagarServiceServer) LeDocumentoIa(context.Context, *LeDocumentoIaRequest) (*LeDocumentoIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LeDocumentoIa not implemented")
 }
 func (UnimplementedContasPagarServiceServer) mustEmbedUnimplementedContasPagarServiceServer() {}
 func (UnimplementedContasPagarServiceServer) testEmbeddedByValue()                            {}
@@ -1768,6 +1846,42 @@ func _ContasPagarService_ImprimirRecibo_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ContasPagarService_SugerePlanoContaIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SugerePlanoContaIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContasPagarServiceServer).SugerePlanoContaIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ContasPagarService_SugerePlanoContaIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContasPagarServiceServer).SugerePlanoContaIa(ctx, req.(*SugerePlanoContaIaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ContasPagarService_LeDocumentoIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeDocumentoIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ContasPagarServiceServer).LeDocumentoIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ContasPagarService_LeDocumentoIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ContasPagarServiceServer).LeDocumentoIa(ctx, req.(*LeDocumentoIaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ContasPagarService_ServiceDesc is the grpc.ServiceDesc for ContasPagarService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1858,6 +1972,14 @@ var ContasPagarService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ImprimirRecibo",
 			Handler:    _ContasPagarService_ImprimirRecibo_Handler,
+		},
+		{
+			MethodName: "SugerePlanoContaIa",
+			Handler:    _ContasPagarService_SugerePlanoContaIa_Handler,
+		},
+		{
+			MethodName: "LeDocumentoIa",
+			Handler:    _ContasPagarService_LeDocumentoIa_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

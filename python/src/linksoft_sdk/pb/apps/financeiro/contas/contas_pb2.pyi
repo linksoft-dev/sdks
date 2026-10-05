@@ -44,6 +44,72 @@ PERIODICIDADE_TRIMESTRAL: Periodicidade
 PERIODICIDADE_SEMESTRAL: Periodicidade
 PERIODICIDADE_ANUAL: Periodicidade
 
+class SugerePlanoContaIaRequest(_message.Message):
+    __slots__ = ("list_contas_request", "ai_integration_id")
+    LIST_CONTAS_REQUEST_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    list_contas_request: ListContasRequest
+    ai_integration_id: str
+    def __init__(self, list_contas_request: _Optional[_Union[ListContasRequest, _Mapping]] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
+
+class SugestaoPlanoConta(_message.Message):
+    __slots__ = ("conta_id", "plano_conta_id", "plano_conta_nome", "plano_conta_codigo", "centro_custo_id", "centro_custo_nome", "confianca", "motivo", "pelo_historico", "pessoa_nome", "descricao", "valor", "vencimento")
+    CONTA_ID_FIELD_NUMBER: _ClassVar[int]
+    PLANO_CONTA_ID_FIELD_NUMBER: _ClassVar[int]
+    PLANO_CONTA_NOME_FIELD_NUMBER: _ClassVar[int]
+    PLANO_CONTA_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    CENTRO_CUSTO_ID_FIELD_NUMBER: _ClassVar[int]
+    CENTRO_CUSTO_NOME_FIELD_NUMBER: _ClassVar[int]
+    CONFIANCA_FIELD_NUMBER: _ClassVar[int]
+    MOTIVO_FIELD_NUMBER: _ClassVar[int]
+    PELO_HISTORICO_FIELD_NUMBER: _ClassVar[int]
+    PESSOA_NOME_FIELD_NUMBER: _ClassVar[int]
+    DESCRICAO_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    VENCIMENTO_FIELD_NUMBER: _ClassVar[int]
+    conta_id: str
+    plano_conta_id: str
+    plano_conta_nome: str
+    plano_conta_codigo: str
+    centro_custo_id: str
+    centro_custo_nome: str
+    confianca: str
+    motivo: str
+    pelo_historico: bool
+    pessoa_nome: str
+    descricao: str
+    valor: float
+    vencimento: _timestamp_pb2.Timestamp
+    def __init__(self, conta_id: _Optional[str] = ..., plano_conta_id: _Optional[str] = ..., plano_conta_nome: _Optional[str] = ..., plano_conta_codigo: _Optional[str] = ..., centro_custo_id: _Optional[str] = ..., centro_custo_nome: _Optional[str] = ..., confianca: _Optional[str] = ..., motivo: _Optional[str] = ..., pelo_historico: _Optional[bool] = ..., pessoa_nome: _Optional[str] = ..., descricao: _Optional[str] = ..., valor: _Optional[float] = ..., vencimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class SugerePlanoContaIaResponse(_message.Message):
+    __slots__ = ("sugestoes", "ha_mais")
+    SUGESTOES_FIELD_NUMBER: _ClassVar[int]
+    HA_MAIS_FIELD_NUMBER: _ClassVar[int]
+    sugestoes: _containers.RepeatedCompositeFieldContainer[SugestaoPlanoConta]
+    ha_mais: bool
+    def __init__(self, sugestoes: _Optional[_Iterable[_Union[SugestaoPlanoConta, _Mapping]]] = ..., ha_mais: _Optional[bool] = ...) -> None: ...
+
+class LeDocumentoIaRequest(_message.Message):
+    __slots__ = ("imagem", "mime_type", "texto", "ai_integration_id")
+    IMAGEM_FIELD_NUMBER: _ClassVar[int]
+    MIME_TYPE_FIELD_NUMBER: _ClassVar[int]
+    TEXTO_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    imagem: bytes
+    mime_type: str
+    texto: str
+    ai_integration_id: str
+    def __init__(self, imagem: _Optional[bytes] = ..., mime_type: _Optional[str] = ..., texto: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
+
+class LeDocumentoIaResponse(_message.Message):
+    __slots__ = ("contas", "avisos")
+    CONTAS_FIELD_NUMBER: _ClassVar[int]
+    AVISOS_FIELD_NUMBER: _ClassVar[int]
+    contas: Contas
+    avisos: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, contas: _Optional[_Union[Contas, _Mapping]] = ..., avisos: _Optional[_Iterable[str]] = ...) -> None: ...
+
 class FaturaRequest(_message.Message):
     __slots__ = ("ids", "vencimento", "descricao")
     IDS_FIELD_NUMBER: _ClassVar[int]

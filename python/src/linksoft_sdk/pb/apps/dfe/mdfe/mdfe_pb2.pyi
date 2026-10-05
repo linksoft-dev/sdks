@@ -15,6 +15,28 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class ExplainRejectionRequest(_message.Message):
+    __slots__ = ("id", "ai_integration_id")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    ai_integration_id: str
+    def __init__(self, id: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
+
+class ExplainRejectionResponse(_message.Message):
+    __slots__ = ("cstat", "original_message", "explanation", "recommended_actions", "severity")
+    CSTAT_FIELD_NUMBER: _ClassVar[int]
+    ORIGINAL_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    EXPLANATION_FIELD_NUMBER: _ClassVar[int]
+    RECOMMENDED_ACTIONS_FIELD_NUMBER: _ClassVar[int]
+    SEVERITY_FIELD_NUMBER: _ClassVar[int]
+    cstat: str
+    original_message: str
+    explanation: str
+    recommended_actions: _containers.RepeatedScalarFieldContainer[str]
+    severity: str
+    def __init__(self, cstat: _Optional[str] = ..., original_message: _Optional[str] = ..., explanation: _Optional[str] = ..., recommended_actions: _Optional[_Iterable[str]] = ..., severity: _Optional[str] = ...) -> None: ...
+
 class Rodoviario(_message.Message):
     __slots__ = ("rntrc", "codigo_agendamento_porto", "tracao_cod_interno_veiculo", "tracao_tipo_carroceria", "tracao_placa", "tracao_tara", "tracao_renavam", "tracao_uf", "tracao_tipo_rodado", "tracao_capacidade_kg", "tracao_capacidade_m3", "tracao_proprietario_cpf_cnpj", "tracao_proprietario_nome", "tracao_proprietario_ie", "tracao_proprietario_uf", "tracao_proprietario_tipo", "ciot", "ciot_cpf_cnpj", "tracao_proprietario_rntrc")
     RNTRC_FIELD_NUMBER: _ClassVar[int]

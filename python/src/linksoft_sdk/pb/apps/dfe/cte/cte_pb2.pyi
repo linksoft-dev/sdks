@@ -119,6 +119,28 @@ TIPO_COMPONENTE_SEGURO: TipoComponenteVprest
 TIPO_COMPONENTE_DESPACHO: TipoComponenteVprest
 TIPO_COMPONENTE_OUTROS: TipoComponenteVprest
 
+class ExplainRejectionRequest(_message.Message):
+    __slots__ = ("id", "ai_integration_id")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    ai_integration_id: str
+    def __init__(self, id: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
+
+class ExplainRejectionResponse(_message.Message):
+    __slots__ = ("cstat", "original_message", "explanation", "recommended_actions", "severity")
+    CSTAT_FIELD_NUMBER: _ClassVar[int]
+    ORIGINAL_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    EXPLANATION_FIELD_NUMBER: _ClassVar[int]
+    RECOMMENDED_ACTIONS_FIELD_NUMBER: _ClassVar[int]
+    SEVERITY_FIELD_NUMBER: _ClassVar[int]
+    cstat: str
+    original_message: str
+    explanation: str
+    recommended_actions: _containers.RepeatedScalarFieldContainer[str]
+    severity: str
+    def __init__(self, cstat: _Optional[str] = ..., original_message: _Optional[str] = ..., explanation: _Optional[str] = ..., recommended_actions: _Optional[_Iterable[str]] = ..., severity: _Optional[str] = ...) -> None: ...
+
 class Cte(_message.Message):
     __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "account_id", "ambiente", "serie", "numero", "chave", "protocolo", "situacao", "valor_prestacao", "xml", "data_emissao", "operacao", "cfop", "natureza_operacao", "tipo_cte", "tipo_servico", "modal", "cte_globalizado", "municipio_inicio_codigo", "municipio_inicio_nome", "uf_inicio", "municipio_fim_codigo", "municipio_fim_nome", "uf_fim", "valor_receber", "valor_pedagio", "valor_tributos", "produto_predominante", "produto_predominante_id", "valor_carga", "peso_total", "quantidade_carga", "observacao", "data_hora_autorizacao", "xml_autorizacao", "tomador", "remetente", "destinatario", "rejeicoes", "expedidor", "recebedor", "cancelamento", "documentos_referenciados", "rntrc", "icms_cst", "icms_v_bc", "icms_p_icms", "icms_v_icms", "icms_p_red_bc", "componentes_prestacao")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]

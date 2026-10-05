@@ -48,6 +48,9 @@ const (
 	NfeEntradaService_NfeEntradaCienciaOperacao_FullMethodName         = "/nfe.NfeEntradaService/NfeEntradaCienciaOperacao"
 	NfeEntradaService_NfeEntradaDesconhecimentoOperacao_FullMethodName = "/nfe.NfeEntradaService/NfeEntradaDesconhecimentoOperacao"
 	NfeEntradaService_NfeEntradaOperacaoNaoRealizada_FullMethodName    = "/nfe.NfeEntradaService/NfeEntradaOperacaoNaoRealizada"
+	NfeEntradaService_NfeEntradaVinculaIa_FullMethodName               = "/nfe.NfeEntradaService/NfeEntradaVinculaIa"
+	NfeEntradaService_NfeEntradaSugerePrecosIa_FullMethodName          = "/nfe.NfeEntradaService/NfeEntradaSugerePrecosIa"
+	NfeEntradaService_NfeEntradaImportaImagem_FullMethodName           = "/nfe.NfeEntradaService/NfeEntradaImportaImagem"
 )
 
 // NfeEntradaServiceClient is the client API for NfeEntradaService service.
@@ -85,6 +88,13 @@ type NfeEntradaServiceClient interface {
 	NfeEntradaCienciaOperacao(ctx context.Context, in *NfeEntradaCienciaOperacaoRequest, opts ...grpc.CallOption) (*NfeEntradaCienciaOperacaoResponse, error)
 	NfeEntradaDesconhecimentoOperacao(ctx context.Context, in *NfeEntradaDesconhecimentoOperacaoRequest, opts ...grpc.CallOption) (*NfeEntradaDesconhecimentoOperacaoResponse, error)
 	NfeEntradaOperacaoNaoRealizada(ctx context.Context, in *NfeEntradaOperacaoNaoRealizadaRequest, opts ...grpc.CallOption) (*NfeEntradaOperacaoNaoRealizadaResponse, error)
+	// Vincula com IA os itens ainda sem produto aos produtos do estoque e sugere categoria para os que serão cadastrados
+	NfeEntradaVinculaIa(ctx context.Context, in *NfeEntradaVinculaIaRequest, opts ...grpc.CallOption) (*NfeEntradaVinculaIaResponse, error)
+	// Sugere com IA o preço de venda à vista dos itens da nota, sem gravar
+	NfeEntradaSugerePrecosIa(ctx context.Context, in *NfeEntradaSugerePrecosIaRequest, opts ...grpc.CallOption) (*NfeEntradaSugerePrecosIaResponse, error)
+	// Importa a nota de entrada pela foto do DANFE ou do cupom da NFC-e. A chave de acesso lida é
+	// conferida: NF-e segue a importação pela chave e NFC-e tem os itens lidos da foto.
+	NfeEntradaImportaImagem(ctx context.Context, in *NfeEntradaImportaImagemRequest, opts ...grpc.CallOption) (*NfeEntradaImportaImagemResponse, error)
 }
 
 type nfeEntradaServiceClient struct {
@@ -385,6 +395,36 @@ func (c *nfeEntradaServiceClient) NfeEntradaOperacaoNaoRealizada(ctx context.Con
 	return out, nil
 }
 
+func (c *nfeEntradaServiceClient) NfeEntradaVinculaIa(ctx context.Context, in *NfeEntradaVinculaIaRequest, opts ...grpc.CallOption) (*NfeEntradaVinculaIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NfeEntradaVinculaIaResponse)
+	err := c.cc.Invoke(ctx, NfeEntradaService_NfeEntradaVinculaIa_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nfeEntradaServiceClient) NfeEntradaSugerePrecosIa(ctx context.Context, in *NfeEntradaSugerePrecosIaRequest, opts ...grpc.CallOption) (*NfeEntradaSugerePrecosIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NfeEntradaSugerePrecosIaResponse)
+	err := c.cc.Invoke(ctx, NfeEntradaService_NfeEntradaSugerePrecosIa_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *nfeEntradaServiceClient) NfeEntradaImportaImagem(ctx context.Context, in *NfeEntradaImportaImagemRequest, opts ...grpc.CallOption) (*NfeEntradaImportaImagemResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(NfeEntradaImportaImagemResponse)
+	err := c.cc.Invoke(ctx, NfeEntradaService_NfeEntradaImportaImagem_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NfeEntradaServiceServer is the server API for NfeEntradaService service.
 // All implementations must embed UnimplementedNfeEntradaServiceServer
 // for forward compatibility.
@@ -420,6 +460,13 @@ type NfeEntradaServiceServer interface {
 	NfeEntradaCienciaOperacao(context.Context, *NfeEntradaCienciaOperacaoRequest) (*NfeEntradaCienciaOperacaoResponse, error)
 	NfeEntradaDesconhecimentoOperacao(context.Context, *NfeEntradaDesconhecimentoOperacaoRequest) (*NfeEntradaDesconhecimentoOperacaoResponse, error)
 	NfeEntradaOperacaoNaoRealizada(context.Context, *NfeEntradaOperacaoNaoRealizadaRequest) (*NfeEntradaOperacaoNaoRealizadaResponse, error)
+	// Vincula com IA os itens ainda sem produto aos produtos do estoque e sugere categoria para os que serão cadastrados
+	NfeEntradaVinculaIa(context.Context, *NfeEntradaVinculaIaRequest) (*NfeEntradaVinculaIaResponse, error)
+	// Sugere com IA o preço de venda à vista dos itens da nota, sem gravar
+	NfeEntradaSugerePrecosIa(context.Context, *NfeEntradaSugerePrecosIaRequest) (*NfeEntradaSugerePrecosIaResponse, error)
+	// Importa a nota de entrada pela foto do DANFE ou do cupom da NFC-e. A chave de acesso lida é
+	// conferida: NF-e segue a importação pela chave e NFC-e tem os itens lidos da foto.
+	NfeEntradaImportaImagem(context.Context, *NfeEntradaImportaImagemRequest) (*NfeEntradaImportaImagemResponse, error)
 	mustEmbedUnimplementedNfeEntradaServiceServer()
 }
 
@@ -516,6 +563,15 @@ func (UnimplementedNfeEntradaServiceServer) NfeEntradaDesconhecimentoOperacao(co
 }
 func (UnimplementedNfeEntradaServiceServer) NfeEntradaOperacaoNaoRealizada(context.Context, *NfeEntradaOperacaoNaoRealizadaRequest) (*NfeEntradaOperacaoNaoRealizadaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method NfeEntradaOperacaoNaoRealizada not implemented")
+}
+func (UnimplementedNfeEntradaServiceServer) NfeEntradaVinculaIa(context.Context, *NfeEntradaVinculaIaRequest) (*NfeEntradaVinculaIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NfeEntradaVinculaIa not implemented")
+}
+func (UnimplementedNfeEntradaServiceServer) NfeEntradaSugerePrecosIa(context.Context, *NfeEntradaSugerePrecosIaRequest) (*NfeEntradaSugerePrecosIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NfeEntradaSugerePrecosIa not implemented")
+}
+func (UnimplementedNfeEntradaServiceServer) NfeEntradaImportaImagem(context.Context, *NfeEntradaImportaImagemRequest) (*NfeEntradaImportaImagemResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NfeEntradaImportaImagem not implemented")
 }
 func (UnimplementedNfeEntradaServiceServer) mustEmbedUnimplementedNfeEntradaServiceServer() {}
 func (UnimplementedNfeEntradaServiceServer) testEmbeddedByValue()                           {}
@@ -1060,6 +1116,60 @@ func _NfeEntradaService_NfeEntradaOperacaoNaoRealizada_Handler(srv interface{}, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NfeEntradaService_NfeEntradaVinculaIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NfeEntradaVinculaIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NfeEntradaServiceServer).NfeEntradaVinculaIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NfeEntradaService_NfeEntradaVinculaIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NfeEntradaServiceServer).NfeEntradaVinculaIa(ctx, req.(*NfeEntradaVinculaIaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NfeEntradaService_NfeEntradaSugerePrecosIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NfeEntradaSugerePrecosIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NfeEntradaServiceServer).NfeEntradaSugerePrecosIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NfeEntradaService_NfeEntradaSugerePrecosIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NfeEntradaServiceServer).NfeEntradaSugerePrecosIa(ctx, req.(*NfeEntradaSugerePrecosIaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _NfeEntradaService_NfeEntradaImportaImagem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NfeEntradaImportaImagemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NfeEntradaServiceServer).NfeEntradaImportaImagem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NfeEntradaService_NfeEntradaImportaImagem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NfeEntradaServiceServer).NfeEntradaImportaImagem(ctx, req.(*NfeEntradaImportaImagemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NfeEntradaService_ServiceDesc is the grpc.ServiceDesc for NfeEntradaService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1182,6 +1292,18 @@ var NfeEntradaService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "NfeEntradaOperacaoNaoRealizada",
 			Handler:    _NfeEntradaService_NfeEntradaOperacaoNaoRealizada_Handler,
+		},
+		{
+			MethodName: "NfeEntradaVinculaIa",
+			Handler:    _NfeEntradaService_NfeEntradaVinculaIa_Handler,
+		},
+		{
+			MethodName: "NfeEntradaSugerePrecosIa",
+			Handler:    _NfeEntradaService_NfeEntradaSugerePrecosIa_Handler,
+		},
+		{
+			MethodName: "NfeEntradaImportaImagem",
+			Handler:    _NfeEntradaService_NfeEntradaImportaImagem_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

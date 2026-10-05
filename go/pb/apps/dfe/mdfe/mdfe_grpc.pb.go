@@ -30,6 +30,7 @@ const (
 	MdfeService_Encerrar_FullMethodName          = "/mdfe.MdfeService/Encerrar"
 	MdfeService_RecuperaProtocolo_FullMethodName = "/mdfe.MdfeService/RecuperaProtocolo"
 	MdfeService_ImportaXml_FullMethodName        = "/mdfe.MdfeService/ImportaXml"
+	MdfeService_ExplainRejection_FullMethodName  = "/mdfe.MdfeService/ExplainRejection"
 )
 
 // MdfeServiceClient is the client API for MdfeService service.
@@ -50,6 +51,8 @@ type MdfeServiceClient interface {
 	Encerrar(ctx context.Context, in *EncerrarRequest, opts ...grpc.CallOption) (*EncerrarResponse, error)
 	RecuperaProtocolo(ctx context.Context, in *RecuperaProtocoloRequest, opts ...grpc.CallOption) (*RecuperaProtocoloResponse, error)
 	ImportaXml(ctx context.Context, in *ImportaXmlRequest, opts ...grpc.CallOption) (*ImportaXmlResponse, error)
+	// Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
+	ExplainRejection(ctx context.Context, in *ExplainRejectionRequest, opts ...grpc.CallOption) (*ExplainRejectionResponse, error)
 }
 
 type mdfeServiceClient struct {
@@ -170,6 +173,16 @@ func (c *mdfeServiceClient) ImportaXml(ctx context.Context, in *ImportaXmlReques
 	return out, nil
 }
 
+func (c *mdfeServiceClient) ExplainRejection(ctx context.Context, in *ExplainRejectionRequest, opts ...grpc.CallOption) (*ExplainRejectionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExplainRejectionResponse)
+	err := c.cc.Invoke(ctx, MdfeService_ExplainRejection_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MdfeServiceServer is the server API for MdfeService service.
 // All implementations must embed UnimplementedMdfeServiceServer
 // for forward compatibility.
@@ -188,6 +201,8 @@ type MdfeServiceServer interface {
 	Encerrar(context.Context, *EncerrarRequest) (*EncerrarResponse, error)
 	RecuperaProtocolo(context.Context, *RecuperaProtocoloRequest) (*RecuperaProtocoloResponse, error)
 	ImportaXml(context.Context, *ImportaXmlRequest) (*ImportaXmlResponse, error)
+	// Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
+	ExplainRejection(context.Context, *ExplainRejectionRequest) (*ExplainRejectionResponse, error)
 	mustEmbedUnimplementedMdfeServiceServer()
 }
 
@@ -230,6 +245,9 @@ func (UnimplementedMdfeServiceServer) RecuperaProtocolo(context.Context, *Recupe
 }
 func (UnimplementedMdfeServiceServer) ImportaXml(context.Context, *ImportaXmlRequest) (*ImportaXmlResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ImportaXml not implemented")
+}
+func (UnimplementedMdfeServiceServer) ExplainRejection(context.Context, *ExplainRejectionRequest) (*ExplainRejectionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ExplainRejection not implemented")
 }
 func (UnimplementedMdfeServiceServer) mustEmbedUnimplementedMdfeServiceServer() {}
 func (UnimplementedMdfeServiceServer) testEmbeddedByValue()                     {}
@@ -450,6 +468,24 @@ func _MdfeService_ImportaXml_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MdfeService_ExplainRejection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExplainRejectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MdfeServiceServer).ExplainRejection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MdfeService_ExplainRejection_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MdfeServiceServer).ExplainRejection(ctx, req.(*ExplainRejectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MdfeService_ServiceDesc is the grpc.ServiceDesc for MdfeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -500,6 +536,10 @@ var MdfeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ImportaXml",
 			Handler:    _MdfeService_ImportaXml_Handler,
+		},
+		{
+			MethodName: "ExplainRejection",
+			Handler:    _MdfeService_ExplainRejection_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

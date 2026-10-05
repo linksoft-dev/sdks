@@ -40,6 +40,7 @@ const (
 	ProdutoService_Clone_FullMethodName                       = "/produto.ProdutoService/Clone"
 	ProdutoService_GetEstoqueGrupo_FullMethodName             = "/produto.ProdutoService/GetEstoqueGrupo"
 	ProdutoService_GenerateSeoMeta_FullMethodName             = "/produto.ProdutoService/GenerateSeoMeta"
+	ProdutoService_SugereFiscalIa_FullMethodName              = "/produto.ProdutoService/SugereFiscalIa"
 )
 
 // ProdutoServiceClient is the client API for ProdutoService service.
@@ -71,6 +72,9 @@ type ProdutoServiceClient interface {
 	// Saldo do mesmo produto nas outras empresas do grupo em que o usuário é membro.
 	GetEstoqueGrupo(ctx context.Context, in *GetEstoqueGrupoRequest, opts ...grpc.CallOption) (*GetEstoqueGrupoResponse, error)
 	GenerateSeoMeta(ctx context.Context, in *GenerateSeoMetaRequest, opts ...grpc.CallOption) (*GenerateSeoMetaResponse, error)
+	// Sugere com IA o NCM, o CEST e a tributação dos produtos, conferidos na tabela oficial de NCM e no
+	// cadastro de tributações. Não grava: quem aplica é quem chamou, depois de conferir.
+	SugereFiscalIa(ctx context.Context, in *SugereFiscalIaRequest, opts ...grpc.CallOption) (*SugereFiscalIaResponse, error)
 }
 
 type produtoServiceClient struct {
@@ -291,6 +295,16 @@ func (c *produtoServiceClient) GenerateSeoMeta(ctx context.Context, in *Generate
 	return out, nil
 }
 
+func (c *produtoServiceClient) SugereFiscalIa(ctx context.Context, in *SugereFiscalIaRequest, opts ...grpc.CallOption) (*SugereFiscalIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SugereFiscalIaResponse)
+	err := c.cc.Invoke(ctx, ProdutoService_SugereFiscalIa_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProdutoServiceServer is the server API for ProdutoService service.
 // All implementations must embed UnimplementedProdutoServiceServer
 // for forward compatibility.
@@ -320,6 +334,9 @@ type ProdutoServiceServer interface {
 	// Saldo do mesmo produto nas outras empresas do grupo em que o usuário é membro.
 	GetEstoqueGrupo(context.Context, *GetEstoqueGrupoRequest) (*GetEstoqueGrupoResponse, error)
 	GenerateSeoMeta(context.Context, *GenerateSeoMetaRequest) (*GenerateSeoMetaResponse, error)
+	// Sugere com IA o NCM, o CEST e a tributação dos produtos, conferidos na tabela oficial de NCM e no
+	// cadastro de tributações. Não grava: quem aplica é quem chamou, depois de conferir.
+	SugereFiscalIa(context.Context, *SugereFiscalIaRequest) (*SugereFiscalIaResponse, error)
 	mustEmbedUnimplementedProdutoServiceServer()
 }
 
@@ -392,6 +409,9 @@ func (UnimplementedProdutoServiceServer) GetEstoqueGrupo(context.Context, *GetEs
 }
 func (UnimplementedProdutoServiceServer) GenerateSeoMeta(context.Context, *GenerateSeoMetaRequest) (*GenerateSeoMetaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GenerateSeoMeta not implemented")
+}
+func (UnimplementedProdutoServiceServer) SugereFiscalIa(context.Context, *SugereFiscalIaRequest) (*SugereFiscalIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SugereFiscalIa not implemented")
 }
 func (UnimplementedProdutoServiceServer) mustEmbedUnimplementedProdutoServiceServer() {}
 func (UnimplementedProdutoServiceServer) testEmbeddedByValue()                        {}
@@ -792,6 +812,24 @@ func _ProdutoService_GenerateSeoMeta_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProdutoService_SugereFiscalIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SugereFiscalIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProdutoServiceServer).SugereFiscalIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProdutoService_SugereFiscalIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProdutoServiceServer).SugereFiscalIa(ctx, req.(*SugereFiscalIaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProdutoService_ServiceDesc is the grpc.ServiceDesc for ProdutoService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -882,6 +920,10 @@ var ProdutoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GenerateSeoMeta",
 			Handler:    _ProdutoService_GenerateSeoMeta_Handler,
+		},
+		{
+			MethodName: "SugereFiscalIa",
+			Handler:    _ProdutoService_SugereFiscalIa_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

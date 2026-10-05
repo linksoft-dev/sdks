@@ -105,6 +105,11 @@ class CteServiceStub:
                 request_serializer=apps_dot_dfe_dot_cte_dot_cte__pb2.DeleteComponentePrestacaoRequest.SerializeToString,
                 response_deserializer=apps_dot_dfe_dot_cte_dot_cte__pb2.DeleteComponentePrestacaoResponse.FromString,
                 _registered_method=True)
+        self.ExplainRejection = channel.unary_unary(
+                '/cte.CteService/ExplainRejection',
+                request_serializer=apps_dot_dfe_dot_cte_dot_cte__pb2.ExplainRejectionRequest.SerializeToString,
+                response_deserializer=apps_dot_dfe_dot_cte_dot_cte__pb2.ExplainRejectionResponse.FromString,
+                _registered_method=True)
 
 
 class CteServiceServicer:
@@ -220,6 +225,13 @@ class CteServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ExplainRejection(self, request, context):
+        """Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_CteServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -312,6 +324,11 @@ def add_CteServiceServicer_to_server(servicer, server):
                     servicer.DeleteComponentePrestacao,
                     request_deserializer=apps_dot_dfe_dot_cte_dot_cte__pb2.DeleteComponentePrestacaoRequest.FromString,
                     response_serializer=apps_dot_dfe_dot_cte_dot_cte__pb2.DeleteComponentePrestacaoResponse.SerializeToString,
+            ),
+            'ExplainRejection': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExplainRejection,
+                    request_deserializer=apps_dot_dfe_dot_cte_dot_cte__pb2.ExplainRejectionRequest.FromString,
+                    response_serializer=apps_dot_dfe_dot_cte_dot_cte__pb2.ExplainRejectionResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -801,6 +818,33 @@ class CteService:
             '/cte.CteService/DeleteComponentePrestacao',
             apps_dot_dfe_dot_cte_dot_cte__pb2.DeleteComponentePrestacaoRequest.SerializeToString,
             apps_dot_dfe_dot_cte_dot_cte__pb2.DeleteComponentePrestacaoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ExplainRejection(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/cte.CteService/ExplainRejection',
+            apps_dot_dfe_dot_cte_dot_cte__pb2.ExplainRejectionRequest.SerializeToString,
+            apps_dot_dfe_dot_cte_dot_cte__pb2.ExplainRejectionResponse.FromString,
             options,
             channel_credentials,
             insecure,

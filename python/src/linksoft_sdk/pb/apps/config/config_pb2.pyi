@@ -71,7 +71,7 @@ class CertificadoModel(_message.Message):
     def __init__(self, arquivo_nome: _Optional[str] = ..., validade: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., senha: _Optional[str] = ..., conteudo_upload: _Optional[str] = ..., download_link: _Optional[str] = ...) -> None: ...
 
 class ConfigNfe(_message.Message):
-    __slots__ = ("ambiente_padrao", "serie_padrao", "data_hora_status", "entrada_consulta_bloqueada_ate", "entrada_nsu", "entrada_busca_automatica", "auto_atualiza_preco")
+    __slots__ = ("ambiente_padrao", "serie_padrao", "data_hora_status", "entrada_consulta_bloqueada_ate", "entrada_nsu", "entrada_busca_automatica", "auto_atualiza_preco", "entrada_vincula_itens_ia", "entrada_politica_preco_ia")
     AMBIENTE_PADRAO_FIELD_NUMBER: _ClassVar[int]
     SERIE_PADRAO_FIELD_NUMBER: _ClassVar[int]
     DATA_HORA_STATUS_FIELD_NUMBER: _ClassVar[int]
@@ -79,6 +79,8 @@ class ConfigNfe(_message.Message):
     ENTRADA_NSU_FIELD_NUMBER: _ClassVar[int]
     ENTRADA_BUSCA_AUTOMATICA_FIELD_NUMBER: _ClassVar[int]
     AUTO_ATUALIZA_PRECO_FIELD_NUMBER: _ClassVar[int]
+    ENTRADA_VINCULA_ITENS_IA_FIELD_NUMBER: _ClassVar[int]
+    ENTRADA_POLITICA_PRECO_IA_FIELD_NUMBER: _ClassVar[int]
     ambiente_padrao: str
     serie_padrao: int
     data_hora_status: _timestamp_pb2.Timestamp
@@ -86,7 +88,9 @@ class ConfigNfe(_message.Message):
     entrada_nsu: int
     entrada_busca_automatica: bool
     auto_atualiza_preco: bool
-    def __init__(self, ambiente_padrao: _Optional[str] = ..., serie_padrao: _Optional[int] = ..., data_hora_status: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_consulta_bloqueada_ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_nsu: _Optional[int] = ..., entrada_busca_automatica: _Optional[bool] = ..., auto_atualiza_preco: _Optional[bool] = ...) -> None: ...
+    entrada_vincula_itens_ia: bool
+    entrada_politica_preco_ia: str
+    def __init__(self, ambiente_padrao: _Optional[str] = ..., serie_padrao: _Optional[int] = ..., data_hora_status: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_consulta_bloqueada_ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_nsu: _Optional[int] = ..., entrada_busca_automatica: _Optional[bool] = ..., auto_atualiza_preco: _Optional[bool] = ..., entrada_vincula_itens_ia: _Optional[bool] = ..., entrada_politica_preco_ia: _Optional[str] = ...) -> None: ...
 
 class ConfigNfce(_message.Message):
     __slots__ = ("ambiente_padrao", "serie_padrao", "data_hora_status", "entrada_consulta_bloqueada_ate", "entrada_nsu", "entrada_busca_automatica", "auto_atualiza_preco", "csc", "token")

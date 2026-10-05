@@ -42,6 +42,7 @@ const (
 	NfseService_DownloadXmlCompetencia_FullMethodName = "/nfse.NfseService/DownloadXmlCompetencia"
 	NfseService_EnviaXmlCompetencia_FullMethodName    = "/nfse.NfseService/EnviaXmlCompetencia"
 	NfseService_ImportaXml_FullMethodName             = "/nfse.NfseService/ImportaXml"
+	NfseService_ExplainRejection_FullMethodName       = "/nfse.NfseService/ExplainRejection"
 )
 
 // NfseServiceClient is the client API for NfseService service.
@@ -78,6 +79,8 @@ type NfseServiceClient interface {
 	EnviaXmlCompetencia(ctx context.Context, in *EnviaXmlCompetenciaRequest, opts ...grpc.CallOption) (*EnviaXmlCompetenciaResponse, error)
 	// Importação de XML de NFSe (individual, ZIP ou ListaNfseCompetencia)
 	ImportaXml(ctx context.Context, in *ImportaXmlRequest, opts ...grpc.CallOption) (*ImportaXmlResponse, error)
+	// Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
+	ExplainRejection(ctx context.Context, in *ExplainRejectionRequest, opts ...grpc.CallOption) (*ExplainRejectionResponse, error)
 }
 
 type nfseServiceClient struct {
@@ -318,6 +321,16 @@ func (c *nfseServiceClient) ImportaXml(ctx context.Context, in *ImportaXmlReques
 	return out, nil
 }
 
+func (c *nfseServiceClient) ExplainRejection(ctx context.Context, in *ExplainRejectionRequest, opts ...grpc.CallOption) (*ExplainRejectionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExplainRejectionResponse)
+	err := c.cc.Invoke(ctx, NfseService_ExplainRejection_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NfseServiceServer is the server API for NfseService service.
 // All implementations must embed UnimplementedNfseServiceServer
 // for forward compatibility.
@@ -352,6 +365,8 @@ type NfseServiceServer interface {
 	EnviaXmlCompetencia(context.Context, *EnviaXmlCompetenciaRequest) (*EnviaXmlCompetenciaResponse, error)
 	// Importação de XML de NFSe (individual, ZIP ou ListaNfseCompetencia)
 	ImportaXml(context.Context, *ImportaXmlRequest) (*ImportaXmlResponse, error)
+	// Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
+	ExplainRejection(context.Context, *ExplainRejectionRequest) (*ExplainRejectionResponse, error)
 	mustEmbedUnimplementedNfseServiceServer()
 }
 
@@ -430,6 +445,9 @@ func (UnimplementedNfseServiceServer) EnviaXmlCompetencia(context.Context, *Envi
 }
 func (UnimplementedNfseServiceServer) ImportaXml(context.Context, *ImportaXmlRequest) (*ImportaXmlResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ImportaXml not implemented")
+}
+func (UnimplementedNfseServiceServer) ExplainRejection(context.Context, *ExplainRejectionRequest) (*ExplainRejectionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ExplainRejection not implemented")
 }
 func (UnimplementedNfseServiceServer) mustEmbedUnimplementedNfseServiceServer() {}
 func (UnimplementedNfseServiceServer) testEmbeddedByValue()                     {}
@@ -866,6 +884,24 @@ func _NfseService_ImportaXml_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NfseService_ExplainRejection_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExplainRejectionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NfseServiceServer).ExplainRejection(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NfseService_ExplainRejection_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NfseServiceServer).ExplainRejection(ctx, req.(*ExplainRejectionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // NfseService_ServiceDesc is the grpc.ServiceDesc for NfseService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -964,6 +1000,10 @@ var NfseService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ImportaXml",
 			Handler:    _NfseService_ImportaXml_Handler,
+		},
+		{
+			MethodName: "ExplainRejection",
+			Handler:    _NfseService_ExplainRejection_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -329,8 +329,12 @@ type ConfigNfe struct {
 	EntradaNsu                  int32                  `protobuf:"varint,5,opt,name=entrada_nsu,json=entradaNsu,proto3" json:"entrada_nsu,omitempty"`
 	EntradaBuscaAutomatica      bool                   `protobuf:"varint,6,opt,name=entrada_busca_automatica,json=entradaBuscaAutomatica,proto3" json:"entrada_busca_automatica,omitempty"`
 	AutoAtualizaPreco           bool                   `protobuf:"varint,7,opt,name=auto_atualiza_preco,json=autoAtualizaPreco,proto3" json:"auto_atualiza_preco,omitempty"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	// Ao abrir o aceite da nota de entrada, a IA vincula os itens que ainda não têm produto
+	EntradaVinculaItensIa bool `protobuf:"varint,8,opt,name=entrada_vincula_itens_ia,json=entradaVinculaItensIa,proto3" json:"entrada_vincula_itens_ia,omitempty"`
+	// Regras de formação de preço que a IA segue ao sugerir preços na nota de entrada
+	EntradaPoliticaPrecoIa string `protobuf:"bytes,9,opt,name=entrada_politica_preco_ia,json=entradaPoliticaPrecoIa,proto3" json:"entrada_politica_preco_ia,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *ConfigNfe) Reset() {
@@ -410,6 +414,20 @@ func (x *ConfigNfe) GetAutoAtualizaPreco() bool {
 		return x.AutoAtualizaPreco
 	}
 	return false
+}
+
+func (x *ConfigNfe) GetEntradaVinculaItensIa() bool {
+	if x != nil {
+		return x.EntradaVinculaItensIa
+	}
+	return false
+}
+
+func (x *ConfigNfe) GetEntradaPoliticaPrecoIa() string {
+	if x != nil {
+		return x.EntradaPoliticaPrecoIa
+	}
+	return ""
 }
 
 type ConfigNfce struct {
@@ -820,7 +838,7 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\bvalidade\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\bvalidade\x12\x14\n" +
 	"\x05senha\x18\x03 \x01(\tR\x05senha\x12'\n" +
 	"\x0fconteudo_upload\x18\x04 \x01(\tR\x0econteudoUpload\x12#\n" +
-	"\rdownload_link\x18\x05 \x01(\tR\fdownloadLink\"\x89\x03\n" +
+	"\rdownload_link\x18\x05 \x01(\tR\fdownloadLink\"\xfd\x03\n" +
 	"\tConfigNfe\x12'\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\tR\x0eambientePadrao\x12!\n" +
 	"\fserie_padrao\x18\x02 \x01(\x05R\vseriePadrao\x12D\n" +
@@ -829,7 +847,9 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\ventrada_nsu\x18\x05 \x01(\x05R\n" +
 	"entradaNsu\x128\n" +
 	"\x18entrada_busca_automatica\x18\x06 \x01(\bR\x16entradaBuscaAutomatica\x12.\n" +
-	"\x13auto_atualiza_preco\x18\a \x01(\bR\x11autoAtualizaPreco\"\xb2\x03\n" +
+	"\x13auto_atualiza_preco\x18\a \x01(\bR\x11autoAtualizaPreco\x127\n" +
+	"\x18entrada_vincula_itens_ia\x18\b \x01(\bR\x15entradaVinculaItensIa\x129\n" +
+	"\x19entrada_politica_preco_ia\x18\t \x01(\tR\x16entradaPoliticaPrecoIa\"\xb2\x03\n" +
 	"\n" +
 	"ConfigNfce\x12'\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\tR\x0eambientePadrao\x12!\n" +

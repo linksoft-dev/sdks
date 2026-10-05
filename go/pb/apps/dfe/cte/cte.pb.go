@@ -434,6 +434,135 @@ func (TipoComponenteVprest) EnumDescriptor() ([]byte, []int) {
 	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{6}
 }
 
+type ExplainRejectionRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Integração de IA da empresa que executa a geração. Vazio usa a IA nativa do sistema, cobrada em créditos.
+	AiIntegrationId string `protobuf:"bytes,2,opt,name=ai_integration_id,json=aiIntegrationId,proto3" json:"ai_integration_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ExplainRejectionRequest) Reset() {
+	*x = ExplainRejectionRequest{}
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExplainRejectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExplainRejectionRequest) ProtoMessage() {}
+
+func (x *ExplainRejectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExplainRejectionRequest.ProtoReflect.Descriptor instead.
+func (*ExplainRejectionRequest) Descriptor() ([]byte, []int) {
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ExplainRejectionRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *ExplainRejectionRequest) GetAiIntegrationId() string {
+	if x != nil {
+		return x.AiIntegrationId
+	}
+	return ""
+}
+
+type ExplainRejectionResponse struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Cstat              string                 `protobuf:"bytes,1,opt,name=cstat,proto3" json:"cstat,omitempty"`                                            // código da rejeição mais recente
+	OriginalMessage    string                 `protobuf:"bytes,2,opt,name=original_message,json=originalMessage,proto3" json:"original_message,omitempty"` // mensagem devolvida pelo órgão
+	Explanation        string                 `protobuf:"bytes,3,opt,name=explanation,proto3" json:"explanation,omitempty"`                                // o que aconteceu, em linguagem simples
+	RecommendedActions []string               `protobuf:"bytes,4,rep,name=recommended_actions,json=recommendedActions,proto3" json:"recommended_actions,omitempty"`
+	Severity           string                 `protobuf:"bytes,5,opt,name=severity,proto3" json:"severity,omitempty"` // info, warning ou critical
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *ExplainRejectionResponse) Reset() {
+	*x = ExplainRejectionResponse{}
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExplainRejectionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExplainRejectionResponse) ProtoMessage() {}
+
+func (x *ExplainRejectionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExplainRejectionResponse.ProtoReflect.Descriptor instead.
+func (*ExplainRejectionResponse) Descriptor() ([]byte, []int) {
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ExplainRejectionResponse) GetCstat() string {
+	if x != nil {
+		return x.Cstat
+	}
+	return ""
+}
+
+func (x *ExplainRejectionResponse) GetOriginalMessage() string {
+	if x != nil {
+		return x.OriginalMessage
+	}
+	return ""
+}
+
+func (x *ExplainRejectionResponse) GetExplanation() string {
+	if x != nil {
+		return x.Explanation
+	}
+	return ""
+}
+
+func (x *ExplainRejectionResponse) GetRecommendedActions() []string {
+	if x != nil {
+		return x.RecommendedActions
+	}
+	return nil
+}
+
+func (x *ExplainRejectionResponse) GetSeverity() string {
+	if x != nil {
+		return x.Severity
+	}
+	return ""
+}
+
 // Registro principal do CT-e
 type Cte struct {
 	state                   protoimpl.MessageState `protogen:"open.v1"`
@@ -500,7 +629,7 @@ type Cte struct {
 
 func (x *Cte) Reset() {
 	*x = Cte{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[0]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -512,7 +641,7 @@ func (x *Cte) String() string {
 func (*Cte) ProtoMessage() {}
 
 func (x *Cte) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[0]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -525,7 +654,7 @@ func (x *Cte) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Cte.ProtoReflect.Descriptor instead.
 func (*Cte) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{0}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Cte) GetCreatedAt() *timestamppb.Timestamp {
@@ -926,7 +1055,7 @@ type ComponenteVprest struct {
 
 func (x *ComponenteVprest) Reset() {
 	*x = ComponenteVprest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[1]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -938,7 +1067,7 @@ func (x *ComponenteVprest) String() string {
 func (*ComponenteVprest) ProtoMessage() {}
 
 func (x *ComponenteVprest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[1]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -951,7 +1080,7 @@ func (x *ComponenteVprest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ComponenteVprest.ProtoReflect.Descriptor instead.
 func (*ComponenteVprest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{1}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ComponenteVprest) GetId() string {
@@ -994,7 +1123,7 @@ type DocReferenciado struct {
 
 func (x *DocReferenciado) Reset() {
 	*x = DocReferenciado{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[2]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1006,7 +1135,7 @@ func (x *DocReferenciado) String() string {
 func (*DocReferenciado) ProtoMessage() {}
 
 func (x *DocReferenciado) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[2]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1019,7 +1148,7 @@ func (x *DocReferenciado) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DocReferenciado.ProtoReflect.Descriptor instead.
 func (*DocReferenciado) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{2}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *DocReferenciado) GetChave() string {
@@ -1065,7 +1194,7 @@ type Parte struct {
 
 func (x *Parte) Reset() {
 	*x = Parte{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[3]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1077,7 +1206,7 @@ func (x *Parte) String() string {
 func (*Parte) ProtoMessage() {}
 
 func (x *Parte) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[3]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1090,7 +1219,7 @@ func (x *Parte) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Parte.ProtoReflect.Descriptor instead.
 func (*Parte) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{3}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Parte) GetDocumento() string {
@@ -1204,7 +1333,7 @@ type Tomador struct {
 
 func (x *Tomador) Reset() {
 	*x = Tomador{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[4]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1216,7 +1345,7 @@ func (x *Tomador) String() string {
 func (*Tomador) ProtoMessage() {}
 
 func (x *Tomador) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[4]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1229,7 +1358,7 @@ func (x *Tomador) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Tomador.ProtoReflect.Descriptor instead.
 func (*Tomador) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{4}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *Tomador) GetServico() TomadorServico {
@@ -1279,7 +1408,7 @@ type Cancelamento struct {
 
 func (x *Cancelamento) Reset() {
 	*x = Cancelamento{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[5]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1291,7 +1420,7 @@ func (x *Cancelamento) String() string {
 func (*Cancelamento) ProtoMessage() {}
 
 func (x *Cancelamento) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[5]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1304,7 +1433,7 @@ func (x *Cancelamento) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Cancelamento.ProtoReflect.Descriptor instead.
 func (*Cancelamento) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{5}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Cancelamento) GetProtocolo() string {
@@ -1348,7 +1477,7 @@ type Rejeicao struct {
 
 func (x *Rejeicao) Reset() {
 	*x = Rejeicao{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[6]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1360,7 +1489,7 @@ func (x *Rejeicao) String() string {
 func (*Rejeicao) ProtoMessage() {}
 
 func (x *Rejeicao) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[6]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1373,7 +1502,7 @@ func (x *Rejeicao) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rejeicao.ProtoReflect.Descriptor instead.
 func (*Rejeicao) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{6}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Rejeicao) GetId() string {
@@ -1421,7 +1550,7 @@ type CreateCteRequest struct {
 
 func (x *CreateCteRequest) Reset() {
 	*x = CreateCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[7]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1433,7 +1562,7 @@ func (x *CreateCteRequest) String() string {
 func (*CreateCteRequest) ProtoMessage() {}
 
 func (x *CreateCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[7]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1446,7 +1575,7 @@ func (x *CreateCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCteRequest.ProtoReflect.Descriptor instead.
 func (*CreateCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{7}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateCteRequest) GetCte() *Cte {
@@ -1465,7 +1594,7 @@ type CreateCteResponse struct {
 
 func (x *CreateCteResponse) Reset() {
 	*x = CreateCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[8]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1477,7 +1606,7 @@ func (x *CreateCteResponse) String() string {
 func (*CreateCteResponse) ProtoMessage() {}
 
 func (x *CreateCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[8]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1490,7 +1619,7 @@ func (x *CreateCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateCteResponse.ProtoReflect.Descriptor instead.
 func (*CreateCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{8}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CreateCteResponse) GetCte() *Cte {
@@ -1511,7 +1640,7 @@ type UpdateCteRequest struct {
 
 func (x *UpdateCteRequest) Reset() {
 	*x = UpdateCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[9]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1523,7 +1652,7 @@ func (x *UpdateCteRequest) String() string {
 func (*UpdateCteRequest) ProtoMessage() {}
 
 func (x *UpdateCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[9]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1536,7 +1665,7 @@ func (x *UpdateCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCteRequest.ProtoReflect.Descriptor instead.
 func (*UpdateCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{9}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *UpdateCteRequest) GetId() string {
@@ -1569,7 +1698,7 @@ type UpdateCteResponse struct {
 
 func (x *UpdateCteResponse) Reset() {
 	*x = UpdateCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[10]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1581,7 +1710,7 @@ func (x *UpdateCteResponse) String() string {
 func (*UpdateCteResponse) ProtoMessage() {}
 
 func (x *UpdateCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[10]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1594,7 +1723,7 @@ func (x *UpdateCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCteResponse.ProtoReflect.Descriptor instead.
 func (*UpdateCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{10}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *UpdateCteResponse) GetCte() *Cte {
@@ -1614,7 +1743,7 @@ type DeleteCteRequest struct {
 
 func (x *DeleteCteRequest) Reset() {
 	*x = DeleteCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[11]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1626,7 +1755,7 @@ func (x *DeleteCteRequest) String() string {
 func (*DeleteCteRequest) ProtoMessage() {}
 
 func (x *DeleteCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[11]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1639,7 +1768,7 @@ func (x *DeleteCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{11}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *DeleteCteRequest) GetId() string {
@@ -1665,7 +1794,7 @@ type DeleteCteResponse struct {
 
 func (x *DeleteCteResponse) Reset() {
 	*x = DeleteCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[12]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1677,7 +1806,7 @@ func (x *DeleteCteResponse) String() string {
 func (*DeleteCteResponse) ProtoMessage() {}
 
 func (x *DeleteCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[12]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1690,7 +1819,7 @@ func (x *DeleteCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteCteResponse.ProtoReflect.Descriptor instead.
 func (*DeleteCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{12}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *DeleteCteResponse) GetSuccess() bool {
@@ -1709,7 +1838,7 @@ type GetCteRequest struct {
 
 func (x *GetCteRequest) Reset() {
 	*x = GetCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[13]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1721,7 +1850,7 @@ func (x *GetCteRequest) String() string {
 func (*GetCteRequest) ProtoMessage() {}
 
 func (x *GetCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[13]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1734,7 +1863,7 @@ func (x *GetCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCteRequest.ProtoReflect.Descriptor instead.
 func (*GetCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{13}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GetCteRequest) GetId() string {
@@ -1753,7 +1882,7 @@ type GetCteResponse struct {
 
 func (x *GetCteResponse) Reset() {
 	*x = GetCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[14]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1765,7 +1894,7 @@ func (x *GetCteResponse) String() string {
 func (*GetCteResponse) ProtoMessage() {}
 
 func (x *GetCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[14]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1778,7 +1907,7 @@ func (x *GetCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCteResponse.ProtoReflect.Descriptor instead.
 func (*GetCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{14}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *GetCteResponse) GetCte() *Cte {
@@ -1804,7 +1933,7 @@ type ListCteRequest struct {
 
 func (x *ListCteRequest) Reset() {
 	*x = ListCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[15]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1816,7 +1945,7 @@ func (x *ListCteRequest) String() string {
 func (*ListCteRequest) ProtoMessage() {}
 
 func (x *ListCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[15]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1829,7 +1958,7 @@ func (x *ListCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCteRequest.ProtoReflect.Descriptor instead.
 func (*ListCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{15}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ListCteRequest) GetIds() []string {
@@ -1898,7 +2027,7 @@ type ListCteResponse struct {
 
 func (x *ListCteResponse) Reset() {
 	*x = ListCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[16]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1910,7 +2039,7 @@ func (x *ListCteResponse) String() string {
 func (*ListCteResponse) ProtoMessage() {}
 
 func (x *ListCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[16]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1923,7 +2052,7 @@ func (x *ListCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCteResponse.ProtoReflect.Descriptor instead.
 func (*ListCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{16}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ListCteResponse) GetCteList() []*Cte {
@@ -1950,7 +2079,7 @@ type EmitirCteRequest struct {
 
 func (x *EmitirCteRequest) Reset() {
 	*x = EmitirCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[17]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1962,7 +2091,7 @@ func (x *EmitirCteRequest) String() string {
 func (*EmitirCteRequest) ProtoMessage() {}
 
 func (x *EmitirCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[17]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1975,7 +2104,7 @@ func (x *EmitirCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmitirCteRequest.ProtoReflect.Descriptor instead.
 func (*EmitirCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{17}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *EmitirCteRequest) GetId() string {
@@ -1995,7 +2124,7 @@ type EmitirCteResponse struct {
 
 func (x *EmitirCteResponse) Reset() {
 	*x = EmitirCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[18]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2007,7 +2136,7 @@ func (x *EmitirCteResponse) String() string {
 func (*EmitirCteResponse) ProtoMessage() {}
 
 func (x *EmitirCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[18]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2020,7 +2149,7 @@ func (x *EmitirCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmitirCteResponse.ProtoReflect.Descriptor instead.
 func (*EmitirCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{18}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *EmitirCteResponse) GetCte() *Cte {
@@ -2048,7 +2177,7 @@ type CancelarCteRequest struct {
 
 func (x *CancelarCteRequest) Reset() {
 	*x = CancelarCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[19]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2060,7 +2189,7 @@ func (x *CancelarCteRequest) String() string {
 func (*CancelarCteRequest) ProtoMessage() {}
 
 func (x *CancelarCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[19]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2073,7 +2202,7 @@ func (x *CancelarCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelarCteRequest.ProtoReflect.Descriptor instead.
 func (*CancelarCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{19}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *CancelarCteRequest) GetId() string {
@@ -2100,7 +2229,7 @@ type CancelarCteResponse struct {
 
 func (x *CancelarCteResponse) Reset() {
 	*x = CancelarCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[20]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2112,7 +2241,7 @@ func (x *CancelarCteResponse) String() string {
 func (*CancelarCteResponse) ProtoMessage() {}
 
 func (x *CancelarCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[20]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2125,7 +2254,7 @@ func (x *CancelarCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelarCteResponse.ProtoReflect.Descriptor instead.
 func (*CancelarCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{20}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *CancelarCteResponse) GetCte() *Cte {
@@ -2153,7 +2282,7 @@ type CorrigirCteRequest struct {
 
 func (x *CorrigirCteRequest) Reset() {
 	*x = CorrigirCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[21]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2165,7 +2294,7 @@ func (x *CorrigirCteRequest) String() string {
 func (*CorrigirCteRequest) ProtoMessage() {}
 
 func (x *CorrigirCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[21]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2178,7 +2307,7 @@ func (x *CorrigirCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CorrigirCteRequest.ProtoReflect.Descriptor instead.
 func (*CorrigirCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{21}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *CorrigirCteRequest) GetId() string {
@@ -2205,7 +2334,7 @@ type CorrigirCteResponse struct {
 
 func (x *CorrigirCteResponse) Reset() {
 	*x = CorrigirCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[22]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2217,7 +2346,7 @@ func (x *CorrigirCteResponse) String() string {
 func (*CorrigirCteResponse) ProtoMessage() {}
 
 func (x *CorrigirCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[22]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2230,7 +2359,7 @@ func (x *CorrigirCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CorrigirCteResponse.ProtoReflect.Descriptor instead.
 func (*CorrigirCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{22}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *CorrigirCteResponse) GetCte() *Cte {
@@ -2258,7 +2387,7 @@ type ConsultaProtocoloRequest struct {
 
 func (x *ConsultaProtocoloRequest) Reset() {
 	*x = ConsultaProtocoloRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[23]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2270,7 +2399,7 @@ func (x *ConsultaProtocoloRequest) String() string {
 func (*ConsultaProtocoloRequest) ProtoMessage() {}
 
 func (x *ConsultaProtocoloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[23]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2283,7 +2412,7 @@ func (x *ConsultaProtocoloRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsultaProtocoloRequest.ProtoReflect.Descriptor instead.
 func (*ConsultaProtocoloRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{23}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *ConsultaProtocoloRequest) GetId() string {
@@ -2311,7 +2440,7 @@ type ConsultaProtocoloResponse struct {
 
 func (x *ConsultaProtocoloResponse) Reset() {
 	*x = ConsultaProtocoloResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[24]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2323,7 +2452,7 @@ func (x *ConsultaProtocoloResponse) String() string {
 func (*ConsultaProtocoloResponse) ProtoMessage() {}
 
 func (x *ConsultaProtocoloResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[24]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2336,7 +2465,7 @@ func (x *ConsultaProtocoloResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsultaProtocoloResponse.ProtoReflect.Descriptor instead.
 func (*ConsultaProtocoloResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{24}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ConsultaProtocoloResponse) GetProtocolo() string {
@@ -2371,7 +2500,7 @@ type GetWsStatusRequest struct {
 
 func (x *GetWsStatusRequest) Reset() {
 	*x = GetWsStatusRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[25]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2383,7 +2512,7 @@ func (x *GetWsStatusRequest) String() string {
 func (*GetWsStatusRequest) ProtoMessage() {}
 
 func (x *GetWsStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[25]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2396,7 +2525,7 @@ func (x *GetWsStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWsStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetWsStatusRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{25}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetWsStatusRequest) GetUf() string {
@@ -2423,7 +2552,7 @@ type GetWsStatusResponse struct {
 
 func (x *GetWsStatusResponse) Reset() {
 	*x = GetWsStatusResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[26]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2435,7 +2564,7 @@ func (x *GetWsStatusResponse) String() string {
 func (*GetWsStatusResponse) ProtoMessage() {}
 
 func (x *GetWsStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[26]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2448,7 +2577,7 @@ func (x *GetWsStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWsStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetWsStatusResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{26}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *GetWsStatusResponse) GetStatus() string {
@@ -2475,7 +2604,7 @@ type ImprimirCteRequest struct {
 
 func (x *ImprimirCteRequest) Reset() {
 	*x = ImprimirCteRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[27]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2487,7 +2616,7 @@ func (x *ImprimirCteRequest) String() string {
 func (*ImprimirCteRequest) ProtoMessage() {}
 
 func (x *ImprimirCteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[27]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2500,7 +2629,7 @@ func (x *ImprimirCteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImprimirCteRequest.ProtoReflect.Descriptor instead.
 func (*ImprimirCteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{27}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ImprimirCteRequest) GetId() string {
@@ -2519,7 +2648,7 @@ type ImprimirCteResponse struct {
 
 func (x *ImprimirCteResponse) Reset() {
 	*x = ImprimirCteResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[28]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2531,7 +2660,7 @@ func (x *ImprimirCteResponse) String() string {
 func (*ImprimirCteResponse) ProtoMessage() {}
 
 func (x *ImprimirCteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[28]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2544,7 +2673,7 @@ func (x *ImprimirCteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImprimirCteResponse.ProtoReflect.Descriptor instead.
 func (*ImprimirCteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{28}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ImprimirCteResponse) GetResponse() *report.Response {
@@ -2565,7 +2694,7 @@ type ImportarXmlRequest struct {
 
 func (x *ImportarXmlRequest) Reset() {
 	*x = ImportarXmlRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[29]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2577,7 +2706,7 @@ func (x *ImportarXmlRequest) String() string {
 func (*ImportarXmlRequest) ProtoMessage() {}
 
 func (x *ImportarXmlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[29]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2590,7 +2719,7 @@ func (x *ImportarXmlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportarXmlRequest.ProtoReflect.Descriptor instead.
 func (*ImportarXmlRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{29}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ImportarXmlRequest) GetXml() string {
@@ -2609,7 +2738,7 @@ type ImportarXmlResponse struct {
 
 func (x *ImportarXmlResponse) Reset() {
 	*x = ImportarXmlResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[30]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2621,7 +2750,7 @@ func (x *ImportarXmlResponse) String() string {
 func (*ImportarXmlResponse) ProtoMessage() {}
 
 func (x *ImportarXmlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[30]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2634,7 +2763,7 @@ func (x *ImportarXmlResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportarXmlResponse.ProtoReflect.Descriptor instead.
 func (*ImportarXmlResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{30}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ImportarXmlResponse) GetCte() *Cte {
@@ -2654,7 +2783,7 @@ type AddDocumentoReferenciadoRequest struct {
 
 func (x *AddDocumentoReferenciadoRequest) Reset() {
 	*x = AddDocumentoReferenciadoRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[31]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2666,7 +2795,7 @@ func (x *AddDocumentoReferenciadoRequest) String() string {
 func (*AddDocumentoReferenciadoRequest) ProtoMessage() {}
 
 func (x *AddDocumentoReferenciadoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[31]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2679,7 +2808,7 @@ func (x *AddDocumentoReferenciadoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddDocumentoReferenciadoRequest.ProtoReflect.Descriptor instead.
 func (*AddDocumentoReferenciadoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{31}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *AddDocumentoReferenciadoRequest) GetCteId() string {
@@ -2705,7 +2834,7 @@ type AddDocumentoReferenciadoResponse struct {
 
 func (x *AddDocumentoReferenciadoResponse) Reset() {
 	*x = AddDocumentoReferenciadoResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[32]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2717,7 +2846,7 @@ func (x *AddDocumentoReferenciadoResponse) String() string {
 func (*AddDocumentoReferenciadoResponse) ProtoMessage() {}
 
 func (x *AddDocumentoReferenciadoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[32]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2730,7 +2859,7 @@ func (x *AddDocumentoReferenciadoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddDocumentoReferenciadoResponse.ProtoReflect.Descriptor instead.
 func (*AddDocumentoReferenciadoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{32}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *AddDocumentoReferenciadoResponse) GetCte() *Cte {
@@ -2751,7 +2880,7 @@ type UpdateDocumentoReferenciadoRequest struct {
 
 func (x *UpdateDocumentoReferenciadoRequest) Reset() {
 	*x = UpdateDocumentoReferenciadoRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[33]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2763,7 +2892,7 @@ func (x *UpdateDocumentoReferenciadoRequest) String() string {
 func (*UpdateDocumentoReferenciadoRequest) ProtoMessage() {}
 
 func (x *UpdateDocumentoReferenciadoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[33]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2776,7 +2905,7 @@ func (x *UpdateDocumentoReferenciadoRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use UpdateDocumentoReferenciadoRequest.ProtoReflect.Descriptor instead.
 func (*UpdateDocumentoReferenciadoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{33}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *UpdateDocumentoReferenciadoRequest) GetCteId() string {
@@ -2809,7 +2938,7 @@ type UpdateDocumentoReferenciadoResponse struct {
 
 func (x *UpdateDocumentoReferenciadoResponse) Reset() {
 	*x = UpdateDocumentoReferenciadoResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[34]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2821,7 +2950,7 @@ func (x *UpdateDocumentoReferenciadoResponse) String() string {
 func (*UpdateDocumentoReferenciadoResponse) ProtoMessage() {}
 
 func (x *UpdateDocumentoReferenciadoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[34]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2834,7 +2963,7 @@ func (x *UpdateDocumentoReferenciadoResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UpdateDocumentoReferenciadoResponse.ProtoReflect.Descriptor instead.
 func (*UpdateDocumentoReferenciadoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{34}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *UpdateDocumentoReferenciadoResponse) GetCte() *Cte {
@@ -2854,7 +2983,7 @@ type DeleteDocumentoReferenciadoRequest struct {
 
 func (x *DeleteDocumentoReferenciadoRequest) Reset() {
 	*x = DeleteDocumentoReferenciadoRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[35]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2866,7 +2995,7 @@ func (x *DeleteDocumentoReferenciadoRequest) String() string {
 func (*DeleteDocumentoReferenciadoRequest) ProtoMessage() {}
 
 func (x *DeleteDocumentoReferenciadoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[35]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2879,7 +3008,7 @@ func (x *DeleteDocumentoReferenciadoRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use DeleteDocumentoReferenciadoRequest.ProtoReflect.Descriptor instead.
 func (*DeleteDocumentoReferenciadoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{35}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *DeleteDocumentoReferenciadoRequest) GetCteId() string {
@@ -2905,7 +3034,7 @@ type DeleteDocumentoReferenciadoResponse struct {
 
 func (x *DeleteDocumentoReferenciadoResponse) Reset() {
 	*x = DeleteDocumentoReferenciadoResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[36]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2917,7 +3046,7 @@ func (x *DeleteDocumentoReferenciadoResponse) String() string {
 func (*DeleteDocumentoReferenciadoResponse) ProtoMessage() {}
 
 func (x *DeleteDocumentoReferenciadoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[36]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2930,7 +3059,7 @@ func (x *DeleteDocumentoReferenciadoResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use DeleteDocumentoReferenciadoResponse.ProtoReflect.Descriptor instead.
 func (*DeleteDocumentoReferenciadoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{36}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *DeleteDocumentoReferenciadoResponse) GetCte() *Cte {
@@ -2950,7 +3079,7 @@ type AddComponentePrestacaoRequest struct {
 
 func (x *AddComponentePrestacaoRequest) Reset() {
 	*x = AddComponentePrestacaoRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[37]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2962,7 +3091,7 @@ func (x *AddComponentePrestacaoRequest) String() string {
 func (*AddComponentePrestacaoRequest) ProtoMessage() {}
 
 func (x *AddComponentePrestacaoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[37]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2975,7 +3104,7 @@ func (x *AddComponentePrestacaoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddComponentePrestacaoRequest.ProtoReflect.Descriptor instead.
 func (*AddComponentePrestacaoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{37}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *AddComponentePrestacaoRequest) GetCteId() string {
@@ -3001,7 +3130,7 @@ type AddComponentePrestacaoResponse struct {
 
 func (x *AddComponentePrestacaoResponse) Reset() {
 	*x = AddComponentePrestacaoResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[38]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3013,7 +3142,7 @@ func (x *AddComponentePrestacaoResponse) String() string {
 func (*AddComponentePrestacaoResponse) ProtoMessage() {}
 
 func (x *AddComponentePrestacaoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[38]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3026,7 +3155,7 @@ func (x *AddComponentePrestacaoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddComponentePrestacaoResponse.ProtoReflect.Descriptor instead.
 func (*AddComponentePrestacaoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{38}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *AddComponentePrestacaoResponse) GetCte() *Cte {
@@ -3047,7 +3176,7 @@ type UpdateComponentePrestacaoRequest struct {
 
 func (x *UpdateComponentePrestacaoRequest) Reset() {
 	*x = UpdateComponentePrestacaoRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[39]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3059,7 +3188,7 @@ func (x *UpdateComponentePrestacaoRequest) String() string {
 func (*UpdateComponentePrestacaoRequest) ProtoMessage() {}
 
 func (x *UpdateComponentePrestacaoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[39]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3072,7 +3201,7 @@ func (x *UpdateComponentePrestacaoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateComponentePrestacaoRequest.ProtoReflect.Descriptor instead.
 func (*UpdateComponentePrestacaoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{39}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *UpdateComponentePrestacaoRequest) GetCteId() string {
@@ -3105,7 +3234,7 @@ type UpdateComponentePrestacaoResponse struct {
 
 func (x *UpdateComponentePrestacaoResponse) Reset() {
 	*x = UpdateComponentePrestacaoResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[40]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3117,7 +3246,7 @@ func (x *UpdateComponentePrestacaoResponse) String() string {
 func (*UpdateComponentePrestacaoResponse) ProtoMessage() {}
 
 func (x *UpdateComponentePrestacaoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[40]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3130,7 +3259,7 @@ func (x *UpdateComponentePrestacaoResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use UpdateComponentePrestacaoResponse.ProtoReflect.Descriptor instead.
 func (*UpdateComponentePrestacaoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{40}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *UpdateComponentePrestacaoResponse) GetCte() *Cte {
@@ -3150,7 +3279,7 @@ type DeleteComponentePrestacaoRequest struct {
 
 func (x *DeleteComponentePrestacaoRequest) Reset() {
 	*x = DeleteComponentePrestacaoRequest{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[41]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3162,7 +3291,7 @@ func (x *DeleteComponentePrestacaoRequest) String() string {
 func (*DeleteComponentePrestacaoRequest) ProtoMessage() {}
 
 func (x *DeleteComponentePrestacaoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[41]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3175,7 +3304,7 @@ func (x *DeleteComponentePrestacaoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteComponentePrestacaoRequest.ProtoReflect.Descriptor instead.
 func (*DeleteComponentePrestacaoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{41}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *DeleteComponentePrestacaoRequest) GetCteId() string {
@@ -3201,7 +3330,7 @@ type DeleteComponentePrestacaoResponse struct {
 
 func (x *DeleteComponentePrestacaoResponse) Reset() {
 	*x = DeleteComponentePrestacaoResponse{}
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[42]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3213,7 +3342,7 @@ func (x *DeleteComponentePrestacaoResponse) String() string {
 func (*DeleteComponentePrestacaoResponse) ProtoMessage() {}
 
 func (x *DeleteComponentePrestacaoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_cte_cte_proto_msgTypes[42]
+	mi := &file_apps_dfe_cte_cte_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3226,7 +3355,7 @@ func (x *DeleteComponentePrestacaoResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use DeleteComponentePrestacaoResponse.ProtoReflect.Descriptor instead.
 func (*DeleteComponentePrestacaoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{42}
+	return file_apps_dfe_cte_cte_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *DeleteComponentePrestacaoResponse) GetCte() *Cte {
@@ -3240,7 +3369,16 @@ var File_apps_dfe_cte_cte_proto protoreflect.FileDescriptor
 
 const file_apps_dfe_cte_cte_proto_rawDesc = "" +
 	"\n" +
-	"\x16apps/dfe/cte/cte.proto\x12\x03cte\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x13filter/filter.proto\x1a\x18apps/report/report.proto\"\xf3\x11\n" +
+	"\x16apps/dfe/cte/cte.proto\x12\x03cte\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x13filter/filter.proto\x1a\x18apps/report/report.proto\"U\n" +
+	"\x17ExplainRejectionRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12*\n" +
+	"\x11ai_integration_id\x18\x02 \x01(\tR\x0faiIntegrationId\"\xca\x01\n" +
+	"\x18ExplainRejectionResponse\x12\x14\n" +
+	"\x05cstat\x18\x01 \x01(\tR\x05cstat\x12)\n" +
+	"\x10original_message\x18\x02 \x01(\tR\x0foriginalMessage\x12 \n" +
+	"\vexplanation\x18\x03 \x01(\tR\vexplanation\x12/\n" +
+	"\x13recommended_actions\x18\x04 \x03(\tR\x12recommendedActions\x12\x1a\n" +
+	"\bseverity\x18\x05 \x01(\tR\bseverity\"\xf3\x11\n" +
 	"\x03Cte\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -3507,7 +3645,7 @@ const file_apps_dfe_cte_cte_proto_rawDesc = "" +
 	"\x14TIPO_COMPONENTE_GRIS\x10\x04\x12\x1a\n" +
 	"\x16TIPO_COMPONENTE_SEGURO\x10\x05\x12\x1c\n" +
 	"\x18TIPO_COMPONENTE_DESPACHO\x10\x06\x12\x1a\n" +
-	"\x16TIPO_COMPONENTE_OUTROS\x10c2\x85\x10\n" +
+	"\x16TIPO_COMPONENTE_OUTROS\x10c2\x85\x11\n" +
 	"\n" +
 	"CteService\x12L\n" +
 	"\x06Create\x12\x15.cte.CreateCteRequest\x1a\x16.cte.CreateCteResponse\"\x13\x82\xd3\xe4\x93\x02\r:\x01*\"\b/api/cte\x12L\n" +
@@ -3527,7 +3665,8 @@ const file_apps_dfe_cte_cte_proto_rawDesc = "" +
 	"\x1bDeleteDocumentoReferenciado\x12'.cte.DeleteDocumentoReferenciadoRequest\x1a(.cte.DeleteDocumentoReferenciadoResponse\"7\x82\xd3\xe4\x93\x021*//api/cte/{cte_id}/documentos-referenciados/{id}\x12\x8c\x01\n" +
 	"\x16AddComponentePrestacao\x12\".cte.AddComponentePrestacaoRequest\x1a#.cte.AddComponentePrestacaoResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/cte/componentes-prestacao\x12\x9a\x01\n" +
 	"\x19UpdateComponentePrestacao\x12%.cte.UpdateComponentePrestacaoRequest\x1a&.cte.UpdateComponentePrestacaoResponse\".\x82\xd3\xe4\x93\x02(:\x01*\x1a#/api/cte/componentes-prestacao/{id}\x12\xa0\x01\n" +
-	"\x19DeleteComponentePrestacao\x12%.cte.DeleteComponentePrestacaoRequest\x1a&.cte.DeleteComponentePrestacaoResponse\"4\x82\xd3\xe4\x93\x02.*,/api/cte/{cte_id}/componentes-prestacao/{id}Bp\n" +
+	"\x19DeleteComponentePrestacao\x12%.cte.DeleteComponentePrestacaoRequest\x1a&.cte.DeleteComponentePrestacaoResponse\"4\x82\xd3\xe4\x93\x02.*,/api/cte/{cte_id}/componentes-prestacao/{id}\x12~\n" +
+	"\x10ExplainRejection\x12\x1c.cte.ExplainRejectionRequest\x1a\x1d.cte.ExplainRejectionResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/cte/{id}/ai/explain-rejectionBp\n" +
 	"\acom.cteB\bCteProtoP\x01Z/github.com/linksoft-dev/sdks/go/pb/apps/dfe/cte\xa2\x02\x03CXX\xaa\x02\x03Cte\xca\x02\x03Cte\xe2\x02\x0fCte\\GPBMetadata\xea\x02\x03Cteb\x06proto3"
 
 var (
@@ -3543,7 +3682,7 @@ func file_apps_dfe_cte_cte_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_dfe_cte_cte_proto_enumTypes = make([]protoimpl.EnumInfo, 7)
-var file_apps_dfe_cte_cte_proto_msgTypes = make([]protoimpl.MessageInfo, 43)
+var file_apps_dfe_cte_cte_proto_msgTypes = make([]protoimpl.MessageInfo, 45)
 var file_apps_dfe_cte_cte_proto_goTypes = []any{
 	(Ambiente)(0),                               // 0: cte.Ambiente
 	(SituacaoCte)(0),                            // 1: cte.SituacaoCte
@@ -3552,143 +3691,147 @@ var file_apps_dfe_cte_cte_proto_goTypes = []any{
 	(TomadorServico)(0),                         // 4: cte.TomadorServico
 	(ModalCte)(0),                               // 5: cte.ModalCte
 	(TipoComponenteVprest)(0),                   // 6: cte.TipoComponenteVprest
-	(*Cte)(nil),                                 // 7: cte.Cte
-	(*ComponenteVprest)(nil),                    // 8: cte.ComponenteVprest
-	(*DocReferenciado)(nil),                     // 9: cte.DocReferenciado
-	(*Parte)(nil),                               // 10: cte.Parte
-	(*Tomador)(nil),                             // 11: cte.Tomador
-	(*Cancelamento)(nil),                        // 12: cte.Cancelamento
-	(*Rejeicao)(nil),                            // 13: cte.Rejeicao
-	(*CreateCteRequest)(nil),                    // 14: cte.CreateCteRequest
-	(*CreateCteResponse)(nil),                   // 15: cte.CreateCteResponse
-	(*UpdateCteRequest)(nil),                    // 16: cte.UpdateCteRequest
-	(*UpdateCteResponse)(nil),                   // 17: cte.UpdateCteResponse
-	(*DeleteCteRequest)(nil),                    // 18: cte.DeleteCteRequest
-	(*DeleteCteResponse)(nil),                   // 19: cte.DeleteCteResponse
-	(*GetCteRequest)(nil),                       // 20: cte.GetCteRequest
-	(*GetCteResponse)(nil),                      // 21: cte.GetCteResponse
-	(*ListCteRequest)(nil),                      // 22: cte.ListCteRequest
-	(*ListCteResponse)(nil),                     // 23: cte.ListCteResponse
-	(*EmitirCteRequest)(nil),                    // 24: cte.EmitirCteRequest
-	(*EmitirCteResponse)(nil),                   // 25: cte.EmitirCteResponse
-	(*CancelarCteRequest)(nil),                  // 26: cte.CancelarCteRequest
-	(*CancelarCteResponse)(nil),                 // 27: cte.CancelarCteResponse
-	(*CorrigirCteRequest)(nil),                  // 28: cte.CorrigirCteRequest
-	(*CorrigirCteResponse)(nil),                 // 29: cte.CorrigirCteResponse
-	(*ConsultaProtocoloRequest)(nil),            // 30: cte.ConsultaProtocoloRequest
-	(*ConsultaProtocoloResponse)(nil),           // 31: cte.ConsultaProtocoloResponse
-	(*GetWsStatusRequest)(nil),                  // 32: cte.GetWsStatusRequest
-	(*GetWsStatusResponse)(nil),                 // 33: cte.GetWsStatusResponse
-	(*ImprimirCteRequest)(nil),                  // 34: cte.ImprimirCteRequest
-	(*ImprimirCteResponse)(nil),                 // 35: cte.ImprimirCteResponse
-	(*ImportarXmlRequest)(nil),                  // 36: cte.ImportarXmlRequest
-	(*ImportarXmlResponse)(nil),                 // 37: cte.ImportarXmlResponse
-	(*AddDocumentoReferenciadoRequest)(nil),     // 38: cte.AddDocumentoReferenciadoRequest
-	(*AddDocumentoReferenciadoResponse)(nil),    // 39: cte.AddDocumentoReferenciadoResponse
-	(*UpdateDocumentoReferenciadoRequest)(nil),  // 40: cte.UpdateDocumentoReferenciadoRequest
-	(*UpdateDocumentoReferenciadoResponse)(nil), // 41: cte.UpdateDocumentoReferenciadoResponse
-	(*DeleteDocumentoReferenciadoRequest)(nil),  // 42: cte.DeleteDocumentoReferenciadoRequest
-	(*DeleteDocumentoReferenciadoResponse)(nil), // 43: cte.DeleteDocumentoReferenciadoResponse
-	(*AddComponentePrestacaoRequest)(nil),       // 44: cte.AddComponentePrestacaoRequest
-	(*AddComponentePrestacaoResponse)(nil),      // 45: cte.AddComponentePrestacaoResponse
-	(*UpdateComponentePrestacaoRequest)(nil),    // 46: cte.UpdateComponentePrestacaoRequest
-	(*UpdateComponentePrestacaoResponse)(nil),   // 47: cte.UpdateComponentePrestacaoResponse
-	(*DeleteComponentePrestacaoRequest)(nil),    // 48: cte.DeleteComponentePrestacaoRequest
-	(*DeleteComponentePrestacaoResponse)(nil),   // 49: cte.DeleteComponentePrestacaoResponse
-	(*timestamppb.Timestamp)(nil),               // 50: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),                // 51: metadata.BasicFields
-	(*metadata.FieldMask)(nil),                  // 52: metadata.FieldMask
-	(*filter.Filter)(nil),                       // 53: Filter
-	(*report.Response)(nil),                     // 54: report.Response
+	(*ExplainRejectionRequest)(nil),             // 7: cte.ExplainRejectionRequest
+	(*ExplainRejectionResponse)(nil),            // 8: cte.ExplainRejectionResponse
+	(*Cte)(nil),                                 // 9: cte.Cte
+	(*ComponenteVprest)(nil),                    // 10: cte.ComponenteVprest
+	(*DocReferenciado)(nil),                     // 11: cte.DocReferenciado
+	(*Parte)(nil),                               // 12: cte.Parte
+	(*Tomador)(nil),                             // 13: cte.Tomador
+	(*Cancelamento)(nil),                        // 14: cte.Cancelamento
+	(*Rejeicao)(nil),                            // 15: cte.Rejeicao
+	(*CreateCteRequest)(nil),                    // 16: cte.CreateCteRequest
+	(*CreateCteResponse)(nil),                   // 17: cte.CreateCteResponse
+	(*UpdateCteRequest)(nil),                    // 18: cte.UpdateCteRequest
+	(*UpdateCteResponse)(nil),                   // 19: cte.UpdateCteResponse
+	(*DeleteCteRequest)(nil),                    // 20: cte.DeleteCteRequest
+	(*DeleteCteResponse)(nil),                   // 21: cte.DeleteCteResponse
+	(*GetCteRequest)(nil),                       // 22: cte.GetCteRequest
+	(*GetCteResponse)(nil),                      // 23: cte.GetCteResponse
+	(*ListCteRequest)(nil),                      // 24: cte.ListCteRequest
+	(*ListCteResponse)(nil),                     // 25: cte.ListCteResponse
+	(*EmitirCteRequest)(nil),                    // 26: cte.EmitirCteRequest
+	(*EmitirCteResponse)(nil),                   // 27: cte.EmitirCteResponse
+	(*CancelarCteRequest)(nil),                  // 28: cte.CancelarCteRequest
+	(*CancelarCteResponse)(nil),                 // 29: cte.CancelarCteResponse
+	(*CorrigirCteRequest)(nil),                  // 30: cte.CorrigirCteRequest
+	(*CorrigirCteResponse)(nil),                 // 31: cte.CorrigirCteResponse
+	(*ConsultaProtocoloRequest)(nil),            // 32: cte.ConsultaProtocoloRequest
+	(*ConsultaProtocoloResponse)(nil),           // 33: cte.ConsultaProtocoloResponse
+	(*GetWsStatusRequest)(nil),                  // 34: cte.GetWsStatusRequest
+	(*GetWsStatusResponse)(nil),                 // 35: cte.GetWsStatusResponse
+	(*ImprimirCteRequest)(nil),                  // 36: cte.ImprimirCteRequest
+	(*ImprimirCteResponse)(nil),                 // 37: cte.ImprimirCteResponse
+	(*ImportarXmlRequest)(nil),                  // 38: cte.ImportarXmlRequest
+	(*ImportarXmlResponse)(nil),                 // 39: cte.ImportarXmlResponse
+	(*AddDocumentoReferenciadoRequest)(nil),     // 40: cte.AddDocumentoReferenciadoRequest
+	(*AddDocumentoReferenciadoResponse)(nil),    // 41: cte.AddDocumentoReferenciadoResponse
+	(*UpdateDocumentoReferenciadoRequest)(nil),  // 42: cte.UpdateDocumentoReferenciadoRequest
+	(*UpdateDocumentoReferenciadoResponse)(nil), // 43: cte.UpdateDocumentoReferenciadoResponse
+	(*DeleteDocumentoReferenciadoRequest)(nil),  // 44: cte.DeleteDocumentoReferenciadoRequest
+	(*DeleteDocumentoReferenciadoResponse)(nil), // 45: cte.DeleteDocumentoReferenciadoResponse
+	(*AddComponentePrestacaoRequest)(nil),       // 46: cte.AddComponentePrestacaoRequest
+	(*AddComponentePrestacaoResponse)(nil),      // 47: cte.AddComponentePrestacaoResponse
+	(*UpdateComponentePrestacaoRequest)(nil),    // 48: cte.UpdateComponentePrestacaoRequest
+	(*UpdateComponentePrestacaoResponse)(nil),   // 49: cte.UpdateComponentePrestacaoResponse
+	(*DeleteComponentePrestacaoRequest)(nil),    // 50: cte.DeleteComponentePrestacaoRequest
+	(*DeleteComponentePrestacaoResponse)(nil),   // 51: cte.DeleteComponentePrestacaoResponse
+	(*timestamppb.Timestamp)(nil),               // 52: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),                // 53: metadata.BasicFields
+	(*metadata.FieldMask)(nil),                  // 54: metadata.FieldMask
+	(*filter.Filter)(nil),                       // 55: Filter
+	(*report.Response)(nil),                     // 56: report.Response
 }
 var file_apps_dfe_cte_cte_proto_depIdxs = []int32{
-	50, // 0: cte.Cte.created_at:type_name -> google.protobuf.Timestamp
-	50, // 1: cte.Cte.updated_at:type_name -> google.protobuf.Timestamp
-	51, // 2: cte.Cte.fields:type_name -> metadata.BasicFields
+	52, // 0: cte.Cte.created_at:type_name -> google.protobuf.Timestamp
+	52, // 1: cte.Cte.updated_at:type_name -> google.protobuf.Timestamp
+	53, // 2: cte.Cte.fields:type_name -> metadata.BasicFields
 	0,  // 3: cte.Cte.ambiente:type_name -> cte.Ambiente
 	1,  // 4: cte.Cte.situacao:type_name -> cte.SituacaoCte
-	50, // 5: cte.Cte.data_emissao:type_name -> google.protobuf.Timestamp
+	52, // 5: cte.Cte.data_emissao:type_name -> google.protobuf.Timestamp
 	2,  // 6: cte.Cte.tipo_cte:type_name -> cte.TipoCte
 	3,  // 7: cte.Cte.tipo_servico:type_name -> cte.TipoServicoCte
 	5,  // 8: cte.Cte.modal:type_name -> cte.ModalCte
-	50, // 9: cte.Cte.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
-	11, // 10: cte.Cte.tomador:type_name -> cte.Tomador
-	10, // 11: cte.Cte.remetente:type_name -> cte.Parte
-	10, // 12: cte.Cte.destinatario:type_name -> cte.Parte
-	13, // 13: cte.Cte.rejeicoes:type_name -> cte.Rejeicao
-	10, // 14: cte.Cte.expedidor:type_name -> cte.Parte
-	10, // 15: cte.Cte.recebedor:type_name -> cte.Parte
-	12, // 16: cte.Cte.cancelamento:type_name -> cte.Cancelamento
-	9,  // 17: cte.Cte.documentos_referenciados:type_name -> cte.DocReferenciado
-	8,  // 18: cte.Cte.componentes_prestacao:type_name -> cte.ComponenteVprest
+	52, // 9: cte.Cte.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
+	13, // 10: cte.Cte.tomador:type_name -> cte.Tomador
+	12, // 11: cte.Cte.remetente:type_name -> cte.Parte
+	12, // 12: cte.Cte.destinatario:type_name -> cte.Parte
+	15, // 13: cte.Cte.rejeicoes:type_name -> cte.Rejeicao
+	12, // 14: cte.Cte.expedidor:type_name -> cte.Parte
+	12, // 15: cte.Cte.recebedor:type_name -> cte.Parte
+	14, // 16: cte.Cte.cancelamento:type_name -> cte.Cancelamento
+	11, // 17: cte.Cte.documentos_referenciados:type_name -> cte.DocReferenciado
+	10, // 18: cte.Cte.componentes_prestacao:type_name -> cte.ComponenteVprest
 	6,  // 19: cte.ComponenteVprest.tipo:type_name -> cte.TipoComponenteVprest
 	4,  // 20: cte.Tomador.servico:type_name -> cte.TomadorServico
-	50, // 21: cte.Cancelamento.data_hora:type_name -> google.protobuf.Timestamp
-	50, // 22: cte.Rejeicao.data_hora:type_name -> google.protobuf.Timestamp
-	50, // 23: cte.Rejeicao.data_hora_situacao_doc:type_name -> google.protobuf.Timestamp
-	7,  // 24: cte.CreateCteRequest.cte:type_name -> cte.Cte
-	7,  // 25: cte.CreateCteResponse.cte:type_name -> cte.Cte
-	7,  // 26: cte.UpdateCteRequest.cte:type_name -> cte.Cte
-	52, // 27: cte.UpdateCteRequest.update_mask:type_name -> metadata.FieldMask
-	7,  // 28: cte.UpdateCteResponse.cte:type_name -> cte.Cte
-	7,  // 29: cte.GetCteResponse.cte:type_name -> cte.Cte
-	50, // 30: cte.ListCteRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	50, // 31: cte.ListCteRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	53, // 32: cte.ListCteRequest.filter:type_name -> Filter
-	7,  // 33: cte.ListCteResponse.cte_list:type_name -> cte.Cte
-	7,  // 34: cte.EmitirCteResponse.cte:type_name -> cte.Cte
-	7,  // 35: cte.CancelarCteResponse.cte:type_name -> cte.Cte
-	7,  // 36: cte.CorrigirCteResponse.cte:type_name -> cte.Cte
-	54, // 37: cte.ImprimirCteResponse.response:type_name -> report.Response
-	7,  // 38: cte.ImportarXmlResponse.cte:type_name -> cte.Cte
-	9,  // 39: cte.AddDocumentoReferenciadoRequest.documento:type_name -> cte.DocReferenciado
-	7,  // 40: cte.AddDocumentoReferenciadoResponse.cte:type_name -> cte.Cte
-	9,  // 41: cte.UpdateDocumentoReferenciadoRequest.documento:type_name -> cte.DocReferenciado
-	7,  // 42: cte.UpdateDocumentoReferenciadoResponse.cte:type_name -> cte.Cte
-	7,  // 43: cte.DeleteDocumentoReferenciadoResponse.cte:type_name -> cte.Cte
-	8,  // 44: cte.AddComponentePrestacaoRequest.componente:type_name -> cte.ComponenteVprest
-	7,  // 45: cte.AddComponentePrestacaoResponse.cte:type_name -> cte.Cte
-	8,  // 46: cte.UpdateComponentePrestacaoRequest.componente:type_name -> cte.ComponenteVprest
-	7,  // 47: cte.UpdateComponentePrestacaoResponse.cte:type_name -> cte.Cte
-	7,  // 48: cte.DeleteComponentePrestacaoResponse.cte:type_name -> cte.Cte
-	14, // 49: cte.CteService.Create:input_type -> cte.CreateCteRequest
-	16, // 50: cte.CteService.Update:input_type -> cte.UpdateCteRequest
-	18, // 51: cte.CteService.Delete:input_type -> cte.DeleteCteRequest
-	20, // 52: cte.CteService.Get:input_type -> cte.GetCteRequest
-	22, // 53: cte.CteService.List:input_type -> cte.ListCteRequest
-	34, // 54: cte.CteService.Imprimir:input_type -> cte.ImprimirCteRequest
-	24, // 55: cte.CteService.EmitirCte:input_type -> cte.EmitirCteRequest
-	26, // 56: cte.CteService.CancelarCte:input_type -> cte.CancelarCteRequest
-	28, // 57: cte.CteService.CorrigirCte:input_type -> cte.CorrigirCteRequest
-	30, // 58: cte.CteService.ConsultaProtocolo:input_type -> cte.ConsultaProtocoloRequest
-	32, // 59: cte.CteService.GetWsStatus:input_type -> cte.GetWsStatusRequest
-	36, // 60: cte.CteService.ImportarXml:input_type -> cte.ImportarXmlRequest
-	38, // 61: cte.CteService.AddDocumentoReferenciado:input_type -> cte.AddDocumentoReferenciadoRequest
-	40, // 62: cte.CteService.UpdateDocumentoReferenciado:input_type -> cte.UpdateDocumentoReferenciadoRequest
-	42, // 63: cte.CteService.DeleteDocumentoReferenciado:input_type -> cte.DeleteDocumentoReferenciadoRequest
-	44, // 64: cte.CteService.AddComponentePrestacao:input_type -> cte.AddComponentePrestacaoRequest
-	46, // 65: cte.CteService.UpdateComponentePrestacao:input_type -> cte.UpdateComponentePrestacaoRequest
-	48, // 66: cte.CteService.DeleteComponentePrestacao:input_type -> cte.DeleteComponentePrestacaoRequest
-	15, // 67: cte.CteService.Create:output_type -> cte.CreateCteResponse
-	17, // 68: cte.CteService.Update:output_type -> cte.UpdateCteResponse
-	19, // 69: cte.CteService.Delete:output_type -> cte.DeleteCteResponse
-	21, // 70: cte.CteService.Get:output_type -> cte.GetCteResponse
-	23, // 71: cte.CteService.List:output_type -> cte.ListCteResponse
-	35, // 72: cte.CteService.Imprimir:output_type -> cte.ImprimirCteResponse
-	25, // 73: cte.CteService.EmitirCte:output_type -> cte.EmitirCteResponse
-	27, // 74: cte.CteService.CancelarCte:output_type -> cte.CancelarCteResponse
-	29, // 75: cte.CteService.CorrigirCte:output_type -> cte.CorrigirCteResponse
-	31, // 76: cte.CteService.ConsultaProtocolo:output_type -> cte.ConsultaProtocoloResponse
-	33, // 77: cte.CteService.GetWsStatus:output_type -> cte.GetWsStatusResponse
-	37, // 78: cte.CteService.ImportarXml:output_type -> cte.ImportarXmlResponse
-	39, // 79: cte.CteService.AddDocumentoReferenciado:output_type -> cte.AddDocumentoReferenciadoResponse
-	41, // 80: cte.CteService.UpdateDocumentoReferenciado:output_type -> cte.UpdateDocumentoReferenciadoResponse
-	43, // 81: cte.CteService.DeleteDocumentoReferenciado:output_type -> cte.DeleteDocumentoReferenciadoResponse
-	45, // 82: cte.CteService.AddComponentePrestacao:output_type -> cte.AddComponentePrestacaoResponse
-	47, // 83: cte.CteService.UpdateComponentePrestacao:output_type -> cte.UpdateComponentePrestacaoResponse
-	49, // 84: cte.CteService.DeleteComponentePrestacao:output_type -> cte.DeleteComponentePrestacaoResponse
-	67, // [67:85] is the sub-list for method output_type
-	49, // [49:67] is the sub-list for method input_type
+	52, // 21: cte.Cancelamento.data_hora:type_name -> google.protobuf.Timestamp
+	52, // 22: cte.Rejeicao.data_hora:type_name -> google.protobuf.Timestamp
+	52, // 23: cte.Rejeicao.data_hora_situacao_doc:type_name -> google.protobuf.Timestamp
+	9,  // 24: cte.CreateCteRequest.cte:type_name -> cte.Cte
+	9,  // 25: cte.CreateCteResponse.cte:type_name -> cte.Cte
+	9,  // 26: cte.UpdateCteRequest.cte:type_name -> cte.Cte
+	54, // 27: cte.UpdateCteRequest.update_mask:type_name -> metadata.FieldMask
+	9,  // 28: cte.UpdateCteResponse.cte:type_name -> cte.Cte
+	9,  // 29: cte.GetCteResponse.cte:type_name -> cte.Cte
+	52, // 30: cte.ListCteRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	52, // 31: cte.ListCteRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	55, // 32: cte.ListCteRequest.filter:type_name -> Filter
+	9,  // 33: cte.ListCteResponse.cte_list:type_name -> cte.Cte
+	9,  // 34: cte.EmitirCteResponse.cte:type_name -> cte.Cte
+	9,  // 35: cte.CancelarCteResponse.cte:type_name -> cte.Cte
+	9,  // 36: cte.CorrigirCteResponse.cte:type_name -> cte.Cte
+	56, // 37: cte.ImprimirCteResponse.response:type_name -> report.Response
+	9,  // 38: cte.ImportarXmlResponse.cte:type_name -> cte.Cte
+	11, // 39: cte.AddDocumentoReferenciadoRequest.documento:type_name -> cte.DocReferenciado
+	9,  // 40: cte.AddDocumentoReferenciadoResponse.cte:type_name -> cte.Cte
+	11, // 41: cte.UpdateDocumentoReferenciadoRequest.documento:type_name -> cte.DocReferenciado
+	9,  // 42: cte.UpdateDocumentoReferenciadoResponse.cte:type_name -> cte.Cte
+	9,  // 43: cte.DeleteDocumentoReferenciadoResponse.cte:type_name -> cte.Cte
+	10, // 44: cte.AddComponentePrestacaoRequest.componente:type_name -> cte.ComponenteVprest
+	9,  // 45: cte.AddComponentePrestacaoResponse.cte:type_name -> cte.Cte
+	10, // 46: cte.UpdateComponentePrestacaoRequest.componente:type_name -> cte.ComponenteVprest
+	9,  // 47: cte.UpdateComponentePrestacaoResponse.cte:type_name -> cte.Cte
+	9,  // 48: cte.DeleteComponentePrestacaoResponse.cte:type_name -> cte.Cte
+	16, // 49: cte.CteService.Create:input_type -> cte.CreateCteRequest
+	18, // 50: cte.CteService.Update:input_type -> cte.UpdateCteRequest
+	20, // 51: cte.CteService.Delete:input_type -> cte.DeleteCteRequest
+	22, // 52: cte.CteService.Get:input_type -> cte.GetCteRequest
+	24, // 53: cte.CteService.List:input_type -> cte.ListCteRequest
+	36, // 54: cte.CteService.Imprimir:input_type -> cte.ImprimirCteRequest
+	26, // 55: cte.CteService.EmitirCte:input_type -> cte.EmitirCteRequest
+	28, // 56: cte.CteService.CancelarCte:input_type -> cte.CancelarCteRequest
+	30, // 57: cte.CteService.CorrigirCte:input_type -> cte.CorrigirCteRequest
+	32, // 58: cte.CteService.ConsultaProtocolo:input_type -> cte.ConsultaProtocoloRequest
+	34, // 59: cte.CteService.GetWsStatus:input_type -> cte.GetWsStatusRequest
+	38, // 60: cte.CteService.ImportarXml:input_type -> cte.ImportarXmlRequest
+	40, // 61: cte.CteService.AddDocumentoReferenciado:input_type -> cte.AddDocumentoReferenciadoRequest
+	42, // 62: cte.CteService.UpdateDocumentoReferenciado:input_type -> cte.UpdateDocumentoReferenciadoRequest
+	44, // 63: cte.CteService.DeleteDocumentoReferenciado:input_type -> cte.DeleteDocumentoReferenciadoRequest
+	46, // 64: cte.CteService.AddComponentePrestacao:input_type -> cte.AddComponentePrestacaoRequest
+	48, // 65: cte.CteService.UpdateComponentePrestacao:input_type -> cte.UpdateComponentePrestacaoRequest
+	50, // 66: cte.CteService.DeleteComponentePrestacao:input_type -> cte.DeleteComponentePrestacaoRequest
+	7,  // 67: cte.CteService.ExplainRejection:input_type -> cte.ExplainRejectionRequest
+	17, // 68: cte.CteService.Create:output_type -> cte.CreateCteResponse
+	19, // 69: cte.CteService.Update:output_type -> cte.UpdateCteResponse
+	21, // 70: cte.CteService.Delete:output_type -> cte.DeleteCteResponse
+	23, // 71: cte.CteService.Get:output_type -> cte.GetCteResponse
+	25, // 72: cte.CteService.List:output_type -> cte.ListCteResponse
+	37, // 73: cte.CteService.Imprimir:output_type -> cte.ImprimirCteResponse
+	27, // 74: cte.CteService.EmitirCte:output_type -> cte.EmitirCteResponse
+	29, // 75: cte.CteService.CancelarCte:output_type -> cte.CancelarCteResponse
+	31, // 76: cte.CteService.CorrigirCte:output_type -> cte.CorrigirCteResponse
+	33, // 77: cte.CteService.ConsultaProtocolo:output_type -> cte.ConsultaProtocoloResponse
+	35, // 78: cte.CteService.GetWsStatus:output_type -> cte.GetWsStatusResponse
+	39, // 79: cte.CteService.ImportarXml:output_type -> cte.ImportarXmlResponse
+	41, // 80: cte.CteService.AddDocumentoReferenciado:output_type -> cte.AddDocumentoReferenciadoResponse
+	43, // 81: cte.CteService.UpdateDocumentoReferenciado:output_type -> cte.UpdateDocumentoReferenciadoResponse
+	45, // 82: cte.CteService.DeleteDocumentoReferenciado:output_type -> cte.DeleteDocumentoReferenciadoResponse
+	47, // 83: cte.CteService.AddComponentePrestacao:output_type -> cte.AddComponentePrestacaoResponse
+	49, // 84: cte.CteService.UpdateComponentePrestacao:output_type -> cte.UpdateComponentePrestacaoResponse
+	51, // 85: cte.CteService.DeleteComponentePrestacao:output_type -> cte.DeleteComponentePrestacaoResponse
+	8,  // 86: cte.CteService.ExplainRejection:output_type -> cte.ExplainRejectionResponse
+	68, // [68:87] is the sub-list for method output_type
+	49, // [49:68] is the sub-list for method input_type
 	49, // [49:49] is the sub-list for extension type_name
 	49, // [49:49] is the sub-list for extension extendee
 	0,  // [0:49] is the sub-list for field type_name
@@ -3705,7 +3848,7 @@ func file_apps_dfe_cte_cte_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_dfe_cte_cte_proto_rawDesc), len(file_apps_dfe_cte_cte_proto_rawDesc)),
 			NumEnums:      7,
-			NumMessages:   43,
+			NumMessages:   45,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

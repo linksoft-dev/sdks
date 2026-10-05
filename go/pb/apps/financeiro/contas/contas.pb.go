@@ -141,6 +141,372 @@ func (Periodicidade) EnumDescriptor() ([]byte, []int) {
 	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{1}
 }
 
+type SugerePlanoContaIaRequest struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	ListContasRequest *ListContasRequest     `protobuf:"bytes,1,opt,name=list_contas_request,json=listContasRequest,proto3" json:"list_contas_request,omitempty"` // lançamentos a classificar; até 40 por chamada
+	// Integração de IA da empresa que executa a geração. Vazio usa a IA nativa do sistema, cobrada em créditos.
+	AiIntegrationId string `protobuf:"bytes,2,opt,name=ai_integration_id,json=aiIntegrationId,proto3" json:"ai_integration_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SugerePlanoContaIaRequest) Reset() {
+	*x = SugerePlanoContaIaRequest{}
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SugerePlanoContaIaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SugerePlanoContaIaRequest) ProtoMessage() {}
+
+func (x *SugerePlanoContaIaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SugerePlanoContaIaRequest.ProtoReflect.Descriptor instead.
+func (*SugerePlanoContaIaRequest) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *SugerePlanoContaIaRequest) GetListContasRequest() *ListContasRequest {
+	if x != nil {
+		return x.ListContasRequest
+	}
+	return nil
+}
+
+func (x *SugerePlanoContaIaRequest) GetAiIntegrationId() string {
+	if x != nil {
+		return x.AiIntegrationId
+	}
+	return ""
+}
+
+type SugestaoPlanoConta struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	ContaId          string                 `protobuf:"bytes,1,opt,name=conta_id,json=contaId,proto3" json:"conta_id,omitempty"`
+	PlanoContaId     string                 `protobuf:"bytes,2,opt,name=plano_conta_id,json=planoContaId,proto3" json:"plano_conta_id,omitempty"`
+	PlanoContaNome   string                 `protobuf:"bytes,3,opt,name=plano_conta_nome,json=planoContaNome,proto3" json:"plano_conta_nome,omitempty"`
+	PlanoContaCodigo string                 `protobuf:"bytes,4,opt,name=plano_conta_codigo,json=planoContaCodigo,proto3" json:"plano_conta_codigo,omitempty"`
+	CentroCustoId    string                 `protobuf:"bytes,5,opt,name=centro_custo_id,json=centroCustoId,proto3" json:"centro_custo_id,omitempty"`
+	CentroCustoNome  string                 `protobuf:"bytes,6,opt,name=centro_custo_nome,json=centroCustoNome,proto3" json:"centro_custo_nome,omitempty"`
+	Confianca        string                 `protobuf:"bytes,7,opt,name=confianca,proto3" json:"confianca,omitempty"` // alta, media ou baixa
+	Motivo           string                 `protobuf:"bytes,8,opt,name=motivo,proto3" json:"motivo,omitempty"`
+	PeloHistorico    bool                   `protobuf:"varint,9,opt,name=pelo_historico,json=peloHistorico,proto3" json:"pelo_historico,omitempty"` // classificação repetida do histórico da pessoa, sem IA
+	PessoaNome       string                 `protobuf:"bytes,10,opt,name=pessoa_nome,json=pessoaNome,proto3" json:"pessoa_nome,omitempty"`
+	Descricao        string                 `protobuf:"bytes,11,opt,name=descricao,proto3" json:"descricao,omitempty"`
+	Valor            float64                `protobuf:"fixed64,12,opt,name=valor,proto3" json:"valor,omitempty"`
+	Vencimento       *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=vencimento,proto3" json:"vencimento,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *SugestaoPlanoConta) Reset() {
+	*x = SugestaoPlanoConta{}
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SugestaoPlanoConta) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SugestaoPlanoConta) ProtoMessage() {}
+
+func (x *SugestaoPlanoConta) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SugestaoPlanoConta.ProtoReflect.Descriptor instead.
+func (*SugestaoPlanoConta) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *SugestaoPlanoConta) GetContaId() string {
+	if x != nil {
+		return x.ContaId
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetPlanoContaId() string {
+	if x != nil {
+		return x.PlanoContaId
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetPlanoContaNome() string {
+	if x != nil {
+		return x.PlanoContaNome
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetPlanoContaCodigo() string {
+	if x != nil {
+		return x.PlanoContaCodigo
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetCentroCustoId() string {
+	if x != nil {
+		return x.CentroCustoId
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetCentroCustoNome() string {
+	if x != nil {
+		return x.CentroCustoNome
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetConfianca() string {
+	if x != nil {
+		return x.Confianca
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetMotivo() string {
+	if x != nil {
+		return x.Motivo
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetPeloHistorico() bool {
+	if x != nil {
+		return x.PeloHistorico
+	}
+	return false
+}
+
+func (x *SugestaoPlanoConta) GetPessoaNome() string {
+	if x != nil {
+		return x.PessoaNome
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetDescricao() string {
+	if x != nil {
+		return x.Descricao
+	}
+	return ""
+}
+
+func (x *SugestaoPlanoConta) GetValor() float64 {
+	if x != nil {
+		return x.Valor
+	}
+	return 0
+}
+
+func (x *SugestaoPlanoConta) GetVencimento() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Vencimento
+	}
+	return nil
+}
+
+type SugerePlanoContaIaResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sugestoes     []*SugestaoPlanoConta  `protobuf:"bytes,1,rep,name=sugestoes,proto3" json:"sugestoes,omitempty"`
+	HaMais        bool                   `protobuf:"varint,2,opt,name=ha_mais,json=haMais,proto3" json:"ha_mais,omitempty"` // o filtro tem mais lançamentos que os desta resposta
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SugerePlanoContaIaResponse) Reset() {
+	*x = SugerePlanoContaIaResponse{}
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SugerePlanoContaIaResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SugerePlanoContaIaResponse) ProtoMessage() {}
+
+func (x *SugerePlanoContaIaResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SugerePlanoContaIaResponse.ProtoReflect.Descriptor instead.
+func (*SugerePlanoContaIaResponse) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SugerePlanoContaIaResponse) GetSugestoes() []*SugestaoPlanoConta {
+	if x != nil {
+		return x.Sugestoes
+	}
+	return nil
+}
+
+func (x *SugerePlanoContaIaResponse) GetHaMais() bool {
+	if x != nil {
+		return x.HaMais
+	}
+	return false
+}
+
+type LeDocumentoIaRequest struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Imagem   []byte                 `protobuf:"bytes,1,opt,name=imagem,proto3" json:"imagem,omitempty"` // imagem do documento (JPEG, PNG ou WebP)
+	MimeType string                 `protobuf:"bytes,2,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
+	Texto    string                 `protobuf:"bytes,3,opt,name=texto,proto3" json:"texto,omitempty"` // texto do documento, quando o PDF tem texto; dispensa a imagem
+	// Integração de IA da empresa que executa a leitura. Vazio usa a IA nativa do sistema, cobrada em créditos.
+	AiIntegrationId string `protobuf:"bytes,4,opt,name=ai_integration_id,json=aiIntegrationId,proto3" json:"ai_integration_id,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *LeDocumentoIaRequest) Reset() {
+	*x = LeDocumentoIaRequest{}
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LeDocumentoIaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LeDocumentoIaRequest) ProtoMessage() {}
+
+func (x *LeDocumentoIaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LeDocumentoIaRequest.ProtoReflect.Descriptor instead.
+func (*LeDocumentoIaRequest) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *LeDocumentoIaRequest) GetImagem() []byte {
+	if x != nil {
+		return x.Imagem
+	}
+	return nil
+}
+
+func (x *LeDocumentoIaRequest) GetMimeType() string {
+	if x != nil {
+		return x.MimeType
+	}
+	return ""
+}
+
+func (x *LeDocumentoIaRequest) GetTexto() string {
+	if x != nil {
+		return x.Texto
+	}
+	return ""
+}
+
+func (x *LeDocumentoIaRequest) GetAiIntegrationId() string {
+	if x != nil {
+		return x.AiIntegrationId
+	}
+	return ""
+}
+
+type LeDocumentoIaResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Contas        *Contas                `protobuf:"bytes,1,opt,name=contas,proto3" json:"contas,omitempty"` // conta a pagar preenchida com o que foi lido; não gravada
+	Avisos        []string               `protobuf:"bytes,2,rep,name=avisos,proto3" json:"avisos,omitempty"` // o que conferir ou completar antes de salvar
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LeDocumentoIaResponse) Reset() {
+	*x = LeDocumentoIaResponse{}
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LeDocumentoIaResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LeDocumentoIaResponse) ProtoMessage() {}
+
+func (x *LeDocumentoIaResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LeDocumentoIaResponse.ProtoReflect.Descriptor instead.
+func (*LeDocumentoIaResponse) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *LeDocumentoIaResponse) GetContas() *Contas {
+	if x != nil {
+		return x.Contas
+	}
+	return nil
+}
+
+func (x *LeDocumentoIaResponse) GetAvisos() []string {
+	if x != nil {
+		return x.Avisos
+	}
+	return nil
+}
+
 type FaturaRequest struct {
 	state      protoimpl.MessageState `protogen:"open.v1"`
 	Ids        []string               `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
@@ -153,7 +519,7 @@ type FaturaRequest struct {
 
 func (x *FaturaRequest) Reset() {
 	*x = FaturaRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[0]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -165,7 +531,7 @@ func (x *FaturaRequest) String() string {
 func (*FaturaRequest) ProtoMessage() {}
 
 func (x *FaturaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[0]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -178,7 +544,7 @@ func (x *FaturaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FaturaRequest.ProtoReflect.Descriptor instead.
 func (*FaturaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{0}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *FaturaRequest) GetIds() []string {
@@ -211,7 +577,7 @@ type FaturaResponse struct {
 
 func (x *FaturaResponse) Reset() {
 	*x = FaturaResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[1]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -223,7 +589,7 @@ func (x *FaturaResponse) String() string {
 func (*FaturaResponse) ProtoMessage() {}
 
 func (x *FaturaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[1]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -236,7 +602,7 @@ func (x *FaturaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FaturaResponse.ProtoReflect.Descriptor instead.
 func (*FaturaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{1}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *FaturaResponse) GetContas() *Contas {
@@ -257,7 +623,7 @@ type GeraBoletoRequest struct {
 
 func (x *GeraBoletoRequest) Reset() {
 	*x = GeraBoletoRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[2]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -269,7 +635,7 @@ func (x *GeraBoletoRequest) String() string {
 func (*GeraBoletoRequest) ProtoMessage() {}
 
 func (x *GeraBoletoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[2]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -282,7 +648,7 @@ func (x *GeraBoletoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GeraBoletoRequest.ProtoReflect.Descriptor instead.
 func (*GeraBoletoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{2}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GeraBoletoRequest) GetId() string {
@@ -308,7 +674,7 @@ type GeraBoletoResponse struct {
 
 func (x *GeraBoletoResponse) Reset() {
 	*x = GeraBoletoResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[3]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -320,7 +686,7 @@ func (x *GeraBoletoResponse) String() string {
 func (*GeraBoletoResponse) ProtoMessage() {}
 
 func (x *GeraBoletoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[3]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -333,7 +699,7 @@ func (x *GeraBoletoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GeraBoletoResponse.ProtoReflect.Descriptor instead.
 func (*GeraBoletoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{3}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GeraBoletoResponse) GetContas() *Contas {
@@ -367,7 +733,7 @@ type SendPaymentLinkRequest struct {
 
 func (x *SendPaymentLinkRequest) Reset() {
 	*x = SendPaymentLinkRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[4]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +745,7 @@ func (x *SendPaymentLinkRequest) String() string {
 func (*SendPaymentLinkRequest) ProtoMessage() {}
 
 func (x *SendPaymentLinkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[4]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +758,7 @@ func (x *SendPaymentLinkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendPaymentLinkRequest.ProtoReflect.Descriptor instead.
 func (*SendPaymentLinkRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{4}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *SendPaymentLinkRequest) GetIds() []string {
@@ -471,7 +837,7 @@ type DestinatarioCobranca struct {
 
 func (x *DestinatarioCobranca) Reset() {
 	*x = DestinatarioCobranca{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[5]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -483,7 +849,7 @@ func (x *DestinatarioCobranca) String() string {
 func (*DestinatarioCobranca) ProtoMessage() {}
 
 func (x *DestinatarioCobranca) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[5]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -496,7 +862,7 @@ func (x *DestinatarioCobranca) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DestinatarioCobranca.ProtoReflect.Descriptor instead.
 func (*DestinatarioCobranca) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{5}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DestinatarioCobranca) GetContaId() string {
@@ -539,7 +905,7 @@ type SendPaymentLinkResponse struct {
 
 func (x *SendPaymentLinkResponse) Reset() {
 	*x = SendPaymentLinkResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[6]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -551,7 +917,7 @@ func (x *SendPaymentLinkResponse) String() string {
 func (*SendPaymentLinkResponse) ProtoMessage() {}
 
 func (x *SendPaymentLinkResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[6]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -564,7 +930,7 @@ func (x *SendPaymentLinkResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendPaymentLinkResponse.ProtoReflect.Descriptor instead.
 func (*SendPaymentLinkResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{6}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *SendPaymentLinkResponse) GetContasList() []*Contas {
@@ -591,7 +957,7 @@ type WhatsappWebEnvio struct {
 
 func (x *WhatsappWebEnvio) Reset() {
 	*x = WhatsappWebEnvio{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[7]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -603,7 +969,7 @@ func (x *WhatsappWebEnvio) String() string {
 func (*WhatsappWebEnvio) ProtoMessage() {}
 
 func (x *WhatsappWebEnvio) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[7]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -616,7 +982,7 @@ func (x *WhatsappWebEnvio) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhatsappWebEnvio.ProtoReflect.Descriptor instead.
 func (*WhatsappWebEnvio) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{7}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *WhatsappWebEnvio) GetNumero() string {
@@ -746,7 +1112,7 @@ type Contas struct {
 
 func (x *Contas) Reset() {
 	*x = Contas{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[8]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -758,7 +1124,7 @@ func (x *Contas) String() string {
 func (*Contas) ProtoMessage() {}
 
 func (x *Contas) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[8]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -771,7 +1137,7 @@ func (x *Contas) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Contas.ProtoReflect.Descriptor instead.
 func (*Contas) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{8}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *Contas) GetCreatedAt() *timestamppb.Timestamp {
@@ -1363,7 +1729,7 @@ type Taxa struct {
 
 func (x *Taxa) Reset() {
 	*x = Taxa{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[9]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1375,7 +1741,7 @@ func (x *Taxa) String() string {
 func (*Taxa) ProtoMessage() {}
 
 func (x *Taxa) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[9]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1388,7 +1754,7 @@ func (x *Taxa) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Taxa.ProtoReflect.Descriptor instead.
 func (*Taxa) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{9}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *Taxa) GetId() string {
@@ -1455,7 +1821,7 @@ type Pagamento struct {
 
 func (x *Pagamento) Reset() {
 	*x = Pagamento{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[10]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1467,7 +1833,7 @@ func (x *Pagamento) String() string {
 func (*Pagamento) ProtoMessage() {}
 
 func (x *Pagamento) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[10]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1480,7 +1846,7 @@ func (x *Pagamento) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Pagamento.ProtoReflect.Descriptor instead.
 func (*Pagamento) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{10}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Pagamento) GetCreatedAt() *timestamppb.Timestamp {
@@ -1594,7 +1960,7 @@ type Comprovante struct {
 
 func (x *Comprovante) Reset() {
 	*x = Comprovante{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[11]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1606,7 +1972,7 @@ func (x *Comprovante) String() string {
 func (*Comprovante) ProtoMessage() {}
 
 func (x *Comprovante) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[11]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1619,7 +1985,7 @@ func (x *Comprovante) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Comprovante.ProtoReflect.Descriptor instead.
 func (*Comprovante) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{11}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Comprovante) GetBase64() string {
@@ -1669,7 +2035,7 @@ type FormaPagamentoPadrao struct {
 
 func (x *FormaPagamentoPadrao) Reset() {
 	*x = FormaPagamentoPadrao{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[12]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1681,7 +2047,7 @@ func (x *FormaPagamentoPadrao) String() string {
 func (*FormaPagamentoPadrao) ProtoMessage() {}
 
 func (x *FormaPagamentoPadrao) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[12]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1694,7 +2060,7 @@ func (x *FormaPagamentoPadrao) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FormaPagamentoPadrao.ProtoReflect.Descriptor instead.
 func (*FormaPagamentoPadrao) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{12}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *FormaPagamentoPadrao) GetFormaPagamentoId() string {
@@ -1735,7 +2101,7 @@ type CreateContasRequest struct {
 
 func (x *CreateContasRequest) Reset() {
 	*x = CreateContasRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[13]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1747,7 +2113,7 @@ func (x *CreateContasRequest) String() string {
 func (*CreateContasRequest) ProtoMessage() {}
 
 func (x *CreateContasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[13]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1760,7 +2126,7 @@ func (x *CreateContasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateContasRequest.ProtoReflect.Descriptor instead.
 func (*CreateContasRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{13}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *CreateContasRequest) GetContas() *Contas {
@@ -1779,7 +2145,7 @@ type CreateContasResponse struct {
 
 func (x *CreateContasResponse) Reset() {
 	*x = CreateContasResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[14]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1791,7 +2157,7 @@ func (x *CreateContasResponse) String() string {
 func (*CreateContasResponse) ProtoMessage() {}
 
 func (x *CreateContasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[14]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1804,7 +2170,7 @@ func (x *CreateContasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateContasResponse.ProtoReflect.Descriptor instead.
 func (*CreateContasResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{14}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CreateContasResponse) GetContas() *Contas {
@@ -1826,7 +2192,7 @@ type UpdateContasRequest struct {
 
 func (x *UpdateContasRequest) Reset() {
 	*x = UpdateContasRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[15]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1838,7 +2204,7 @@ func (x *UpdateContasRequest) String() string {
 func (*UpdateContasRequest) ProtoMessage() {}
 
 func (x *UpdateContasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[15]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1851,7 +2217,7 @@ func (x *UpdateContasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateContasRequest.ProtoReflect.Descriptor instead.
 func (*UpdateContasRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{15}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *UpdateContasRequest) GetId() string {
@@ -1885,7 +2251,7 @@ type UpdateContasResponse struct {
 
 func (x *UpdateContasResponse) Reset() {
 	*x = UpdateContasResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[16]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1897,7 +2263,7 @@ func (x *UpdateContasResponse) String() string {
 func (*UpdateContasResponse) ProtoMessage() {}
 
 func (x *UpdateContasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[16]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1910,7 +2276,7 @@ func (x *UpdateContasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateContasResponse.ProtoReflect.Descriptor instead.
 func (*UpdateContasResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{16}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *UpdateContasResponse) GetContas() *Contas {
@@ -1931,7 +2297,7 @@ type DeleteContasRequest struct {
 
 func (x *DeleteContasRequest) Reset() {
 	*x = DeleteContasRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[17]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1943,7 +2309,7 @@ func (x *DeleteContasRequest) String() string {
 func (*DeleteContasRequest) ProtoMessage() {}
 
 func (x *DeleteContasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[17]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1956,7 +2322,7 @@ func (x *DeleteContasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteContasRequest.ProtoReflect.Descriptor instead.
 func (*DeleteContasRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{17}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *DeleteContasRequest) GetId() string {
@@ -1982,7 +2348,7 @@ type DeleteContasResponse struct {
 
 func (x *DeleteContasResponse) Reset() {
 	*x = DeleteContasResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[18]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1994,7 +2360,7 @@ func (x *DeleteContasResponse) String() string {
 func (*DeleteContasResponse) ProtoMessage() {}
 
 func (x *DeleteContasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[18]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2007,7 +2373,7 @@ func (x *DeleteContasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteContasResponse.ProtoReflect.Descriptor instead.
 func (*DeleteContasResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{18}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *DeleteContasResponse) GetId() string {
@@ -2027,7 +2393,7 @@ type GetContasRequest struct {
 
 func (x *GetContasRequest) Reset() {
 	*x = GetContasRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[19]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2039,7 +2405,7 @@ func (x *GetContasRequest) String() string {
 func (*GetContasRequest) ProtoMessage() {}
 
 func (x *GetContasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[19]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2052,7 +2418,7 @@ func (x *GetContasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetContasRequest.ProtoReflect.Descriptor instead.
 func (*GetContasRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{19}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *GetContasRequest) GetId() string {
@@ -2072,7 +2438,7 @@ type GetContasResponse struct {
 
 func (x *GetContasResponse) Reset() {
 	*x = GetContasResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[20]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2084,7 +2450,7 @@ func (x *GetContasResponse) String() string {
 func (*GetContasResponse) ProtoMessage() {}
 
 func (x *GetContasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[20]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2097,7 +2463,7 @@ func (x *GetContasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetContasResponse.ProtoReflect.Descriptor instead.
 func (*GetContasResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{20}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *GetContasResponse) GetContas() *Contas {
@@ -2145,7 +2511,7 @@ type ListContasRequest struct {
 
 func (x *ListContasRequest) Reset() {
 	*x = ListContasRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[21]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2157,7 +2523,7 @@ func (x *ListContasRequest) String() string {
 func (*ListContasRequest) ProtoMessage() {}
 
 func (x *ListContasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[21]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2170,7 +2536,7 @@ func (x *ListContasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListContasRequest.ProtoReflect.Descriptor instead.
 func (*ListContasRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{21}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ListContasRequest) GetFilter() *filter.Filter {
@@ -2386,7 +2752,7 @@ type ListContasResponse struct {
 
 func (x *ListContasResponse) Reset() {
 	*x = ListContasResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[22]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2398,7 +2764,7 @@ func (x *ListContasResponse) String() string {
 func (*ListContasResponse) ProtoMessage() {}
 
 func (x *ListContasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[22]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2411,7 +2777,7 @@ func (x *ListContasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListContasResponse.ProtoReflect.Descriptor instead.
 func (*ListContasResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{22}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ListContasResponse) GetContasList() []*Contas {
@@ -2440,7 +2806,7 @@ type CancelarRequest struct {
 
 func (x *CancelarRequest) Reset() {
 	*x = CancelarRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[23]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2452,7 +2818,7 @@ func (x *CancelarRequest) String() string {
 func (*CancelarRequest) ProtoMessage() {}
 
 func (x *CancelarRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[23]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2465,7 +2831,7 @@ func (x *CancelarRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelarRequest.ProtoReflect.Descriptor instead.
 func (*CancelarRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{23}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *CancelarRequest) GetId() string {
@@ -2505,7 +2871,7 @@ type CancelarResponse struct {
 
 func (x *CancelarResponse) Reset() {
 	*x = CancelarResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[24]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2517,7 +2883,7 @@ func (x *CancelarResponse) String() string {
 func (*CancelarResponse) ProtoMessage() {}
 
 func (x *CancelarResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[24]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2530,7 +2896,7 @@ func (x *CancelarResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelarResponse.ProtoReflect.Descriptor instead.
 func (*CancelarResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{24}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *CancelarResponse) GetContas() *Contas {
@@ -2551,7 +2917,7 @@ type AddPagamentoRequest struct {
 
 func (x *AddPagamentoRequest) Reset() {
 	*x = AddPagamentoRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[25]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2563,7 +2929,7 @@ func (x *AddPagamentoRequest) String() string {
 func (*AddPagamentoRequest) ProtoMessage() {}
 
 func (x *AddPagamentoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[25]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2576,7 +2942,7 @@ func (x *AddPagamentoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPagamentoRequest.ProtoReflect.Descriptor instead.
 func (*AddPagamentoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{25}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *AddPagamentoRequest) GetId() string {
@@ -2603,7 +2969,7 @@ type AddPagamentoResponse struct {
 
 func (x *AddPagamentoResponse) Reset() {
 	*x = AddPagamentoResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[26]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2615,7 +2981,7 @@ func (x *AddPagamentoResponse) String() string {
 func (*AddPagamentoResponse) ProtoMessage() {}
 
 func (x *AddPagamentoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[26]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2628,7 +2994,7 @@ func (x *AddPagamentoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPagamentoResponse.ProtoReflect.Descriptor instead.
 func (*AddPagamentoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{26}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *AddPagamentoResponse) GetContas() *Contas {
@@ -2657,7 +3023,7 @@ type UpdatePagamentoRequest struct {
 
 func (x *UpdatePagamentoRequest) Reset() {
 	*x = UpdatePagamentoRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[27]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2669,7 +3035,7 @@ func (x *UpdatePagamentoRequest) String() string {
 func (*UpdatePagamentoRequest) ProtoMessage() {}
 
 func (x *UpdatePagamentoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[27]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2682,7 +3048,7 @@ func (x *UpdatePagamentoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePagamentoRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePagamentoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{27}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *UpdatePagamentoRequest) GetId() string {
@@ -2716,7 +3082,7 @@ type UpdatePagamentoResponse struct {
 
 func (x *UpdatePagamentoResponse) Reset() {
 	*x = UpdatePagamentoResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[28]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2728,7 +3094,7 @@ func (x *UpdatePagamentoResponse) String() string {
 func (*UpdatePagamentoResponse) ProtoMessage() {}
 
 func (x *UpdatePagamentoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[28]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2741,7 +3107,7 @@ func (x *UpdatePagamentoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePagamentoResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePagamentoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{28}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *UpdatePagamentoResponse) GetContas() *Contas {
@@ -2769,7 +3135,7 @@ type DeletePagamentoRequest struct {
 
 func (x *DeletePagamentoRequest) Reset() {
 	*x = DeletePagamentoRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[29]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2781,7 +3147,7 @@ func (x *DeletePagamentoRequest) String() string {
 func (*DeletePagamentoRequest) ProtoMessage() {}
 
 func (x *DeletePagamentoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[29]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2794,7 +3160,7 @@ func (x *DeletePagamentoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePagamentoRequest.ProtoReflect.Descriptor instead.
 func (*DeletePagamentoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{29}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *DeletePagamentoRequest) GetId() string {
@@ -2820,7 +3186,7 @@ type DeletePagamentoResponse struct {
 
 func (x *DeletePagamentoResponse) Reset() {
 	*x = DeletePagamentoResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[30]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2832,7 +3198,7 @@ func (x *DeletePagamentoResponse) String() string {
 func (*DeletePagamentoResponse) ProtoMessage() {}
 
 func (x *DeletePagamentoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[30]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2845,7 +3211,7 @@ func (x *DeletePagamentoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePagamentoResponse.ProtoReflect.Descriptor instead.
 func (*DeletePagamentoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{30}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *DeletePagamentoResponse) GetContas() *Contas {
@@ -2867,7 +3233,7 @@ type AtualizaComprovanteRequest struct {
 
 func (x *AtualizaComprovanteRequest) Reset() {
 	*x = AtualizaComprovanteRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[31]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2879,7 +3245,7 @@ func (x *AtualizaComprovanteRequest) String() string {
 func (*AtualizaComprovanteRequest) ProtoMessage() {}
 
 func (x *AtualizaComprovanteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[31]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2892,7 +3258,7 @@ func (x *AtualizaComprovanteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AtualizaComprovanteRequest.ProtoReflect.Descriptor instead.
 func (*AtualizaComprovanteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{31}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *AtualizaComprovanteRequest) GetId() string {
@@ -2925,7 +3291,7 @@ type AtualizaComprovanteResponse struct {
 
 func (x *AtualizaComprovanteResponse) Reset() {
 	*x = AtualizaComprovanteResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[32]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2937,7 +3303,7 @@ func (x *AtualizaComprovanteResponse) String() string {
 func (*AtualizaComprovanteResponse) ProtoMessage() {}
 
 func (x *AtualizaComprovanteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[32]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2950,7 +3316,7 @@ func (x *AtualizaComprovanteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AtualizaComprovanteResponse.ProtoReflect.Descriptor instead.
 func (*AtualizaComprovanteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{32}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *AtualizaComprovanteResponse) GetContas() *Contas {
@@ -2978,7 +3344,7 @@ type ImportRequest struct {
 
 func (x *ImportRequest) Reset() {
 	*x = ImportRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[33]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2990,7 +3356,7 @@ func (x *ImportRequest) String() string {
 func (*ImportRequest) ProtoMessage() {}
 
 func (x *ImportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[33]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3003,7 +3369,7 @@ func (x *ImportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportRequest.ProtoReflect.Descriptor instead.
 func (*ImportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{33}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *ImportRequest) GetFileContent() string {
@@ -3083,7 +3449,7 @@ type ImportResponse struct {
 
 func (x *ImportResponse) Reset() {
 	*x = ImportResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[34]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3095,7 +3461,7 @@ func (x *ImportResponse) String() string {
 func (*ImportResponse) ProtoMessage() {}
 
 func (x *ImportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[34]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3108,7 +3474,7 @@ func (x *ImportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportResponse.ProtoReflect.Descriptor instead.
 func (*ImportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{34}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *ImportResponse) GetResult() string {
@@ -3162,7 +3528,7 @@ type ImportErrorGroup struct {
 
 func (x *ImportErrorGroup) Reset() {
 	*x = ImportErrorGroup{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[35]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3174,7 +3540,7 @@ func (x *ImportErrorGroup) String() string {
 func (*ImportErrorGroup) ProtoMessage() {}
 
 func (x *ImportErrorGroup) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[35]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3187,7 +3553,7 @@ func (x *ImportErrorGroup) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportErrorGroup.ProtoReflect.Descriptor instead.
 func (*ImportErrorGroup) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{35}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *ImportErrorGroup) GetErrors() []*ImportError {
@@ -3209,7 +3575,7 @@ type ImportError struct {
 
 func (x *ImportError) Reset() {
 	*x = ImportError{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[36]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3221,7 +3587,7 @@ func (x *ImportError) String() string {
 func (*ImportError) ProtoMessage() {}
 
 func (x *ImportError) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[36]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3234,7 +3600,7 @@ func (x *ImportError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportError.ProtoReflect.Descriptor instead.
 func (*ImportError) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{36}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ImportError) GetAccount() string {
@@ -3280,7 +3646,7 @@ type AlteracaoConjunta struct {
 
 func (x *AlteracaoConjunta) Reset() {
 	*x = AlteracaoConjunta{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[37]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3292,7 +3658,7 @@ func (x *AlteracaoConjunta) String() string {
 func (*AlteracaoConjunta) ProtoMessage() {}
 
 func (x *AlteracaoConjunta) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[37]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3305,7 +3671,7 @@ func (x *AlteracaoConjunta) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlteracaoConjunta.ProtoReflect.Descriptor instead.
 func (*AlteracaoConjunta) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{37}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *AlteracaoConjunta) GetIds() []string {
@@ -3410,7 +3776,7 @@ type AlteracaoConjuntaRequest struct {
 
 func (x *AlteracaoConjuntaRequest) Reset() {
 	*x = AlteracaoConjuntaRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[38]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3422,7 +3788,7 @@ func (x *AlteracaoConjuntaRequest) String() string {
 func (*AlteracaoConjuntaRequest) ProtoMessage() {}
 
 func (x *AlteracaoConjuntaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[38]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3435,7 +3801,7 @@ func (x *AlteracaoConjuntaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlteracaoConjuntaRequest.ProtoReflect.Descriptor instead.
 func (*AlteracaoConjuntaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{38}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *AlteracaoConjuntaRequest) GetListContasRequest() *ListContasRequest {
@@ -3461,7 +3827,7 @@ type AlteracaoConjuntaResponse struct {
 
 func (x *AlteracaoConjuntaResponse) Reset() {
 	*x = AlteracaoConjuntaResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[39]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3473,7 +3839,7 @@ func (x *AlteracaoConjuntaResponse) String() string {
 func (*AlteracaoConjuntaResponse) ProtoMessage() {}
 
 func (x *AlteracaoConjuntaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[39]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3486,7 +3852,7 @@ func (x *AlteracaoConjuntaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlteracaoConjuntaResponse.ProtoReflect.Descriptor instead.
 func (*AlteracaoConjuntaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{39}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *AlteracaoConjuntaResponse) GetResult() string {
@@ -3510,7 +3876,7 @@ type FaturamentoConjuntoRequest struct {
 
 func (x *FaturamentoConjuntoRequest) Reset() {
 	*x = FaturamentoConjuntoRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[40]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3522,7 +3888,7 @@ func (x *FaturamentoConjuntoRequest) String() string {
 func (*FaturamentoConjuntoRequest) ProtoMessage() {}
 
 func (x *FaturamentoConjuntoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[40]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3535,7 +3901,7 @@ func (x *FaturamentoConjuntoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FaturamentoConjuntoRequest.ProtoReflect.Descriptor instead.
 func (*FaturamentoConjuntoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{40}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *FaturamentoConjuntoRequest) GetIds() []string {
@@ -3582,7 +3948,7 @@ type FaturamentoConjuntoResponse struct {
 
 func (x *FaturamentoConjuntoResponse) Reset() {
 	*x = FaturamentoConjuntoResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[41]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3594,7 +3960,7 @@ func (x *FaturamentoConjuntoResponse) String() string {
 func (*FaturamentoConjuntoResponse) ProtoMessage() {}
 
 func (x *FaturamentoConjuntoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[41]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3607,7 +3973,7 @@ func (x *FaturamentoConjuntoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FaturamentoConjuntoResponse.ProtoReflect.Descriptor instead.
 func (*FaturamentoConjuntoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{41}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *FaturamentoConjuntoResponse) GetResult() string {
@@ -3627,7 +3993,7 @@ type MesclaContasRequest struct {
 
 func (x *MesclaContasRequest) Reset() {
 	*x = MesclaContasRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[42]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3639,7 +4005,7 @@ func (x *MesclaContasRequest) String() string {
 func (*MesclaContasRequest) ProtoMessage() {}
 
 func (x *MesclaContasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[42]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3652,7 +4018,7 @@ func (x *MesclaContasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MesclaContasRequest.ProtoReflect.Descriptor instead.
 func (*MesclaContasRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{42}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *MesclaContasRequest) GetIds() []string {
@@ -3671,7 +4037,7 @@ type MesclaContasResponse struct {
 
 func (x *MesclaContasResponse) Reset() {
 	*x = MesclaContasResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[43]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3683,7 +4049,7 @@ func (x *MesclaContasResponse) String() string {
 func (*MesclaContasResponse) ProtoMessage() {}
 
 func (x *MesclaContasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[43]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3696,7 +4062,7 @@ func (x *MesclaContasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MesclaContasResponse.ProtoReflect.Descriptor instead.
 func (*MesclaContasResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{43}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *MesclaContasResponse) GetResult() string {
@@ -3718,7 +4084,7 @@ type ResumoPessoa struct {
 
 func (x *ResumoPessoa) Reset() {
 	*x = ResumoPessoa{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[44]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3730,7 +4096,7 @@ func (x *ResumoPessoa) String() string {
 func (*ResumoPessoa) ProtoMessage() {}
 
 func (x *ResumoPessoa) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[44]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3743,7 +4109,7 @@ func (x *ResumoPessoa) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoPessoa.ProtoReflect.Descriptor instead.
 func (*ResumoPessoa) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{44}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *ResumoPessoa) GetPessoaId() string {
@@ -3779,7 +4145,7 @@ type ResumoDados struct {
 
 func (x *ResumoDados) Reset() {
 	*x = ResumoDados{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[45]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3791,7 +4157,7 @@ func (x *ResumoDados) String() string {
 func (*ResumoDados) ProtoMessage() {}
 
 func (x *ResumoDados) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[45]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3804,7 +4170,7 @@ func (x *ResumoDados) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoDados.ProtoReflect.Descriptor instead.
 func (*ResumoDados) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{45}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *ResumoDados) GetQtde() int32 {
@@ -3846,7 +4212,7 @@ type ResumoMesAno struct {
 
 func (x *ResumoMesAno) Reset() {
 	*x = ResumoMesAno{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[46]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3858,7 +4224,7 @@ func (x *ResumoMesAno) String() string {
 func (*ResumoMesAno) ProtoMessage() {}
 
 func (x *ResumoMesAno) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[46]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3871,7 +4237,7 @@ func (x *ResumoMesAno) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoMesAno.ProtoReflect.Descriptor instead.
 func (*ResumoMesAno) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{46}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *ResumoMesAno) GetMesAno() string {
@@ -3905,7 +4271,7 @@ type ResumoPagarReceber struct {
 
 func (x *ResumoPagarReceber) Reset() {
 	*x = ResumoPagarReceber{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[47]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3917,7 +4283,7 @@ func (x *ResumoPagarReceber) String() string {
 func (*ResumoPagarReceber) ProtoMessage() {}
 
 func (x *ResumoPagarReceber) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[47]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3930,7 +4296,7 @@ func (x *ResumoPagarReceber) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoPagarReceber.ProtoReflect.Descriptor instead.
 func (*ResumoPagarReceber) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{47}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *ResumoPagarReceber) GetHoje() *ResumoDados {
@@ -3956,7 +4322,7 @@ type ResumoPagoRecebido struct {
 
 func (x *ResumoPagoRecebido) Reset() {
 	*x = ResumoPagoRecebido{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[48]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3968,7 +4334,7 @@ func (x *ResumoPagoRecebido) String() string {
 func (*ResumoPagoRecebido) ProtoMessage() {}
 
 func (x *ResumoPagoRecebido) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[48]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3981,7 +4347,7 @@ func (x *ResumoPagoRecebido) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoPagoRecebido.ProtoReflect.Descriptor instead.
 func (*ResumoPagoRecebido) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{48}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *ResumoPagoRecebido) GetHoje() *ResumoDados {
@@ -4000,7 +4366,7 @@ type DashboardRequest struct {
 
 func (x *DashboardRequest) Reset() {
 	*x = DashboardRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[49]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4012,7 +4378,7 @@ func (x *DashboardRequest) String() string {
 func (*DashboardRequest) ProtoMessage() {}
 
 func (x *DashboardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[49]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4025,7 +4391,7 @@ func (x *DashboardRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DashboardRequest.ProtoReflect.Descriptor instead.
 func (*DashboardRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{49}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{54}
 }
 
 type DashboardResponse struct {
@@ -4045,7 +4411,7 @@ type DashboardResponse struct {
 
 func (x *DashboardResponse) Reset() {
 	*x = DashboardResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[50]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4057,7 +4423,7 @@ func (x *DashboardResponse) String() string {
 func (*DashboardResponse) ProtoMessage() {}
 
 func (x *DashboardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[50]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4070,7 +4436,7 @@ func (x *DashboardResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DashboardResponse.ProtoReflect.Descriptor instead.
 func (*DashboardResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{50}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *DashboardResponse) GetPagar() *ResumoPagarReceber {
@@ -4134,7 +4500,7 @@ type ResumoDia struct {
 
 func (x *ResumoDia) Reset() {
 	*x = ResumoDia{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[51]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4146,7 +4512,7 @@ func (x *ResumoDia) String() string {
 func (*ResumoDia) ProtoMessage() {}
 
 func (x *ResumoDia) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[51]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4159,7 +4525,7 @@ func (x *ResumoDia) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResumoDia.ProtoReflect.Descriptor instead.
 func (*ResumoDia) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{51}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *ResumoDia) GetDia() string {
@@ -4202,7 +4568,7 @@ type ContaAtrasada struct {
 
 func (x *ContaAtrasada) Reset() {
 	*x = ContaAtrasada{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[52]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4214,7 +4580,7 @@ func (x *ContaAtrasada) String() string {
 func (*ContaAtrasada) ProtoMessage() {}
 
 func (x *ContaAtrasada) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[52]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4227,7 +4593,7 @@ func (x *ContaAtrasada) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContaAtrasada.ProtoReflect.Descriptor instead.
 func (*ContaAtrasada) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{52}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *ContaAtrasada) GetId() string {
@@ -4297,7 +4663,7 @@ type ReportRequest struct {
 
 func (x *ReportRequest) Reset() {
 	*x = ReportRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[53]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4309,7 +4675,7 @@ func (x *ReportRequest) String() string {
 func (*ReportRequest) ProtoMessage() {}
 
 func (x *ReportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[53]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4322,7 +4688,7 @@ func (x *ReportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportRequest.ProtoReflect.Descriptor instead.
 func (*ReportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{53}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *ReportRequest) GetType() Tipo {
@@ -4355,7 +4721,7 @@ type ReportResponse struct {
 
 func (x *ReportResponse) Reset() {
 	*x = ReportResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[54]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4367,7 +4733,7 @@ func (x *ReportResponse) String() string {
 func (*ReportResponse) ProtoMessage() {}
 
 func (x *ReportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[54]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4380,7 +4746,7 @@ func (x *ReportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportResponse.ProtoReflect.Descriptor instead.
 func (*ReportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{54}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *ReportResponse) GetResponse() *report.Response {
@@ -4399,7 +4765,7 @@ type CloneRequest struct {
 
 func (x *CloneRequest) Reset() {
 	*x = CloneRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[55]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4411,7 +4777,7 @@ func (x *CloneRequest) String() string {
 func (*CloneRequest) ProtoMessage() {}
 
 func (x *CloneRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[55]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4424,7 +4790,7 @@ func (x *CloneRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloneRequest.ProtoReflect.Descriptor instead.
 func (*CloneRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{55}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *CloneRequest) GetId() string {
@@ -4444,7 +4810,7 @@ type CloneResponse struct {
 
 func (x *CloneResponse) Reset() {
 	*x = CloneResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[56]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4456,7 +4822,7 @@ func (x *CloneResponse) String() string {
 func (*CloneResponse) ProtoMessage() {}
 
 func (x *CloneResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[56]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4469,7 +4835,7 @@ func (x *CloneResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloneResponse.ProtoReflect.Descriptor instead.
 func (*CloneResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{56}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *CloneResponse) GetResult() string {
@@ -4495,7 +4861,7 @@ type GetOutstandingBalanceRequest struct {
 
 func (x *GetOutstandingBalanceRequest) Reset() {
 	*x = GetOutstandingBalanceRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[57]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4507,7 +4873,7 @@ func (x *GetOutstandingBalanceRequest) String() string {
 func (*GetOutstandingBalanceRequest) ProtoMessage() {}
 
 func (x *GetOutstandingBalanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[57]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4520,7 +4886,7 @@ func (x *GetOutstandingBalanceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOutstandingBalanceRequest.ProtoReflect.Descriptor instead.
 func (*GetOutstandingBalanceRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{57}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *GetOutstandingBalanceRequest) GetPessoaId() string {
@@ -4539,7 +4905,7 @@ type GetOutstandingBalanceResponse struct {
 
 func (x *GetOutstandingBalanceResponse) Reset() {
 	*x = GetOutstandingBalanceResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[58]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4551,7 +4917,7 @@ func (x *GetOutstandingBalanceResponse) String() string {
 func (*GetOutstandingBalanceResponse) ProtoMessage() {}
 
 func (x *GetOutstandingBalanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[58]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4564,7 +4930,7 @@ func (x *GetOutstandingBalanceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetOutstandingBalanceResponse.ProtoReflect.Descriptor instead.
 func (*GetOutstandingBalanceResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{58}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *GetOutstandingBalanceResponse) GetSaldo() float64 {
@@ -4585,7 +4951,7 @@ type DuplicataRequest struct {
 
 func (x *DuplicataRequest) Reset() {
 	*x = DuplicataRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[59]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4597,7 +4963,7 @@ func (x *DuplicataRequest) String() string {
 func (*DuplicataRequest) ProtoMessage() {}
 
 func (x *DuplicataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[59]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4610,7 +4976,7 @@ func (x *DuplicataRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DuplicataRequest.ProtoReflect.Descriptor instead.
 func (*DuplicataRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{59}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *DuplicataRequest) GetIds() []string {
@@ -4636,7 +5002,7 @@ type DuplicataResponse struct {
 
 func (x *DuplicataResponse) Reset() {
 	*x = DuplicataResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[60]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4648,7 +5014,7 @@ func (x *DuplicataResponse) String() string {
 func (*DuplicataResponse) ProtoMessage() {}
 
 func (x *DuplicataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[60]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4661,7 +5027,7 @@ func (x *DuplicataResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DuplicataResponse.ProtoReflect.Descriptor instead.
 func (*DuplicataResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{60}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *DuplicataResponse) GetResponse() *report.Response {
@@ -4684,7 +5050,7 @@ type ExportRequest struct {
 
 func (x *ExportRequest) Reset() {
 	*x = ExportRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[61]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4696,7 +5062,7 @@ func (x *ExportRequest) String() string {
 func (*ExportRequest) ProtoMessage() {}
 
 func (x *ExportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[61]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4709,7 +5075,7 @@ func (x *ExportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportRequest.ProtoReflect.Descriptor instead.
 func (*ExportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{61}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *ExportRequest) GetFormat() string {
@@ -4750,7 +5116,7 @@ type ExportResponse struct {
 
 func (x *ExportResponse) Reset() {
 	*x = ExportResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[62]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4762,7 +5128,7 @@ func (x *ExportResponse) String() string {
 func (*ExportResponse) ProtoMessage() {}
 
 func (x *ExportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[62]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4775,7 +5141,7 @@ func (x *ExportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportResponse.ProtoReflect.Descriptor instead.
 func (*ExportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{62}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *ExportResponse) GetStatus() string {
@@ -4805,7 +5171,7 @@ type ImprimirReciboRequest struct {
 
 func (x *ImprimirReciboRequest) Reset() {
 	*x = ImprimirReciboRequest{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[63]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4817,7 +5183,7 @@ func (x *ImprimirReciboRequest) String() string {
 func (*ImprimirReciboRequest) ProtoMessage() {}
 
 func (x *ImprimirReciboRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[63]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4830,7 +5196,7 @@ func (x *ImprimirReciboRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImprimirReciboRequest.ProtoReflect.Descriptor instead.
 func (*ImprimirReciboRequest) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{63}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *ImprimirReciboRequest) GetPagamentoId() string {
@@ -4856,7 +5222,7 @@ type ImprimirReciboResponse struct {
 
 func (x *ImprimirReciboResponse) Reset() {
 	*x = ImprimirReciboResponse{}
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[64]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4868,7 +5234,7 @@ func (x *ImprimirReciboResponse) String() string {
 func (*ImprimirReciboResponse) ProtoMessage() {}
 
 func (x *ImprimirReciboResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[64]
+	mi := &file_apps_financeiro_contas_contas_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4881,7 +5247,7 @@ func (x *ImprimirReciboResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImprimirReciboResponse.ProtoReflect.Descriptor instead.
 func (*ImprimirReciboResponse) Descriptor() ([]byte, []int) {
-	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{64}
+	return file_apps_financeiro_contas_contas_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *ImprimirReciboResponse) GetResponse() *report.Response {
@@ -4895,7 +5261,39 @@ var File_apps_financeiro_contas_contas_proto protoreflect.FileDescriptor
 
 const file_apps_financeiro_contas_contas_proto_rawDesc = "" +
 	"\n" +
-	"#apps/financeiro/contas/contas.proto\x12\x06contas\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x18apps/report/report.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"{\n" +
+	"#apps/financeiro/contas/contas.proto\x12\x06contas\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x18apps/report/report.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x92\x01\n" +
+	"\x19SugerePlanoContaIaRequest\x12I\n" +
+	"\x13list_contas_request\x18\x01 \x01(\v2\x19.contas.ListContasRequestR\x11listContasRequest\x12*\n" +
+	"\x11ai_integration_id\x18\x02 \x01(\tR\x0faiIntegrationId\"\xef\x03\n" +
+	"\x12SugestaoPlanoConta\x12\x19\n" +
+	"\bconta_id\x18\x01 \x01(\tR\acontaId\x12$\n" +
+	"\x0eplano_conta_id\x18\x02 \x01(\tR\fplanoContaId\x12(\n" +
+	"\x10plano_conta_nome\x18\x03 \x01(\tR\x0eplanoContaNome\x12,\n" +
+	"\x12plano_conta_codigo\x18\x04 \x01(\tR\x10planoContaCodigo\x12&\n" +
+	"\x0fcentro_custo_id\x18\x05 \x01(\tR\rcentroCustoId\x12*\n" +
+	"\x11centro_custo_nome\x18\x06 \x01(\tR\x0fcentroCustoNome\x12\x1c\n" +
+	"\tconfianca\x18\a \x01(\tR\tconfianca\x12\x16\n" +
+	"\x06motivo\x18\b \x01(\tR\x06motivo\x12%\n" +
+	"\x0epelo_historico\x18\t \x01(\bR\rpeloHistorico\x12\x1f\n" +
+	"\vpessoa_nome\x18\n" +
+	" \x01(\tR\n" +
+	"pessoaNome\x12\x1c\n" +
+	"\tdescricao\x18\v \x01(\tR\tdescricao\x12\x14\n" +
+	"\x05valor\x18\f \x01(\x01R\x05valor\x12:\n" +
+	"\n" +
+	"vencimento\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"vencimento\"o\n" +
+	"\x1aSugerePlanoContaIaResponse\x128\n" +
+	"\tsugestoes\x18\x01 \x03(\v2\x1a.contas.SugestaoPlanoContaR\tsugestoes\x12\x17\n" +
+	"\aha_mais\x18\x02 \x01(\bR\x06haMais\"\x8d\x01\n" +
+	"\x14LeDocumentoIaRequest\x12\x16\n" +
+	"\x06imagem\x18\x01 \x01(\fR\x06imagem\x12\x1b\n" +
+	"\tmime_type\x18\x02 \x01(\tR\bmimeType\x12\x14\n" +
+	"\x05texto\x18\x03 \x01(\tR\x05texto\x12*\n" +
+	"\x11ai_integration_id\x18\x04 \x01(\tR\x0faiIntegrationId\"W\n" +
+	"\x15LeDocumentoIaResponse\x12&\n" +
+	"\x06contas\x18\x01 \x01(\v2\x0e.contas.ContasR\x06contas\x12\x16\n" +
+	"\x06avisos\x18\x02 \x03(\tR\x06avisos\"{\n" +
 	"\rFaturaRequest\x12\x10\n" +
 	"\x03ids\x18\x01 \x03(\tR\x03ids\x12:\n" +
 	"\n" +
@@ -5322,7 +5720,7 @@ const file_apps_financeiro_contas_contas_proto_rawDesc = "" +
 	"\x17PERIODICIDADE_BIMESTRAL\x10\x04\x12\x1c\n" +
 	"\x18PERIODICIDADE_TRIMESTRAL\x10\x05\x12\x1b\n" +
 	"\x17PERIODICIDADE_SEMESTRAL\x10\x06\x12\x17\n" +
-	"\x13PERIODICIDADE_ANUAL\x10\a2\x86\x16\n" +
+	"\x13PERIODICIDADE_ANUAL\x10\a2\x93\x17\n" +
 	"\x14ContasReceberService\x12c\n" +
 	"\x06Create\x12\x1b.contas.CreateContasRequest\x1a\x1c.contas.CreateContasResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/contas-receber\x12h\n" +
 	"\x06Update\x12\x1b.contas.UpdateContasRequest\x1a\x1c.contas.UpdateContasResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\x1a\x18/api/contas-receber/{id}\x12e\n" +
@@ -5348,7 +5746,8 @@ const file_apps_financeiro_contas_contas_proto_rawDesc = "" +
 	"\x0fSendPaymentLink\x12\x1e.contas.SendPaymentLinkRequest\x1a\x1f.contas.SendPaymentLinkResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\"%/api/contas-receber/send-payment-link\x12o\n" +
 	"\n" +
 	"GeraBoleto\x12\x19.contas.GeraBoletoRequest\x1a\x1a.contas.GeraBoletoResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/api/contas-receber/{id}/boleto\x12^\n" +
-	"\x06Fatura\x12\x15.contas.FaturaRequest\x1a\x16.contas.FaturaResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/contas-receber/fatura2\x85\x13\n" +
+	"\x06Fatura\x12\x15.contas.FaturaRequest\x1a\x16.contas.FaturaResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/contas-receber/fatura\x12\x8a\x01\n" +
+	"\x12SugerePlanoContaIa\x12!.contas.SugerePlanoContaIaRequest\x1a\".contas.SugerePlanoContaIaResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/contas-receber/ai/plano-conta2\x8c\x15\n" +
 	"\x12ContasPagarService\x12a\n" +
 	"\x06Create\x12\x1b.contas.CreateContasRequest\x1a\x1c.contas.CreateContasResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/api/contas-pagar\x12f\n" +
 	"\x06Update\x12\x1b.contas.UpdateContasRequest\x1a\x1c.contas.UpdateContasResponse\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\x1a\x16/api/contas-pagar/{id}\x12c\n" +
@@ -5370,7 +5769,9 @@ const file_apps_financeiro_contas_contas_proto_rawDesc = "" +
 	"\x05Clone\x12\x14.contas.CloneRequest\x1a\x15.contas.CloneResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/contas-pagar/clone\x12\x97\x01\n" +
 	"\x15GetOutstandingBalance\x12$.contas.GetOutstandingBalanceRequest\x1a%.contas.GetOutstandingBalanceResponse\"1\x82\xd3\xe4\x93\x02+\x12)/api/contas-pagar/get-outstanding-balance\x12\\\n" +
 	"\x06Export\x12\x15.contas.ExportRequest\x1a\x16.contas.ExportResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/contas-pagar/export\x12}\n" +
-	"\x0eImprimirRecibo\x12\x1d.contas.ImprimirReciboRequest\x1a\x1e.contas.ImprimirReciboResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/api/contas-pagar/imprimir-recibo2g\n" +
+	"\x0eImprimirRecibo\x12\x1d.contas.ImprimirReciboRequest\x1a\x1e.contas.ImprimirReciboResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/api/contas-pagar/imprimir-recibo\x12\x88\x01\n" +
+	"\x12SugerePlanoContaIa\x12!.contas.SugerePlanoContaIaRequest\x1a\".contas.SugerePlanoContaIaResponse\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/contas-pagar/ai/plano-conta\x12z\n" +
+	"\rLeDocumentoIa\x12\x1c.contas.LeDocumentoIaRequest\x1a\x1d.contas.LeDocumentoIaResponse\",\x82\xd3\xe4\x93\x02&:\x01*\"!/api/contas-pagar/ai/le-documento2g\n" +
 	"\rContasService\x12V\n" +
 	"\x06Report\x12\x15.contas.ReportRequest\x1a\x16.contas.ReportResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/contas/reportB\x8c\x01\n" +
 	"\n" +
@@ -5389,263 +5790,278 @@ func file_apps_financeiro_contas_contas_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_financeiro_contas_contas_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_apps_financeiro_contas_contas_proto_msgTypes = make([]protoimpl.MessageInfo, 68)
+var file_apps_financeiro_contas_contas_proto_msgTypes = make([]protoimpl.MessageInfo, 73)
 var file_apps_financeiro_contas_contas_proto_goTypes = []any{
 	(Tipo)(0),                             // 0: contas.Tipo
 	(Periodicidade)(0),                    // 1: contas.Periodicidade
-	(*FaturaRequest)(nil),                 // 2: contas.FaturaRequest
-	(*FaturaResponse)(nil),                // 3: contas.FaturaResponse
-	(*GeraBoletoRequest)(nil),             // 4: contas.GeraBoletoRequest
-	(*GeraBoletoResponse)(nil),            // 5: contas.GeraBoletoResponse
-	(*SendPaymentLinkRequest)(nil),        // 6: contas.SendPaymentLinkRequest
-	(*DestinatarioCobranca)(nil),          // 7: contas.DestinatarioCobranca
-	(*SendPaymentLinkResponse)(nil),       // 8: contas.SendPaymentLinkResponse
-	(*WhatsappWebEnvio)(nil),              // 9: contas.WhatsappWebEnvio
-	(*Contas)(nil),                        // 10: contas.Contas
-	(*Taxa)(nil),                          // 11: contas.Taxa
-	(*Pagamento)(nil),                     // 12: contas.Pagamento
-	(*Comprovante)(nil),                   // 13: contas.Comprovante
-	(*FormaPagamentoPadrao)(nil),          // 14: contas.FormaPagamentoPadrao
-	(*CreateContasRequest)(nil),           // 15: contas.CreateContasRequest
-	(*CreateContasResponse)(nil),          // 16: contas.CreateContasResponse
-	(*UpdateContasRequest)(nil),           // 17: contas.UpdateContasRequest
-	(*UpdateContasResponse)(nil),          // 18: contas.UpdateContasResponse
-	(*DeleteContasRequest)(nil),           // 19: contas.DeleteContasRequest
-	(*DeleteContasResponse)(nil),          // 20: contas.DeleteContasResponse
-	(*GetContasRequest)(nil),              // 21: contas.GetContasRequest
-	(*GetContasResponse)(nil),             // 22: contas.GetContasResponse
-	(*ListContasRequest)(nil),             // 23: contas.ListContasRequest
-	(*ListContasResponse)(nil),            // 24: contas.ListContasResponse
-	(*CancelarRequest)(nil),               // 25: contas.CancelarRequest
-	(*CancelarResponse)(nil),              // 26: contas.CancelarResponse
-	(*AddPagamentoRequest)(nil),           // 27: contas.AddPagamentoRequest
-	(*AddPagamentoResponse)(nil),          // 28: contas.AddPagamentoResponse
-	(*UpdatePagamentoRequest)(nil),        // 29: contas.UpdatePagamentoRequest
-	(*UpdatePagamentoResponse)(nil),       // 30: contas.UpdatePagamentoResponse
-	(*DeletePagamentoRequest)(nil),        // 31: contas.DeletePagamentoRequest
-	(*DeletePagamentoResponse)(nil),       // 32: contas.DeletePagamentoResponse
-	(*AtualizaComprovanteRequest)(nil),    // 33: contas.AtualizaComprovanteRequest
-	(*AtualizaComprovanteResponse)(nil),   // 34: contas.AtualizaComprovanteResponse
-	(*ImportRequest)(nil),                 // 35: contas.ImportRequest
-	(*ImportResponse)(nil),                // 36: contas.ImportResponse
-	(*ImportErrorGroup)(nil),              // 37: contas.ImportErrorGroup
-	(*ImportError)(nil),                   // 38: contas.ImportError
-	(*AlteracaoConjunta)(nil),             // 39: contas.AlteracaoConjunta
-	(*AlteracaoConjuntaRequest)(nil),      // 40: contas.AlteracaoConjuntaRequest
-	(*AlteracaoConjuntaResponse)(nil),     // 41: contas.AlteracaoConjuntaResponse
-	(*FaturamentoConjuntoRequest)(nil),    // 42: contas.FaturamentoConjuntoRequest
-	(*FaturamentoConjuntoResponse)(nil),   // 43: contas.FaturamentoConjuntoResponse
-	(*MesclaContasRequest)(nil),           // 44: contas.MesclaContasRequest
-	(*MesclaContasResponse)(nil),          // 45: contas.MesclaContasResponse
-	(*ResumoPessoa)(nil),                  // 46: contas.ResumoPessoa
-	(*ResumoDados)(nil),                   // 47: contas.ResumoDados
-	(*ResumoMesAno)(nil),                  // 48: contas.ResumoMesAno
-	(*ResumoPagarReceber)(nil),            // 49: contas.ResumoPagarReceber
-	(*ResumoPagoRecebido)(nil),            // 50: contas.ResumoPagoRecebido
-	(*DashboardRequest)(nil),              // 51: contas.DashboardRequest
-	(*DashboardResponse)(nil),             // 52: contas.DashboardResponse
-	(*ResumoDia)(nil),                     // 53: contas.ResumoDia
-	(*ContaAtrasada)(nil),                 // 54: contas.ContaAtrasada
-	(*ReportRequest)(nil),                 // 55: contas.ReportRequest
-	(*ReportResponse)(nil),                // 56: contas.ReportResponse
-	(*CloneRequest)(nil),                  // 57: contas.CloneRequest
-	(*CloneResponse)(nil),                 // 58: contas.CloneResponse
-	(*GetOutstandingBalanceRequest)(nil),  // 59: contas.GetOutstandingBalanceRequest
-	(*GetOutstandingBalanceResponse)(nil), // 60: contas.GetOutstandingBalanceResponse
-	(*DuplicataRequest)(nil),              // 61: contas.DuplicataRequest
-	(*DuplicataResponse)(nil),             // 62: contas.DuplicataResponse
-	(*ExportRequest)(nil),                 // 63: contas.ExportRequest
-	(*ExportResponse)(nil),                // 64: contas.ExportResponse
-	(*ImprimirReciboRequest)(nil),         // 65: contas.ImprimirReciboRequest
-	(*ImprimirReciboResponse)(nil),        // 66: contas.ImprimirReciboResponse
-	nil,                                   // 67: contas.Contas.CustomFieldsEntry
-	nil,                                   // 68: contas.ImportResponse.ErrosByCategoryEntry
-	nil,                                   // 69: contas.ResumoDados.PessoasMapEntry
-	(*timestamppb.Timestamp)(nil),         // 70: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),          // 71: metadata.BasicFields
-	(*metadata.FieldMask)(nil),            // 72: metadata.FieldMask
-	(*filter.Filter)(nil),                 // 73: Filter
-	(*filter.OrderBy)(nil),                // 74: OrderBy
-	(*report.Response)(nil),               // 75: report.Response
-	(*metadata.CustomField)(nil),          // 76: metadata.CustomField
+	(*SugerePlanoContaIaRequest)(nil),     // 2: contas.SugerePlanoContaIaRequest
+	(*SugestaoPlanoConta)(nil),            // 3: contas.SugestaoPlanoConta
+	(*SugerePlanoContaIaResponse)(nil),    // 4: contas.SugerePlanoContaIaResponse
+	(*LeDocumentoIaRequest)(nil),          // 5: contas.LeDocumentoIaRequest
+	(*LeDocumentoIaResponse)(nil),         // 6: contas.LeDocumentoIaResponse
+	(*FaturaRequest)(nil),                 // 7: contas.FaturaRequest
+	(*FaturaResponse)(nil),                // 8: contas.FaturaResponse
+	(*GeraBoletoRequest)(nil),             // 9: contas.GeraBoletoRequest
+	(*GeraBoletoResponse)(nil),            // 10: contas.GeraBoletoResponse
+	(*SendPaymentLinkRequest)(nil),        // 11: contas.SendPaymentLinkRequest
+	(*DestinatarioCobranca)(nil),          // 12: contas.DestinatarioCobranca
+	(*SendPaymentLinkResponse)(nil),       // 13: contas.SendPaymentLinkResponse
+	(*WhatsappWebEnvio)(nil),              // 14: contas.WhatsappWebEnvio
+	(*Contas)(nil),                        // 15: contas.Contas
+	(*Taxa)(nil),                          // 16: contas.Taxa
+	(*Pagamento)(nil),                     // 17: contas.Pagamento
+	(*Comprovante)(nil),                   // 18: contas.Comprovante
+	(*FormaPagamentoPadrao)(nil),          // 19: contas.FormaPagamentoPadrao
+	(*CreateContasRequest)(nil),           // 20: contas.CreateContasRequest
+	(*CreateContasResponse)(nil),          // 21: contas.CreateContasResponse
+	(*UpdateContasRequest)(nil),           // 22: contas.UpdateContasRequest
+	(*UpdateContasResponse)(nil),          // 23: contas.UpdateContasResponse
+	(*DeleteContasRequest)(nil),           // 24: contas.DeleteContasRequest
+	(*DeleteContasResponse)(nil),          // 25: contas.DeleteContasResponse
+	(*GetContasRequest)(nil),              // 26: contas.GetContasRequest
+	(*GetContasResponse)(nil),             // 27: contas.GetContasResponse
+	(*ListContasRequest)(nil),             // 28: contas.ListContasRequest
+	(*ListContasResponse)(nil),            // 29: contas.ListContasResponse
+	(*CancelarRequest)(nil),               // 30: contas.CancelarRequest
+	(*CancelarResponse)(nil),              // 31: contas.CancelarResponse
+	(*AddPagamentoRequest)(nil),           // 32: contas.AddPagamentoRequest
+	(*AddPagamentoResponse)(nil),          // 33: contas.AddPagamentoResponse
+	(*UpdatePagamentoRequest)(nil),        // 34: contas.UpdatePagamentoRequest
+	(*UpdatePagamentoResponse)(nil),       // 35: contas.UpdatePagamentoResponse
+	(*DeletePagamentoRequest)(nil),        // 36: contas.DeletePagamentoRequest
+	(*DeletePagamentoResponse)(nil),       // 37: contas.DeletePagamentoResponse
+	(*AtualizaComprovanteRequest)(nil),    // 38: contas.AtualizaComprovanteRequest
+	(*AtualizaComprovanteResponse)(nil),   // 39: contas.AtualizaComprovanteResponse
+	(*ImportRequest)(nil),                 // 40: contas.ImportRequest
+	(*ImportResponse)(nil),                // 41: contas.ImportResponse
+	(*ImportErrorGroup)(nil),              // 42: contas.ImportErrorGroup
+	(*ImportError)(nil),                   // 43: contas.ImportError
+	(*AlteracaoConjunta)(nil),             // 44: contas.AlteracaoConjunta
+	(*AlteracaoConjuntaRequest)(nil),      // 45: contas.AlteracaoConjuntaRequest
+	(*AlteracaoConjuntaResponse)(nil),     // 46: contas.AlteracaoConjuntaResponse
+	(*FaturamentoConjuntoRequest)(nil),    // 47: contas.FaturamentoConjuntoRequest
+	(*FaturamentoConjuntoResponse)(nil),   // 48: contas.FaturamentoConjuntoResponse
+	(*MesclaContasRequest)(nil),           // 49: contas.MesclaContasRequest
+	(*MesclaContasResponse)(nil),          // 50: contas.MesclaContasResponse
+	(*ResumoPessoa)(nil),                  // 51: contas.ResumoPessoa
+	(*ResumoDados)(nil),                   // 52: contas.ResumoDados
+	(*ResumoMesAno)(nil),                  // 53: contas.ResumoMesAno
+	(*ResumoPagarReceber)(nil),            // 54: contas.ResumoPagarReceber
+	(*ResumoPagoRecebido)(nil),            // 55: contas.ResumoPagoRecebido
+	(*DashboardRequest)(nil),              // 56: contas.DashboardRequest
+	(*DashboardResponse)(nil),             // 57: contas.DashboardResponse
+	(*ResumoDia)(nil),                     // 58: contas.ResumoDia
+	(*ContaAtrasada)(nil),                 // 59: contas.ContaAtrasada
+	(*ReportRequest)(nil),                 // 60: contas.ReportRequest
+	(*ReportResponse)(nil),                // 61: contas.ReportResponse
+	(*CloneRequest)(nil),                  // 62: contas.CloneRequest
+	(*CloneResponse)(nil),                 // 63: contas.CloneResponse
+	(*GetOutstandingBalanceRequest)(nil),  // 64: contas.GetOutstandingBalanceRequest
+	(*GetOutstandingBalanceResponse)(nil), // 65: contas.GetOutstandingBalanceResponse
+	(*DuplicataRequest)(nil),              // 66: contas.DuplicataRequest
+	(*DuplicataResponse)(nil),             // 67: contas.DuplicataResponse
+	(*ExportRequest)(nil),                 // 68: contas.ExportRequest
+	(*ExportResponse)(nil),                // 69: contas.ExportResponse
+	(*ImprimirReciboRequest)(nil),         // 70: contas.ImprimirReciboRequest
+	(*ImprimirReciboResponse)(nil),        // 71: contas.ImprimirReciboResponse
+	nil,                                   // 72: contas.Contas.CustomFieldsEntry
+	nil,                                   // 73: contas.ImportResponse.ErrosByCategoryEntry
+	nil,                                   // 74: contas.ResumoDados.PessoasMapEntry
+	(*timestamppb.Timestamp)(nil),         // 75: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),          // 76: metadata.BasicFields
+	(*metadata.FieldMask)(nil),            // 77: metadata.FieldMask
+	(*filter.Filter)(nil),                 // 78: Filter
+	(*filter.OrderBy)(nil),                // 79: OrderBy
+	(*report.Response)(nil),               // 80: report.Response
+	(*metadata.CustomField)(nil),          // 81: metadata.CustomField
 }
 var file_apps_financeiro_contas_contas_proto_depIdxs = []int32{
-	70,  // 0: contas.FaturaRequest.vencimento:type_name -> google.protobuf.Timestamp
-	10,  // 1: contas.FaturaResponse.contas:type_name -> contas.Contas
-	10,  // 2: contas.GeraBoletoResponse.contas:type_name -> contas.Contas
-	7,   // 3: contas.SendPaymentLinkRequest.destinatarios:type_name -> contas.DestinatarioCobranca
-	10,  // 4: contas.SendPaymentLinkResponse.contasList:type_name -> contas.Contas
-	9,   // 5: contas.SendPaymentLinkResponse.whatsapp_web:type_name -> contas.WhatsappWebEnvio
-	70,  // 6: contas.Contas.created_at:type_name -> google.protobuf.Timestamp
-	70,  // 7: contas.Contas.updated_at:type_name -> google.protobuf.Timestamp
-	70,  // 8: contas.Contas.importado_em:type_name -> google.protobuf.Timestamp
-	14,  // 9: contas.Contas.forma_pagamento_padrao:type_name -> contas.FormaPagamentoPadrao
-	70,  // 10: contas.Contas.desconto_data_ate:type_name -> google.protobuf.Timestamp
-	70,  // 11: contas.Contas.cancelamento_data_hora:type_name -> google.protobuf.Timestamp
-	70,  // 12: contas.Contas.data_hora_quitacao:type_name -> google.protobuf.Timestamp
-	70,  // 13: contas.Contas.vencimento:type_name -> google.protobuf.Timestamp
-	70,  // 14: contas.Contas.date_competence:type_name -> google.protobuf.Timestamp
-	70,  // 15: contas.Contas.previsao_pagamento:type_name -> google.protobuf.Timestamp
-	12,  // 16: contas.Contas.pagamentos:type_name -> contas.Pagamento
-	67,  // 17: contas.Contas.custom_fields:type_name -> contas.Contas.CustomFieldsEntry
-	1,   // 18: contas.Contas.periodicidade:type_name -> contas.Periodicidade
-	11,  // 19: contas.Contas.taxas:type_name -> contas.Taxa
-	71,  // 20: contas.Contas.fields:type_name -> metadata.BasicFields
-	70,  // 21: contas.Contas.boleto_vencimento:type_name -> google.protobuf.Timestamp
-	70,  // 22: contas.Pagamento.created_at:type_name -> google.protobuf.Timestamp
-	70,  // 23: contas.Pagamento.updated_at:type_name -> google.protobuf.Timestamp
-	70,  // 24: contas.Pagamento.data_hora:type_name -> google.protobuf.Timestamp
-	13,  // 25: contas.Pagamento.comprovante:type_name -> contas.Comprovante
-	10,  // 26: contas.CreateContasRequest.contas:type_name -> contas.Contas
-	10,  // 27: contas.CreateContasResponse.contas:type_name -> contas.Contas
-	10,  // 28: contas.UpdateContasRequest.contas:type_name -> contas.Contas
-	72,  // 29: contas.UpdateContasRequest.update_mask:type_name -> metadata.FieldMask
-	10,  // 30: contas.UpdateContasResponse.contas:type_name -> contas.Contas
-	10,  // 31: contas.GetContasResponse.contas:type_name -> contas.Contas
-	73,  // 32: contas.ListContasRequest.filter:type_name -> Filter
-	10,  // 33: contas.ListContasRequest.contas:type_name -> contas.Contas
-	70,  // 34: contas.ListContasRequest.emissao_gte:type_name -> google.protobuf.Timestamp
-	70,  // 35: contas.ListContasRequest.emissao_lte:type_name -> google.protobuf.Timestamp
-	70,  // 36: contas.ListContasRequest.vencimento_gte:type_name -> google.protobuf.Timestamp
-	70,  // 37: contas.ListContasRequest.vencimento_lte:type_name -> google.protobuf.Timestamp
-	70,  // 38: contas.ListContasRequest.quitacao_gte:type_name -> google.protobuf.Timestamp
-	70,  // 39: contas.ListContasRequest.quitacao_lte:type_name -> google.protobuf.Timestamp
-	74,  // 40: contas.ListContasRequest.order_by:type_name -> OrderBy
-	10,  // 41: contas.ListContasResponse.contas_list:type_name -> contas.Contas
-	10,  // 42: contas.CancelarResponse.contas:type_name -> contas.Contas
-	12,  // 43: contas.AddPagamentoRequest.pagamento:type_name -> contas.Pagamento
-	10,  // 44: contas.AddPagamentoResponse.contas:type_name -> contas.Contas
-	12,  // 45: contas.AddPagamentoResponse.pagamento:type_name -> contas.Pagamento
-	12,  // 46: contas.UpdatePagamentoRequest.pagamento:type_name -> contas.Pagamento
-	10,  // 47: contas.UpdatePagamentoResponse.contas:type_name -> contas.Contas
-	12,  // 48: contas.UpdatePagamentoResponse.pagamento:type_name -> contas.Pagamento
-	10,  // 49: contas.DeletePagamentoResponse.contas:type_name -> contas.Contas
-	10,  // 50: contas.AtualizaComprovanteResponse.contas:type_name -> contas.Contas
-	10,  // 51: contas.ImportRequest.accounts:type_name -> contas.Contas
-	68,  // 52: contas.ImportResponse.erros_by_category:type_name -> contas.ImportResponse.ErrosByCategoryEntry
-	38,  // 53: contas.ImportErrorGroup.errors:type_name -> contas.ImportError
-	70,  // 54: contas.AlteracaoConjunta.vencimento:type_name -> google.protobuf.Timestamp
-	23,  // 55: contas.AlteracaoConjuntaRequest.list_contas_request:type_name -> contas.ListContasRequest
-	39,  // 56: contas.AlteracaoConjuntaRequest.alteracao:type_name -> contas.AlteracaoConjunta
-	69,  // 57: contas.ResumoDados.pessoasMap:type_name -> contas.ResumoDados.PessoasMapEntry
-	46,  // 58: contas.ResumoDados.pessoas:type_name -> contas.ResumoPessoa
-	47,  // 59: contas.ResumoPagarReceber.hoje:type_name -> contas.ResumoDados
-	47,  // 60: contas.ResumoPagarReceber.atrasada:type_name -> contas.ResumoDados
-	47,  // 61: contas.ResumoPagoRecebido.hoje:type_name -> contas.ResumoDados
-	49,  // 62: contas.DashboardResponse.pagar:type_name -> contas.ResumoPagarReceber
-	50,  // 63: contas.DashboardResponse.pago:type_name -> contas.ResumoPagoRecebido
-	49,  // 64: contas.DashboardResponse.receber:type_name -> contas.ResumoPagarReceber
-	50,  // 65: contas.DashboardResponse.recebido:type_name -> contas.ResumoPagoRecebido
-	48,  // 66: contas.DashboardResponse.pagar_receber_por_mes:type_name -> contas.ResumoMesAno
-	53,  // 67: contas.DashboardResponse.proximos_dias:type_name -> contas.ResumoDia
-	54,  // 68: contas.DashboardResponse.maiores_atrasos:type_name -> contas.ContaAtrasada
-	0,   // 69: contas.ReportRequest.type:type_name -> contas.Tipo
-	23,  // 70: contas.ReportRequest.list_contas_request:type_name -> contas.ListContasRequest
-	75,  // 71: contas.ReportResponse.response:type_name -> report.Response
-	10,  // 72: contas.CloneResponse.contas:type_name -> contas.Contas
-	75,  // 73: contas.DuplicataResponse.response:type_name -> report.Response
-	73,  // 74: contas.ExportRequest.filter:type_name -> Filter
-	75,  // 75: contas.ImprimirReciboResponse.response:type_name -> report.Response
-	76,  // 76: contas.Contas.CustomFieldsEntry.value:type_name -> metadata.CustomField
-	37,  // 77: contas.ImportResponse.ErrosByCategoryEntry.value:type_name -> contas.ImportErrorGroup
-	46,  // 78: contas.ResumoDados.PessoasMapEntry.value:type_name -> contas.ResumoPessoa
-	15,  // 79: contas.ContasReceberService.Create:input_type -> contas.CreateContasRequest
-	17,  // 80: contas.ContasReceberService.Update:input_type -> contas.UpdateContasRequest
-	19,  // 81: contas.ContasReceberService.Delete:input_type -> contas.DeleteContasRequest
-	21,  // 82: contas.ContasReceberService.Get:input_type -> contas.GetContasRequest
-	23,  // 83: contas.ContasReceberService.List:input_type -> contas.ListContasRequest
-	25,  // 84: contas.ContasReceberService.Cancelar:input_type -> contas.CancelarRequest
-	27,  // 85: contas.ContasReceberService.AddPagamento:input_type -> contas.AddPagamentoRequest
-	29,  // 86: contas.ContasReceberService.UpdatePagamento:input_type -> contas.UpdatePagamentoRequest
-	31,  // 87: contas.ContasReceberService.DeletePagamento:input_type -> contas.DeletePagamentoRequest
-	33,  // 88: contas.ContasReceberService.AtualizaComprovante:input_type -> contas.AtualizaComprovanteRequest
-	35,  // 89: contas.ContasReceberService.Import:input_type -> contas.ImportRequest
-	40,  // 90: contas.ContasReceberService.AlteracaoConjunta:input_type -> contas.AlteracaoConjuntaRequest
-	42,  // 91: contas.ContasReceberService.FaturamentoConjunto:input_type -> contas.FaturamentoConjuntoRequest
-	44,  // 92: contas.ContasReceberService.MesclaContas:input_type -> contas.MesclaContasRequest
-	51,  // 93: contas.ContasReceberService.Dashboard:input_type -> contas.DashboardRequest
-	55,  // 94: contas.ContasReceberService.Report:input_type -> contas.ReportRequest
-	61,  // 95: contas.ContasReceberService.Duplicata:input_type -> contas.DuplicataRequest
-	57,  // 96: contas.ContasReceberService.Clone:input_type -> contas.CloneRequest
-	59,  // 97: contas.ContasReceberService.GetOutstandingBalance:input_type -> contas.GetOutstandingBalanceRequest
-	63,  // 98: contas.ContasReceberService.Export:input_type -> contas.ExportRequest
-	65,  // 99: contas.ContasReceberService.ImprimirRecibo:input_type -> contas.ImprimirReciboRequest
-	6,   // 100: contas.ContasReceberService.SendPaymentLink:input_type -> contas.SendPaymentLinkRequest
-	4,   // 101: contas.ContasReceberService.GeraBoleto:input_type -> contas.GeraBoletoRequest
-	2,   // 102: contas.ContasReceberService.Fatura:input_type -> contas.FaturaRequest
-	15,  // 103: contas.ContasPagarService.Create:input_type -> contas.CreateContasRequest
-	17,  // 104: contas.ContasPagarService.Update:input_type -> contas.UpdateContasRequest
-	19,  // 105: contas.ContasPagarService.Delete:input_type -> contas.DeleteContasRequest
-	21,  // 106: contas.ContasPagarService.Get:input_type -> contas.GetContasRequest
-	23,  // 107: contas.ContasPagarService.List:input_type -> contas.ListContasRequest
-	25,  // 108: contas.ContasPagarService.Cancelar:input_type -> contas.CancelarRequest
-	27,  // 109: contas.ContasPagarService.AddPagamento:input_type -> contas.AddPagamentoRequest
-	29,  // 110: contas.ContasPagarService.UpdatePagamento:input_type -> contas.UpdatePagamentoRequest
-	31,  // 111: contas.ContasPagarService.DeletePagamento:input_type -> contas.DeletePagamentoRequest
-	33,  // 112: contas.ContasPagarService.AtualizaComprovante:input_type -> contas.AtualizaComprovanteRequest
-	35,  // 113: contas.ContasPagarService.Import:input_type -> contas.ImportRequest
-	40,  // 114: contas.ContasPagarService.AlteracaoConjunta:input_type -> contas.AlteracaoConjuntaRequest
-	42,  // 115: contas.ContasPagarService.FaturamentoConjunto:input_type -> contas.FaturamentoConjuntoRequest
-	44,  // 116: contas.ContasPagarService.MesclaContas:input_type -> contas.MesclaContasRequest
-	51,  // 117: contas.ContasPagarService.Dashboard:input_type -> contas.DashboardRequest
-	55,  // 118: contas.ContasPagarService.Report:input_type -> contas.ReportRequest
-	61,  // 119: contas.ContasPagarService.Duplicata:input_type -> contas.DuplicataRequest
-	57,  // 120: contas.ContasPagarService.Clone:input_type -> contas.CloneRequest
-	59,  // 121: contas.ContasPagarService.GetOutstandingBalance:input_type -> contas.GetOutstandingBalanceRequest
-	63,  // 122: contas.ContasPagarService.Export:input_type -> contas.ExportRequest
-	65,  // 123: contas.ContasPagarService.ImprimirRecibo:input_type -> contas.ImprimirReciboRequest
-	55,  // 124: contas.ContasService.Report:input_type -> contas.ReportRequest
-	16,  // 125: contas.ContasReceberService.Create:output_type -> contas.CreateContasResponse
-	18,  // 126: contas.ContasReceberService.Update:output_type -> contas.UpdateContasResponse
-	20,  // 127: contas.ContasReceberService.Delete:output_type -> contas.DeleteContasResponse
-	22,  // 128: contas.ContasReceberService.Get:output_type -> contas.GetContasResponse
-	24,  // 129: contas.ContasReceberService.List:output_type -> contas.ListContasResponse
-	26,  // 130: contas.ContasReceberService.Cancelar:output_type -> contas.CancelarResponse
-	28,  // 131: contas.ContasReceberService.AddPagamento:output_type -> contas.AddPagamentoResponse
-	30,  // 132: contas.ContasReceberService.UpdatePagamento:output_type -> contas.UpdatePagamentoResponse
-	32,  // 133: contas.ContasReceberService.DeletePagamento:output_type -> contas.DeletePagamentoResponse
-	34,  // 134: contas.ContasReceberService.AtualizaComprovante:output_type -> contas.AtualizaComprovanteResponse
-	36,  // 135: contas.ContasReceberService.Import:output_type -> contas.ImportResponse
-	41,  // 136: contas.ContasReceberService.AlteracaoConjunta:output_type -> contas.AlteracaoConjuntaResponse
-	43,  // 137: contas.ContasReceberService.FaturamentoConjunto:output_type -> contas.FaturamentoConjuntoResponse
-	45,  // 138: contas.ContasReceberService.MesclaContas:output_type -> contas.MesclaContasResponse
-	52,  // 139: contas.ContasReceberService.Dashboard:output_type -> contas.DashboardResponse
-	56,  // 140: contas.ContasReceberService.Report:output_type -> contas.ReportResponse
-	62,  // 141: contas.ContasReceberService.Duplicata:output_type -> contas.DuplicataResponse
-	58,  // 142: contas.ContasReceberService.Clone:output_type -> contas.CloneResponse
-	60,  // 143: contas.ContasReceberService.GetOutstandingBalance:output_type -> contas.GetOutstandingBalanceResponse
-	64,  // 144: contas.ContasReceberService.Export:output_type -> contas.ExportResponse
-	66,  // 145: contas.ContasReceberService.ImprimirRecibo:output_type -> contas.ImprimirReciboResponse
-	8,   // 146: contas.ContasReceberService.SendPaymentLink:output_type -> contas.SendPaymentLinkResponse
-	5,   // 147: contas.ContasReceberService.GeraBoleto:output_type -> contas.GeraBoletoResponse
-	3,   // 148: contas.ContasReceberService.Fatura:output_type -> contas.FaturaResponse
-	16,  // 149: contas.ContasPagarService.Create:output_type -> contas.CreateContasResponse
-	18,  // 150: contas.ContasPagarService.Update:output_type -> contas.UpdateContasResponse
-	20,  // 151: contas.ContasPagarService.Delete:output_type -> contas.DeleteContasResponse
-	22,  // 152: contas.ContasPagarService.Get:output_type -> contas.GetContasResponse
-	24,  // 153: contas.ContasPagarService.List:output_type -> contas.ListContasResponse
-	26,  // 154: contas.ContasPagarService.Cancelar:output_type -> contas.CancelarResponse
-	28,  // 155: contas.ContasPagarService.AddPagamento:output_type -> contas.AddPagamentoResponse
-	30,  // 156: contas.ContasPagarService.UpdatePagamento:output_type -> contas.UpdatePagamentoResponse
-	32,  // 157: contas.ContasPagarService.DeletePagamento:output_type -> contas.DeletePagamentoResponse
-	34,  // 158: contas.ContasPagarService.AtualizaComprovante:output_type -> contas.AtualizaComprovanteResponse
-	36,  // 159: contas.ContasPagarService.Import:output_type -> contas.ImportResponse
-	41,  // 160: contas.ContasPagarService.AlteracaoConjunta:output_type -> contas.AlteracaoConjuntaResponse
-	43,  // 161: contas.ContasPagarService.FaturamentoConjunto:output_type -> contas.FaturamentoConjuntoResponse
-	45,  // 162: contas.ContasPagarService.MesclaContas:output_type -> contas.MesclaContasResponse
-	52,  // 163: contas.ContasPagarService.Dashboard:output_type -> contas.DashboardResponse
-	56,  // 164: contas.ContasPagarService.Report:output_type -> contas.ReportResponse
-	62,  // 165: contas.ContasPagarService.Duplicata:output_type -> contas.DuplicataResponse
-	58,  // 166: contas.ContasPagarService.Clone:output_type -> contas.CloneResponse
-	60,  // 167: contas.ContasPagarService.GetOutstandingBalance:output_type -> contas.GetOutstandingBalanceResponse
-	64,  // 168: contas.ContasPagarService.Export:output_type -> contas.ExportResponse
-	66,  // 169: contas.ContasPagarService.ImprimirRecibo:output_type -> contas.ImprimirReciboResponse
-	56,  // 170: contas.ContasService.Report:output_type -> contas.ReportResponse
-	125, // [125:171] is the sub-list for method output_type
-	79,  // [79:125] is the sub-list for method input_type
-	79,  // [79:79] is the sub-list for extension type_name
-	79,  // [79:79] is the sub-list for extension extendee
-	0,   // [0:79] is the sub-list for field type_name
+	28,  // 0: contas.SugerePlanoContaIaRequest.list_contas_request:type_name -> contas.ListContasRequest
+	75,  // 1: contas.SugestaoPlanoConta.vencimento:type_name -> google.protobuf.Timestamp
+	3,   // 2: contas.SugerePlanoContaIaResponse.sugestoes:type_name -> contas.SugestaoPlanoConta
+	15,  // 3: contas.LeDocumentoIaResponse.contas:type_name -> contas.Contas
+	75,  // 4: contas.FaturaRequest.vencimento:type_name -> google.protobuf.Timestamp
+	15,  // 5: contas.FaturaResponse.contas:type_name -> contas.Contas
+	15,  // 6: contas.GeraBoletoResponse.contas:type_name -> contas.Contas
+	12,  // 7: contas.SendPaymentLinkRequest.destinatarios:type_name -> contas.DestinatarioCobranca
+	15,  // 8: contas.SendPaymentLinkResponse.contasList:type_name -> contas.Contas
+	14,  // 9: contas.SendPaymentLinkResponse.whatsapp_web:type_name -> contas.WhatsappWebEnvio
+	75,  // 10: contas.Contas.created_at:type_name -> google.protobuf.Timestamp
+	75,  // 11: contas.Contas.updated_at:type_name -> google.protobuf.Timestamp
+	75,  // 12: contas.Contas.importado_em:type_name -> google.protobuf.Timestamp
+	19,  // 13: contas.Contas.forma_pagamento_padrao:type_name -> contas.FormaPagamentoPadrao
+	75,  // 14: contas.Contas.desconto_data_ate:type_name -> google.protobuf.Timestamp
+	75,  // 15: contas.Contas.cancelamento_data_hora:type_name -> google.protobuf.Timestamp
+	75,  // 16: contas.Contas.data_hora_quitacao:type_name -> google.protobuf.Timestamp
+	75,  // 17: contas.Contas.vencimento:type_name -> google.protobuf.Timestamp
+	75,  // 18: contas.Contas.date_competence:type_name -> google.protobuf.Timestamp
+	75,  // 19: contas.Contas.previsao_pagamento:type_name -> google.protobuf.Timestamp
+	17,  // 20: contas.Contas.pagamentos:type_name -> contas.Pagamento
+	72,  // 21: contas.Contas.custom_fields:type_name -> contas.Contas.CustomFieldsEntry
+	1,   // 22: contas.Contas.periodicidade:type_name -> contas.Periodicidade
+	16,  // 23: contas.Contas.taxas:type_name -> contas.Taxa
+	76,  // 24: contas.Contas.fields:type_name -> metadata.BasicFields
+	75,  // 25: contas.Contas.boleto_vencimento:type_name -> google.protobuf.Timestamp
+	75,  // 26: contas.Pagamento.created_at:type_name -> google.protobuf.Timestamp
+	75,  // 27: contas.Pagamento.updated_at:type_name -> google.protobuf.Timestamp
+	75,  // 28: contas.Pagamento.data_hora:type_name -> google.protobuf.Timestamp
+	18,  // 29: contas.Pagamento.comprovante:type_name -> contas.Comprovante
+	15,  // 30: contas.CreateContasRequest.contas:type_name -> contas.Contas
+	15,  // 31: contas.CreateContasResponse.contas:type_name -> contas.Contas
+	15,  // 32: contas.UpdateContasRequest.contas:type_name -> contas.Contas
+	77,  // 33: contas.UpdateContasRequest.update_mask:type_name -> metadata.FieldMask
+	15,  // 34: contas.UpdateContasResponse.contas:type_name -> contas.Contas
+	15,  // 35: contas.GetContasResponse.contas:type_name -> contas.Contas
+	78,  // 36: contas.ListContasRequest.filter:type_name -> Filter
+	15,  // 37: contas.ListContasRequest.contas:type_name -> contas.Contas
+	75,  // 38: contas.ListContasRequest.emissao_gte:type_name -> google.protobuf.Timestamp
+	75,  // 39: contas.ListContasRequest.emissao_lte:type_name -> google.protobuf.Timestamp
+	75,  // 40: contas.ListContasRequest.vencimento_gte:type_name -> google.protobuf.Timestamp
+	75,  // 41: contas.ListContasRequest.vencimento_lte:type_name -> google.protobuf.Timestamp
+	75,  // 42: contas.ListContasRequest.quitacao_gte:type_name -> google.protobuf.Timestamp
+	75,  // 43: contas.ListContasRequest.quitacao_lte:type_name -> google.protobuf.Timestamp
+	79,  // 44: contas.ListContasRequest.order_by:type_name -> OrderBy
+	15,  // 45: contas.ListContasResponse.contas_list:type_name -> contas.Contas
+	15,  // 46: contas.CancelarResponse.contas:type_name -> contas.Contas
+	17,  // 47: contas.AddPagamentoRequest.pagamento:type_name -> contas.Pagamento
+	15,  // 48: contas.AddPagamentoResponse.contas:type_name -> contas.Contas
+	17,  // 49: contas.AddPagamentoResponse.pagamento:type_name -> contas.Pagamento
+	17,  // 50: contas.UpdatePagamentoRequest.pagamento:type_name -> contas.Pagamento
+	15,  // 51: contas.UpdatePagamentoResponse.contas:type_name -> contas.Contas
+	17,  // 52: contas.UpdatePagamentoResponse.pagamento:type_name -> contas.Pagamento
+	15,  // 53: contas.DeletePagamentoResponse.contas:type_name -> contas.Contas
+	15,  // 54: contas.AtualizaComprovanteResponse.contas:type_name -> contas.Contas
+	15,  // 55: contas.ImportRequest.accounts:type_name -> contas.Contas
+	73,  // 56: contas.ImportResponse.erros_by_category:type_name -> contas.ImportResponse.ErrosByCategoryEntry
+	43,  // 57: contas.ImportErrorGroup.errors:type_name -> contas.ImportError
+	75,  // 58: contas.AlteracaoConjunta.vencimento:type_name -> google.protobuf.Timestamp
+	28,  // 59: contas.AlteracaoConjuntaRequest.list_contas_request:type_name -> contas.ListContasRequest
+	44,  // 60: contas.AlteracaoConjuntaRequest.alteracao:type_name -> contas.AlteracaoConjunta
+	74,  // 61: contas.ResumoDados.pessoasMap:type_name -> contas.ResumoDados.PessoasMapEntry
+	51,  // 62: contas.ResumoDados.pessoas:type_name -> contas.ResumoPessoa
+	52,  // 63: contas.ResumoPagarReceber.hoje:type_name -> contas.ResumoDados
+	52,  // 64: contas.ResumoPagarReceber.atrasada:type_name -> contas.ResumoDados
+	52,  // 65: contas.ResumoPagoRecebido.hoje:type_name -> contas.ResumoDados
+	54,  // 66: contas.DashboardResponse.pagar:type_name -> contas.ResumoPagarReceber
+	55,  // 67: contas.DashboardResponse.pago:type_name -> contas.ResumoPagoRecebido
+	54,  // 68: contas.DashboardResponse.receber:type_name -> contas.ResumoPagarReceber
+	55,  // 69: contas.DashboardResponse.recebido:type_name -> contas.ResumoPagoRecebido
+	53,  // 70: contas.DashboardResponse.pagar_receber_por_mes:type_name -> contas.ResumoMesAno
+	58,  // 71: contas.DashboardResponse.proximos_dias:type_name -> contas.ResumoDia
+	59,  // 72: contas.DashboardResponse.maiores_atrasos:type_name -> contas.ContaAtrasada
+	0,   // 73: contas.ReportRequest.type:type_name -> contas.Tipo
+	28,  // 74: contas.ReportRequest.list_contas_request:type_name -> contas.ListContasRequest
+	80,  // 75: contas.ReportResponse.response:type_name -> report.Response
+	15,  // 76: contas.CloneResponse.contas:type_name -> contas.Contas
+	80,  // 77: contas.DuplicataResponse.response:type_name -> report.Response
+	78,  // 78: contas.ExportRequest.filter:type_name -> Filter
+	80,  // 79: contas.ImprimirReciboResponse.response:type_name -> report.Response
+	81,  // 80: contas.Contas.CustomFieldsEntry.value:type_name -> metadata.CustomField
+	42,  // 81: contas.ImportResponse.ErrosByCategoryEntry.value:type_name -> contas.ImportErrorGroup
+	51,  // 82: contas.ResumoDados.PessoasMapEntry.value:type_name -> contas.ResumoPessoa
+	20,  // 83: contas.ContasReceberService.Create:input_type -> contas.CreateContasRequest
+	22,  // 84: contas.ContasReceberService.Update:input_type -> contas.UpdateContasRequest
+	24,  // 85: contas.ContasReceberService.Delete:input_type -> contas.DeleteContasRequest
+	26,  // 86: contas.ContasReceberService.Get:input_type -> contas.GetContasRequest
+	28,  // 87: contas.ContasReceberService.List:input_type -> contas.ListContasRequest
+	30,  // 88: contas.ContasReceberService.Cancelar:input_type -> contas.CancelarRequest
+	32,  // 89: contas.ContasReceberService.AddPagamento:input_type -> contas.AddPagamentoRequest
+	34,  // 90: contas.ContasReceberService.UpdatePagamento:input_type -> contas.UpdatePagamentoRequest
+	36,  // 91: contas.ContasReceberService.DeletePagamento:input_type -> contas.DeletePagamentoRequest
+	38,  // 92: contas.ContasReceberService.AtualizaComprovante:input_type -> contas.AtualizaComprovanteRequest
+	40,  // 93: contas.ContasReceberService.Import:input_type -> contas.ImportRequest
+	45,  // 94: contas.ContasReceberService.AlteracaoConjunta:input_type -> contas.AlteracaoConjuntaRequest
+	47,  // 95: contas.ContasReceberService.FaturamentoConjunto:input_type -> contas.FaturamentoConjuntoRequest
+	49,  // 96: contas.ContasReceberService.MesclaContas:input_type -> contas.MesclaContasRequest
+	56,  // 97: contas.ContasReceberService.Dashboard:input_type -> contas.DashboardRequest
+	60,  // 98: contas.ContasReceberService.Report:input_type -> contas.ReportRequest
+	66,  // 99: contas.ContasReceberService.Duplicata:input_type -> contas.DuplicataRequest
+	62,  // 100: contas.ContasReceberService.Clone:input_type -> contas.CloneRequest
+	64,  // 101: contas.ContasReceberService.GetOutstandingBalance:input_type -> contas.GetOutstandingBalanceRequest
+	68,  // 102: contas.ContasReceberService.Export:input_type -> contas.ExportRequest
+	70,  // 103: contas.ContasReceberService.ImprimirRecibo:input_type -> contas.ImprimirReciboRequest
+	11,  // 104: contas.ContasReceberService.SendPaymentLink:input_type -> contas.SendPaymentLinkRequest
+	9,   // 105: contas.ContasReceberService.GeraBoleto:input_type -> contas.GeraBoletoRequest
+	7,   // 106: contas.ContasReceberService.Fatura:input_type -> contas.FaturaRequest
+	2,   // 107: contas.ContasReceberService.SugerePlanoContaIa:input_type -> contas.SugerePlanoContaIaRequest
+	20,  // 108: contas.ContasPagarService.Create:input_type -> contas.CreateContasRequest
+	22,  // 109: contas.ContasPagarService.Update:input_type -> contas.UpdateContasRequest
+	24,  // 110: contas.ContasPagarService.Delete:input_type -> contas.DeleteContasRequest
+	26,  // 111: contas.ContasPagarService.Get:input_type -> contas.GetContasRequest
+	28,  // 112: contas.ContasPagarService.List:input_type -> contas.ListContasRequest
+	30,  // 113: contas.ContasPagarService.Cancelar:input_type -> contas.CancelarRequest
+	32,  // 114: contas.ContasPagarService.AddPagamento:input_type -> contas.AddPagamentoRequest
+	34,  // 115: contas.ContasPagarService.UpdatePagamento:input_type -> contas.UpdatePagamentoRequest
+	36,  // 116: contas.ContasPagarService.DeletePagamento:input_type -> contas.DeletePagamentoRequest
+	38,  // 117: contas.ContasPagarService.AtualizaComprovante:input_type -> contas.AtualizaComprovanteRequest
+	40,  // 118: contas.ContasPagarService.Import:input_type -> contas.ImportRequest
+	45,  // 119: contas.ContasPagarService.AlteracaoConjunta:input_type -> contas.AlteracaoConjuntaRequest
+	47,  // 120: contas.ContasPagarService.FaturamentoConjunto:input_type -> contas.FaturamentoConjuntoRequest
+	49,  // 121: contas.ContasPagarService.MesclaContas:input_type -> contas.MesclaContasRequest
+	56,  // 122: contas.ContasPagarService.Dashboard:input_type -> contas.DashboardRequest
+	60,  // 123: contas.ContasPagarService.Report:input_type -> contas.ReportRequest
+	66,  // 124: contas.ContasPagarService.Duplicata:input_type -> contas.DuplicataRequest
+	62,  // 125: contas.ContasPagarService.Clone:input_type -> contas.CloneRequest
+	64,  // 126: contas.ContasPagarService.GetOutstandingBalance:input_type -> contas.GetOutstandingBalanceRequest
+	68,  // 127: contas.ContasPagarService.Export:input_type -> contas.ExportRequest
+	70,  // 128: contas.ContasPagarService.ImprimirRecibo:input_type -> contas.ImprimirReciboRequest
+	2,   // 129: contas.ContasPagarService.SugerePlanoContaIa:input_type -> contas.SugerePlanoContaIaRequest
+	5,   // 130: contas.ContasPagarService.LeDocumentoIa:input_type -> contas.LeDocumentoIaRequest
+	60,  // 131: contas.ContasService.Report:input_type -> contas.ReportRequest
+	21,  // 132: contas.ContasReceberService.Create:output_type -> contas.CreateContasResponse
+	23,  // 133: contas.ContasReceberService.Update:output_type -> contas.UpdateContasResponse
+	25,  // 134: contas.ContasReceberService.Delete:output_type -> contas.DeleteContasResponse
+	27,  // 135: contas.ContasReceberService.Get:output_type -> contas.GetContasResponse
+	29,  // 136: contas.ContasReceberService.List:output_type -> contas.ListContasResponse
+	31,  // 137: contas.ContasReceberService.Cancelar:output_type -> contas.CancelarResponse
+	33,  // 138: contas.ContasReceberService.AddPagamento:output_type -> contas.AddPagamentoResponse
+	35,  // 139: contas.ContasReceberService.UpdatePagamento:output_type -> contas.UpdatePagamentoResponse
+	37,  // 140: contas.ContasReceberService.DeletePagamento:output_type -> contas.DeletePagamentoResponse
+	39,  // 141: contas.ContasReceberService.AtualizaComprovante:output_type -> contas.AtualizaComprovanteResponse
+	41,  // 142: contas.ContasReceberService.Import:output_type -> contas.ImportResponse
+	46,  // 143: contas.ContasReceberService.AlteracaoConjunta:output_type -> contas.AlteracaoConjuntaResponse
+	48,  // 144: contas.ContasReceberService.FaturamentoConjunto:output_type -> contas.FaturamentoConjuntoResponse
+	50,  // 145: contas.ContasReceberService.MesclaContas:output_type -> contas.MesclaContasResponse
+	57,  // 146: contas.ContasReceberService.Dashboard:output_type -> contas.DashboardResponse
+	61,  // 147: contas.ContasReceberService.Report:output_type -> contas.ReportResponse
+	67,  // 148: contas.ContasReceberService.Duplicata:output_type -> contas.DuplicataResponse
+	63,  // 149: contas.ContasReceberService.Clone:output_type -> contas.CloneResponse
+	65,  // 150: contas.ContasReceberService.GetOutstandingBalance:output_type -> contas.GetOutstandingBalanceResponse
+	69,  // 151: contas.ContasReceberService.Export:output_type -> contas.ExportResponse
+	71,  // 152: contas.ContasReceberService.ImprimirRecibo:output_type -> contas.ImprimirReciboResponse
+	13,  // 153: contas.ContasReceberService.SendPaymentLink:output_type -> contas.SendPaymentLinkResponse
+	10,  // 154: contas.ContasReceberService.GeraBoleto:output_type -> contas.GeraBoletoResponse
+	8,   // 155: contas.ContasReceberService.Fatura:output_type -> contas.FaturaResponse
+	4,   // 156: contas.ContasReceberService.SugerePlanoContaIa:output_type -> contas.SugerePlanoContaIaResponse
+	21,  // 157: contas.ContasPagarService.Create:output_type -> contas.CreateContasResponse
+	23,  // 158: contas.ContasPagarService.Update:output_type -> contas.UpdateContasResponse
+	25,  // 159: contas.ContasPagarService.Delete:output_type -> contas.DeleteContasResponse
+	27,  // 160: contas.ContasPagarService.Get:output_type -> contas.GetContasResponse
+	29,  // 161: contas.ContasPagarService.List:output_type -> contas.ListContasResponse
+	31,  // 162: contas.ContasPagarService.Cancelar:output_type -> contas.CancelarResponse
+	33,  // 163: contas.ContasPagarService.AddPagamento:output_type -> contas.AddPagamentoResponse
+	35,  // 164: contas.ContasPagarService.UpdatePagamento:output_type -> contas.UpdatePagamentoResponse
+	37,  // 165: contas.ContasPagarService.DeletePagamento:output_type -> contas.DeletePagamentoResponse
+	39,  // 166: contas.ContasPagarService.AtualizaComprovante:output_type -> contas.AtualizaComprovanteResponse
+	41,  // 167: contas.ContasPagarService.Import:output_type -> contas.ImportResponse
+	46,  // 168: contas.ContasPagarService.AlteracaoConjunta:output_type -> contas.AlteracaoConjuntaResponse
+	48,  // 169: contas.ContasPagarService.FaturamentoConjunto:output_type -> contas.FaturamentoConjuntoResponse
+	50,  // 170: contas.ContasPagarService.MesclaContas:output_type -> contas.MesclaContasResponse
+	57,  // 171: contas.ContasPagarService.Dashboard:output_type -> contas.DashboardResponse
+	61,  // 172: contas.ContasPagarService.Report:output_type -> contas.ReportResponse
+	67,  // 173: contas.ContasPagarService.Duplicata:output_type -> contas.DuplicataResponse
+	63,  // 174: contas.ContasPagarService.Clone:output_type -> contas.CloneResponse
+	65,  // 175: contas.ContasPagarService.GetOutstandingBalance:output_type -> contas.GetOutstandingBalanceResponse
+	69,  // 176: contas.ContasPagarService.Export:output_type -> contas.ExportResponse
+	71,  // 177: contas.ContasPagarService.ImprimirRecibo:output_type -> contas.ImprimirReciboResponse
+	4,   // 178: contas.ContasPagarService.SugerePlanoContaIa:output_type -> contas.SugerePlanoContaIaResponse
+	6,   // 179: contas.ContasPagarService.LeDocumentoIa:output_type -> contas.LeDocumentoIaResponse
+	61,  // 180: contas.ContasService.Report:output_type -> contas.ReportResponse
+	132, // [132:181] is the sub-list for method output_type
+	83,  // [83:132] is the sub-list for method input_type
+	83,  // [83:83] is the sub-list for extension type_name
+	83,  // [83:83] is the sub-list for extension extendee
+	0,   // [0:83] is the sub-list for field type_name
 }
 
 func init() { file_apps_financeiro_contas_contas_proto_init() }
@@ -5659,7 +6075,7 @@ func file_apps_financeiro_contas_contas_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_financeiro_contas_contas_proto_rawDesc), len(file_apps_financeiro_contas_contas_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   68,
+			NumMessages:   73,
 			NumExtensions: 0,
 			NumServices:   3,
 		},
