@@ -124,7 +124,11 @@ type PaymentMethod struct {
 	NaoEmiteNfseAutomatica bool `protobuf:"varint,46,opt,name=nao_emite_nfse_automatica,json=naoEmiteNfseAutomatica,proto3" json:"nao_emite_nfse_automatica,omitempty"`
 	// Venda do PDV paga só com formas marcadas não emite a NFC-e automática ao fechar. Paga também
 	// com outra forma, a nota sai. A emissão manual continua disponível.
-	NaoEmiteNfce  bool `protobuf:"varint,47,opt,name=nao_emite_nfce,json=naoEmiteNfce,proto3" json:"nao_emite_nfce,omitempty"`
+	NaoEmiteNfce bool `protobuf:"varint,47,opt,name=nao_emite_nfce,json=naoEmiteNfce,proto3" json:"nao_emite_nfce,omitempty"`
+	// Pessoa da adquirente no cadastro de pessoas; adquirente_nome e adquirente_cnpj vêm dela.
+	AdquirenteId string `protobuf:"bytes,48,opt,name=adquirente_id,json=adquirenteId,proto3" json:"adquirente_id,omitempty"`
+	// Bandeira do cartão desta forma (VISA, MASTERCARD, ELO, PIX...). Vazia aceita qualquer uma.
+	Bandeira      string `protobuf:"bytes,49,opt,name=bandeira,proto3" json:"bandeira,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -402,6 +406,20 @@ func (x *PaymentMethod) GetNaoEmiteNfce() bool {
 		return x.NaoEmiteNfce
 	}
 	return false
+}
+
+func (x *PaymentMethod) GetAdquirenteId() string {
+	if x != nil {
+		return x.AdquirenteId
+	}
+	return ""
+}
+
+func (x *PaymentMethod) GetBandeira() string {
+	if x != nil {
+		return x.Bandeira
+	}
+	return ""
 }
 
 type FraudIntegration struct {
@@ -1777,7 +1795,7 @@ var File_apps_vendas_formapagamento_formas_pagamento_proto protoreflect.FileDesc
 
 const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\n" +
-	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xbd\f\n" +
+	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xfe\f\n" +
 	"\rPaymentMethod\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1817,7 +1835,9 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\ftabela_preco\x18+ \x01(\tR\vtabelaPreco\x12=\n" +
 	"\x1bnao_verifica_limite_credito\x18- \x01(\bR\x18naoVerificaLimiteCredito\x129\n" +
 	"\x19nao_emite_nfse_automatica\x18. \x01(\bR\x16naoEmiteNfseAutomatica\x12$\n" +
-	"\x0enao_emite_nfce\x18/ \x01(\bR\fnaoEmiteNfce:\x03\xc0>\x01J\x04\b\b\x10\t\"t\n" +
+	"\x0enao_emite_nfce\x18/ \x01(\bR\fnaoEmiteNfce\x12#\n" +
+	"\radquirente_id\x180 \x01(\tR\fadquirenteId\x12\x1a\n" +
+	"\bbandeira\x181 \x01(\tR\bbandeira:\x03\xc0>\x01J\x04\b\b\x10\t\"t\n" +
 	"\x10FraudIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +

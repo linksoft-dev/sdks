@@ -1760,8 +1760,10 @@ type Vendedor struct {
 	LimiteVariacaoPrecoMin float32                `protobuf:"fixed32,2,opt,name=limite_variacao_preco_min,json=limiteVariacaoPrecoMin,proto3" json:"limite_variacao_preco_min,omitempty"` // Minimum unit price variation limit compared to stock price
 	LimiteVariacaoPrecoMax float32                `protobuf:"fixed32,3,opt,name=limite_variacao_preco_max,json=limiteVariacaoPrecoMax,proto3" json:"limite_variacao_preco_max,omitempty"` // Maximum unit price variation limit compared to stock price
 	DescontoMaximo         float32                `protobuf:"fixed32,5,opt,name=desconto_maximo,json=descontoMaximo,proto3" json:"desconto_maximo,omitempty"`                             // Maximum discount percentage allowed for this salesperson; empty falls back to the company limit
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// Maquininhas de cartão do vendedor: a identificação do terminal que a adquirente informa na venda.
+	Maquininhas   []string `protobuf:"bytes,6,rep,name=maquininhas,proto3" json:"maquininhas,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Vendedor) Reset() {
@@ -1820,6 +1822,13 @@ func (x *Vendedor) GetDescontoMaximo() float32 {
 		return x.DescontoMaximo
 	}
 	return 0
+}
+
+func (x *Vendedor) GetMaquininhas() []string {
+	if x != nil {
+		return x.Maquininhas
+	}
+	return nil
 }
 
 type Cliente struct {
@@ -3369,12 +3378,13 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
 	"\tperson_id\x18\x02 \x01(\tR\bpersonId\x12\x1f\n" +
 	"\vperson_name\x18\x03 \x01(\tR\n" +
-	"personName\"\xdf\x01\n" +
+	"personName\"\x81\x02\n" +
 	"\bVendedor\x12\x1a\n" +
 	"\bcomissao\x18\x01 \x01(\x02R\bcomissao\x129\n" +
 	"\x19limite_variacao_preco_min\x18\x02 \x01(\x02R\x16limiteVariacaoPrecoMin\x129\n" +
 	"\x19limite_variacao_preco_max\x18\x03 \x01(\x02R\x16limiteVariacaoPrecoMax\x12'\n" +
-	"\x0fdesconto_maximo\x18\x05 \x01(\x02R\x0edescontoMaximoJ\x04\b\x04\x10\x05R\x12nao_lanca_comissao\"\xca\x01\n" +
+	"\x0fdesconto_maximo\x18\x05 \x01(\x02R\x0edescontoMaximo\x12 \n" +
+	"\vmaquininhas\x18\x06 \x03(\tR\vmaquininhasJ\x04\b\x04\x10\x05R\x12nao_lanca_comissao\"\xca\x01\n" +
 	"\aCliente\x12\x1f\n" +
 	"\vvendedor_id\x18\x01 \x01(\tR\n" +
 	"vendedorId\x12#\n" +

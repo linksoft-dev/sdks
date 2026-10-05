@@ -371,16 +371,18 @@ class Dependent(_message.Message):
     def __init__(self, id: _Optional[str] = ..., person_id: _Optional[str] = ..., person_name: _Optional[str] = ...) -> None: ...
 
 class Vendedor(_message.Message):
-    __slots__ = ("comissao", "limite_variacao_preco_min", "limite_variacao_preco_max", "desconto_maximo")
+    __slots__ = ("comissao", "limite_variacao_preco_min", "limite_variacao_preco_max", "desconto_maximo", "maquininhas")
     COMISSAO_FIELD_NUMBER: _ClassVar[int]
     LIMITE_VARIACAO_PRECO_MIN_FIELD_NUMBER: _ClassVar[int]
     LIMITE_VARIACAO_PRECO_MAX_FIELD_NUMBER: _ClassVar[int]
     DESCONTO_MAXIMO_FIELD_NUMBER: _ClassVar[int]
+    MAQUININHAS_FIELD_NUMBER: _ClassVar[int]
     comissao: float
     limite_variacao_preco_min: float
     limite_variacao_preco_max: float
     desconto_maximo: float
-    def __init__(self, comissao: _Optional[float] = ..., limite_variacao_preco_min: _Optional[float] = ..., limite_variacao_preco_max: _Optional[float] = ..., desconto_maximo: _Optional[float] = ...) -> None: ...
+    maquininhas: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, comissao: _Optional[float] = ..., limite_variacao_preco_min: _Optional[float] = ..., limite_variacao_preco_max: _Optional[float] = ..., desconto_maximo: _Optional[float] = ..., maquininhas: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Cliente(_message.Message):
     __slots__ = ("vendedor_id", "vendedor_nome", "limite_credito", "saldo_devedor", "credito_disponivel")
