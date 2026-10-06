@@ -2366,7 +2366,7 @@ class SimulaCobrancaResponse(_message.Message):
     def __init__(self, itens: _Optional[_Iterable[_Union[SimulaCobrancaItem, _Mapping]]] = ..., valor_total: _Optional[float] = ..., com_outro_plano: _Optional[int] = ..., sem_envio: _Optional[str] = ..., data: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SimulaCobrancaItem(_message.Message):
-    __slots__ = ("documento_id", "tipo", "numero", "destinatario", "referencia", "valor", "envio")
+    __slots__ = ("documento_id", "tipo", "numero", "destinatario", "referencia", "valor", "envio", "destinatario_fantasia", "destinatario_documento")
     DOCUMENTO_ID_FIELD_NUMBER: _ClassVar[int]
     TIPO_FIELD_NUMBER: _ClassVar[int]
     NUMERO_FIELD_NUMBER: _ClassVar[int]
@@ -2374,6 +2374,8 @@ class SimulaCobrancaItem(_message.Message):
     REFERENCIA_FIELD_NUMBER: _ClassVar[int]
     VALOR_FIELD_NUMBER: _ClassVar[int]
     ENVIO_FIELD_NUMBER: _ClassVar[int]
+    DESTINATARIO_FANTASIA_FIELD_NUMBER: _ClassVar[int]
+    DESTINATARIO_DOCUMENTO_FIELD_NUMBER: _ClassVar[int]
     documento_id: str
     tipo: str
     numero: int
@@ -2381,7 +2383,9 @@ class SimulaCobrancaItem(_message.Message):
     referencia: _timestamp_pb2.Timestamp
     valor: float
     envio: int
-    def __init__(self, documento_id: _Optional[str] = ..., tipo: _Optional[str] = ..., numero: _Optional[int] = ..., destinatario: _Optional[str] = ..., referencia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valor: _Optional[float] = ..., envio: _Optional[int] = ...) -> None: ...
+    destinatario_fantasia: str
+    destinatario_documento: str
+    def __init__(self, documento_id: _Optional[str] = ..., tipo: _Optional[str] = ..., numero: _Optional[int] = ..., destinatario: _Optional[str] = ..., referencia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valor: _Optional[float] = ..., envio: _Optional[int] = ..., destinatario_fantasia: _Optional[str] = ..., destinatario_documento: _Optional[str] = ...) -> None: ...
 
 class SendPaymentLinkResponse(_message.Message):
     __slots__ = ("pedidos", "whatsapp_web")

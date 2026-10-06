@@ -11914,9 +11914,13 @@ type SimulaCobrancaItem struct {
 	Referencia *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=referencia,proto3" json:"referencia,omitempty"`
 	Valor      float64                `protobuf:"fixed64,6,opt,name=valor,proto3" json:"valor,omitempty"`
 	// Qual cobrança do documento seria (1ª, 2ª...)
-	Envio         int32 `protobuf:"varint,7,opt,name=envio,proto3" json:"envio,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Envio int32 `protobuf:"varint,7,opt,name=envio,proto3" json:"envio,omitempty"`
+	// Nome fantasia de quem recebe a cobrança
+	DestinatarioFantasia string `protobuf:"bytes,8,opt,name=destinatario_fantasia,json=destinatarioFantasia,proto3" json:"destinatario_fantasia,omitempty"`
+	// CPF ou CNPJ de quem recebe a cobrança
+	DestinatarioDocumento string `protobuf:"bytes,9,opt,name=destinatario_documento,json=destinatarioDocumento,proto3" json:"destinatario_documento,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *SimulaCobrancaItem) Reset() {
@@ -11996,6 +12000,20 @@ func (x *SimulaCobrancaItem) GetEnvio() int32 {
 		return x.Envio
 	}
 	return 0
+}
+
+func (x *SimulaCobrancaItem) GetDestinatarioFantasia() string {
+	if x != nil {
+		return x.DestinatarioFantasia
+	}
+	return ""
+}
+
+func (x *SimulaCobrancaItem) GetDestinatarioDocumento() string {
+	if x != nil {
+		return x.DestinatarioDocumento
+	}
+	return ""
 }
 
 type SendPaymentLinkResponse struct {
@@ -14938,7 +14956,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"valorTotal\x12&\n" +
 	"\x0fcom_outro_plano\x18\x03 \x01(\x05R\rcomOutroPlano\x12\x1b\n" +
 	"\tsem_envio\x18\x04 \x01(\tR\bsemEnvio\x12.\n" +
-	"\x04data\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x04data\"\xef\x01\n" +
+	"\x04data\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x04data\"\xdb\x02\n" +
 	"\x12SimulaCobrancaItem\x12!\n" +
 	"\fdocumento_id\x18\x01 \x01(\tR\vdocumentoId\x12\x12\n" +
 	"\x04tipo\x18\x02 \x01(\tR\x04tipo\x12\x16\n" +
@@ -14948,7 +14966,9 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"referencia\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"referencia\x12\x14\n" +
 	"\x05valor\x18\x06 \x01(\x01R\x05valor\x12\x14\n" +
-	"\x05envio\x18\a \x01(\x05R\x05envio\"\x80\x01\n" +
+	"\x05envio\x18\a \x01(\x05R\x05envio\x123\n" +
+	"\x15destinatario_fantasia\x18\b \x01(\tR\x14destinatarioFantasia\x125\n" +
+	"\x16destinatario_documento\x18\t \x01(\tR\x15destinatarioDocumento\"\x80\x01\n" +
 	"\x17SendPaymentLinkResponse\x12(\n" +
 	"\apedidos\x18\x01 \x03(\v2\x0e.pedido.PedidoR\apedidos\x12;\n" +
 	"\fwhatsapp_web\x18\x02 \x03(\v2\x18.pedido.WhatsappWebEnvioR\vwhatsappWeb\"F\n" +
