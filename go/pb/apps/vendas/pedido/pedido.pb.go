@@ -11650,8 +11650,10 @@ type SendPaymentLinkRequest struct {
 	WhatsappTemplateLanguage string `protobuf:"bytes,12,opt,name=whatsapp_template_language,json=whatsappTemplateLanguage,proto3" json:"whatsapp_template_language,omitempty"` // vazio usa pt_BR
 	// Modelo de mensagem a usar; vazio usa o modelo padrão do canal.
 	MessageTemplateId string `protobuf:"bytes,13,opt,name=message_template_id,json=messageTemplateId,proto3" json:"message_template_id,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// SMS enviado pela conta de SMS informada (canal "sms"), um por documento.
+	SmsIntegrationId string `protobuf:"bytes,14,opt,name=sms_integration_id,json=smsIntegrationId,proto3" json:"sms_integration_id,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *SendPaymentLinkRequest) Reset() {
@@ -11757,6 +11759,13 @@ func (x *SendPaymentLinkRequest) GetWhatsappTemplateLanguage() string {
 func (x *SendPaymentLinkRequest) GetMessageTemplateId() string {
 	if x != nil {
 		return x.MessageTemplateId
+	}
+	return ""
+}
+
+func (x *SendPaymentLinkRequest) GetSmsIntegrationId() string {
+	if x != nil {
+		return x.SmsIntegrationId
 	}
 	return ""
 }
@@ -14932,7 +14941,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"mapping_id\x18\r \x01(\tR\tmappingId\x12:\n" +
 	"\x19overwrite_existing_fields\x18\x0e \x01(\bR\x17overwriteExistingFields\"A\n" +
 	"\x0eImportResponse\x12/\n" +
-	"\x06report\x18\x01 \x01(\v2\x17.imports.ImportResponseR\x06report\"\xe6\x03\n" +
+	"\x06report\x18\x01 \x01(\v2\x17.imports.ImportResponseR\x06report\"\x94\x04\n" +
 	"\x16SendPaymentLinkRequest\x12\x10\n" +
 	"\x03ids\x18\x01 \x03(\tR\x03ids\x12(\n" +
 	"\apedidos\x18\x02 \x03(\v2\x0e.pedido.PedidoR\apedidos\x12\x14\n" +
@@ -14945,7 +14954,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	" \x01(\tR\x15whatsappIntegrationId\x124\n" +
 	"\x16whatsapp_template_name\x18\v \x01(\tR\x14whatsappTemplateName\x12<\n" +
 	"\x1awhatsapp_template_language\x18\f \x01(\tR\x18whatsappTemplateLanguage\x12.\n" +
-	"\x13message_template_id\x18\r \x01(\tR\x11messageTemplateId\"\x9e\x01\n" +
+	"\x13message_template_id\x18\r \x01(\tR\x11messageTemplateId\x12,\n" +
+	"\x12sms_integration_id\x18\x0e \x01(\tR\x10smsIntegrationId\"\x9e\x01\n" +
 	"\x15SimulaCobrancaRequest\x12;\n" +
 	"\fbilling_plan\x18\x01 \x01(\v2\x18.billingplan.BillingPlanR\vbillingPlan\x12.\n" +
 	"\x04data\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04data\x12\x18\n" +

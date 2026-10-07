@@ -178,6 +178,7 @@ const (
 	Canal_CANAL_UNSPECIFIED Canal = 0
 	Canal_CANAL_EMAIL       Canal = 1
 	Canal_CANAL_WHATSAPP    Canal = 2
+	Canal_CANAL_SMS         Canal = 3
 )
 
 // Enum value maps for Canal.
@@ -186,11 +187,13 @@ var (
 		0: "CANAL_UNSPECIFIED",
 		1: "CANAL_EMAIL",
 		2: "CANAL_WHATSAPP",
+		3: "CANAL_SMS",
 	}
 	Canal_value = map[string]int32{
 		"CANAL_UNSPECIFIED": 0,
 		"CANAL_EMAIL":       1,
 		"CANAL_WHATSAPP":    2,
+		"CANAL_SMS":         3,
 	}
 )
 
@@ -269,9 +272,11 @@ type BillingPlan struct {
 	ValorMinimo float64 `protobuf:"fixed64,31,opt,name=valor_minimo,json=valorMinimo,proto3" json:"valor_minimo,omitempty"`
 	ValorMaximo float64 `protobuf:"fixed64,32,opt,name=valor_maximo,json=valorMaximo,proto3" json:"valor_maximo,omitempty"`
 	// Layouts de impressão do documento que vão em PDF anexos ao e-mail da cobrança
-	Anexos        []string `protobuf:"bytes,33,rep,name=anexos,proto3" json:"anexos,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Anexos []string `protobuf:"bytes,33,rep,name=anexos,proto3" json:"anexos,omitempty"`
+	// Conta de SMS que envia a cobrança, um SMS por documento.
+	SmsIntegrationId string `protobuf:"bytes,34,opt,name=sms_integration_id,json=smsIntegrationId,proto3" json:"sms_integration_id,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *BillingPlan) Reset() {
@@ -521,11 +526,18 @@ func (x *BillingPlan) GetAnexos() []string {
 	return nil
 }
 
+func (x *BillingPlan) GetSmsIntegrationId() string {
+	if x != nil {
+		return x.SmsIntegrationId
+	}
+	return ""
+}
+
 var File_apps_vendas_billingplan_billingplan_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\n" +
-	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb5\t\n" +
+	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe3\t\n" +
 	"\vBillingPlan\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -565,7 +577,8 @@ const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\x04tags\x18\x1e \x03(\tR\x04tags\x12!\n" +
 	"\fvalor_minimo\x18\x1f \x01(\x01R\vvalorMinimo\x12!\n" +
 	"\fvalor_maximo\x18  \x01(\x01R\vvalorMaximo\x12\x16\n" +
-	"\x06anexos\x18! \x03(\tR\x06anexos:\x03\xc0>\x01*N\n" +
+	"\x06anexos\x18! \x03(\tR\x06anexos\x12,\n" +
+	"\x12sms_integration_id\x18\" \x01(\tR\x10smsIntegrationId:\x03\xc0>\x01*N\n" +
 	"\bSituacao\x12\x18\n" +
 	"\x14SITUACAO_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eSITUACAO_ATIVO\x10\x01\x12\x14\n" +
@@ -577,11 +590,12 @@ const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\x06Agenda\x12\x16\n" +
 	"\x12AGENDA_UNSPECIFIED\x10\x00\x12\x13\n" +
 	"\x0fAGENDA_RELATIVA\x10\x01\x12\x15\n" +
-	"\x11AGENDA_DIA_DO_MES\x10\x02*C\n" +
+	"\x11AGENDA_DIA_DO_MES\x10\x02*R\n" +
 	"\x05Canal\x12\x15\n" +
 	"\x11CANAL_UNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vCANAL_EMAIL\x10\x01\x12\x12\n" +
-	"\x0eCANAL_WHATSAPP\x10\x02B\xab\x01\n" +
+	"\x0eCANAL_WHATSAPP\x10\x02\x12\r\n" +
+	"\tCANAL_SMS\x10\x03B\xab\x01\n" +
 	"\x0fcom.billingplanB\x10BillingplanProtoP\x01Z:github.com/linksoft-dev/sdks/go/pb/apps/vendas/billingplan\xa2\x02\x03BXX\xaa\x02\vBillingplan\xca\x02\vBillingplan\xe2\x02\x17Billingplan\\GPBMetadata\xea\x02\vBillingplanb\x06proto3"
 
 var (

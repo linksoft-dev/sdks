@@ -468,17 +468,18 @@ func (ChangeType) EnumDescriptor() ([]byte, []int) {
 type Channel int32
 
 const (
-	Channel_CHANNEL_UNSPECIFIED Channel = 0
-	Channel_CHANNEL_WHATSAPP    Channel = 1
-	Channel_CHANNEL_TELEGRAM    Channel = 2
-	Channel_CHANNEL_WEB         Channel = 3
-	Channel_CHANNEL_EMAIL       Channel = 4
-	Channel_CHANNEL_PHONE       Channel = 5
-	Channel_CHANNEL_SMS         Channel = 6
-	Channel_CHANNEL_FACEBOOK    Channel = 7
-	Channel_CHANNEL_INSTAGRAM   Channel = 8
-	Channel_CHANNEL_X           Channel = 9
-	Channel_CHANNEL_SYSTEM      Channel = 10 // Atendimento aberto pela propria interface do sistema (ticket interno)
+	Channel_CHANNEL_UNSPECIFIED       Channel = 0
+	Channel_CHANNEL_WHATSAPP          Channel = 1
+	Channel_CHANNEL_TELEGRAM          Channel = 2
+	Channel_CHANNEL_WEB               Channel = 3
+	Channel_CHANNEL_EMAIL             Channel = 4
+	Channel_CHANNEL_PHONE             Channel = 5
+	Channel_CHANNEL_SMS               Channel = 6
+	Channel_CHANNEL_FACEBOOK          Channel = 7
+	Channel_CHANNEL_INSTAGRAM         Channel = 8
+	Channel_CHANNEL_X                 Channel = 9
+	Channel_CHANNEL_SYSTEM            Channel = 10 // Atendimento aberto pela propria interface do sistema (ticket interno)
+	Channel_CHANNEL_WHATSAPP_OFFICIAL Channel = 11 // Modelo aprovado pela Meta para a API oficial do WhatsApp (o envio sai pelo canal WhatsApp)
 )
 
 // Enum value maps for Channel.
@@ -495,19 +496,21 @@ var (
 		8:  "CHANNEL_INSTAGRAM",
 		9:  "CHANNEL_X",
 		10: "CHANNEL_SYSTEM",
+		11: "CHANNEL_WHATSAPP_OFFICIAL",
 	}
 	Channel_value = map[string]int32{
-		"CHANNEL_UNSPECIFIED": 0,
-		"CHANNEL_WHATSAPP":    1,
-		"CHANNEL_TELEGRAM":    2,
-		"CHANNEL_WEB":         3,
-		"CHANNEL_EMAIL":       4,
-		"CHANNEL_PHONE":       5,
-		"CHANNEL_SMS":         6,
-		"CHANNEL_FACEBOOK":    7,
-		"CHANNEL_INSTAGRAM":   8,
-		"CHANNEL_X":           9,
-		"CHANNEL_SYSTEM":      10,
+		"CHANNEL_UNSPECIFIED":       0,
+		"CHANNEL_WHATSAPP":          1,
+		"CHANNEL_TELEGRAM":          2,
+		"CHANNEL_WEB":               3,
+		"CHANNEL_EMAIL":             4,
+		"CHANNEL_PHONE":             5,
+		"CHANNEL_SMS":               6,
+		"CHANNEL_FACEBOOK":          7,
+		"CHANNEL_INSTAGRAM":         8,
+		"CHANNEL_X":                 9,
+		"CHANNEL_SYSTEM":            10,
+		"CHANNEL_WHATSAPP_OFFICIAL": 11,
 	}
 )
 
@@ -2165,7 +2168,7 @@ const file_apps_message_message_proto_rawDesc = "" +
 	"\x15CHANGE_TYPE_TAG_ADDED\x10\x05\x12\x1b\n" +
 	"\x17CHANGE_TYPE_TAG_REMOVED\x10\x06\x12!\n" +
 	"\x1dCHANGE_TYPE_PARTICIPANT_ADDED\x10\a\x12#\n" +
-	"\x1fCHANGE_TYPE_PARTICIPANT_REMOVED\x10\b*\xe6\x01\n" +
+	"\x1fCHANGE_TYPE_PARTICIPANT_REMOVED\x10\b*\x85\x02\n" +
 	"\aChannel\x12\x17\n" +
 	"\x13CHANNEL_UNSPECIFIED\x10\x00\x12\x14\n" +
 	"\x10CHANNEL_WHATSAPP\x10\x01\x12\x14\n" +
@@ -2178,7 +2181,8 @@ const file_apps_message_message_proto_rawDesc = "" +
 	"\x11CHANNEL_INSTAGRAM\x10\b\x12\r\n" +
 	"\tCHANNEL_X\x10\t\x12\x12\n" +
 	"\x0eCHANNEL_SYSTEM\x10\n" +
-	"B\xa2\x01\n" +
+	"\x12\x1d\n" +
+	"\x19CHANNEL_WHATSAPP_OFFICIAL\x10\vB\xa2\x01\n" +
 	"\x10com.apps.messageB\fMessageProtoP\x01Z/github.com/linksoft-dev/sdks/go/pb/apps/message\xa2\x02\x03AMX\xaa\x02\fApps.Message\xca\x02\fApps\\Message\xe2\x02\x18Apps\\Message\\GPBMetadata\xea\x02\rApps::Messageb\x06proto3"
 
 var (

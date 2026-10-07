@@ -2316,7 +2316,7 @@ class ImportResponse(_message.Message):
     def __init__(self, report: _Optional[_Union[_imports_pb2.ImportResponse, _Mapping]] = ...) -> None: ...
 
 class SendPaymentLinkRequest(_message.Message):
-    __slots__ = ("ids", "pedidos", "email", "channel", "email_integration_id", "billing_plan_id", "billing_plan_name", "whatsapp_integration_id", "whatsapp_template_name", "whatsapp_template_language", "message_template_id")
+    __slots__ = ("ids", "pedidos", "email", "channel", "email_integration_id", "billing_plan_id", "billing_plan_name", "whatsapp_integration_id", "whatsapp_template_name", "whatsapp_template_language", "message_template_id", "sms_integration_id")
     IDS_FIELD_NUMBER: _ClassVar[int]
     PEDIDOS_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
@@ -2328,6 +2328,7 @@ class SendPaymentLinkRequest(_message.Message):
     WHATSAPP_TEMPLATE_NAME_FIELD_NUMBER: _ClassVar[int]
     WHATSAPP_TEMPLATE_LANGUAGE_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    SMS_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     ids: _containers.RepeatedScalarFieldContainer[str]
     pedidos: _containers.RepeatedCompositeFieldContainer[Pedido]
     email: str
@@ -2339,7 +2340,8 @@ class SendPaymentLinkRequest(_message.Message):
     whatsapp_template_name: str
     whatsapp_template_language: str
     message_template_id: str
-    def __init__(self, ids: _Optional[_Iterable[str]] = ..., pedidos: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., email: _Optional[str] = ..., channel: _Optional[str] = ..., email_integration_id: _Optional[str] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., whatsapp_template_name: _Optional[str] = ..., whatsapp_template_language: _Optional[str] = ..., message_template_id: _Optional[str] = ...) -> None: ...
+    sms_integration_id: str
+    def __init__(self, ids: _Optional[_Iterable[str]] = ..., pedidos: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., email: _Optional[str] = ..., channel: _Optional[str] = ..., email_integration_id: _Optional[str] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., whatsapp_template_name: _Optional[str] = ..., whatsapp_template_language: _Optional[str] = ..., message_template_id: _Optional[str] = ..., sms_integration_id: _Optional[str] = ...) -> None: ...
 
 class SimulaCobrancaRequest(_message.Message):
     __slots__ = ("billing_plan", "data", "proxima")

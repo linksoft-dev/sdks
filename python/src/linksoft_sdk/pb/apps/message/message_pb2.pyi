@@ -99,6 +99,7 @@ class Channel(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     CHANNEL_INSTAGRAM: _ClassVar[Channel]
     CHANNEL_X: _ClassVar[Channel]
     CHANNEL_SYSTEM: _ClassVar[Channel]
+    CHANNEL_WHATSAPP_OFFICIAL: _ClassVar[Channel]
 MESSAGE_TYPE_UNSPECIFIED: MessageType
 MESSAGE_TYPE_CHAT: MessageType
 MESSAGE_TYPE_TICKET: MessageType
@@ -164,6 +165,7 @@ CHANNEL_FACEBOOK: Channel
 CHANNEL_INSTAGRAM: Channel
 CHANNEL_X: Channel
 CHANNEL_SYSTEM: Channel
+CHANNEL_WHATSAPP_OFFICIAL: Channel
 
 class TrackingEvent(_message.Message):
     __slots__ = ("type", "occurred_at", "source", "detail", "url", "recipient", "external_event_id")
