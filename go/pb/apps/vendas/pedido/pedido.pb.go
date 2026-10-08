@@ -11134,8 +11134,11 @@ type Partnership struct {
 	TitularName     string                 `protobuf:"bytes,4,opt,name=titular_name,json=titularName,proto3" json:"titular_name,omitempty"`
 	DependentId     string                 `protobuf:"bytes,5,opt,name=dependent_id,json=dependentId,proto3" json:"dependent_id,omitempty"`
 	DependentName   string                 `protobuf:"bytes,6,opt,name=dependent_name,json=dependentName,proto3" json:"dependent_name,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Profissional credenciado do convênio que atende.
+	ProfessionalId   string `protobuf:"bytes,7,opt,name=professional_id,json=professionalId,proto3" json:"professional_id,omitempty"`
+	ProfessionalName string `protobuf:"bytes,8,opt,name=professional_name,json=professionalName,proto3" json:"professional_name,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *Partnership) Reset() {
@@ -11206,6 +11209,20 @@ func (x *Partnership) GetDependentId() string {
 func (x *Partnership) GetDependentName() string {
 	if x != nil {
 		return x.DependentName
+	}
+	return ""
+}
+
+func (x *Partnership) GetProfessionalId() string {
+	if x != nil {
+		return x.ProfessionalId
+	}
+	return ""
+}
+
+func (x *Partnership) GetProfessionalName() string {
+	if x != nil {
+		return x.ProfessionalName
 	}
 	return ""
 }
@@ -14900,7 +14917,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"cashbackId\x18\x06 \x01(\tR\n" +
 	"cashbackId\x12\"\n" +
 	"\fcashbackNome\x18\a \x01(\tR\fcashbackNome\x12\x14\n" +
-	"\x05valor\x18\b \x01(\x01R\x05valor\"\xeb\x01\n" +
+	"\x05valor\x18\b \x01(\x01R\x05valor\"\xc1\x02\n" +
 	"\vPartnership\x12%\n" +
 	"\x0epartnership_id\x18\x01 \x01(\tR\rpartnershipId\x12)\n" +
 	"\x10partnership_name\x18\x02 \x01(\tR\x0fpartnershipName\x12\x1d\n" +
@@ -14908,7 +14925,9 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"titular_id\x18\x03 \x01(\tR\ttitularId\x12!\n" +
 	"\ftitular_name\x18\x04 \x01(\tR\vtitularName\x12!\n" +
 	"\fdependent_id\x18\x05 \x01(\tR\vdependentId\x12%\n" +
-	"\x0edependent_name\x18\x06 \x01(\tR\rdependentName\"\x9b\x01\n" +
+	"\x0edependent_name\x18\x06 \x01(\tR\rdependentName\x12'\n" +
+	"\x0fprofessional_id\x18\a \x01(\tR\x0eprofessionalId\x12+\n" +
+	"\x11professional_name\x18\b \x01(\tR\x10professionalName\"\x9b\x01\n" +
 	"\x18ConfirmationOrderReceipt\x127\n" +
 	"\tdate_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\bdateTime\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1b\n" +

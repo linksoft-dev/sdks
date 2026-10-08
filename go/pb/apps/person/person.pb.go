@@ -354,9 +354,11 @@ type Person struct {
 	// Valores dos campos personalizados da empresa (nome do campo → valor).
 	CustomFields map[string]string `protobuf:"bytes,41,rep,name=custom_fields,json=customFields,proto3" json:"custom_fields,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Profissional: especialidades (cadastro de especialidades). specialty guarda os nomes.
-	Specialties   []*Specialty `protobuf:"bytes,42,rep,name=specialties,proto3" json:"specialties,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Specialties []*Specialty `protobuf:"bytes,42,rep,name=specialties,proto3" json:"specialties,omitempty"`
+	// Convênio: benefícios que o portal mostra junto do convênio.
+	PortalBenefits string `protobuf:"bytes,43,opt,name=portal_benefits,json=portalBenefits,proto3" json:"portal_benefits,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Person) Reset() {
@@ -674,6 +676,13 @@ func (x *Person) GetSpecialties() []*Specialty {
 		return x.Specialties
 	}
 	return nil
+}
+
+func (x *Person) GetPortalBenefits() string {
+	if x != nil {
+		return x.PortalBenefits
+	}
+	return ""
 }
 
 // Especialidade do profissional, do cadastro de especialidades.
@@ -3224,7 +3233,7 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x18apps/person/person.proto\x12\x06person\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\x1a\x15exports/exports.proto\"7\n" +
 	"\tPersonTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xfa\r\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xa3\x0e\n" +
 	"\x06Person\x12?\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
@@ -3276,7 +3285,8 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x1dauthorization_payment_minutes\x18' \x01(\x05R\x1bauthorizationPaymentMinutes\x12F\n" +
 	"\x1fauthorization_requires_schedule\x18( \x01(\bR\x1dauthorizationRequiresSchedule\x12E\n" +
 	"\rcustom_fields\x18) \x03(\v2 .person.Person.CustomFieldsEntryR\fcustomFields\x123\n" +
-	"\vspecialties\x18* \x03(\v2\x11.person.SpecialtyR\vspecialties\x1a6\n" +
+	"\vspecialties\x18* \x03(\v2\x11.person.SpecialtyR\vspecialties\x12'\n" +
+	"\x0fportal_benefits\x18+ \x01(\tR\x0eportalBenefits\x1a6\n" +
 	"\bIesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a?\n" +
