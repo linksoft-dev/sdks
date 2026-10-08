@@ -1,6 +1,7 @@
 import datetime
 
 from google.api import annotations_pb2 as _annotations_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from linksoft_sdk.pb.plugins.validate import validate_pb2 as _validate_pb2
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
@@ -16,7 +17,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class FechamentoCaixa(_message.Message):
-    __slots__ = ("createdAt", "updatedAt", "userId", "userName", "id", "numero", "situacao", "dataHoraInicial", "dataHoraFinal", "periodoAutomatico", "caixaId", "caixaNome", "usuarioCaixaId", "usuarioCaixaNome", "diferenca", "obs", "valores", "aprovador", "aprovadorId", "dataHoraAprovacao", "motivoRejeicao", "rejeitadoPor", "dataHoraRejeicao")
+    __slots__ = ("createdAt", "updatedAt", "userId", "userName", "id", "numero", "situacao", "dataHoraInicial", "dataHoraFinal", "periodoAutomatico", "caixaId", "caixaNome", "usuarioCaixaId", "usuarioCaixaNome", "diferenca", "obs", "valores", "aprovador", "aprovadorId", "dataHoraAprovacao", "motivoRejeicao", "rejeitadoPor", "dataHoraRejeicao", "deviceId")
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
     UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
     USERID_FIELD_NUMBER: _ClassVar[int]
@@ -40,6 +41,7 @@ class FechamentoCaixa(_message.Message):
     MOTIVOREJEICAO_FIELD_NUMBER: _ClassVar[int]
     REJEITADOPOR_FIELD_NUMBER: _ClassVar[int]
     DATAHORAREJEICAO_FIELD_NUMBER: _ClassVar[int]
+    DEVICEID_FIELD_NUMBER: _ClassVar[int]
     createdAt: _timestamp_pb2.Timestamp
     updatedAt: _timestamp_pb2.Timestamp
     userId: str
@@ -63,7 +65,8 @@ class FechamentoCaixa(_message.Message):
     motivoRejeicao: str
     rejeitadoPor: str
     dataHoraRejeicao: _timestamp_pb2.Timestamp
-    def __init__(self, createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., id: _Optional[str] = ..., numero: _Optional[int] = ..., situacao: _Optional[str] = ..., dataHoraInicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dataHoraFinal: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., periodoAutomatico: _Optional[bool] = ..., caixaId: _Optional[str] = ..., caixaNome: _Optional[str] = ..., usuarioCaixaId: _Optional[str] = ..., usuarioCaixaNome: _Optional[str] = ..., diferenca: _Optional[float] = ..., obs: _Optional[str] = ..., valores: _Optional[_Iterable[_Union[Apuracao, _Mapping]]] = ..., aprovador: _Optional[str] = ..., aprovadorId: _Optional[str] = ..., dataHoraAprovacao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., motivoRejeicao: _Optional[str] = ..., rejeitadoPor: _Optional[str] = ..., dataHoraRejeicao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    deviceId: str
+    def __init__(self, createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., id: _Optional[str] = ..., numero: _Optional[int] = ..., situacao: _Optional[str] = ..., dataHoraInicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dataHoraFinal: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., periodoAutomatico: _Optional[bool] = ..., caixaId: _Optional[str] = ..., caixaNome: _Optional[str] = ..., usuarioCaixaId: _Optional[str] = ..., usuarioCaixaNome: _Optional[str] = ..., diferenca: _Optional[float] = ..., obs: _Optional[str] = ..., valores: _Optional[_Iterable[_Union[Apuracao, _Mapping]]] = ..., aprovador: _Optional[str] = ..., aprovadorId: _Optional[str] = ..., dataHoraAprovacao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., motivoRejeicao: _Optional[str] = ..., rejeitadoPor: _Optional[str] = ..., dataHoraRejeicao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., deviceId: _Optional[str] = ...) -> None: ...
 
 class Apuracao(_message.Message):
     __slots__ = ("createdAt", "updatedAt", "userId", "userName", "id", "fechamentoCaixaId", "tipoPagamento", "valorInformado", "entrada", "saida", "valorApurado", "diferenca")

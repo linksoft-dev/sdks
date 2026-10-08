@@ -844,14 +844,15 @@ type Produto struct {
 	// pedido — recorrências subsequentes não rebaixam.
 	Comodato bool `protobuf:"varint,85,opt,name=comodato,proto3" json:"comodato,omitempty"`
 	// campos provisorios pra manter compatibilidade
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,200,opt,name=createdAt,proto3" json:"createdAt,omitempty"`     // Data de criação
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,205,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`     // Data de alteracao
-	UserId        string                 `protobuf:"bytes,201,opt,name=userId,proto3" json:"userId,omitempty"`           // ID do usuário que realizou a ação
-	UserName      string                 `protobuf:"bytes,202,opt,name=userName,proto3" json:"userName,omitempty"`       // Nome do usuário que realizou a ação
-	Type          string                 `protobuf:"bytes,203,opt,name=type,proto3" json:"type,omitempty"`               // Tipo de ação realizada
-	Description   string                 `protobuf:"bytes,204,opt,name=description,proto3" json:"description,omitempty"` // Descrição da ação
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	CreatedAt           *timestamppb.Timestamp `protobuf:"bytes,200,opt,name=createdAt,proto3" json:"createdAt,omitempty"`                     // Data de criação
+	UpdatedAt           *timestamppb.Timestamp `protobuf:"bytes,205,opt,name=updatedAt,proto3" json:"updatedAt,omitempty"`                     // Data de alteracao
+	UserId              string                 `protobuf:"bytes,201,opt,name=userId,proto3" json:"userId,omitempty"`                           // ID do usuário que realizou a ação
+	UserName            string                 `protobuf:"bytes,202,opt,name=userName,proto3" json:"userName,omitempty"`                       // Nome do usuário que realizou a ação
+	Type                string                 `protobuf:"bytes,203,opt,name=type,proto3" json:"type,omitempty"`                               // Tipo de ação realizada
+	Description         string                 `protobuf:"bytes,204,opt,name=description,proto3" json:"description,omitempty"`                 // Descrição da ação
+	EstoqueAtualizadoEm *timestamppb.Timestamp `protobuf:"bytes,227,opt,name=estoqueAtualizadoEm,proto3" json:"estoqueAtualizadoEm,omitempty"` // Hora da última mudança de saldo de estoque
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Produto) Reset() {
@@ -1638,6 +1639,13 @@ func (x *Produto) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *Produto) GetEstoqueAtualizadoEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EstoqueAtualizadoEm
+	}
+	return nil
 }
 
 // Mensagem para representar uma mídia de produto
@@ -6286,7 +6294,7 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"ProdutoTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xa66\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xfb6\n" +
 	"\aProduto\x123\n" +
 	"\x06fields\x18\x01 \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12B\n" +
@@ -6412,7 +6420,8 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\x06userId\x18\xc9\x01 \x01(\tB\x04\xe2A\x01\x03R\x06userId\x12!\n" +
 	"\buserName\x18\xca\x01 \x01(\tB\x04\xe2A\x01\x03R\buserName\x12\x13\n" +
 	"\x04type\x18\xcb\x01 \x01(\tR\x04type\x12!\n" +
-	"\vdescription\x18\xcc\x01 \x01(\tR\vdescription\x1aM\n" +
+	"\vdescription\x18\xcc\x01 \x01(\tR\vdescription\x12S\n" +
+	"\x13estoqueAtualizadoEm\x18\xe3\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x13estoqueAtualizadoEm\x1aM\n" +
 	"\rEstoquesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12&\n" +
 	"\x05value\x18\x02 \x01(\v2\x10.produto.EstoqueR\x05value:\x028\x01\x1a\xd0\x04\n" +
@@ -7020,121 +7029,122 @@ var file_apps_estoque_produto_produto_proto_depIdxs = []int32{
 	85,  // 20: produto.Produto.vehicle:type_name -> produto.VehicleData
 	84,  // 21: produto.Produto.createdAt:type_name -> google.protobuf.Timestamp
 	84,  // 22: produto.Produto.updatedAt:type_name -> google.protobuf.Timestamp
-	84,  // 23: produto.ProductMedia.created_at:type_name -> google.protobuf.Timestamp
-	84,  // 24: produto.ProductMedia.updated_at:type_name -> google.protobuf.Timestamp
-	2,   // 25: produto.ProductMedia.media_type:type_name -> produto.ProductMediaType
-	84,  // 26: produto.HistoricoPreco.data:type_name -> google.protobuf.Timestamp
-	84,  // 27: produto.Estoque.createdAt:type_name -> google.protobuf.Timestamp
-	84,  // 28: produto.Estoque.updatedAt:type_name -> google.protobuf.Timestamp
-	11,  // 29: produto.CreateProdutoRequest.produto:type_name -> produto.Produto
-	11,  // 30: produto.CreateProdutoResponse.produto:type_name -> produto.Produto
-	11,  // 31: produto.UpdateProdutoRequest.produto:type_name -> produto.Produto
-	86,  // 32: produto.UpdateProdutoRequest.update_mask:type_name -> metadata.FieldMask
-	11,  // 33: produto.UpdateProdutoResponse.produto:type_name -> produto.Produto
-	11,  // 34: produto.GetProdutoResponse.produto:type_name -> produto.Produto
-	11,  // 35: produto.ListProdutoRequest.produto:type_name -> produto.Produto
-	84,  // 36: produto.ListProdutoRequest.createdAtGte:type_name -> google.protobuf.Timestamp
-	84,  // 37: produto.ListProdutoRequest.createdAtLte:type_name -> google.protobuf.Timestamp
-	84,  // 38: produto.ListProdutoRequest.updatedAtGte:type_name -> google.protobuf.Timestamp
-	84,  // 39: produto.ListProdutoRequest.updatedAtLte:type_name -> google.protobuf.Timestamp
-	87,  // 40: produto.ListProdutoRequest.filter:type_name -> Filter
-	4,   // 41: produto.ListProdutoRequest.stock_movement:type_name -> produto.StockMovement
-	3,   // 42: produto.ListProdutoRequest.rentabilidade:type_name -> produto.Rentabilidade
-	11,  // 43: produto.ListProdutoResponse.produtoList:type_name -> produto.Produto
-	48,  // 44: produto.AddMovimentacaoEstoqueRequest.inputMovimento:type_name -> produto.InputMovimentoEstoque
-	88,  // 45: produto.AddMovimentacaoEstoqueResponse.movimentoList:type_name -> movimentoestoque.MovimentoEstoque
-	87,  // 46: produto.GetMovimentacaoEstoqueRequest.filter:type_name -> Filter
-	84,  // 47: produto.GetMovimentacaoEstoqueRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	84,  // 48: produto.GetMovimentacaoEstoqueRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	88,  // 49: produto.GetMovimentacaoEstoqueResponse.movimentoList:type_name -> movimentoestoque.MovimentoEstoque
-	87,  // 50: produto.GerarArquivoBalancaRequest.filter:type_name -> Filter
-	26,  // 51: produto.ReportRequest.listProdutoRequest:type_name -> produto.ListProdutoRequest
-	89,  // 52: produto.ReportResponse.response:type_name -> report.Response
-	36,  // 53: produto.AjustarEstoqueRequest.ajusteEstoque:type_name -> produto.AjusteEstoque
-	40,  // 54: produto.ImportErrorGroup.errors:type_name -> produto.ImportError
-	41,  // 55: produto.AlteracoesFiltro.fabricante:type_name -> produto.AlteracaoCadastro
-	41,  // 56: produto.AlteracoesFiltro.categoria:type_name -> produto.AlteracaoCadastro
-	42,  // 57: produto.AlteracoesConjuntasRequest.filtro:type_name -> produto.AlteracoesFiltro
-	41,  // 58: produto.AlteracoesConjuntasRequest.fabricante:type_name -> produto.AlteracaoCadastro
-	41,  // 59: produto.AlteracoesConjuntasRequest.categoria:type_name -> produto.AlteracaoCadastro
-	44,  // 60: produto.AlteracoesConjuntasRequest.reprecificacao:type_name -> produto.ReprecificacaoConjunta
-	41,  // 61: produto.AlteracoesConjuntasRequest.tributacao:type_name -> produto.AlteracaoCadastro
-	46,  // 62: produto.InputMovimentoEstoque.batch:type_name -> produto.BatchInfo
-	47,  // 63: produto.InputMovimentoEstoque.serial:type_name -> produto.SerialInfo
-	12,  // 64: produto.AddMediaRequest.media:type_name -> produto.ProductMedia
-	11,  // 65: produto.AddMediaResponse.produto:type_name -> produto.Produto
-	12,  // 66: produto.UpdateMediaRequest.media:type_name -> produto.ProductMedia
-	11,  // 67: produto.UpdateMediaResponse.produto:type_name -> produto.Produto
-	11,  // 68: produto.DeleteMediaResponse.produto:type_name -> produto.Produto
-	11,  // 69: produto.ImportProdutoRequest.produtos:type_name -> produto.Produto
-	11,  // 70: produto.ImportProdutoResponse.produtos:type_name -> produto.Produto
-	81,  // 71: produto.ImportProdutoResponse.erros_by_category:type_name -> produto.ImportProdutoResponse.ErrosByCategoryEntry
-	82,  // 72: produto.GetProductsAdditionalDataResponse.additional_data:type_name -> produto.GetProductsAdditionalDataResponse.AdditionalDataEntry
-	88,  // 73: produto.CorrecaoMovimentacaoRequest.movimentoList:type_name -> movimentoestoque.MovimentoEstoque
-	90,  // 74: produto.ExportProductsRequest.format:type_name -> exports.ExportFormat
-	87,  // 75: produto.ExportProductsRequest.filter:type_name -> Filter
-	91,  // 76: produto.ExportProductsResponse.export:type_name -> exports.ExportResponse
-	11,  // 77: produto.CloneProdutoResponse.produto:type_name -> produto.Produto
-	16,  // 78: produto.EstoqueEmpresa.estoques:type_name -> produto.Estoque
-	69,  // 79: produto.GetEstoqueGrupoResponse.empresas:type_name -> produto.EstoqueEmpresa
-	16,  // 80: produto.Produto.EstoquesEntry.value:type_name -> produto.Estoque
-	0,   // 81: produto.Produto.Ecommerce.availability:type_name -> produto.EcommerceAvailability
-	77,  // 82: produto.Produto.Ecommerce.highlights:type_name -> produto.Produto.ProductHighlight
-	76,  // 83: produto.Produto.VariationsEntry.value:type_name -> produto.Produto.ProductVariation
-	78,  // 84: produto.Produto.ProductVariationMeta.attributes:type_name -> produto.Produto.ProductVariationMeta.AttributesEntry
-	79,  // 85: produto.Produto.ProductVariation.attributes:type_name -> produto.Produto.ProductVariation.AttributesEntry
-	80,  // 86: produto.Produto.ProductVariation.stock_quantities:type_name -> produto.Produto.ProductVariation.StockQuantitiesEntry
-	39,  // 87: produto.ImportProdutoResponse.ErrosByCategoryEntry.value:type_name -> produto.ImportErrorGroup
-	58,  // 88: produto.GetProductsAdditionalDataResponse.AdditionalDataEntry.value:type_name -> produto.ProductAdditionalData
-	18,  // 89: produto.ProdutoService.Create:input_type -> produto.CreateProdutoRequest
-	20,  // 90: produto.ProdutoService.Update:input_type -> produto.UpdateProdutoRequest
-	22,  // 91: produto.ProdutoService.Delete:input_type -> produto.DeleteProdutoRequest
-	24,  // 92: produto.ProdutoService.Get:input_type -> produto.GetProdutoRequest
-	26,  // 93: produto.ProdutoService.List:input_type -> produto.ListProdutoRequest
-	28,  // 94: produto.ProdutoService.AddMovimentacaoEstoque:input_type -> produto.AddMovimentacaoEstoqueRequest
-	30,  // 95: produto.ProdutoService.GetMovimentacaoEstoque:input_type -> produto.GetMovimentacaoEstoqueRequest
-	32,  // 96: produto.ProdutoService.GerarArquivoBalanca:input_type -> produto.GerarArquivoBalancaRequest
-	34,  // 97: produto.ProdutoService.Report:input_type -> produto.ReportRequest
-	37,  // 98: produto.ProdutoService.AjustarEstoque:input_type -> produto.AjustarEstoqueRequest
-	43,  // 99: produto.ProdutoService.ExecutarAlteracoesConjuntas:input_type -> produto.AlteracoesConjuntasRequest
-	49,  // 100: produto.ProdutoService.AddMedia:input_type -> produto.AddMediaRequest
-	51,  // 101: produto.ProdutoService.UpdateMedia:input_type -> produto.UpdateMediaRequest
-	53,  // 102: produto.ProdutoService.DeleteMedia:input_type -> produto.DeleteMediaRequest
-	55,  // 103: produto.ProdutoService.Import:input_type -> produto.ImportProdutoRequest
-	57,  // 104: produto.ProdutoService.GetProductsAdditionalData:input_type -> produto.GetProductsAdditionalDataRequest
-	60,  // 105: produto.ProdutoService.CorrecaoMovimentacao:input_type -> produto.CorrecaoMovimentacaoRequest
-	62,  // 106: produto.ProdutoService.Export:input_type -> produto.ExportProductsRequest
-	64,  // 107: produto.ProdutoService.Clone:input_type -> produto.CloneProdutoRequest
-	68,  // 108: produto.ProdutoService.GetEstoqueGrupo:input_type -> produto.GetEstoqueGrupoRequest
-	66,  // 109: produto.ProdutoService.GenerateSeoMeta:input_type -> produto.GenerateSeoMetaRequest
-	5,   // 110: produto.ProdutoService.SugereFiscalIa:input_type -> produto.SugereFiscalIaRequest
-	19,  // 111: produto.ProdutoService.Create:output_type -> produto.CreateProdutoResponse
-	21,  // 112: produto.ProdutoService.Update:output_type -> produto.UpdateProdutoResponse
-	23,  // 113: produto.ProdutoService.Delete:output_type -> produto.DeleteProdutoResponse
-	25,  // 114: produto.ProdutoService.Get:output_type -> produto.GetProdutoResponse
-	27,  // 115: produto.ProdutoService.List:output_type -> produto.ListProdutoResponse
-	29,  // 116: produto.ProdutoService.AddMovimentacaoEstoque:output_type -> produto.AddMovimentacaoEstoqueResponse
-	31,  // 117: produto.ProdutoService.GetMovimentacaoEstoque:output_type -> produto.GetMovimentacaoEstoqueResponse
-	33,  // 118: produto.ProdutoService.GerarArquivoBalanca:output_type -> produto.GerarArquivoBalancaResponse
-	35,  // 119: produto.ProdutoService.Report:output_type -> produto.ReportResponse
-	38,  // 120: produto.ProdutoService.AjustarEstoque:output_type -> produto.AjustarEstoqueResponse
-	45,  // 121: produto.ProdutoService.ExecutarAlteracoesConjuntas:output_type -> produto.AlteracoesConjuntasResponse
-	50,  // 122: produto.ProdutoService.AddMedia:output_type -> produto.AddMediaResponse
-	52,  // 123: produto.ProdutoService.UpdateMedia:output_type -> produto.UpdateMediaResponse
-	54,  // 124: produto.ProdutoService.DeleteMedia:output_type -> produto.DeleteMediaResponse
-	56,  // 125: produto.ProdutoService.Import:output_type -> produto.ImportProdutoResponse
-	59,  // 126: produto.ProdutoService.GetProductsAdditionalData:output_type -> produto.GetProductsAdditionalDataResponse
-	61,  // 127: produto.ProdutoService.CorrecaoMovimentacao:output_type -> produto.CorrecaoMovimentacaoResponse
-	63,  // 128: produto.ProdutoService.Export:output_type -> produto.ExportProductsResponse
-	65,  // 129: produto.ProdutoService.Clone:output_type -> produto.CloneProdutoResponse
-	70,  // 130: produto.ProdutoService.GetEstoqueGrupo:output_type -> produto.GetEstoqueGrupoResponse
-	67,  // 131: produto.ProdutoService.GenerateSeoMeta:output_type -> produto.GenerateSeoMetaResponse
-	9,   // 132: produto.ProdutoService.SugereFiscalIa:output_type -> produto.SugereFiscalIaResponse
-	111, // [111:133] is the sub-list for method output_type
-	89,  // [89:111] is the sub-list for method input_type
-	89,  // [89:89] is the sub-list for extension type_name
-	89,  // [89:89] is the sub-list for extension extendee
-	0,   // [0:89] is the sub-list for field type_name
+	84,  // 23: produto.Produto.estoqueAtualizadoEm:type_name -> google.protobuf.Timestamp
+	84,  // 24: produto.ProductMedia.created_at:type_name -> google.protobuf.Timestamp
+	84,  // 25: produto.ProductMedia.updated_at:type_name -> google.protobuf.Timestamp
+	2,   // 26: produto.ProductMedia.media_type:type_name -> produto.ProductMediaType
+	84,  // 27: produto.HistoricoPreco.data:type_name -> google.protobuf.Timestamp
+	84,  // 28: produto.Estoque.createdAt:type_name -> google.protobuf.Timestamp
+	84,  // 29: produto.Estoque.updatedAt:type_name -> google.protobuf.Timestamp
+	11,  // 30: produto.CreateProdutoRequest.produto:type_name -> produto.Produto
+	11,  // 31: produto.CreateProdutoResponse.produto:type_name -> produto.Produto
+	11,  // 32: produto.UpdateProdutoRequest.produto:type_name -> produto.Produto
+	86,  // 33: produto.UpdateProdutoRequest.update_mask:type_name -> metadata.FieldMask
+	11,  // 34: produto.UpdateProdutoResponse.produto:type_name -> produto.Produto
+	11,  // 35: produto.GetProdutoResponse.produto:type_name -> produto.Produto
+	11,  // 36: produto.ListProdutoRequest.produto:type_name -> produto.Produto
+	84,  // 37: produto.ListProdutoRequest.createdAtGte:type_name -> google.protobuf.Timestamp
+	84,  // 38: produto.ListProdutoRequest.createdAtLte:type_name -> google.protobuf.Timestamp
+	84,  // 39: produto.ListProdutoRequest.updatedAtGte:type_name -> google.protobuf.Timestamp
+	84,  // 40: produto.ListProdutoRequest.updatedAtLte:type_name -> google.protobuf.Timestamp
+	87,  // 41: produto.ListProdutoRequest.filter:type_name -> Filter
+	4,   // 42: produto.ListProdutoRequest.stock_movement:type_name -> produto.StockMovement
+	3,   // 43: produto.ListProdutoRequest.rentabilidade:type_name -> produto.Rentabilidade
+	11,  // 44: produto.ListProdutoResponse.produtoList:type_name -> produto.Produto
+	48,  // 45: produto.AddMovimentacaoEstoqueRequest.inputMovimento:type_name -> produto.InputMovimentoEstoque
+	88,  // 46: produto.AddMovimentacaoEstoqueResponse.movimentoList:type_name -> movimentoestoque.MovimentoEstoque
+	87,  // 47: produto.GetMovimentacaoEstoqueRequest.filter:type_name -> Filter
+	84,  // 48: produto.GetMovimentacaoEstoqueRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	84,  // 49: produto.GetMovimentacaoEstoqueRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	88,  // 50: produto.GetMovimentacaoEstoqueResponse.movimentoList:type_name -> movimentoestoque.MovimentoEstoque
+	87,  // 51: produto.GerarArquivoBalancaRequest.filter:type_name -> Filter
+	26,  // 52: produto.ReportRequest.listProdutoRequest:type_name -> produto.ListProdutoRequest
+	89,  // 53: produto.ReportResponse.response:type_name -> report.Response
+	36,  // 54: produto.AjustarEstoqueRequest.ajusteEstoque:type_name -> produto.AjusteEstoque
+	40,  // 55: produto.ImportErrorGroup.errors:type_name -> produto.ImportError
+	41,  // 56: produto.AlteracoesFiltro.fabricante:type_name -> produto.AlteracaoCadastro
+	41,  // 57: produto.AlteracoesFiltro.categoria:type_name -> produto.AlteracaoCadastro
+	42,  // 58: produto.AlteracoesConjuntasRequest.filtro:type_name -> produto.AlteracoesFiltro
+	41,  // 59: produto.AlteracoesConjuntasRequest.fabricante:type_name -> produto.AlteracaoCadastro
+	41,  // 60: produto.AlteracoesConjuntasRequest.categoria:type_name -> produto.AlteracaoCadastro
+	44,  // 61: produto.AlteracoesConjuntasRequest.reprecificacao:type_name -> produto.ReprecificacaoConjunta
+	41,  // 62: produto.AlteracoesConjuntasRequest.tributacao:type_name -> produto.AlteracaoCadastro
+	46,  // 63: produto.InputMovimentoEstoque.batch:type_name -> produto.BatchInfo
+	47,  // 64: produto.InputMovimentoEstoque.serial:type_name -> produto.SerialInfo
+	12,  // 65: produto.AddMediaRequest.media:type_name -> produto.ProductMedia
+	11,  // 66: produto.AddMediaResponse.produto:type_name -> produto.Produto
+	12,  // 67: produto.UpdateMediaRequest.media:type_name -> produto.ProductMedia
+	11,  // 68: produto.UpdateMediaResponse.produto:type_name -> produto.Produto
+	11,  // 69: produto.DeleteMediaResponse.produto:type_name -> produto.Produto
+	11,  // 70: produto.ImportProdutoRequest.produtos:type_name -> produto.Produto
+	11,  // 71: produto.ImportProdutoResponse.produtos:type_name -> produto.Produto
+	81,  // 72: produto.ImportProdutoResponse.erros_by_category:type_name -> produto.ImportProdutoResponse.ErrosByCategoryEntry
+	82,  // 73: produto.GetProductsAdditionalDataResponse.additional_data:type_name -> produto.GetProductsAdditionalDataResponse.AdditionalDataEntry
+	88,  // 74: produto.CorrecaoMovimentacaoRequest.movimentoList:type_name -> movimentoestoque.MovimentoEstoque
+	90,  // 75: produto.ExportProductsRequest.format:type_name -> exports.ExportFormat
+	87,  // 76: produto.ExportProductsRequest.filter:type_name -> Filter
+	91,  // 77: produto.ExportProductsResponse.export:type_name -> exports.ExportResponse
+	11,  // 78: produto.CloneProdutoResponse.produto:type_name -> produto.Produto
+	16,  // 79: produto.EstoqueEmpresa.estoques:type_name -> produto.Estoque
+	69,  // 80: produto.GetEstoqueGrupoResponse.empresas:type_name -> produto.EstoqueEmpresa
+	16,  // 81: produto.Produto.EstoquesEntry.value:type_name -> produto.Estoque
+	0,   // 82: produto.Produto.Ecommerce.availability:type_name -> produto.EcommerceAvailability
+	77,  // 83: produto.Produto.Ecommerce.highlights:type_name -> produto.Produto.ProductHighlight
+	76,  // 84: produto.Produto.VariationsEntry.value:type_name -> produto.Produto.ProductVariation
+	78,  // 85: produto.Produto.ProductVariationMeta.attributes:type_name -> produto.Produto.ProductVariationMeta.AttributesEntry
+	79,  // 86: produto.Produto.ProductVariation.attributes:type_name -> produto.Produto.ProductVariation.AttributesEntry
+	80,  // 87: produto.Produto.ProductVariation.stock_quantities:type_name -> produto.Produto.ProductVariation.StockQuantitiesEntry
+	39,  // 88: produto.ImportProdutoResponse.ErrosByCategoryEntry.value:type_name -> produto.ImportErrorGroup
+	58,  // 89: produto.GetProductsAdditionalDataResponse.AdditionalDataEntry.value:type_name -> produto.ProductAdditionalData
+	18,  // 90: produto.ProdutoService.Create:input_type -> produto.CreateProdutoRequest
+	20,  // 91: produto.ProdutoService.Update:input_type -> produto.UpdateProdutoRequest
+	22,  // 92: produto.ProdutoService.Delete:input_type -> produto.DeleteProdutoRequest
+	24,  // 93: produto.ProdutoService.Get:input_type -> produto.GetProdutoRequest
+	26,  // 94: produto.ProdutoService.List:input_type -> produto.ListProdutoRequest
+	28,  // 95: produto.ProdutoService.AddMovimentacaoEstoque:input_type -> produto.AddMovimentacaoEstoqueRequest
+	30,  // 96: produto.ProdutoService.GetMovimentacaoEstoque:input_type -> produto.GetMovimentacaoEstoqueRequest
+	32,  // 97: produto.ProdutoService.GerarArquivoBalanca:input_type -> produto.GerarArquivoBalancaRequest
+	34,  // 98: produto.ProdutoService.Report:input_type -> produto.ReportRequest
+	37,  // 99: produto.ProdutoService.AjustarEstoque:input_type -> produto.AjustarEstoqueRequest
+	43,  // 100: produto.ProdutoService.ExecutarAlteracoesConjuntas:input_type -> produto.AlteracoesConjuntasRequest
+	49,  // 101: produto.ProdutoService.AddMedia:input_type -> produto.AddMediaRequest
+	51,  // 102: produto.ProdutoService.UpdateMedia:input_type -> produto.UpdateMediaRequest
+	53,  // 103: produto.ProdutoService.DeleteMedia:input_type -> produto.DeleteMediaRequest
+	55,  // 104: produto.ProdutoService.Import:input_type -> produto.ImportProdutoRequest
+	57,  // 105: produto.ProdutoService.GetProductsAdditionalData:input_type -> produto.GetProductsAdditionalDataRequest
+	60,  // 106: produto.ProdutoService.CorrecaoMovimentacao:input_type -> produto.CorrecaoMovimentacaoRequest
+	62,  // 107: produto.ProdutoService.Export:input_type -> produto.ExportProductsRequest
+	64,  // 108: produto.ProdutoService.Clone:input_type -> produto.CloneProdutoRequest
+	68,  // 109: produto.ProdutoService.GetEstoqueGrupo:input_type -> produto.GetEstoqueGrupoRequest
+	66,  // 110: produto.ProdutoService.GenerateSeoMeta:input_type -> produto.GenerateSeoMetaRequest
+	5,   // 111: produto.ProdutoService.SugereFiscalIa:input_type -> produto.SugereFiscalIaRequest
+	19,  // 112: produto.ProdutoService.Create:output_type -> produto.CreateProdutoResponse
+	21,  // 113: produto.ProdutoService.Update:output_type -> produto.UpdateProdutoResponse
+	23,  // 114: produto.ProdutoService.Delete:output_type -> produto.DeleteProdutoResponse
+	25,  // 115: produto.ProdutoService.Get:output_type -> produto.GetProdutoResponse
+	27,  // 116: produto.ProdutoService.List:output_type -> produto.ListProdutoResponse
+	29,  // 117: produto.ProdutoService.AddMovimentacaoEstoque:output_type -> produto.AddMovimentacaoEstoqueResponse
+	31,  // 118: produto.ProdutoService.GetMovimentacaoEstoque:output_type -> produto.GetMovimentacaoEstoqueResponse
+	33,  // 119: produto.ProdutoService.GerarArquivoBalanca:output_type -> produto.GerarArquivoBalancaResponse
+	35,  // 120: produto.ProdutoService.Report:output_type -> produto.ReportResponse
+	38,  // 121: produto.ProdutoService.AjustarEstoque:output_type -> produto.AjustarEstoqueResponse
+	45,  // 122: produto.ProdutoService.ExecutarAlteracoesConjuntas:output_type -> produto.AlteracoesConjuntasResponse
+	50,  // 123: produto.ProdutoService.AddMedia:output_type -> produto.AddMediaResponse
+	52,  // 124: produto.ProdutoService.UpdateMedia:output_type -> produto.UpdateMediaResponse
+	54,  // 125: produto.ProdutoService.DeleteMedia:output_type -> produto.DeleteMediaResponse
+	56,  // 126: produto.ProdutoService.Import:output_type -> produto.ImportProdutoResponse
+	59,  // 127: produto.ProdutoService.GetProductsAdditionalData:output_type -> produto.GetProductsAdditionalDataResponse
+	61,  // 128: produto.ProdutoService.CorrecaoMovimentacao:output_type -> produto.CorrecaoMovimentacaoResponse
+	63,  // 129: produto.ProdutoService.Export:output_type -> produto.ExportProductsResponse
+	65,  // 130: produto.ProdutoService.Clone:output_type -> produto.CloneProdutoResponse
+	70,  // 131: produto.ProdutoService.GetEstoqueGrupo:output_type -> produto.GetEstoqueGrupoResponse
+	67,  // 132: produto.ProdutoService.GenerateSeoMeta:output_type -> produto.GenerateSeoMetaResponse
+	9,   // 133: produto.ProdutoService.SugereFiscalIa:output_type -> produto.SugereFiscalIaResponse
+	112, // [112:134] is the sub-list for method output_type
+	90,  // [90:112] is the sub-list for method input_type
+	90,  // [90:90] is the sub-list for extension type_name
+	90,  // [90:90] is the sub-list for extension extendee
+	0,   // [0:90] is the sub-list for field type_name
 }
 
 func init() { file_apps_estoque_produto_produto_proto_init() }

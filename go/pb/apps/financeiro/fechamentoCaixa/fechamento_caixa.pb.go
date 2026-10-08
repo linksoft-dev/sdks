@@ -56,8 +56,10 @@ type FechamentoCaixa struct {
 	MotivoRejeicao   string                 `protobuf:"bytes,21,opt,name=motivoRejeicao,proto3" json:"motivoRejeicao,omitempty"`
 	RejeitadoPor     string                 `protobuf:"bytes,22,opt,name=rejeitadoPor,proto3" json:"rejeitadoPor,omitempty"`
 	DataHoraRejeicao *timestamppb.Timestamp `protobuf:"bytes,23,opt,name=dataHoraRejeicao,proto3" json:"dataHoraRejeicao,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Caixa instalado que registrou o fechamento; vazio no fechamento feito no sistema
+	DeviceId      string `protobuf:"bytes,24,opt,name=deviceId,proto3" json:"deviceId,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *FechamentoCaixa) Reset() {
@@ -249,6 +251,13 @@ func (x *FechamentoCaixa) GetDataHoraRejeicao() *timestamppb.Timestamp {
 		return x.DataHoraRejeicao
 	}
 	return nil
+}
+
+func (x *FechamentoCaixa) GetDeviceId() string {
+	if x != nil {
+		return x.DeviceId
+	}
+	return ""
 }
 
 type Apuracao struct {
@@ -1687,7 +1696,7 @@ var File_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto protoreflect.Fil
 
 const file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDesc = "" +
 	"\n" +
-	"6apps/financeiro/fechamentoCaixa/fechamento_caixa.proto\x12\x0ffechamentocaixa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xd2\a\n" +
+	"6apps/financeiro/fechamentoCaixa/fechamento_caixa.proto\x12\x0ffechamentocaixa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xf4\a\n" +
 	"\x0fFechamentoCaixa\x128\n" +
 	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
 	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x16\n" +
@@ -1712,7 +1721,8 @@ const file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDesc = "" +
 	"\x11dataHoraAprovacao\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\x11dataHoraAprovacao\x12&\n" +
 	"\x0emotivoRejeicao\x18\x15 \x01(\tR\x0emotivoRejeicao\x12\"\n" +
 	"\frejeitadoPor\x18\x16 \x01(\tR\frejeitadoPor\x12F\n" +
-	"\x10dataHoraRejeicao\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\x10dataHoraRejeicao:\x03\xc0>\x01\"\xb0\x03\n" +
+	"\x10dataHoraRejeicao\x18\x17 \x01(\v2\x1a.google.protobuf.TimestampR\x10dataHoraRejeicao\x12 \n" +
+	"\bdeviceId\x18\x18 \x01(\tB\x04\xe2A\x01\x03R\bdeviceId:\x03\xc0>\x01\"\xb0\x03\n" +
 	"\bApuracao\x128\n" +
 	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
 	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x16\n" +

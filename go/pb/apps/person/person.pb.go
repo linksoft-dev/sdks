@@ -356,9 +356,10 @@ type Person struct {
 	// Profissional: especialidades (cadastro de especialidades). specialty guarda os nomes.
 	Specialties []*Specialty `protobuf:"bytes,42,rep,name=specialties,proto3" json:"specialties,omitempty"`
 	// Convênio: benefícios que o portal mostra junto do convênio.
-	PortalBenefits string `protobuf:"bytes,43,opt,name=portal_benefits,json=portalBenefits,proto3" json:"portal_benefits,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	PortalBenefits    string                 `protobuf:"bytes,43,opt,name=portal_benefits,json=portalBenefits,proto3" json:"portal_benefits,omitempty"`
+	SaldoAtualizadoEm *timestamppb.Timestamp `protobuf:"bytes,44,opt,name=saldo_atualizado_em,json=saldoAtualizadoEm,proto3" json:"saldo_atualizado_em,omitempty"` // Hora da última mudança do saldo devedor
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *Person) Reset() {
@@ -683,6 +684,13 @@ func (x *Person) GetPortalBenefits() string {
 		return x.PortalBenefits
 	}
 	return ""
+}
+
+func (x *Person) GetSaldoAtualizadoEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.SaldoAtualizadoEm
+	}
+	return nil
 }
 
 // Especialidade do profissional, do cadastro de especialidades.
@@ -3233,7 +3241,7 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x18apps/person/person.proto\x12\x06person\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\x1a\x15exports/exports.proto\"7\n" +
 	"\tPersonTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xa3\x0e\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xf5\x0e\n" +
 	"\x06Person\x12?\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
@@ -3286,7 +3294,8 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x1fauthorization_requires_schedule\x18( \x01(\bR\x1dauthorizationRequiresSchedule\x12E\n" +
 	"\rcustom_fields\x18) \x03(\v2 .person.Person.CustomFieldsEntryR\fcustomFields\x123\n" +
 	"\vspecialties\x18* \x03(\v2\x11.person.SpecialtyR\vspecialties\x12'\n" +
-	"\x0fportal_benefits\x18+ \x01(\tR\x0eportalBenefits\x1a6\n" +
+	"\x0fportal_benefits\x18+ \x01(\tR\x0eportalBenefits\x12P\n" +
+	"\x13saldo_atualizado_em\x18, \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x11saldoAtualizadoEm\x1a6\n" +
 	"\bIesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a?\n" +
@@ -3627,69 +3636,70 @@ var file_apps_person_person_proto_depIdxs = []int32{
 	46, // 14: person.Person.fields:type_name -> metadata.BasicFields
 	44, // 15: person.Person.custom_fields:type_name -> person.Person.CustomFieldsEntry
 	6,  // 16: person.Person.specialties:type_name -> person.Specialty
-	8,  // 17: person.Carrier.vehicles:type_name -> person.CarrierVehicle
-	1,  // 18: person.Lead.stage:type_name -> person.LeadStage
-	2,  // 19: person.Lead.qualification:type_name -> person.LeadQualification
-	45, // 20: person.Lead.expected_close_date:type_name -> google.protobuf.Timestamp
-	45, // 21: person.Lead.converted_at:type_name -> google.protobuf.Timestamp
-	3,  // 22: person.SendContactVerificationRequest.channel:type_name -> person.ContactChannel
-	17, // 23: person.ConfirmContactVerificationResponse.contact:type_name -> person.Contact
-	3,  // 24: person.VouchContactRequest.channel:type_name -> person.ContactChannel
-	17, // 25: person.VouchContactResponse.contact:type_name -> person.Contact
-	45, // 26: person.Contact.email_verified_at:type_name -> google.protobuf.Timestamp
-	45, // 27: person.Contact.phone_verified_at:type_name -> google.protobuf.Timestamp
-	18, // 28: person.Contact.email_vouch:type_name -> person.ContactVouch
-	18, // 29: person.Contact.phone_vouch:type_name -> person.ContactVouch
-	45, // 30: person.ContactVouch.at:type_name -> google.protobuf.Timestamp
-	45, // 31: person.Driver.license_expiration:type_name -> google.protobuf.Timestamp
-	45, // 32: person.Driver.birth_date:type_name -> google.protobuf.Timestamp
-	5,  // 33: person.CreateRequest.person:type_name -> person.Person
-	5,  // 34: person.CreateResponse.person:type_name -> person.Person
-	5,  // 35: person.UpdateRequest.person:type_name -> person.Person
-	47, // 36: person.UpdateRequest.update_mask:type_name -> metadata.FieldMask
-	5,  // 37: person.UpdateResponse.person:type_name -> person.Person
-	5,  // 38: person.GetResponse.person:type_name -> person.Person
-	45, // 39: person.ListRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	45, // 40: person.ListRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	48, // 41: person.ListRequest.filter:type_name -> Filter
-	5,  // 42: person.ListResponse.person_list:type_name -> person.Person
-	5,  // 43: person.ImportRequest.persons:type_name -> person.Person
-	31, // 44: person.ReportRequest.list_request:type_name -> person.ListRequest
-	49, // 45: person.ReportResponse.response:type_name -> report.Response
-	50, // 46: person.ExportPersonsRequest.format:type_name -> exports.ExportFormat
-	48, // 47: person.ExportPersonsRequest.filter:type_name -> Filter
-	51, // 48: person.ExportPersonsResponse.export:type_name -> exports.ExportResponse
-	39, // 49: person.BatchUpdateRequest.filter:type_name -> person.BatchUpdateFilter
-	40, // 50: person.BatchUpdateRequest.seller:type_name -> person.BatchUpdateSeller
-	23, // 51: person.PersonService.Create:input_type -> person.CreateRequest
-	25, // 52: person.PersonService.Update:input_type -> person.UpdateRequest
-	27, // 53: person.PersonService.Delete:input_type -> person.DeleteRequest
-	29, // 54: person.PersonService.Get:input_type -> person.GetRequest
-	31, // 55: person.PersonService.List:input_type -> person.ListRequest
-	33, // 56: person.PersonService.Import:input_type -> person.ImportRequest
-	35, // 57: person.PersonService.Report:input_type -> person.ReportRequest
-	37, // 58: person.PersonService.Export:input_type -> person.ExportPersonsRequest
-	11, // 59: person.PersonService.SendContactVerification:input_type -> person.SendContactVerificationRequest
-	13, // 60: person.PersonService.ConfirmContactVerification:input_type -> person.ConfirmContactVerificationRequest
-	15, // 61: person.PersonService.VouchContact:input_type -> person.VouchContactRequest
-	41, // 62: person.PersonService.BatchUpdate:input_type -> person.BatchUpdateRequest
-	24, // 63: person.PersonService.Create:output_type -> person.CreateResponse
-	26, // 64: person.PersonService.Update:output_type -> person.UpdateResponse
-	28, // 65: person.PersonService.Delete:output_type -> person.DeleteResponse
-	30, // 66: person.PersonService.Get:output_type -> person.GetResponse
-	32, // 67: person.PersonService.List:output_type -> person.ListResponse
-	34, // 68: person.PersonService.Import:output_type -> person.ImportResponse
-	36, // 69: person.PersonService.Report:output_type -> person.ReportResponse
-	38, // 70: person.PersonService.Export:output_type -> person.ExportPersonsResponse
-	12, // 71: person.PersonService.SendContactVerification:output_type -> person.SendContactVerificationResponse
-	14, // 72: person.PersonService.ConfirmContactVerification:output_type -> person.ConfirmContactVerificationResponse
-	16, // 73: person.PersonService.VouchContact:output_type -> person.VouchContactResponse
-	42, // 74: person.PersonService.BatchUpdate:output_type -> person.BatchUpdateResponse
-	63, // [63:75] is the sub-list for method output_type
-	51, // [51:63] is the sub-list for method input_type
-	51, // [51:51] is the sub-list for extension type_name
-	51, // [51:51] is the sub-list for extension extendee
-	0,  // [0:51] is the sub-list for field type_name
+	45, // 17: person.Person.saldo_atualizado_em:type_name -> google.protobuf.Timestamp
+	8,  // 18: person.Carrier.vehicles:type_name -> person.CarrierVehicle
+	1,  // 19: person.Lead.stage:type_name -> person.LeadStage
+	2,  // 20: person.Lead.qualification:type_name -> person.LeadQualification
+	45, // 21: person.Lead.expected_close_date:type_name -> google.protobuf.Timestamp
+	45, // 22: person.Lead.converted_at:type_name -> google.protobuf.Timestamp
+	3,  // 23: person.SendContactVerificationRequest.channel:type_name -> person.ContactChannel
+	17, // 24: person.ConfirmContactVerificationResponse.contact:type_name -> person.Contact
+	3,  // 25: person.VouchContactRequest.channel:type_name -> person.ContactChannel
+	17, // 26: person.VouchContactResponse.contact:type_name -> person.Contact
+	45, // 27: person.Contact.email_verified_at:type_name -> google.protobuf.Timestamp
+	45, // 28: person.Contact.phone_verified_at:type_name -> google.protobuf.Timestamp
+	18, // 29: person.Contact.email_vouch:type_name -> person.ContactVouch
+	18, // 30: person.Contact.phone_vouch:type_name -> person.ContactVouch
+	45, // 31: person.ContactVouch.at:type_name -> google.protobuf.Timestamp
+	45, // 32: person.Driver.license_expiration:type_name -> google.protobuf.Timestamp
+	45, // 33: person.Driver.birth_date:type_name -> google.protobuf.Timestamp
+	5,  // 34: person.CreateRequest.person:type_name -> person.Person
+	5,  // 35: person.CreateResponse.person:type_name -> person.Person
+	5,  // 36: person.UpdateRequest.person:type_name -> person.Person
+	47, // 37: person.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	5,  // 38: person.UpdateResponse.person:type_name -> person.Person
+	5,  // 39: person.GetResponse.person:type_name -> person.Person
+	45, // 40: person.ListRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	45, // 41: person.ListRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	48, // 42: person.ListRequest.filter:type_name -> Filter
+	5,  // 43: person.ListResponse.person_list:type_name -> person.Person
+	5,  // 44: person.ImportRequest.persons:type_name -> person.Person
+	31, // 45: person.ReportRequest.list_request:type_name -> person.ListRequest
+	49, // 46: person.ReportResponse.response:type_name -> report.Response
+	50, // 47: person.ExportPersonsRequest.format:type_name -> exports.ExportFormat
+	48, // 48: person.ExportPersonsRequest.filter:type_name -> Filter
+	51, // 49: person.ExportPersonsResponse.export:type_name -> exports.ExportResponse
+	39, // 50: person.BatchUpdateRequest.filter:type_name -> person.BatchUpdateFilter
+	40, // 51: person.BatchUpdateRequest.seller:type_name -> person.BatchUpdateSeller
+	23, // 52: person.PersonService.Create:input_type -> person.CreateRequest
+	25, // 53: person.PersonService.Update:input_type -> person.UpdateRequest
+	27, // 54: person.PersonService.Delete:input_type -> person.DeleteRequest
+	29, // 55: person.PersonService.Get:input_type -> person.GetRequest
+	31, // 56: person.PersonService.List:input_type -> person.ListRequest
+	33, // 57: person.PersonService.Import:input_type -> person.ImportRequest
+	35, // 58: person.PersonService.Report:input_type -> person.ReportRequest
+	37, // 59: person.PersonService.Export:input_type -> person.ExportPersonsRequest
+	11, // 60: person.PersonService.SendContactVerification:input_type -> person.SendContactVerificationRequest
+	13, // 61: person.PersonService.ConfirmContactVerification:input_type -> person.ConfirmContactVerificationRequest
+	15, // 62: person.PersonService.VouchContact:input_type -> person.VouchContactRequest
+	41, // 63: person.PersonService.BatchUpdate:input_type -> person.BatchUpdateRequest
+	24, // 64: person.PersonService.Create:output_type -> person.CreateResponse
+	26, // 65: person.PersonService.Update:output_type -> person.UpdateResponse
+	28, // 66: person.PersonService.Delete:output_type -> person.DeleteResponse
+	30, // 67: person.PersonService.Get:output_type -> person.GetResponse
+	32, // 68: person.PersonService.List:output_type -> person.ListResponse
+	34, // 69: person.PersonService.Import:output_type -> person.ImportResponse
+	36, // 70: person.PersonService.Report:output_type -> person.ReportResponse
+	38, // 71: person.PersonService.Export:output_type -> person.ExportPersonsResponse
+	12, // 72: person.PersonService.SendContactVerification:output_type -> person.SendContactVerificationResponse
+	14, // 73: person.PersonService.ConfirmContactVerification:output_type -> person.ConfirmContactVerificationResponse
+	16, // 74: person.PersonService.VouchContact:output_type -> person.VouchContactResponse
+	42, // 75: person.PersonService.BatchUpdate:output_type -> person.BatchUpdateResponse
+	64, // [64:76] is the sub-list for method output_type
+	52, // [52:64] is the sub-list for method input_type
+	52, // [52:52] is the sub-list for extension type_name
+	52, // [52:52] is the sub-list for extension extendee
+	0,  // [0:52] is the sub-list for field type_name
 }
 
 func init() { file_apps_person_person_proto_init() }
