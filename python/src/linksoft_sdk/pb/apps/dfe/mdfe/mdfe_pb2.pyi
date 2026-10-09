@@ -577,6 +577,32 @@ class ImprimirMdfeResponse(_message.Message):
     response: _report_pb2.Response
     def __init__(self, response: _Optional[_Union[_report_pb2.Response, _Mapping]] = ...) -> None: ...
 
+class EnviaEmailWhatsappRequest(_message.Message):
+    __slots__ = ("id", "email", "email_integration_id", "whatsapp_numero", "whatsapp_nome_destinatario", "whatsapp_integration_id", "message_template_id")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    WHATSAPP_NUMERO_FIELD_NUMBER: _ClassVar[int]
+    WHATSAPP_NOME_DESTINATARIO_FIELD_NUMBER: _ClassVar[int]
+    WHATSAPP_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    email: str
+    email_integration_id: str
+    whatsapp_numero: str
+    whatsapp_nome_destinatario: str
+    whatsapp_integration_id: str
+    message_template_id: str
+    def __init__(self, id: _Optional[str] = ..., email: _Optional[str] = ..., email_integration_id: _Optional[str] = ..., whatsapp_numero: _Optional[str] = ..., whatsapp_nome_destinatario: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., message_template_id: _Optional[str] = ...) -> None: ...
+
+class EnviaEmailWhatsappResponse(_message.Message):
+    __slots__ = ("whatsapp_web_message", "public_download_link")
+    WHATSAPP_WEB_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    PUBLIC_DOWNLOAD_LINK_FIELD_NUMBER: _ClassVar[int]
+    whatsapp_web_message: str
+    public_download_link: str
+    def __init__(self, whatsapp_web_message: _Optional[str] = ..., public_download_link: _Optional[str] = ...) -> None: ...
+
 class EmitirRequest(_message.Message):
     __slots__ = ("mdfe",)
     MDFE_FIELD_NUMBER: _ClassVar[int]

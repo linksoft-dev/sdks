@@ -2933,6 +2933,150 @@ func (x *ImprimirMdfeResponse) GetResponse() *report.Response {
 	return nil
 }
 
+type EnviaEmailWhatsappRequest struct {
+	state                    protoimpl.MessageState `protogen:"open.v1"`
+	Id                       string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email                    string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`                                                                         // E-mail do destinatário (opcional se whatsapp_numero estiver preenchido)
+	EmailIntegrationId       string                 `protobuf:"bytes,3,opt,name=email_integration_id,json=emailIntegrationId,proto3" json:"email_integration_id,omitempty"`                   // Conta de e-mail do envio; vazio usa a do modelo ou a padrão
+	WhatsappNumero           string                 `protobuf:"bytes,4,opt,name=whatsapp_numero,json=whatsappNumero,proto3" json:"whatsapp_numero,omitempty"`                                 // Número do WhatsApp (opcional se email estiver preenchido)
+	WhatsappNomeDestinatario string                 `protobuf:"bytes,5,opt,name=whatsapp_nome_destinatario,json=whatsappNomeDestinatario,proto3" json:"whatsapp_nome_destinatario,omitempty"` // Nome do destinatário usado na mensagem
+	WhatsappIntegrationId    string                 `protobuf:"bytes,6,opt,name=whatsapp_integration_id,json=whatsappIntegrationId,proto3" json:"whatsapp_integration_id,omitempty"`          // Conexão de WhatsApp do envio; vazio devolve a mensagem para envio manual
+	MessageTemplateId        string                 `protobuf:"bytes,7,opt,name=message_template_id,json=messageTemplateId,proto3" json:"message_template_id,omitempty"`                      // Modelo de mensagem; vazio usa o padrão do canal
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
+}
+
+func (x *EnviaEmailWhatsappRequest) Reset() {
+	*x = EnviaEmailWhatsappRequest{}
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EnviaEmailWhatsappRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EnviaEmailWhatsappRequest) ProtoMessage() {}
+
+func (x *EnviaEmailWhatsappRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EnviaEmailWhatsappRequest.ProtoReflect.Descriptor instead.
+func (*EnviaEmailWhatsappRequest) Descriptor() ([]byte, []int) {
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *EnviaEmailWhatsappRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *EnviaEmailWhatsappRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *EnviaEmailWhatsappRequest) GetEmailIntegrationId() string {
+	if x != nil {
+		return x.EmailIntegrationId
+	}
+	return ""
+}
+
+func (x *EnviaEmailWhatsappRequest) GetWhatsappNumero() string {
+	if x != nil {
+		return x.WhatsappNumero
+	}
+	return ""
+}
+
+func (x *EnviaEmailWhatsappRequest) GetWhatsappNomeDestinatario() string {
+	if x != nil {
+		return x.WhatsappNomeDestinatario
+	}
+	return ""
+}
+
+func (x *EnviaEmailWhatsappRequest) GetWhatsappIntegrationId() string {
+	if x != nil {
+		return x.WhatsappIntegrationId
+	}
+	return ""
+}
+
+func (x *EnviaEmailWhatsappRequest) GetMessageTemplateId() string {
+	if x != nil {
+		return x.MessageTemplateId
+	}
+	return ""
+}
+
+type EnviaEmailWhatsappResponse struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	WhatsappWebMessage string                 `protobuf:"bytes,1,opt,name=whatsapp_web_message,json=whatsappWebMessage,proto3" json:"whatsapp_web_message,omitempty"` // Mensagem pronta para envio manual pelo WhatsApp
+	PublicDownloadLink string                 `protobuf:"bytes,2,opt,name=public_download_link,json=publicDownloadLink,proto3" json:"public_download_link,omitempty"` // Link público de download do DAMDFE e do XML, válido por 7 dias
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *EnviaEmailWhatsappResponse) Reset() {
+	*x = EnviaEmailWhatsappResponse{}
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EnviaEmailWhatsappResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EnviaEmailWhatsappResponse) ProtoMessage() {}
+
+func (x *EnviaEmailWhatsappResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EnviaEmailWhatsappResponse.ProtoReflect.Descriptor instead.
+func (*EnviaEmailWhatsappResponse) Descriptor() ([]byte, []int) {
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *EnviaEmailWhatsappResponse) GetWhatsappWebMessage() string {
+	if x != nil {
+		return x.WhatsappWebMessage
+	}
+	return ""
+}
+
+func (x *EnviaEmailWhatsappResponse) GetPublicDownloadLink() string {
+	if x != nil {
+		return x.PublicDownloadLink
+	}
+	return ""
+}
+
 // Request e Response para emissão de MDFe
 type EmitirRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2943,7 +3087,7 @@ type EmitirRequest struct {
 
 func (x *EmitirRequest) Reset() {
 	*x = EmitirRequest{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[32]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2955,7 +3099,7 @@ func (x *EmitirRequest) String() string {
 func (*EmitirRequest) ProtoMessage() {}
 
 func (x *EmitirRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[32]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2968,7 +3112,7 @@ func (x *EmitirRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmitirRequest.ProtoReflect.Descriptor instead.
 func (*EmitirRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{32}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *EmitirRequest) GetMdfe() *Mdfe {
@@ -2987,7 +3131,7 @@ type EmitirResponse struct {
 
 func (x *EmitirResponse) Reset() {
 	*x = EmitirResponse{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[33]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2999,7 +3143,7 @@ func (x *EmitirResponse) String() string {
 func (*EmitirResponse) ProtoMessage() {}
 
 func (x *EmitirResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[33]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3012,7 +3156,7 @@ func (x *EmitirResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmitirResponse.ProtoReflect.Descriptor instead.
 func (*EmitirResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{33}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *EmitirResponse) GetMdfe() *Mdfe {
@@ -3033,7 +3177,7 @@ type CancelarRequest struct {
 
 func (x *CancelarRequest) Reset() {
 	*x = CancelarRequest{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[34]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3045,7 +3189,7 @@ func (x *CancelarRequest) String() string {
 func (*CancelarRequest) ProtoMessage() {}
 
 func (x *CancelarRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[34]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3058,7 +3202,7 @@ func (x *CancelarRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelarRequest.ProtoReflect.Descriptor instead.
 func (*CancelarRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{34}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *CancelarRequest) GetId() string {
@@ -3084,7 +3228,7 @@ type CancelarResponse struct {
 
 func (x *CancelarResponse) Reset() {
 	*x = CancelarResponse{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[35]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3096,7 +3240,7 @@ func (x *CancelarResponse) String() string {
 func (*CancelarResponse) ProtoMessage() {}
 
 func (x *CancelarResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[35]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3109,7 +3253,7 @@ func (x *CancelarResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelarResponse.ProtoReflect.Descriptor instead.
 func (*CancelarResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{35}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *CancelarResponse) GetMdfe() *Mdfe {
@@ -3131,7 +3275,7 @@ type EncerrarRequest struct {
 
 func (x *EncerrarRequest) Reset() {
 	*x = EncerrarRequest{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[36]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3143,7 +3287,7 @@ func (x *EncerrarRequest) String() string {
 func (*EncerrarRequest) ProtoMessage() {}
 
 func (x *EncerrarRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[36]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3156,7 +3300,7 @@ func (x *EncerrarRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EncerrarRequest.ProtoReflect.Descriptor instead.
 func (*EncerrarRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{36}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *EncerrarRequest) GetId() string {
@@ -3189,7 +3333,7 @@ type EncerrarResponse struct {
 
 func (x *EncerrarResponse) Reset() {
 	*x = EncerrarResponse{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[37]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3201,7 +3345,7 @@ func (x *EncerrarResponse) String() string {
 func (*EncerrarResponse) ProtoMessage() {}
 
 func (x *EncerrarResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[37]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3214,7 +3358,7 @@ func (x *EncerrarResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EncerrarResponse.ProtoReflect.Descriptor instead.
 func (*EncerrarResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{37}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *EncerrarResponse) GetMdfe() *Mdfe {
@@ -3233,7 +3377,7 @@ type ImportaXmlRequest struct {
 
 func (x *ImportaXmlRequest) Reset() {
 	*x = ImportaXmlRequest{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[38]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3245,7 +3389,7 @@ func (x *ImportaXmlRequest) String() string {
 func (*ImportaXmlRequest) ProtoMessage() {}
 
 func (x *ImportaXmlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[38]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3258,7 +3402,7 @@ func (x *ImportaXmlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportaXmlRequest.ProtoReflect.Descriptor instead.
 func (*ImportaXmlRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{38}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *ImportaXmlRequest) GetArquivoBase64() string {
@@ -3277,7 +3421,7 @@ type ImportaXmlResponse struct {
 
 func (x *ImportaXmlResponse) Reset() {
 	*x = ImportaXmlResponse{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[39]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3289,7 +3433,7 @@ func (x *ImportaXmlResponse) String() string {
 func (*ImportaXmlResponse) ProtoMessage() {}
 
 func (x *ImportaXmlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[39]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3302,7 +3446,7 @@ func (x *ImportaXmlResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportaXmlResponse.ProtoReflect.Descriptor instead.
 func (*ImportaXmlResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{39}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ImportaXmlResponse) GetMdfe() *Mdfe {
@@ -3322,7 +3466,7 @@ type RecuperaProtocoloRequest struct {
 
 func (x *RecuperaProtocoloRequest) Reset() {
 	*x = RecuperaProtocoloRequest{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[40]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3334,7 +3478,7 @@ func (x *RecuperaProtocoloRequest) String() string {
 func (*RecuperaProtocoloRequest) ProtoMessage() {}
 
 func (x *RecuperaProtocoloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[40]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3347,7 +3491,7 @@ func (x *RecuperaProtocoloRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecuperaProtocoloRequest.ProtoReflect.Descriptor instead.
 func (*RecuperaProtocoloRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{40}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *RecuperaProtocoloRequest) GetChave() string {
@@ -3366,7 +3510,7 @@ type RecuperaProtocoloResponse struct {
 
 func (x *RecuperaProtocoloResponse) Reset() {
 	*x = RecuperaProtocoloResponse{}
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[41]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3378,7 +3522,7 @@ func (x *RecuperaProtocoloResponse) String() string {
 func (*RecuperaProtocoloResponse) ProtoMessage() {}
 
 func (x *RecuperaProtocoloResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[41]
+	mi := &file_apps_dfe_mdfe_mdfe_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3391,7 +3535,7 @@ func (x *RecuperaProtocoloResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecuperaProtocoloResponse.ProtoReflect.Descriptor instead.
 func (*RecuperaProtocoloResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{41}
+	return file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *RecuperaProtocoloResponse) GetMdfe() *Mdfe {
@@ -3705,7 +3849,18 @@ const file_apps_dfe_mdfe_mdfe_proto_rawDesc = "" +
 	"\x13ImprimirMdfeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"D\n" +
 	"\x14ImprimirMdfeResponse\x12,\n" +
-	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse\"/\n" +
+	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse\"\xc2\x02\n" +
+	"\x19EnviaEmailWhatsappRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x120\n" +
+	"\x14email_integration_id\x18\x03 \x01(\tR\x12emailIntegrationId\x12'\n" +
+	"\x0fwhatsapp_numero\x18\x04 \x01(\tR\x0ewhatsappNumero\x12<\n" +
+	"\x1awhatsapp_nome_destinatario\x18\x05 \x01(\tR\x18whatsappNomeDestinatario\x126\n" +
+	"\x17whatsapp_integration_id\x18\x06 \x01(\tR\x15whatsappIntegrationId\x12.\n" +
+	"\x13message_template_id\x18\a \x01(\tR\x11messageTemplateId\"\x80\x01\n" +
+	"\x1aEnviaEmailWhatsappResponse\x120\n" +
+	"\x14whatsapp_web_message\x18\x01 \x01(\tR\x12whatsappWebMessage\x120\n" +
+	"\x14public_download_link\x18\x02 \x01(\tR\x12publicDownloadLink\"/\n" +
 	"\rEmitirRequest\x12\x1e\n" +
 	"\x04mdfe\x18\x01 \x01(\v2\n" +
 	".mdfe.MdfeR\x04mdfe\"0\n" +
@@ -3734,7 +3889,8 @@ const file_apps_dfe_mdfe_mdfe_proto_rawDesc = "" +
 	"\x05chave\x18\x01 \x01(\tR\x05chave\";\n" +
 	"\x19RecuperaProtocoloResponse\x12\x1e\n" +
 	"\x04mdfe\x18\x01 \x01(\v2\n" +
-	".mdfe.MdfeR\x04mdfe2\xf6\b\n" +
+	".mdfe.MdfeR\x04mdfe2\x80\n" +
+	"\n" +
 	"\vMdfeService\x12Q\n" +
 	"\x06Create\x12\x17.mdfe.CreateMdfeRequest\x1a\x18.mdfe.CreateMdfeResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/api/mdfe\x12Q\n" +
 	"\x06Update\x12\x17.mdfe.UpdateMdfeRequest\x1a\x18.mdfe.UpdateMdfeResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\x1a\t/api/mdfe\x12S\n" +
@@ -3748,7 +3904,8 @@ const file_apps_dfe_mdfe_mdfe_proto_rawDesc = "" +
 	"\x11RecuperaProtocolo\x12\x1e.mdfe.RecuperaProtocoloRequest\x1a\x1f.mdfe.RecuperaProtocoloResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/mdfe/recupera-protocolo\x12a\n" +
 	"\n" +
 	"ImportaXml\x12\x17.mdfe.ImportaXmlRequest\x1a\x18.mdfe.ImportaXmlResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/mdfe/importa-xml\x12\x81\x01\n" +
-	"\x10ExplainRejection\x12\x1d.mdfe.ExplainRejectionRequest\x1a\x1e.mdfe.ExplainRejectionResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/mdfe/{id}/ai/explain-rejectionBw\n" +
+	"\x10ExplainRejection\x12\x1d.mdfe.ExplainRejectionRequest\x1a\x1e.mdfe.ExplainRejectionResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/mdfe/{id}/ai/explain-rejection\x12\x87\x01\n" +
+	"\x12EnviaEmailWhatsapp\x12\x1f.mdfe.EnviaEmailWhatsappRequest\x1a .mdfe.EnviaEmailWhatsappResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/mdfe/{id}/envia-email-whatsappBw\n" +
 	"\bcom.mdfeB\tMdfeProtoP\x01Z0github.com/linksoft-dev/sdks/go/pb/apps/dfe/mdfe\xa2\x02\x03MXX\xaa\x02\x04Mdfe\xca\x02\x04Mdfe\xe2\x02\x10Mdfe\\GPBMetadata\xea\x02\x04Mdfeb\x06proto3"
 
 var (
@@ -3763,95 +3920,97 @@ func file_apps_dfe_mdfe_mdfe_proto_rawDescGZIP() []byte {
 	return file_apps_dfe_mdfe_mdfe_proto_rawDescData
 }
 
-var file_apps_dfe_mdfe_mdfe_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
+var file_apps_dfe_mdfe_mdfe_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
 var file_apps_dfe_mdfe_mdfe_proto_goTypes = []any{
-	(*ExplainRejectionRequest)(nil),   // 0: mdfe.ExplainRejectionRequest
-	(*ExplainRejectionResponse)(nil),  // 1: mdfe.ExplainRejectionResponse
-	(*Rodoviario)(nil),                // 2: mdfe.Rodoviario
-	(*Pagamento)(nil),                 // 3: mdfe.Pagamento
-	(*ComponentePagamento)(nil),       // 4: mdfe.ComponentePagamento
-	(*Parcelamento)(nil),              // 5: mdfe.Parcelamento
-	(*Proprietario)(nil),              // 6: mdfe.Proprietario
-	(*Reboque)(nil),                   // 7: mdfe.Reboque
-	(*Condutor)(nil),                  // 8: mdfe.Condutor
-	(*Carregamento)(nil),              // 9: mdfe.Carregamento
-	(*Percurso)(nil),                  // 10: mdfe.Percurso
-	(*NfeUnidadeCarga)(nil),           // 11: mdfe.NfeUnidadeCarga
-	(*NfeUnidadeTransporte)(nil),      // 12: mdfe.NfeUnidadeTransporte
-	(*Nfe)(nil),                       // 13: mdfe.Nfe
-	(*Cte)(nil),                       // 14: mdfe.Cte
-	(*Descarregamento)(nil),           // 15: mdfe.Descarregamento
-	(*Seguro)(nil),                    // 16: mdfe.Seguro
-	(*ProdutoPredominante)(nil),       // 17: mdfe.ProdutoPredominante
-	(*Rejeicao)(nil),                  // 18: mdfe.Rejeicao
-	(*Mdfe)(nil),                      // 19: mdfe.Mdfe
-	(*CreateMdfeRequest)(nil),         // 20: mdfe.CreateMdfeRequest
-	(*CreateMdfeResponse)(nil),        // 21: mdfe.CreateMdfeResponse
-	(*UpdateMdfeRequest)(nil),         // 22: mdfe.UpdateMdfeRequest
-	(*UpdateMdfeResponse)(nil),        // 23: mdfe.UpdateMdfeResponse
-	(*DeleteMdfeRequest)(nil),         // 24: mdfe.DeleteMdfeRequest
-	(*DeleteMdfeResponse)(nil),        // 25: mdfe.DeleteMdfeResponse
-	(*GetMdfeRequest)(nil),            // 26: mdfe.GetMdfeRequest
-	(*GetMdfeResponse)(nil),           // 27: mdfe.GetMdfeResponse
-	(*ListMdfeRequest)(nil),           // 28: mdfe.ListMdfeRequest
-	(*ListMdfeResponse)(nil),          // 29: mdfe.ListMdfeResponse
-	(*ImprimirMdfeRequest)(nil),       // 30: mdfe.ImprimirMdfeRequest
-	(*ImprimirMdfeResponse)(nil),      // 31: mdfe.ImprimirMdfeResponse
-	(*EmitirRequest)(nil),             // 32: mdfe.EmitirRequest
-	(*EmitirResponse)(nil),            // 33: mdfe.EmitirResponse
-	(*CancelarRequest)(nil),           // 34: mdfe.CancelarRequest
-	(*CancelarResponse)(nil),          // 35: mdfe.CancelarResponse
-	(*EncerrarRequest)(nil),           // 36: mdfe.EncerrarRequest
-	(*EncerrarResponse)(nil),          // 37: mdfe.EncerrarResponse
-	(*ImportaXmlRequest)(nil),         // 38: mdfe.ImportaXmlRequest
-	(*ImportaXmlResponse)(nil),        // 39: mdfe.ImportaXmlResponse
-	(*RecuperaProtocoloRequest)(nil),  // 40: mdfe.RecuperaProtocoloRequest
-	(*RecuperaProtocoloResponse)(nil), // 41: mdfe.RecuperaProtocoloResponse
-	(*timestamppb.Timestamp)(nil),     // 42: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),      // 43: metadata.BasicFields
-	(*metadata.FieldMask)(nil),        // 44: metadata.FieldMask
-	(*filter.Filter)(nil),             // 45: Filter
-	(*report.Response)(nil),           // 46: report.Response
+	(*ExplainRejectionRequest)(nil),    // 0: mdfe.ExplainRejectionRequest
+	(*ExplainRejectionResponse)(nil),   // 1: mdfe.ExplainRejectionResponse
+	(*Rodoviario)(nil),                 // 2: mdfe.Rodoviario
+	(*Pagamento)(nil),                  // 3: mdfe.Pagamento
+	(*ComponentePagamento)(nil),        // 4: mdfe.ComponentePagamento
+	(*Parcelamento)(nil),               // 5: mdfe.Parcelamento
+	(*Proprietario)(nil),               // 6: mdfe.Proprietario
+	(*Reboque)(nil),                    // 7: mdfe.Reboque
+	(*Condutor)(nil),                   // 8: mdfe.Condutor
+	(*Carregamento)(nil),               // 9: mdfe.Carregamento
+	(*Percurso)(nil),                   // 10: mdfe.Percurso
+	(*NfeUnidadeCarga)(nil),            // 11: mdfe.NfeUnidadeCarga
+	(*NfeUnidadeTransporte)(nil),       // 12: mdfe.NfeUnidadeTransporte
+	(*Nfe)(nil),                        // 13: mdfe.Nfe
+	(*Cte)(nil),                        // 14: mdfe.Cte
+	(*Descarregamento)(nil),            // 15: mdfe.Descarregamento
+	(*Seguro)(nil),                     // 16: mdfe.Seguro
+	(*ProdutoPredominante)(nil),        // 17: mdfe.ProdutoPredominante
+	(*Rejeicao)(nil),                   // 18: mdfe.Rejeicao
+	(*Mdfe)(nil),                       // 19: mdfe.Mdfe
+	(*CreateMdfeRequest)(nil),          // 20: mdfe.CreateMdfeRequest
+	(*CreateMdfeResponse)(nil),         // 21: mdfe.CreateMdfeResponse
+	(*UpdateMdfeRequest)(nil),          // 22: mdfe.UpdateMdfeRequest
+	(*UpdateMdfeResponse)(nil),         // 23: mdfe.UpdateMdfeResponse
+	(*DeleteMdfeRequest)(nil),          // 24: mdfe.DeleteMdfeRequest
+	(*DeleteMdfeResponse)(nil),         // 25: mdfe.DeleteMdfeResponse
+	(*GetMdfeRequest)(nil),             // 26: mdfe.GetMdfeRequest
+	(*GetMdfeResponse)(nil),            // 27: mdfe.GetMdfeResponse
+	(*ListMdfeRequest)(nil),            // 28: mdfe.ListMdfeRequest
+	(*ListMdfeResponse)(nil),           // 29: mdfe.ListMdfeResponse
+	(*ImprimirMdfeRequest)(nil),        // 30: mdfe.ImprimirMdfeRequest
+	(*ImprimirMdfeResponse)(nil),       // 31: mdfe.ImprimirMdfeResponse
+	(*EnviaEmailWhatsappRequest)(nil),  // 32: mdfe.EnviaEmailWhatsappRequest
+	(*EnviaEmailWhatsappResponse)(nil), // 33: mdfe.EnviaEmailWhatsappResponse
+	(*EmitirRequest)(nil),              // 34: mdfe.EmitirRequest
+	(*EmitirResponse)(nil),             // 35: mdfe.EmitirResponse
+	(*CancelarRequest)(nil),            // 36: mdfe.CancelarRequest
+	(*CancelarResponse)(nil),           // 37: mdfe.CancelarResponse
+	(*EncerrarRequest)(nil),            // 38: mdfe.EncerrarRequest
+	(*EncerrarResponse)(nil),           // 39: mdfe.EncerrarResponse
+	(*ImportaXmlRequest)(nil),          // 40: mdfe.ImportaXmlRequest
+	(*ImportaXmlResponse)(nil),         // 41: mdfe.ImportaXmlResponse
+	(*RecuperaProtocoloRequest)(nil),   // 42: mdfe.RecuperaProtocoloRequest
+	(*RecuperaProtocoloResponse)(nil),  // 43: mdfe.RecuperaProtocoloResponse
+	(*timestamppb.Timestamp)(nil),      // 44: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),       // 45: metadata.BasicFields
+	(*metadata.FieldMask)(nil),         // 46: metadata.FieldMask
+	(*filter.Filter)(nil),              // 47: Filter
+	(*report.Response)(nil),            // 48: report.Response
 }
 var file_apps_dfe_mdfe_mdfe_proto_depIdxs = []int32{
 	4,  // 0: mdfe.Pagamento.componentes_pagamento:type_name -> mdfe.ComponentePagamento
 	5,  // 1: mdfe.Pagamento.parcelamentos:type_name -> mdfe.Parcelamento
-	42, // 2: mdfe.ComponentePagamento.created_at:type_name -> google.protobuf.Timestamp
-	42, // 3: mdfe.ComponentePagamento.updated_at:type_name -> google.protobuf.Timestamp
-	42, // 4: mdfe.Parcelamento.data_vencimento:type_name -> google.protobuf.Timestamp
-	42, // 5: mdfe.Reboque.created_at:type_name -> google.protobuf.Timestamp
-	42, // 6: mdfe.Reboque.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 2: mdfe.ComponentePagamento.created_at:type_name -> google.protobuf.Timestamp
+	44, // 3: mdfe.ComponentePagamento.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 4: mdfe.Parcelamento.data_vencimento:type_name -> google.protobuf.Timestamp
+	44, // 5: mdfe.Reboque.created_at:type_name -> google.protobuf.Timestamp
+	44, // 6: mdfe.Reboque.updated_at:type_name -> google.protobuf.Timestamp
 	6,  // 7: mdfe.Reboque.proprietario:type_name -> mdfe.Proprietario
-	42, // 8: mdfe.Condutor.created_at:type_name -> google.protobuf.Timestamp
-	42, // 9: mdfe.Condutor.updated_at:type_name -> google.protobuf.Timestamp
-	42, // 10: mdfe.Carregamento.created_at:type_name -> google.protobuf.Timestamp
-	42, // 11: mdfe.Carregamento.updated_at:type_name -> google.protobuf.Timestamp
-	42, // 12: mdfe.Percurso.created_at:type_name -> google.protobuf.Timestamp
-	42, // 13: mdfe.Percurso.updated_at:type_name -> google.protobuf.Timestamp
-	42, // 14: mdfe.NfeUnidadeCarga.created_at:type_name -> google.protobuf.Timestamp
-	42, // 15: mdfe.NfeUnidadeCarga.updated_at:type_name -> google.protobuf.Timestamp
-	42, // 16: mdfe.NfeUnidadeTransporte.created_at:type_name -> google.protobuf.Timestamp
-	42, // 17: mdfe.NfeUnidadeTransporte.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 8: mdfe.Condutor.created_at:type_name -> google.protobuf.Timestamp
+	44, // 9: mdfe.Condutor.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 10: mdfe.Carregamento.created_at:type_name -> google.protobuf.Timestamp
+	44, // 11: mdfe.Carregamento.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 12: mdfe.Percurso.created_at:type_name -> google.protobuf.Timestamp
+	44, // 13: mdfe.Percurso.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 14: mdfe.NfeUnidadeCarga.created_at:type_name -> google.protobuf.Timestamp
+	44, // 15: mdfe.NfeUnidadeCarga.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 16: mdfe.NfeUnidadeTransporte.created_at:type_name -> google.protobuf.Timestamp
+	44, // 17: mdfe.NfeUnidadeTransporte.updated_at:type_name -> google.protobuf.Timestamp
 	11, // 18: mdfe.NfeUnidadeTransporte.unidades_carga:type_name -> mdfe.NfeUnidadeCarga
-	42, // 19: mdfe.Nfe.created_at:type_name -> google.protobuf.Timestamp
-	42, // 20: mdfe.Nfe.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 19: mdfe.Nfe.created_at:type_name -> google.protobuf.Timestamp
+	44, // 20: mdfe.Nfe.updated_at:type_name -> google.protobuf.Timestamp
 	12, // 21: mdfe.Nfe.unidades_transporte:type_name -> mdfe.NfeUnidadeTransporte
-	42, // 22: mdfe.Cte.created_at:type_name -> google.protobuf.Timestamp
-	42, // 23: mdfe.Cte.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 22: mdfe.Cte.created_at:type_name -> google.protobuf.Timestamp
+	44, // 23: mdfe.Cte.updated_at:type_name -> google.protobuf.Timestamp
 	12, // 24: mdfe.Cte.unidades_transporte:type_name -> mdfe.NfeUnidadeTransporte
-	42, // 25: mdfe.Descarregamento.created_at:type_name -> google.protobuf.Timestamp
-	42, // 26: mdfe.Descarregamento.updated_at:type_name -> google.protobuf.Timestamp
+	44, // 25: mdfe.Descarregamento.created_at:type_name -> google.protobuf.Timestamp
+	44, // 26: mdfe.Descarregamento.updated_at:type_name -> google.protobuf.Timestamp
 	13, // 27: mdfe.Descarregamento.nfes:type_name -> mdfe.Nfe
 	14, // 28: mdfe.Descarregamento.ctes:type_name -> mdfe.Cte
-	42, // 29: mdfe.Rejeicao.data_hora:type_name -> google.protobuf.Timestamp
-	42, // 30: mdfe.Rejeicao.data_hora_situacao_doc:type_name -> google.protobuf.Timestamp
-	42, // 31: mdfe.Mdfe.created_at:type_name -> google.protobuf.Timestamp
-	42, // 32: mdfe.Mdfe.updated_at:type_name -> google.protobuf.Timestamp
-	43, // 33: mdfe.Mdfe.fields:type_name -> metadata.BasicFields
-	42, // 34: mdfe.Mdfe.data_hora_emissao:type_name -> google.protobuf.Timestamp
-	42, // 35: mdfe.Mdfe.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
-	42, // 36: mdfe.Mdfe.data_hora_encerramento:type_name -> google.protobuf.Timestamp
-	42, // 37: mdfe.Mdfe.data_hora_cancelamento:type_name -> google.protobuf.Timestamp
+	44, // 29: mdfe.Rejeicao.data_hora:type_name -> google.protobuf.Timestamp
+	44, // 30: mdfe.Rejeicao.data_hora_situacao_doc:type_name -> google.protobuf.Timestamp
+	44, // 31: mdfe.Mdfe.created_at:type_name -> google.protobuf.Timestamp
+	44, // 32: mdfe.Mdfe.updated_at:type_name -> google.protobuf.Timestamp
+	45, // 33: mdfe.Mdfe.fields:type_name -> metadata.BasicFields
+	44, // 34: mdfe.Mdfe.data_hora_emissao:type_name -> google.protobuf.Timestamp
+	44, // 35: mdfe.Mdfe.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
+	44, // 36: mdfe.Mdfe.data_hora_encerramento:type_name -> google.protobuf.Timestamp
+	44, // 37: mdfe.Mdfe.data_hora_cancelamento:type_name -> google.protobuf.Timestamp
 	2,  // 38: mdfe.Mdfe.rodoviario:type_name -> mdfe.Rodoviario
 	7,  // 39: mdfe.Mdfe.rodoviario_reboques:type_name -> mdfe.Reboque
 	8,  // 40: mdfe.Mdfe.condutores:type_name -> mdfe.Condutor
@@ -3865,14 +4024,14 @@ var file_apps_dfe_mdfe_mdfe_proto_depIdxs = []int32{
 	19, // 48: mdfe.CreateMdfeRequest.mdfe:type_name -> mdfe.Mdfe
 	19, // 49: mdfe.CreateMdfeResponse.mdfe:type_name -> mdfe.Mdfe
 	19, // 50: mdfe.UpdateMdfeRequest.mdfe:type_name -> mdfe.Mdfe
-	44, // 51: mdfe.UpdateMdfeRequest.update_mask:type_name -> metadata.FieldMask
+	46, // 51: mdfe.UpdateMdfeRequest.update_mask:type_name -> metadata.FieldMask
 	19, // 52: mdfe.UpdateMdfeResponse.mdfe:type_name -> mdfe.Mdfe
 	19, // 53: mdfe.GetMdfeResponse.mdfe:type_name -> mdfe.Mdfe
-	42, // 54: mdfe.ListMdfeRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	42, // 55: mdfe.ListMdfeRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	45, // 56: mdfe.ListMdfeRequest.filter:type_name -> Filter
+	44, // 54: mdfe.ListMdfeRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	44, // 55: mdfe.ListMdfeRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	47, // 56: mdfe.ListMdfeRequest.filter:type_name -> Filter
 	19, // 57: mdfe.ListMdfeResponse.mdfe_list:type_name -> mdfe.Mdfe
-	46, // 58: mdfe.ImprimirMdfeResponse.response:type_name -> report.Response
+	48, // 58: mdfe.ImprimirMdfeResponse.response:type_name -> report.Response
 	19, // 59: mdfe.EmitirRequest.mdfe:type_name -> mdfe.Mdfe
 	19, // 60: mdfe.EmitirResponse.mdfe:type_name -> mdfe.Mdfe
 	19, // 61: mdfe.CancelarResponse.mdfe:type_name -> mdfe.Mdfe
@@ -3885,26 +4044,28 @@ var file_apps_dfe_mdfe_mdfe_proto_depIdxs = []int32{
 	26, // 68: mdfe.MdfeService.Get:input_type -> mdfe.GetMdfeRequest
 	28, // 69: mdfe.MdfeService.List:input_type -> mdfe.ListMdfeRequest
 	30, // 70: mdfe.MdfeService.Imprimir:input_type -> mdfe.ImprimirMdfeRequest
-	32, // 71: mdfe.MdfeService.Emitir:input_type -> mdfe.EmitirRequest
-	34, // 72: mdfe.MdfeService.Cancelar:input_type -> mdfe.CancelarRequest
-	36, // 73: mdfe.MdfeService.Encerrar:input_type -> mdfe.EncerrarRequest
-	40, // 74: mdfe.MdfeService.RecuperaProtocolo:input_type -> mdfe.RecuperaProtocoloRequest
-	38, // 75: mdfe.MdfeService.ImportaXml:input_type -> mdfe.ImportaXmlRequest
+	34, // 71: mdfe.MdfeService.Emitir:input_type -> mdfe.EmitirRequest
+	36, // 72: mdfe.MdfeService.Cancelar:input_type -> mdfe.CancelarRequest
+	38, // 73: mdfe.MdfeService.Encerrar:input_type -> mdfe.EncerrarRequest
+	42, // 74: mdfe.MdfeService.RecuperaProtocolo:input_type -> mdfe.RecuperaProtocoloRequest
+	40, // 75: mdfe.MdfeService.ImportaXml:input_type -> mdfe.ImportaXmlRequest
 	0,  // 76: mdfe.MdfeService.ExplainRejection:input_type -> mdfe.ExplainRejectionRequest
-	21, // 77: mdfe.MdfeService.Create:output_type -> mdfe.CreateMdfeResponse
-	23, // 78: mdfe.MdfeService.Update:output_type -> mdfe.UpdateMdfeResponse
-	25, // 79: mdfe.MdfeService.Delete:output_type -> mdfe.DeleteMdfeResponse
-	27, // 80: mdfe.MdfeService.Get:output_type -> mdfe.GetMdfeResponse
-	29, // 81: mdfe.MdfeService.List:output_type -> mdfe.ListMdfeResponse
-	31, // 82: mdfe.MdfeService.Imprimir:output_type -> mdfe.ImprimirMdfeResponse
-	33, // 83: mdfe.MdfeService.Emitir:output_type -> mdfe.EmitirResponse
-	35, // 84: mdfe.MdfeService.Cancelar:output_type -> mdfe.CancelarResponse
-	37, // 85: mdfe.MdfeService.Encerrar:output_type -> mdfe.EncerrarResponse
-	41, // 86: mdfe.MdfeService.RecuperaProtocolo:output_type -> mdfe.RecuperaProtocoloResponse
-	39, // 87: mdfe.MdfeService.ImportaXml:output_type -> mdfe.ImportaXmlResponse
-	1,  // 88: mdfe.MdfeService.ExplainRejection:output_type -> mdfe.ExplainRejectionResponse
-	77, // [77:89] is the sub-list for method output_type
-	65, // [65:77] is the sub-list for method input_type
+	32, // 77: mdfe.MdfeService.EnviaEmailWhatsapp:input_type -> mdfe.EnviaEmailWhatsappRequest
+	21, // 78: mdfe.MdfeService.Create:output_type -> mdfe.CreateMdfeResponse
+	23, // 79: mdfe.MdfeService.Update:output_type -> mdfe.UpdateMdfeResponse
+	25, // 80: mdfe.MdfeService.Delete:output_type -> mdfe.DeleteMdfeResponse
+	27, // 81: mdfe.MdfeService.Get:output_type -> mdfe.GetMdfeResponse
+	29, // 82: mdfe.MdfeService.List:output_type -> mdfe.ListMdfeResponse
+	31, // 83: mdfe.MdfeService.Imprimir:output_type -> mdfe.ImprimirMdfeResponse
+	35, // 84: mdfe.MdfeService.Emitir:output_type -> mdfe.EmitirResponse
+	37, // 85: mdfe.MdfeService.Cancelar:output_type -> mdfe.CancelarResponse
+	39, // 86: mdfe.MdfeService.Encerrar:output_type -> mdfe.EncerrarResponse
+	43, // 87: mdfe.MdfeService.RecuperaProtocolo:output_type -> mdfe.RecuperaProtocoloResponse
+	41, // 88: mdfe.MdfeService.ImportaXml:output_type -> mdfe.ImportaXmlResponse
+	1,  // 89: mdfe.MdfeService.ExplainRejection:output_type -> mdfe.ExplainRejectionResponse
+	33, // 90: mdfe.MdfeService.EnviaEmailWhatsapp:output_type -> mdfe.EnviaEmailWhatsappResponse
+	78, // [78:91] is the sub-list for method output_type
+	65, // [65:78] is the sub-list for method input_type
 	65, // [65:65] is the sub-list for extension type_name
 	65, // [65:65] is the sub-list for extension extendee
 	0,  // [0:65] is the sub-list for field type_name
@@ -3921,7 +4082,7 @@ func file_apps_dfe_mdfe_mdfe_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_dfe_mdfe_mdfe_proto_rawDesc), len(file_apps_dfe_mdfe_mdfe_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   42,
+			NumMessages:   44,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

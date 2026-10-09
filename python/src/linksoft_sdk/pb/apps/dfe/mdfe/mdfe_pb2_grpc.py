@@ -75,6 +75,11 @@ class MdfeServiceStub:
                 request_serializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionRequest.SerializeToString,
                 response_deserializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionResponse.FromString,
                 _registered_method=True)
+        self.EnviaEmailWhatsapp = channel.unary_unary(
+                '/mdfe.MdfeService/EnviaEmailWhatsapp',
+                request_serializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.EnviaEmailWhatsappRequest.SerializeToString,
+                response_deserializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.EnviaEmailWhatsappResponse.FromString,
+                _registered_method=True)
 
 
 class MdfeServiceServicer:
@@ -155,6 +160,13 @@ class MdfeServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def EnviaEmailWhatsapp(self, request, context):
+        """Envia o DAMDFE e o XML por e-mail e/ou o link de download por WhatsApp
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MdfeServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -217,6 +229,11 @@ def add_MdfeServiceServicer_to_server(servicer, server):
                     servicer.ExplainRejection,
                     request_deserializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionRequest.FromString,
                     response_serializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionResponse.SerializeToString,
+            ),
+            'EnviaEmailWhatsapp': grpc.unary_unary_rpc_method_handler(
+                    servicer.EnviaEmailWhatsapp,
+                    request_deserializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.EnviaEmailWhatsappRequest.FromString,
+                    response_serializer=apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.EnviaEmailWhatsappResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -544,6 +561,33 @@ class MdfeService:
             '/mdfe.MdfeService/ExplainRejection',
             apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionRequest.SerializeToString,
             apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.ExplainRejectionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def EnviaEmailWhatsapp(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mdfe.MdfeService/EnviaEmailWhatsapp',
+            apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.EnviaEmailWhatsappRequest.SerializeToString,
+            apps_dot_dfe_dot_mdfe_dot_mdfe__pb2.EnviaEmailWhatsappResponse.FromString,
             options,
             channel_credentials,
             insecure,

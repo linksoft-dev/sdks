@@ -19,18 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MdfeService_Create_FullMethodName            = "/mdfe.MdfeService/Create"
-	MdfeService_Update_FullMethodName            = "/mdfe.MdfeService/Update"
-	MdfeService_Delete_FullMethodName            = "/mdfe.MdfeService/Delete"
-	MdfeService_Get_FullMethodName               = "/mdfe.MdfeService/Get"
-	MdfeService_List_FullMethodName              = "/mdfe.MdfeService/List"
-	MdfeService_Imprimir_FullMethodName          = "/mdfe.MdfeService/Imprimir"
-	MdfeService_Emitir_FullMethodName            = "/mdfe.MdfeService/Emitir"
-	MdfeService_Cancelar_FullMethodName          = "/mdfe.MdfeService/Cancelar"
-	MdfeService_Encerrar_FullMethodName          = "/mdfe.MdfeService/Encerrar"
-	MdfeService_RecuperaProtocolo_FullMethodName = "/mdfe.MdfeService/RecuperaProtocolo"
-	MdfeService_ImportaXml_FullMethodName        = "/mdfe.MdfeService/ImportaXml"
-	MdfeService_ExplainRejection_FullMethodName  = "/mdfe.MdfeService/ExplainRejection"
+	MdfeService_Create_FullMethodName             = "/mdfe.MdfeService/Create"
+	MdfeService_Update_FullMethodName             = "/mdfe.MdfeService/Update"
+	MdfeService_Delete_FullMethodName             = "/mdfe.MdfeService/Delete"
+	MdfeService_Get_FullMethodName                = "/mdfe.MdfeService/Get"
+	MdfeService_List_FullMethodName               = "/mdfe.MdfeService/List"
+	MdfeService_Imprimir_FullMethodName           = "/mdfe.MdfeService/Imprimir"
+	MdfeService_Emitir_FullMethodName             = "/mdfe.MdfeService/Emitir"
+	MdfeService_Cancelar_FullMethodName           = "/mdfe.MdfeService/Cancelar"
+	MdfeService_Encerrar_FullMethodName           = "/mdfe.MdfeService/Encerrar"
+	MdfeService_RecuperaProtocolo_FullMethodName  = "/mdfe.MdfeService/RecuperaProtocolo"
+	MdfeService_ImportaXml_FullMethodName         = "/mdfe.MdfeService/ImportaXml"
+	MdfeService_ExplainRejection_FullMethodName   = "/mdfe.MdfeService/ExplainRejection"
+	MdfeService_EnviaEmailWhatsapp_FullMethodName = "/mdfe.MdfeService/EnviaEmailWhatsapp"
 )
 
 // MdfeServiceClient is the client API for MdfeService service.
@@ -53,6 +54,8 @@ type MdfeServiceClient interface {
 	ImportaXml(ctx context.Context, in *ImportaXmlRequest, opts ...grpc.CallOption) (*ImportaXmlResponse, error)
 	// Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
 	ExplainRejection(ctx context.Context, in *ExplainRejectionRequest, opts ...grpc.CallOption) (*ExplainRejectionResponse, error)
+	// Envia o DAMDFE e o XML por e-mail e/ou o link de download por WhatsApp
+	EnviaEmailWhatsapp(ctx context.Context, in *EnviaEmailWhatsappRequest, opts ...grpc.CallOption) (*EnviaEmailWhatsappResponse, error)
 }
 
 type mdfeServiceClient struct {
@@ -183,6 +186,16 @@ func (c *mdfeServiceClient) ExplainRejection(ctx context.Context, in *ExplainRej
 	return out, nil
 }
 
+func (c *mdfeServiceClient) EnviaEmailWhatsapp(ctx context.Context, in *EnviaEmailWhatsappRequest, opts ...grpc.CallOption) (*EnviaEmailWhatsappResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EnviaEmailWhatsappResponse)
+	err := c.cc.Invoke(ctx, MdfeService_EnviaEmailWhatsapp_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MdfeServiceServer is the server API for MdfeService service.
 // All implementations must embed UnimplementedMdfeServiceServer
 // for forward compatibility.
@@ -203,6 +216,8 @@ type MdfeServiceServer interface {
 	ImportaXml(context.Context, *ImportaXmlRequest) (*ImportaXmlResponse, error)
 	// Explica com IA a rejeição mais recente do documento, com o passo a passo para resolver
 	ExplainRejection(context.Context, *ExplainRejectionRequest) (*ExplainRejectionResponse, error)
+	// Envia o DAMDFE e o XML por e-mail e/ou o link de download por WhatsApp
+	EnviaEmailWhatsapp(context.Context, *EnviaEmailWhatsappRequest) (*EnviaEmailWhatsappResponse, error)
 	mustEmbedUnimplementedMdfeServiceServer()
 }
 
@@ -248,6 +263,9 @@ func (UnimplementedMdfeServiceServer) ImportaXml(context.Context, *ImportaXmlReq
 }
 func (UnimplementedMdfeServiceServer) ExplainRejection(context.Context, *ExplainRejectionRequest) (*ExplainRejectionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ExplainRejection not implemented")
+}
+func (UnimplementedMdfeServiceServer) EnviaEmailWhatsapp(context.Context, *EnviaEmailWhatsappRequest) (*EnviaEmailWhatsappResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method EnviaEmailWhatsapp not implemented")
 }
 func (UnimplementedMdfeServiceServer) mustEmbedUnimplementedMdfeServiceServer() {}
 func (UnimplementedMdfeServiceServer) testEmbeddedByValue()                     {}
@@ -486,6 +504,24 @@ func _MdfeService_ExplainRejection_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MdfeService_EnviaEmailWhatsapp_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EnviaEmailWhatsappRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MdfeServiceServer).EnviaEmailWhatsapp(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MdfeService_EnviaEmailWhatsapp_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MdfeServiceServer).EnviaEmailWhatsapp(ctx, req.(*EnviaEmailWhatsappRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MdfeService_ServiceDesc is the grpc.ServiceDesc for MdfeService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -540,6 +576,10 @@ var MdfeService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ExplainRejection",
 			Handler:    _MdfeService_ExplainRejection_Handler,
+		},
+		{
+			MethodName: "EnviaEmailWhatsapp",
+			Handler:    _MdfeService_EnviaEmailWhatsapp_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
