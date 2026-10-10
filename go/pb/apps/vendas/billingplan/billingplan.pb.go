@@ -233,13 +233,12 @@ type BillingPlan struct {
 	Id        string                 `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
 	Fields    *metadata.BasicFields  `protobuf:"bytes,6,opt,name=fields,proto3" json:"fields,omitempty"`
 	Name      string                 `protobuf:"bytes,7,opt,name=name,proto3" json:"name,omitempty"`
-	// Number of days after order creation to start billing.
-	StartDays int32 `protobuf:"varint,8,opt,name=start_days,json=startDays,proto3" json:"start_days,omitempty"`
-	// Number of days between billings.
-	IntervalDays int32 `protobuf:"varint,9,opt,name=interval_days,json=intervalDays,proto3" json:"interval_days,omitempty"`
-	// Maximum number of billings allowed for an order.
-	MaxBillings int32    `protobuf:"varint,10,opt,name=max_billings,json=maxBillings,proto3" json:"max_billings,omitempty"`
-	Situacao    Situacao `protobuf:"varint,11,opt,name=situacao,proto3,enum=billingplan.Situacao" json:"situacao,omitempty"` // vazio = ativo
+	// Agenda por prazo no formato antigo: início, intervalo e máximo de envios. Ignorados quando
+	// dias_de_envio é informado
+	StartDays    int32    `protobuf:"varint,8,opt,name=start_days,json=startDays,proto3" json:"start_days,omitempty"`
+	IntervalDays int32    `protobuf:"varint,9,opt,name=interval_days,json=intervalDays,proto3" json:"interval_days,omitempty"`
+	MaxBillings  int32    `protobuf:"varint,10,opt,name=max_billings,json=maxBillings,proto3" json:"max_billings,omitempty"`
+	Situacao     Situacao `protobuf:"varint,11,opt,name=situacao,proto3,enum=billingplan.Situacao" json:"situacao,omitempty"` // vazio = ativo
 	// Tipo do documento cobrado pelo plano, no mesmo valor gravado em pedido.tipo. Vazio = pedido
 	TipoDocumento string `protobuf:"bytes,12,opt,name=tipo_documento,json=tipoDocumento,proto3" json:"tipo_documento,omitempty"`
 	// Critério de seleção: grupo de pessoas ou pessoa específica
@@ -257,8 +256,8 @@ type BillingPlan struct {
 	EmailIntegrationId string `protobuf:"bytes,22,opt,name=email_integration_id,json=emailIntegrationId,proto3" json:"email_integration_id,omitempty"`
 	// WhatsApp: integração (API oficial ou por QR code) que envia; obrigatória para o canal
 	WhatsappIntegrationId string `protobuf:"bytes,25,opt,name=whatsapp_integration_id,json=whatsappIntegrationId,proto3" json:"whatsapp_integration_id,omitempty"`
-	// Dias depois do vencimento (ou da data do documento, quando ele não tem vencimento) a partir
-	// dos quais o documento deixa de ser cobrado. Zero = 3 meses
+	// Agenda por dias do mês: dias depois da data do documento (ou do vencimento da conta a
+	// receber) a partir dos quais ele deixa de ser cobrado. Zero = 3 meses
 	DiasLimite int32 `protobuf:"varint,26,opt,name=dias_limite,json=diasLimite,proto3" json:"dias_limite,omitempty"`
 	// Envio que cairia no sábado ou no domingo sai no próximo dia útil
 	PularFimDeSemana bool `protobuf:"varint,27,opt,name=pular_fim_de_semana,json=pularFimDeSemana,proto3" json:"pular_fim_de_semana,omitempty"`
@@ -275,8 +274,12 @@ type BillingPlan struct {
 	Anexos []string `protobuf:"bytes,33,rep,name=anexos,proto3" json:"anexos,omitempty"`
 	// Conta de SMS que envia a cobrança, um SMS por documento.
 	SmsIntegrationId string `protobuf:"bytes,34,opt,name=sms_integration_id,json=smsIntegrationId,proto3" json:"sms_integration_id,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Agenda por prazo: dia de cada envio contado do vencimento do documento (negativo = antes,
+	// 0 = no dia, positivo = depois). Documento sem vencimento conta da data dele, só com dias
+	// positivos
+	DiasDeEnvio   []int32 `protobuf:"varint,35,rep,packed,name=dias_de_envio,json=diasDeEnvio,proto3" json:"dias_de_envio,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *BillingPlan) Reset() {
@@ -533,11 +536,19 @@ func (x *BillingPlan) GetSmsIntegrationId() string {
 	return ""
 }
 
+func (x *BillingPlan) GetDiasDeEnvio() []int32 {
+	if x != nil {
+		return x.DiasDeEnvio
+	}
+	return nil
+}
+
 var File_apps_vendas_billingplan_billingplan_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\n" +
-	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe3\t\n" +
+	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x87\n" +
+	"\n" +
 	"\vBillingPlan\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -578,7 +589,8 @@ const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\fvalor_minimo\x18\x1f \x01(\x01R\vvalorMinimo\x12!\n" +
 	"\fvalor_maximo\x18  \x01(\x01R\vvalorMaximo\x12\x16\n" +
 	"\x06anexos\x18! \x03(\tR\x06anexos\x12,\n" +
-	"\x12sms_integration_id\x18\" \x01(\tR\x10smsIntegrationId:\x03\xc0>\x01*N\n" +
+	"\x12sms_integration_id\x18\" \x01(\tR\x10smsIntegrationId\x12\"\n" +
+	"\rdias_de_envio\x18# \x03(\x05R\vdiasDeEnvio:\x03\xc0>\x01*N\n" +
 	"\bSituacao\x12\x18\n" +
 	"\x14SITUACAO_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eSITUACAO_ATIVO\x10\x01\x12\x14\n" +

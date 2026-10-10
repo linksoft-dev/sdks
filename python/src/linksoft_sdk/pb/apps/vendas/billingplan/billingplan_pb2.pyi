@@ -51,7 +51,7 @@ CANAL_WHATSAPP: Canal
 CANAL_SMS: Canal
 
 class BillingPlan(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "name", "start_days", "interval_days", "max_billings", "situacao", "tipo_documento", "tipo_grupo", "grupo_id", "grupo_nome", "pessoa_id", "pessoa_nome", "agenda", "dias_do_mes", "cobrar_a_partir_de", "canais", "email_integration_id", "whatsapp_integration_id", "dias_limite", "pular_fim_de_semana", "pular_feriados", "hora", "tags", "valor_minimo", "valor_maximo", "anexos", "sms_integration_id")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "name", "start_days", "interval_days", "max_billings", "situacao", "tipo_documento", "tipo_grupo", "grupo_id", "grupo_nome", "pessoa_id", "pessoa_nome", "agenda", "dias_do_mes", "cobrar_a_partir_de", "canais", "email_integration_id", "whatsapp_integration_id", "dias_limite", "pular_fim_de_semana", "pular_feriados", "hora", "tags", "valor_minimo", "valor_maximo", "anexos", "sms_integration_id", "dias_de_envio")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -84,6 +84,7 @@ class BillingPlan(_message.Message):
     VALOR_MAXIMO_FIELD_NUMBER: _ClassVar[int]
     ANEXOS_FIELD_NUMBER: _ClassVar[int]
     SMS_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    DIAS_DE_ENVIO_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -116,4 +117,5 @@ class BillingPlan(_message.Message):
     valor_maximo: float
     anexos: _containers.RepeatedScalarFieldContainer[str]
     sms_integration_id: str
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., name: _Optional[str] = ..., start_days: _Optional[int] = ..., interval_days: _Optional[int] = ..., max_billings: _Optional[int] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., tipo_documento: _Optional[str] = ..., tipo_grupo: _Optional[_Union[TipoGrupo, str]] = ..., grupo_id: _Optional[str] = ..., grupo_nome: _Optional[str] = ..., pessoa_id: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., agenda: _Optional[_Union[Agenda, str]] = ..., dias_do_mes: _Optional[_Iterable[int]] = ..., cobrar_a_partir_de: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., canais: _Optional[_Iterable[_Union[Canal, str]]] = ..., email_integration_id: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., dias_limite: _Optional[int] = ..., pular_fim_de_semana: _Optional[bool] = ..., pular_feriados: _Optional[bool] = ..., hora: _Optional[int] = ..., tags: _Optional[_Iterable[str]] = ..., valor_minimo: _Optional[float] = ..., valor_maximo: _Optional[float] = ..., anexos: _Optional[_Iterable[str]] = ..., sms_integration_id: _Optional[str] = ...) -> None: ...
+    dias_de_envio: _containers.RepeatedScalarFieldContainer[int]
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., name: _Optional[str] = ..., start_days: _Optional[int] = ..., interval_days: _Optional[int] = ..., max_billings: _Optional[int] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., tipo_documento: _Optional[str] = ..., tipo_grupo: _Optional[_Union[TipoGrupo, str]] = ..., grupo_id: _Optional[str] = ..., grupo_nome: _Optional[str] = ..., pessoa_id: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., agenda: _Optional[_Union[Agenda, str]] = ..., dias_do_mes: _Optional[_Iterable[int]] = ..., cobrar_a_partir_de: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., canais: _Optional[_Iterable[_Union[Canal, str]]] = ..., email_integration_id: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., dias_limite: _Optional[int] = ..., pular_fim_de_semana: _Optional[bool] = ..., pular_feriados: _Optional[bool] = ..., hora: _Optional[int] = ..., tags: _Optional[_Iterable[str]] = ..., valor_minimo: _Optional[float] = ..., valor_maximo: _Optional[float] = ..., anexos: _Optional[_Iterable[str]] = ..., sms_integration_id: _Optional[str] = ..., dias_de_envio: _Optional[_Iterable[int]] = ...) -> None: ...
