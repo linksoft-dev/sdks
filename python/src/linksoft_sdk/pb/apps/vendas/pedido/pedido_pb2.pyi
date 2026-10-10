@@ -940,20 +940,6 @@ class SendReminderResponse(_message.Message):
     falhas: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, event: _Optional[_Union[_pedido_mesa_pb2.PedidoEvent, _Mapping]] = ..., falhas: _Optional[_Iterable[str]] = ...) -> None: ...
 
-class DownloadPdfPublicoRequest(_message.Message):
-    __slots__ = ("id",)
-    ID_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    def __init__(self, id: _Optional[str] = ...) -> None: ...
-
-class DownloadPdfPublicoResponse(_message.Message):
-    __slots__ = ("filename", "pdf_base64")
-    FILENAME_FIELD_NUMBER: _ClassVar[int]
-    PDF_BASE64_FIELD_NUMBER: _ClassVar[int]
-    filename: str
-    pdf_base64: str
-    def __init__(self, filename: _Optional[str] = ..., pdf_base64: _Optional[str] = ...) -> None: ...
-
 class AplicaTabelaPrecoRequest(_message.Message):
     __slots__ = ("pedidoId", "tabelaPreco")
     PEDIDOID_FIELD_NUMBER: _ClassVar[int]

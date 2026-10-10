@@ -135,11 +135,6 @@ class PedidoServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendByEmailRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendByEmailResponse.FromString,
                 _registered_method=True)
-        self.DownloadPdfPublico = channel.unary_unary(
-                '/pedido.PedidoService/DownloadPdfPublico',
-                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DownloadPdfPublicoRequest.SerializeToString,
-                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DownloadPdfPublicoResponse.FromString,
-                _registered_method=True)
         self.AplicaTabelaPreco = channel.unary_unary(
                 '/pedido.PedidoService/AplicaTabelaPreco',
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.AplicaTabelaPrecoRequest.SerializeToString,
@@ -419,13 +414,6 @@ class PedidoServiceServicer:
 
     def SendByEmail(self, request, context):
         """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DownloadPdfPublico(self, request, context):
-        """Retorna o PDF do pedido em base64 para a página pública de download (acesso via token)
-        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -734,11 +722,6 @@ def add_PedidoServiceServicer_to_server(servicer, server):
                     servicer.SendByEmail,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendByEmailRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendByEmailResponse.SerializeToString,
-            ),
-            'DownloadPdfPublico': grpc.unary_unary_rpc_method_handler(
-                    servicer.DownloadPdfPublico,
-                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DownloadPdfPublicoRequest.FromString,
-                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DownloadPdfPublicoResponse.SerializeToString,
             ),
             'AplicaTabelaPreco': grpc.unary_unary_rpc_method_handler(
                     servicer.AplicaTabelaPreco,
@@ -1520,33 +1503,6 @@ class PedidoService:
             '/pedido.PedidoService/SendByEmail',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendByEmailRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendByEmailResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def DownloadPdfPublico(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/pedido.PedidoService/DownloadPdfPublico',
-            apps_dot_vendas_dot_pedido_dot_pedido__pb2.DownloadPdfPublicoRequest.SerializeToString,
-            apps_dot_vendas_dot_pedido_dot_pedido__pb2.DownloadPdfPublicoResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -7669,7 +7669,6 @@ func (x *DuplicaResponse) GetNfe() *Nfe {
 	return nil
 }
 
-// Request e Response para gerar o danfe da NF-e
 type DanfeRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ids           []string               `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`                                                  // ids das notas que deseja gerar o danfe

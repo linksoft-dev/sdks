@@ -43,7 +43,6 @@ const (
 	PedidoService_CancelPayment_FullMethodName              = "/pedido.PedidoService/CancelPayment"
 	PedidoService_EffectuatePayments_FullMethodName         = "/pedido.PedidoService/EffectuatePayments"
 	PedidoService_SendByEmail_FullMethodName                = "/pedido.PedidoService/SendByEmail"
-	PedidoService_DownloadPdfPublico_FullMethodName         = "/pedido.PedidoService/DownloadPdfPublico"
 	PedidoService_AplicaTabelaPreco_FullMethodName          = "/pedido.PedidoService/AplicaTabelaPreco"
 	PedidoService_DfeDanfe_FullMethodName                   = "/pedido.PedidoService/DfeDanfe"
 	PedidoService_Import_FullMethodName                     = "/pedido.PedidoService/Import"
@@ -105,8 +104,6 @@ type PedidoServiceClient interface {
 	// Efetiva pagamentos com status LANCADO, realizando lancamentos financeiros e fechando o pedido
 	EffectuatePayments(ctx context.Context, in *EffectuatePaymentsRequest, opts ...grpc.CallOption) (*EffectuatePaymentsResponse, error)
 	SendByEmail(ctx context.Context, in *SendByEmailRequest, opts ...grpc.CallOption) (*SendByEmailResponse, error)
-	// Retorna o PDF do pedido em base64 para a página pública de download (acesso via token)
-	DownloadPdfPublico(ctx context.Context, in *DownloadPdfPublicoRequest, opts ...grpc.CallOption) (*DownloadPdfPublicoResponse, error)
 	AplicaTabelaPreco(ctx context.Context, in *AplicaTabelaPrecoRequest, opts ...grpc.CallOption) (*AplicaTabelaPrecoResponse, error)
 	DfeDanfe(ctx context.Context, in *DfeDanfeRequest, opts ...grpc.CallOption) (*DfeDanfeResponse, error)
 	Import(ctx context.Context, in *ImportRequest, opts ...grpc.CallOption) (*ImportResponse, error)
@@ -409,16 +406,6 @@ func (c *pedidoServiceClient) SendByEmail(ctx context.Context, in *SendByEmailRe
 	return out, nil
 }
 
-func (c *pedidoServiceClient) DownloadPdfPublico(ctx context.Context, in *DownloadPdfPublicoRequest, opts ...grpc.CallOption) (*DownloadPdfPublicoResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DownloadPdfPublicoResponse)
-	err := c.cc.Invoke(ctx, PedidoService_DownloadPdfPublico_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *pedidoServiceClient) AplicaTabelaPreco(ctx context.Context, in *AplicaTabelaPrecoRequest, opts ...grpc.CallOption) (*AplicaTabelaPrecoResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AplicaTabelaPrecoResponse)
@@ -712,8 +699,6 @@ type PedidoServiceServer interface {
 	// Efetiva pagamentos com status LANCADO, realizando lancamentos financeiros e fechando o pedido
 	EffectuatePayments(context.Context, *EffectuatePaymentsRequest) (*EffectuatePaymentsResponse, error)
 	SendByEmail(context.Context, *SendByEmailRequest) (*SendByEmailResponse, error)
-	// Retorna o PDF do pedido em base64 para a página pública de download (acesso via token)
-	DownloadPdfPublico(context.Context, *DownloadPdfPublicoRequest) (*DownloadPdfPublicoResponse, error)
 	AplicaTabelaPreco(context.Context, *AplicaTabelaPrecoRequest) (*AplicaTabelaPrecoResponse, error)
 	DfeDanfe(context.Context, *DfeDanfeRequest) (*DfeDanfeResponse, error)
 	Import(context.Context, *ImportRequest) (*ImportResponse, error)
@@ -847,9 +832,6 @@ func (UnimplementedPedidoServiceServer) EffectuatePayments(context.Context, *Eff
 }
 func (UnimplementedPedidoServiceServer) SendByEmail(context.Context, *SendByEmailRequest) (*SendByEmailResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SendByEmail not implemented")
-}
-func (UnimplementedPedidoServiceServer) DownloadPdfPublico(context.Context, *DownloadPdfPublicoRequest) (*DownloadPdfPublicoResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method DownloadPdfPublico not implemented")
 }
 func (UnimplementedPedidoServiceServer) AplicaTabelaPreco(context.Context, *AplicaTabelaPrecoRequest) (*AplicaTabelaPrecoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AplicaTabelaPreco not implemented")
@@ -1378,24 +1360,6 @@ func _PedidoService_SendByEmail_Handler(srv interface{}, ctx context.Context, de
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PedidoServiceServer).SendByEmail(ctx, req.(*SendByEmailRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _PedidoService_DownloadPdfPublico_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DownloadPdfPublicoRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(PedidoServiceServer).DownloadPdfPublico(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: PedidoService_DownloadPdfPublico_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PedidoServiceServer).DownloadPdfPublico(ctx, req.(*DownloadPdfPublicoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1970,10 +1934,6 @@ var PedidoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendByEmail",
 			Handler:    _PedidoService_SendByEmail_Handler,
-		},
-		{
-			MethodName: "DownloadPdfPublico",
-			Handler:    _PedidoService_DownloadPdfPublico_Handler,
 		},
 		{
 			MethodName: "AplicaTabelaPreco",
