@@ -97,6 +97,7 @@ const (
 	PedidoEventType_PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED   PedidoEventType = 9  // Cliente abriu o documento pelo link
 	PedidoEventType_PEDIDO_EVENT_TYPE_REMINDER_SENT     PedidoEventType = 10 // Lembrete automático enviado ao cliente
 	PedidoEventType_PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE PedidoEventType = 11 // Cliente respondeu pelo link do documento
+	PedidoEventType_PEDIDO_EVENT_TYPE_RECEITA_ALTERADA  PedidoEventType = 12 // Receita da ótica alterada depois do envio ao laboratório
 )
 
 // Enum value maps for PedidoEventType.
@@ -114,6 +115,7 @@ var (
 		9:  "PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED",
 		10: "PEDIDO_EVENT_TYPE_REMINDER_SENT",
 		11: "PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE",
+		12: "PEDIDO_EVENT_TYPE_RECEITA_ALTERADA",
 	}
 	PedidoEventType_value = map[string]int32{
 		"PEDIDO_EVENT_TYPE_UNSPECIFIED":       0,
@@ -128,6 +130,7 @@ var (
 		"PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED":   9,
 		"PEDIDO_EVENT_TYPE_REMINDER_SENT":     10,
 		"PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE": 11,
+		"PEDIDO_EVENT_TYPE_RECEITA_ALTERADA":  12,
 	}
 )
 
@@ -411,7 +414,7 @@ const file_apps_vendas_pedido_pedido_mesa_proto_rawDesc = "" +
 	"\x1bCONSUMPTION_STATUS_OCCUPIED\x10\x02\x12\x1f\n" +
 	"\x1bCONSUMPTION_STATUS_RESERVED\x10\x03\x12\x1e\n" +
 	"\x1aCONSUMPTION_STATUS_BLOCKED\x10\x04\x12\x1e\n" +
-	"\x1aCONSUMPTION_STATUS_CLOSING\x10\x05*\xd8\x03\n" +
+	"\x1aCONSUMPTION_STATUS_CLOSING\x10\x05*\x80\x04\n" +
 	"\x0fPedidoEventType\x12!\n" +
 	"\x1dPEDIDO_EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19PEDIDO_EVENT_TYPE_CREATED\x10\x01\x12$\n" +
@@ -425,7 +428,8 @@ const file_apps_vendas_pedido_pedido_mesa_proto_rawDesc = "" +
 	"!PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED\x10\t\x12#\n" +
 	"\x1fPEDIDO_EVENT_TYPE_REMINDER_SENT\x10\n" +
 	"\x12'\n" +
-	"#PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE\x10\vB\x8c\x01\n" +
+	"#PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE\x10\v\x12&\n" +
+	"\"PEDIDO_EVENT_TYPE_RECEITA_ALTERADA\x10\fB\x8c\x01\n" +
 	"\n" +
 	"com.pedidoB\x0fPedidoMesaProtoP\x01Z5github.com/linksoft-dev/sdks/go/pb/apps/vendas/pedido\xa2\x02\x03PXX\xaa\x02\x06Pedido\xca\x02\x06Pedido\xe2\x02\x12Pedido\\GPBMetadata\xea\x02\x06Pedidob\x06proto3"
 

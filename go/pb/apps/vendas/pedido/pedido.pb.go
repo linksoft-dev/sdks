@@ -4773,8 +4773,12 @@ type SendByEmailRequest struct {
 	WhatsappIntegrationId    string                 `protobuf:"bytes,6,opt,name=whatsapp_integration_id,json=whatsappIntegrationId,proto3" json:"whatsapp_integration_id,omitempty"`          // ID da integração WhatsApp para envio via API (opcional)
 	// Modelo de mensagem a usar; vazio usa o modelo padrão do canal.
 	MessageTemplateId string `protobuf:"bytes,7,opt,name=message_template_id,json=messageTemplateId,proto3" json:"message_template_id,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// Tipo de envio. Vazio ou vendas.pedido.envio manda o documento com o PDF; os avisos
+	// vendas.pedido.pronto (pronto para retirar) e vendas.pedido.novo_prazo (nova previsão de
+	// entrega) saem sem o PDF e não valem para orçamento.
+	EventType     string `protobuf:"bytes,8,opt,name=event_type,json=eventType,proto3" json:"event_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SendByEmailRequest) Reset() {
@@ -4852,6 +4856,13 @@ func (x *SendByEmailRequest) GetWhatsappIntegrationId() string {
 func (x *SendByEmailRequest) GetMessageTemplateId() string {
 	if x != nil {
 		return x.MessageTemplateId
+	}
+	return ""
+}
+
+func (x *SendByEmailRequest) GetEventType() string {
+	if x != nil {
+		return x.EventType
 	}
 	return ""
 }
@@ -5882,8 +5893,10 @@ func (x *SetAcompanhamentoRequest) GetCode() string {
 type SetAcompanhamentoResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Acompanhamento *OrderAcompanhamento   `protobuf:"bytes,1,opt,name=acompanhamento,proto3" json:"acompanhamento,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Data e hora da entrega do documento; preenchida ao ir para a etapa de entregue.
+	DataHoraEntrega *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=data_hora_entrega,json=dataHoraEntrega,proto3" json:"data_hora_entrega,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *SetAcompanhamentoResponse) Reset() {
@@ -5919,6 +5932,13 @@ func (*SetAcompanhamentoResponse) Descriptor() ([]byte, []int) {
 func (x *SetAcompanhamentoResponse) GetAcompanhamento() *OrderAcompanhamento {
 	if x != nil {
 		return x.Acompanhamento
+	}
+	return nil
+}
+
+func (x *SetAcompanhamentoResponse) GetDataHoraEntrega() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataHoraEntrega
 	}
 	return nil
 }
@@ -14322,7 +14342,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x19EffectuatePaymentsRequest\x12\x1b\n" +
 	"\tparent_id\x18\x01 \x01(\tR\bparentId\"D\n" +
 	"\x1aEffectuatePaymentsResponse\x12&\n" +
-	"\x06pedido\x18\x01 \x01(\v2\x0e.pedido.PedidoR\x06pedido\"\xcf\x02\n" +
+	"\x06pedido\x18\x01 \x01(\v2\x0e.pedido.PedidoR\x06pedido\"\xee\x02\n" +
 	"\x12SendByEmailRequest\x12\x1a\n" +
 	"\bpedidoId\x18\x01 \x01(\tR\bpedidoId\x12\x1c\n" +
 	"\tdestEmail\x18\x02 \x01(\tR\tdestEmail\x120\n" +
@@ -14330,7 +14350,9 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x0fwhatsapp_numero\x18\x04 \x01(\tR\x0ewhatsappNumero\x12<\n" +
 	"\x1awhatsapp_nome_destinatario\x18\x05 \x01(\tR\x18whatsappNomeDestinatario\x126\n" +
 	"\x17whatsapp_integration_id\x18\x06 \x01(\tR\x15whatsappIntegrationId\x12.\n" +
-	"\x13message_template_id\x18\a \x01(\tR\x11messageTemplateId\"\x91\x01\n" +
+	"\x13message_template_id\x18\a \x01(\tR\x11messageTemplateId\x12\x1d\n" +
+	"\n" +
+	"event_type\x18\b \x01(\tR\teventType\"\x91\x01\n" +
 	"\x13SendByEmailResponse\x12\x16\n" +
 	"\x06result\x18\x01 \x01(\tR\x06result\x120\n" +
 	"\x14whatsapp_web_message\x18\x02 \x01(\tR\x12whatsappWebMessage\x120\n" +
@@ -14407,9 +14429,10 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x18SetAcompanhamentoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12+\n" +
 	"\x11acompanhamento_id\x18\x02 \x01(\tR\x10acompanhamentoId\x12\x12\n" +
-	"\x04code\x18\x03 \x01(\tR\x04code\"`\n" +
+	"\x04code\x18\x03 \x01(\tR\x04code\"\xa8\x01\n" +
 	"\x19SetAcompanhamentoResponse\x12C\n" +
-	"\x0eacompanhamento\x18\x01 \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\"\xec-\n" +
+	"\x0eacompanhamento\x18\x01 \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\x12F\n" +
+	"\x11data_hora_entrega\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\"\xf3-\n" +
 	"\x06Pedido\x12>\n" +
 	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12>\n" +
 	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1c\n" +
@@ -14497,8 +14520,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\rlicenciamento\x18F \x01(\v2\x1a.pedido.LicenciamentoModelR\rlicenciamento\x12$\n" +
 	"\rconsiguinacao\x18G \x01(\bR\rconsiguinacao\x12\x1c\n" +
 	"\timportado\x18H \x01(\bR\timportado\x12$\n" +
-	"\x02os\x18I \x01(\v2\x14.pedido.OrdemServicoR\x02os\x12\x1c\n" +
-	"\x05otica\x18J \x01(\v2\x06.OticaR\x05otica\x125\n" +
+	"\x02os\x18I \x01(\v2\x14.pedido.OrdemServicoR\x02os\x12#\n" +
+	"\x05otica\x18J \x01(\v2\r.pedido.OticaR\x05otica\x125\n" +
 	"\vpartnership\x18K \x01(\v2\x13.pedido.PartnershipR\vpartnership\x12=\n" +
 	"\x0ecuponsSorteios\x18L \x03(\v2\x15.pedido.CuponsSorteioR\x0ecuponsSorteios\x12 \n" +
 	"\vconvertedBy\x18M \x01(\tR\vconvertedBy\x123\n" +
@@ -15654,7 +15677,7 @@ var file_apps_vendas_pedido_pedido_proto_goTypes = []any{
 	(*PedidoEvent)(nil),                        // 182: pedido.PedidoEvent
 	(*report.Response)(nil),                    // 183: report.Response
 	(*metadata.BasicFields)(nil),               // 184: metadata.BasicFields
-	(*Otica)(nil),                              // 185: Otica
+	(*Otica)(nil),                              // 185: pedido.Otica
 	(*model.Reservation)(nil),                  // 186: rentcarmodel.Reservation
 	(*ConsumptionControl)(nil),                 // 187: pedido.ConsumptionControl
 	(readjustmentplan.TipoReajuste)(0),         // 188: readjustmentplan.TipoReajuste
@@ -15742,275 +15765,276 @@ var file_apps_vendas_pedido_pedido_proto_depIdxs = []int32{
 	5,   // 77: pedido.DeviceInfo.app_type:type_name -> pedido.AppType
 	4,   // 78: pedido.OriginInfo.origin_type:type_name -> pedido.Origin
 	96,  // 79: pedido.SetAcompanhamentoResponse.acompanhamento:type_name -> pedido.OrderAcompanhamento
-	176, // 80: pedido.Pedido.createdAt:type_name -> google.protobuf.Timestamp
-	176, // 81: pedido.Pedido.updatedAt:type_name -> google.protobuf.Timestamp
-	184, // 82: pedido.Pedido.fields:type_name -> metadata.BasicFields
-	95,  // 83: pedido.Pedido.tags:type_name -> pedido.OrderTag
-	176, // 84: pedido.Pedido.importadoEm:type_name -> google.protobuf.Timestamp
-	119, // 85: pedido.Pedido.pessoa:type_name -> pedido.Pessoa
-	119, // 86: pedido.Pedido.vendedor:type_name -> pedido.Pessoa
-	176, // 87: pedido.Pedido.dataHoraRegistro:type_name -> google.protobuf.Timestamp
-	176, // 88: pedido.Pedido.dataHoraFechamento:type_name -> google.protobuf.Timestamp
-	176, // 89: pedido.Pedido.previsaoEntrega:type_name -> google.protobuf.Timestamp
-	176, // 90: pedido.Pedido.dataHoraInicio:type_name -> google.protobuf.Timestamp
-	176, // 91: pedido.Pedido.dataHoraEntrega:type_name -> google.protobuf.Timestamp
-	176, // 92: pedido.Pedido.nfeDataHoraEmissao:type_name -> google.protobuf.Timestamp
-	176, // 93: pedido.Pedido.nfceDataHoraEmissao:type_name -> google.protobuf.Timestamp
-	176, // 94: pedido.Pedido.cancelamentoDataHora:type_name -> google.protobuf.Timestamp
-	113, // 95: pedido.Pedido.produtos:type_name -> pedido.Produto
-	115, // 96: pedido.Pedido.servicos:type_name -> pedido.Servico
-	117, // 97: pedido.Pedido.pagamentos:type_name -> pedido.Pagamento
-	104, // 98: pedido.Pedido.transactions_online:type_name -> pedido.TransactionsOnline
-	126, // 99: pedido.Pedido.pedidosVinculados:type_name -> pedido.PedidoVinculado
-	127, // 100: pedido.Pedido.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
-	130, // 101: pedido.Pedido.cashbackAplicado:type_name -> pedido.CashbackAplicadosModel
-	125, // 102: pedido.Pedido.licenciamento:type_name -> pedido.LicenciamentoModel
-	107, // 103: pedido.Pedido.os:type_name -> pedido.OrdemServico
-	185, // 104: pedido.Pedido.otica:type_name -> Otica
-	131, // 105: pedido.Pedido.partnership:type_name -> pedido.Partnership
-	133, // 106: pedido.Pedido.cuponsSorteios:type_name -> pedido.CuponsSorteio
-	186, // 107: pedido.Pedido.rentCar:type_name -> rentcarmodel.Reservation
-	108, // 108: pedido.Pedido.contract:type_name -> pedido.Contract
-	178, // 109: pedido.Pedido.files:type_name -> filemanager.File
-	132, // 110: pedido.Pedido.confirmation_receipt:type_name -> pedido.ConfirmationOrderReceipt
-	94,  // 111: pedido.Pedido.origin:type_name -> pedido.OriginInfo
-	90,  // 112: pedido.Pedido.billing:type_name -> pedido.Billing
-	162, // 113: pedido.Pedido.delivery:type_name -> pedido.DeliveryInfo
-	106, // 114: pedido.Pedido.checkout_payment_selection:type_name -> pedido.CheckoutPaymentSelection
-	120, // 115: pedido.Pedido.dfe:type_name -> pedido.Dfe
-	187, // 116: pedido.Pedido.consumption_control:type_name -> pedido.ConsumptionControl
-	182, // 117: pedido.Pedido.events:type_name -> pedido.PedidoEvent
-	176, // 118: pedido.Pedido.dataFimGarantia:type_name -> google.protobuf.Timestamp
-	102, // 119: pedido.Pedido.warranty:type_name -> pedido.Warranty
-	99,  // 120: pedido.Pedido.recorrencias:type_name -> pedido.Pedido
-	101, // 121: pedido.Pedido.webhooks:type_name -> pedido.PedidoWebhook
-	96,  // 122: pedido.Pedido.acompanhamento:type_name -> pedido.OrderAcompanhamento
-	128, // 123: pedido.Pedido.cupomAplicado:type_name -> pedido.CupomAplicadoModel
-	176, // 124: pedido.Pedido.validade:type_name -> google.protobuf.Timestamp
-	100, // 125: pedido.Pedido.qr_code_documento:type_name -> pedido.QrCodeDocumento
-	0,   // 126: pedido.Pedido.resposta_cliente:type_name -> pedido.RespostaCliente
-	171, // 127: pedido.Pedido.custom_fields:type_name -> pedido.Pedido.CustomFieldsEntry
-	93,  // 128: pedido.Pedido.device_info:type_name -> pedido.DeviceInfo
-	6,   // 129: pedido.Pedido.sync_status:type_name -> pedido.SyncStatus
-	176, // 130: pedido.Pedido.last_synced_at:type_name -> google.protobuf.Timestamp
-	176, // 131: pedido.PedidoWebhook.last_attempt_at:type_name -> google.protobuf.Timestamp
-	176, // 132: pedido.Warranty.active_until:type_name -> google.protobuf.Timestamp
-	105, // 133: pedido.OnlineTransactionLink.payment_methods:type_name -> pedido.PaymentMethod
-	176, // 134: pedido.OnlineTransactionLink.preferred_due_date:type_name -> google.protobuf.Timestamp
-	176, // 135: pedido.OnlineTransactionLink.payment_link_expiration_date:type_name -> google.protobuf.Timestamp
-	176, // 136: pedido.TransactionsOnline.preferred_due_date:type_name -> google.protobuf.Timestamp
-	176, // 137: pedido.TransactionsOnline.payment_link_expiration_date:type_name -> google.protobuf.Timestamp
-	105, // 138: pedido.TransactionsOnline.payment_methods:type_name -> pedido.PaymentMethod
-	103, // 139: pedido.TransactionsOnline.links:type_name -> pedido.OnlineTransactionLink
-	8,   // 140: pedido.CheckoutPaymentSelection.charge_mode:type_name -> pedido.CheckoutPaymentChargeMode
-	9,   // 141: pedido.CheckoutPaymentSelection.context:type_name -> pedido.CheckoutPaymentContext
-	176, // 142: pedido.CheckoutPaymentSelection.selected_at:type_name -> google.protobuf.Timestamp
-	176, // 143: pedido.OrdemServico.data_compra:type_name -> google.protobuf.Timestamp
-	10,  // 144: pedido.Contract.type:type_name -> pedido.ContractType
-	3,   // 145: pedido.Contract.recurrence_type:type_name -> pedido.RecurrenceType
-	176, // 146: pedido.Contract.recurrence_due_date:type_name -> google.protobuf.Timestamp
-	11,  // 147: pedido.Contract.status:type_name -> pedido.ContractStatus
-	172, // 148: pedido.Contract.last_access:type_name -> pedido.Contract.LastAccess
-	176, // 149: pedido.Contract.start_date:type_name -> google.protobuf.Timestamp
-	176, // 150: pedido.Contract.released_at:type_name -> google.protobuf.Timestamp
-	176, // 151: pedido.Contract.previous_due_date:type_name -> google.protobuf.Timestamp
-	176, // 152: pedido.Contract.released_until:type_name -> google.protobuf.Timestamp
-	176, // 153: pedido.Contract.trial_ends_at:type_name -> google.protobuf.Timestamp
-	109, // 154: pedido.Contract.readjustment:type_name -> pedido.ContractReadjustment
-	110, // 155: pedido.Contract.readjustment_applied:type_name -> pedido.ContractReadjustmentApplied
-	176, // 156: pedido.Contract.due_date:type_name -> google.protobuf.Timestamp
-	188, // 157: pedido.ContractReadjustment.type:type_name -> readjustmentplan.TipoReajuste
-	176, // 158: pedido.ContractReadjustment.next_date:type_name -> google.protobuf.Timestamp
-	176, // 159: pedido.ContractReadjustment.notice_sent_for:type_name -> google.protobuf.Timestamp
-	176, // 160: pedido.ContractReadjustment.reminder_sent_for:type_name -> google.protobuf.Timestamp
-	176, // 161: pedido.ContractReadjustment.last_date:type_name -> google.protobuf.Timestamp
-	176, // 162: pedido.ContractReadjustmentApplied.date:type_name -> google.protobuf.Timestamp
-	176, // 163: pedido.BatchInfo.expiration_date:type_name -> google.protobuf.Timestamp
-	176, // 164: pedido.BatchInfo.manufacturing_date:type_name -> google.protobuf.Timestamp
-	176, // 165: pedido.Produto.createdAt:type_name -> google.protobuf.Timestamp
-	176, // 166: pedido.Produto.updatedAt:type_name -> google.protobuf.Timestamp
-	127, // 167: pedido.Produto.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
-	113, // 168: pedido.Produto.composicao:type_name -> pedido.Produto
-	111, // 169: pedido.Produto.batch:type_name -> pedido.BatchInfo
-	176, // 170: pedido.Produto.review_date:type_name -> google.protobuf.Timestamp
-	112, // 171: pedido.Produto.serial:type_name -> pedido.SerialInfo
-	176, // 172: pedido.Produto.dataFimGarantia:type_name -> google.protobuf.Timestamp
-	7,   // 173: pedido.Produto.tipoGarantia:type_name -> pedido.TipoGarantia
-	114, // 174: pedido.Produto.producao:type_name -> pedido.ItemProducao
-	176, // 175: pedido.ItemProducao.dataHoraEnvio:type_name -> google.protobuf.Timestamp
-	176, // 176: pedido.ItemProducao.dataHoraImpressao:type_name -> google.protobuf.Timestamp
-	176, // 177: pedido.ItemProducao.dataHoraEntrega:type_name -> google.protobuf.Timestamp
-	176, // 178: pedido.Servico.createdAt:type_name -> google.protobuf.Timestamp
-	176, // 179: pedido.Servico.updatedAt:type_name -> google.protobuf.Timestamp
-	127, // 180: pedido.Servico.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
-	116, // 181: pedido.Servico.composicao:type_name -> pedido.ComposicaoServico
-	176, // 182: pedido.Servico.dataFimGarantia:type_name -> google.protobuf.Timestamp
-	12,  // 183: pedido.Servico.categoria:type_name -> pedido.ServicoCategoria
-	176, // 184: pedido.Servico.hora_inicio:type_name -> google.protobuf.Timestamp
-	176, // 185: pedido.Servico.hora_fim:type_name -> google.protobuf.Timestamp
-	176, // 186: pedido.Pagamento.createdAt:type_name -> google.protobuf.Timestamp
-	176, // 187: pedido.Pagamento.updatedAt:type_name -> google.protobuf.Timestamp
-	118, // 188: pedido.Pagamento.parcelas:type_name -> pedido.Parcelas
-	176, // 189: pedido.Pagamento.dataHoraCancelamento:type_name -> google.protobuf.Timestamp
-	17,  // 190: pedido.Pagamento.origin:type_name -> pedido.Pagamento.paymentOrigin
-	176, // 191: pedido.Parcelas.vencimento:type_name -> google.protobuf.Timestamp
-	117, // 192: pedido.Parcelas.pedidoPagamento:type_name -> pedido.Pagamento
-	122, // 193: pedido.Dfe.nfe:type_name -> pedido.Nfe
-	123, // 194: pedido.Dfe.nfce:type_name -> pedido.Nfce
-	124, // 195: pedido.Dfe.nfse:type_name -> pedido.Nfse
-	121, // 196: pedido.Dfe.emissao_automatica:type_name -> pedido.EmissaoAutomatica
-	13,  // 197: pedido.EmissaoAutomatica.momento:type_name -> pedido.MomentoEmissao
-	176, // 198: pedido.Nfe.dataHoraEmissao:type_name -> google.protobuf.Timestamp
-	173, // 199: pedido.LicenciamentoModel.ultimoAcesso:type_name -> pedido.LicenciamentoModel.UltimoAcesso
-	176, // 200: pedido.PedidoVinculado.data:type_name -> google.protobuf.Timestamp
-	176, // 201: pedido.DescontoAplicadosModel.createdAt:type_name -> google.protobuf.Timestamp
-	176, // 202: pedido.DescontoAplicadosModel.updatedAt:type_name -> google.protobuf.Timestamp
-	129, // 203: pedido.DescontoAplicadosModel.itens:type_name -> pedido.DescontoItemAplicado
-	176, // 204: pedido.CupomAplicadoModel.aplicadoEm:type_name -> google.protobuf.Timestamp
-	129, // 205: pedido.CupomAplicadoModel.itens:type_name -> pedido.DescontoItemAplicado
-	176, // 206: pedido.CashbackAplicadosModel.createdAt:type_name -> google.protobuf.Timestamp
-	176, // 207: pedido.CashbackAplicadosModel.updatedAt:type_name -> google.protobuf.Timestamp
-	176, // 208: pedido.ConfirmationOrderReceipt.date_time:type_name -> google.protobuf.Timestamp
-	14,  // 209: pedido.DfeDanfeRequest.format:type_name -> pedido.DanfeFormat
-	183, // 210: pedido.DfeDanfeResponse.response:type_name -> report.Response
-	99,  // 211: pedido.ImportRequest.orders:type_name -> pedido.Pedido
-	189, // 212: pedido.ImportResponse.report:type_name -> imports.ImportResponse
-	99,  // 213: pedido.SendPaymentLinkRequest.pedidos:type_name -> pedido.Pedido
-	190, // 214: pedido.SimulaCobrancaRequest.billing_plan:type_name -> billingplan.BillingPlan
-	176, // 215: pedido.SimulaCobrancaRequest.data:type_name -> google.protobuf.Timestamp
-	141, // 216: pedido.SimulaCobrancaResponse.itens:type_name -> pedido.SimulaCobrancaItem
-	176, // 217: pedido.SimulaCobrancaResponse.data:type_name -> google.protobuf.Timestamp
-	176, // 218: pedido.SimulaCobrancaItem.referencia:type_name -> google.protobuf.Timestamp
-	99,  // 219: pedido.SendPaymentLinkResponse.pedidos:type_name -> pedido.Pedido
-	143, // 220: pedido.SendPaymentLinkResponse.whatsapp_web:type_name -> pedido.WhatsappWebEnvio
-	99,  // 221: pedido.MesclaPedidosResponse.pedido:type_name -> pedido.Pedido
-	126, // 222: pedido.AddPedidoVinculadoRequest.pedido_vinculado:type_name -> pedido.PedidoVinculado
-	99,  // 223: pedido.AddPedidoVinculadoResponse.pedido:type_name -> pedido.Pedido
-	99,  // 224: pedido.DeletePedidoVinculadoResponse.pedido:type_name -> pedido.Pedido
-	99,  // 225: pedido.EnviaNFeResponse.pedido:type_name -> pedido.Pedido
-	99,  // 226: pedido.SincronizaNFeResponse.pedido:type_name -> pedido.Pedido
-	99,  // 227: pedido.SincronizaPessoaResponse.pedido:type_name -> pedido.Pedido
-	99,  // 228: pedido.VinculoNfManualResponse.pedido:type_name -> pedido.Pedido
-	183, // 229: pedido.PrintPedidoResponse.response:type_name -> report.Response
-	15,  // 230: pedido.DeliveryInfo.delivery_method:type_name -> pedido.DeliveryMethod
-	176, // 231: pedido.DeliveryInfo.estimated_delivery_date:type_name -> google.protobuf.Timestamp
-	163, // 232: pedido.DeliveryInfo.status_history:type_name -> pedido.DeliveryStatusHistory
-	164, // 233: pedido.DeliveryInfo.address:type_name -> pedido.DeliveryAddress
-	176, // 234: pedido.DeliveryInfo.pickup_scheduled_date:type_name -> google.protobuf.Timestamp
-	176, // 235: pedido.DeliveryStatusHistory.timestamp:type_name -> google.protobuf.Timestamp
-	99,  // 236: pedido.ReorderItemsResponse.pedido:type_name -> pedido.Pedido
-	176, // 237: pedido.FaixaResumoVendas.inicio:type_name -> google.protobuf.Timestamp
-	176, // 238: pedido.FaixaResumoVendas.fim:type_name -> google.protobuf.Timestamp
-	167, // 239: pedido.ResumoVendasPorVendedorRequest.faixas:type_name -> pedido.FaixaResumoVendas
-	16,  // 240: pedido.ResumoVendasPorVendedorRequest.base:type_name -> pedido.BaseApuracao
-	169, // 241: pedido.ResumoVendasPorVendedorResponse.totais:type_name -> pedido.TotalVendasVendedor
-	176, // 242: pedido.Contract.LastAccess.last_date:type_name -> google.protobuf.Timestamp
-	176, // 243: pedido.LicenciamentoModel.UltimoAcesso.lastDate:type_name -> google.protobuf.Timestamp
-	31,  // 244: pedido.PedidoService.Create:input_type -> pedido.CreatePedidoRequest
-	31,  // 245: pedido.PedidoService.CreateValidated:input_type -> pedido.CreatePedidoRequest
-	33,  // 246: pedido.PedidoService.Update:input_type -> pedido.UpdatePedidoRequest
-	97,  // 247: pedido.PedidoService.SetAcompanhamento:input_type -> pedido.SetAcompanhamentoRequest
-	165, // 248: pedido.PedidoService.ReorderItems:input_type -> pedido.ReorderItemsRequest
-	35,  // 249: pedido.PedidoService.Delete:input_type -> pedido.DeletePedidoRequest
-	54,  // 250: pedido.PedidoService.Get:input_type -> pedido.GetPedidoRequest
-	37,  // 251: pedido.PedidoService.List:input_type -> pedido.ListPedidoRequest
-	91,  // 252: pedido.PedidoService.Report:input_type -> pedido.ReportRequest
-	158, // 253: pedido.PedidoService.Print:input_type -> pedido.PrintPedidoRequest
-	56,  // 254: pedido.PedidoService.GenerateFromOrcamento:input_type -> pedido.GenerateFromOrcamentoRequest
-	38,  // 255: pedido.PedidoService.Cancel:input_type -> pedido.CancelPedidoRequest
-	40,  // 256: pedido.PedidoService.Clone:input_type -> pedido.ClonePedidoRequest
-	60,  // 257: pedido.PedidoService.AddProduct:input_type -> pedido.AddProductRequest
-	62,  // 258: pedido.PedidoService.UpdateProduct:input_type -> pedido.UpdateProductRequest
-	64,  // 259: pedido.PedidoService.DeleteProduct:input_type -> pedido.DeleteProductRequest
-	66,  // 260: pedido.PedidoService.AddService:input_type -> pedido.AddServiceRequest
-	68,  // 261: pedido.PedidoService.UpdateService:input_type -> pedido.UpdateServiceRequest
-	70,  // 262: pedido.PedidoService.DeleteService:input_type -> pedido.DeleteServiceRequest
-	72,  // 263: pedido.PedidoService.AddPayment:input_type -> pedido.AddPaymentRequest
-	74,  // 264: pedido.PedidoService.DeletePayment:input_type -> pedido.DeletePaymentRequest
-	76,  // 265: pedido.PedidoService.CancelPayment:input_type -> pedido.CancelPaymentRequest
-	78,  // 266: pedido.PedidoService.EffectuatePayments:input_type -> pedido.EffectuatePaymentsRequest
-	80,  // 267: pedido.PedidoService.SendByEmail:input_type -> pedido.SendByEmailRequest
-	84,  // 268: pedido.PedidoService.AplicaTabelaPreco:input_type -> pedido.AplicaTabelaPrecoRequest
-	134, // 269: pedido.PedidoService.DfeDanfe:input_type -> pedido.DfeDanfeRequest
-	136, // 270: pedido.PedidoService.Import:input_type -> pedido.ImportRequest
-	144, // 271: pedido.PedidoService.MesclaPedidos:input_type -> pedido.MesclaPedidosRequest
-	146, // 272: pedido.PedidoService.AddPedidoVinculado:input_type -> pedido.AddPedidoVinculadoRequest
-	148, // 273: pedido.PedidoService.DeletePedidoVinculado:input_type -> pedido.DeletePedidoVinculadoRequest
-	150, // 274: pedido.PedidoService.EnviaNFe:input_type -> pedido.EnviaNFeRequest
-	152, // 275: pedido.PedidoService.SincronizaNFe:input_type -> pedido.SincronizaNFeRequest
-	154, // 276: pedido.PedidoService.SincronizaPessoa:input_type -> pedido.SincronizaPessoaRequest
-	156, // 277: pedido.PedidoService.VinculaNFManual:input_type -> pedido.VinculoNfManualRequest
-	138, // 278: pedido.PedidoService.SendPaymentLink:input_type -> pedido.SendPaymentLinkRequest
-	139, // 279: pedido.PedidoService.SimulaCobranca:input_type -> pedido.SimulaCobrancaRequest
-	160, // 280: pedido.PedidoService.CorrecaoMovimentacao:input_type -> pedido.CorrecaoMovimentacaoRequest
-	42,  // 281: pedido.PedidoService.ConfirmOrderReceipt:input_type -> pedido.ConfirmOrderReceiptRequest
-	44,  // 282: pedido.PedidoService.AddFiles:input_type -> pedido.AddFilesRequest
-	46,  // 283: pedido.PedidoService.RemoveFiles:input_type -> pedido.RemoveFilesRequest
-	48,  // 284: pedido.PedidoService.SetFileApproval:input_type -> pedido.SetFileApprovalRequest
-	50,  // 285: pedido.PedidoService.Export:input_type -> pedido.ExportOrdersRequest
-	52,  // 286: pedido.PedidoService.SendReviewEmail:input_type -> pedido.SendReviewEmailRequest
-	86,  // 287: pedido.PedidoService.RecalcularComissao:input_type -> pedido.RecalcularComissaoRequest
-	88,  // 288: pedido.PedidoService.Renumber:input_type -> pedido.RenumberRequest
-	21,  // 289: pedido.PedidoService.EnviarProducao:input_type -> pedido.EnviarProducaoRequest
-	27,  // 290: pedido.PedidoService.ConfirmarImpressaoProducao:input_type -> pedido.ConfirmarImpressaoProducaoRequest
-	29,  // 291: pedido.PedidoService.MarcarItemEntregue:input_type -> pedido.MarcarItemEntregueRequest
-	18,  // 292: pedido.PedidoService.GetQuickProdutos:input_type -> pedido.GetQuickProdutosRequest
-	168, // 293: pedido.PedidoService.ResumoVendasPorVendedor:input_type -> pedido.ResumoVendasPorVendedorRequest
-	32,  // 294: pedido.PedidoService.Create:output_type -> pedido.CreatePedidoResponse
-	32,  // 295: pedido.PedidoService.CreateValidated:output_type -> pedido.CreatePedidoResponse
-	34,  // 296: pedido.PedidoService.Update:output_type -> pedido.UpdatePedidoResponse
-	98,  // 297: pedido.PedidoService.SetAcompanhamento:output_type -> pedido.SetAcompanhamentoResponse
-	166, // 298: pedido.PedidoService.ReorderItems:output_type -> pedido.ReorderItemsResponse
-	36,  // 299: pedido.PedidoService.Delete:output_type -> pedido.DeletePedidoResponse
-	55,  // 300: pedido.PedidoService.Get:output_type -> pedido.GetPedidoResponse
-	59,  // 301: pedido.PedidoService.List:output_type -> pedido.ListPedidoResponse
-	92,  // 302: pedido.PedidoService.Report:output_type -> pedido.ReportResponse
-	159, // 303: pedido.PedidoService.Print:output_type -> pedido.PrintPedidoResponse
-	58,  // 304: pedido.PedidoService.GenerateFromOrcamento:output_type -> pedido.GenerateFromOrcamentoResponse
-	39,  // 305: pedido.PedidoService.Cancel:output_type -> pedido.CancelPedidoResponse
-	41,  // 306: pedido.PedidoService.Clone:output_type -> pedido.ClonePedidoResponse
-	61,  // 307: pedido.PedidoService.AddProduct:output_type -> pedido.AddProductResponse
-	63,  // 308: pedido.PedidoService.UpdateProduct:output_type -> pedido.UpdateProductResponse
-	65,  // 309: pedido.PedidoService.DeleteProduct:output_type -> pedido.DeleteProductResponse
-	67,  // 310: pedido.PedidoService.AddService:output_type -> pedido.AddServiceResponse
-	69,  // 311: pedido.PedidoService.UpdateService:output_type -> pedido.UpdateServiceResponse
-	71,  // 312: pedido.PedidoService.DeleteService:output_type -> pedido.DeleteServiceResponse
-	73,  // 313: pedido.PedidoService.AddPayment:output_type -> pedido.AddPaymentResponse
-	75,  // 314: pedido.PedidoService.DeletePayment:output_type -> pedido.DeletePaymentResponse
-	77,  // 315: pedido.PedidoService.CancelPayment:output_type -> pedido.CancelPaymentResponse
-	79,  // 316: pedido.PedidoService.EffectuatePayments:output_type -> pedido.EffectuatePaymentsResponse
-	81,  // 317: pedido.PedidoService.SendByEmail:output_type -> pedido.SendByEmailResponse
-	85,  // 318: pedido.PedidoService.AplicaTabelaPreco:output_type -> pedido.AplicaTabelaPrecoResponse
-	135, // 319: pedido.PedidoService.DfeDanfe:output_type -> pedido.DfeDanfeResponse
-	137, // 320: pedido.PedidoService.Import:output_type -> pedido.ImportResponse
-	145, // 321: pedido.PedidoService.MesclaPedidos:output_type -> pedido.MesclaPedidosResponse
-	147, // 322: pedido.PedidoService.AddPedidoVinculado:output_type -> pedido.AddPedidoVinculadoResponse
-	149, // 323: pedido.PedidoService.DeletePedidoVinculado:output_type -> pedido.DeletePedidoVinculadoResponse
-	151, // 324: pedido.PedidoService.EnviaNFe:output_type -> pedido.EnviaNFeResponse
-	153, // 325: pedido.PedidoService.SincronizaNFe:output_type -> pedido.SincronizaNFeResponse
-	155, // 326: pedido.PedidoService.SincronizaPessoa:output_type -> pedido.SincronizaPessoaResponse
-	157, // 327: pedido.PedidoService.VinculaNFManual:output_type -> pedido.VinculoNfManualResponse
-	142, // 328: pedido.PedidoService.SendPaymentLink:output_type -> pedido.SendPaymentLinkResponse
-	140, // 329: pedido.PedidoService.SimulaCobranca:output_type -> pedido.SimulaCobrancaResponse
-	161, // 330: pedido.PedidoService.CorrecaoMovimentacao:output_type -> pedido.CorrecaoMovimentacaoResponse
-	43,  // 331: pedido.PedidoService.ConfirmOrderReceipt:output_type -> pedido.ConfirmOrderReceiptResponse
-	45,  // 332: pedido.PedidoService.AddFiles:output_type -> pedido.AddFilesResponse
-	47,  // 333: pedido.PedidoService.RemoveFiles:output_type -> pedido.RemoveFilesResponse
-	49,  // 334: pedido.PedidoService.SetFileApproval:output_type -> pedido.SetFileApprovalResponse
-	51,  // 335: pedido.PedidoService.Export:output_type -> pedido.ExportOrdersResponse
-	53,  // 336: pedido.PedidoService.SendReviewEmail:output_type -> pedido.SendReviewEmailResponse
-	87,  // 337: pedido.PedidoService.RecalcularComissao:output_type -> pedido.RecalcularComissaoResponse
-	89,  // 338: pedido.PedidoService.Renumber:output_type -> pedido.RenumberResponse
-	25,  // 339: pedido.PedidoService.EnviarProducao:output_type -> pedido.EnviarProducaoResponse
-	28,  // 340: pedido.PedidoService.ConfirmarImpressaoProducao:output_type -> pedido.ConfirmarImpressaoProducaoResponse
-	30,  // 341: pedido.PedidoService.MarcarItemEntregue:output_type -> pedido.MarcarItemEntregueResponse
-	20,  // 342: pedido.PedidoService.GetQuickProdutos:output_type -> pedido.GetQuickProdutosResponse
-	170, // 343: pedido.PedidoService.ResumoVendasPorVendedor:output_type -> pedido.ResumoVendasPorVendedorResponse
-	294, // [294:344] is the sub-list for method output_type
-	244, // [244:294] is the sub-list for method input_type
-	244, // [244:244] is the sub-list for extension type_name
-	244, // [244:244] is the sub-list for extension extendee
-	0,   // [0:244] is the sub-list for field type_name
+	176, // 80: pedido.SetAcompanhamentoResponse.data_hora_entrega:type_name -> google.protobuf.Timestamp
+	176, // 81: pedido.Pedido.createdAt:type_name -> google.protobuf.Timestamp
+	176, // 82: pedido.Pedido.updatedAt:type_name -> google.protobuf.Timestamp
+	184, // 83: pedido.Pedido.fields:type_name -> metadata.BasicFields
+	95,  // 84: pedido.Pedido.tags:type_name -> pedido.OrderTag
+	176, // 85: pedido.Pedido.importadoEm:type_name -> google.protobuf.Timestamp
+	119, // 86: pedido.Pedido.pessoa:type_name -> pedido.Pessoa
+	119, // 87: pedido.Pedido.vendedor:type_name -> pedido.Pessoa
+	176, // 88: pedido.Pedido.dataHoraRegistro:type_name -> google.protobuf.Timestamp
+	176, // 89: pedido.Pedido.dataHoraFechamento:type_name -> google.protobuf.Timestamp
+	176, // 90: pedido.Pedido.previsaoEntrega:type_name -> google.protobuf.Timestamp
+	176, // 91: pedido.Pedido.dataHoraInicio:type_name -> google.protobuf.Timestamp
+	176, // 92: pedido.Pedido.dataHoraEntrega:type_name -> google.protobuf.Timestamp
+	176, // 93: pedido.Pedido.nfeDataHoraEmissao:type_name -> google.protobuf.Timestamp
+	176, // 94: pedido.Pedido.nfceDataHoraEmissao:type_name -> google.protobuf.Timestamp
+	176, // 95: pedido.Pedido.cancelamentoDataHora:type_name -> google.protobuf.Timestamp
+	113, // 96: pedido.Pedido.produtos:type_name -> pedido.Produto
+	115, // 97: pedido.Pedido.servicos:type_name -> pedido.Servico
+	117, // 98: pedido.Pedido.pagamentos:type_name -> pedido.Pagamento
+	104, // 99: pedido.Pedido.transactions_online:type_name -> pedido.TransactionsOnline
+	126, // 100: pedido.Pedido.pedidosVinculados:type_name -> pedido.PedidoVinculado
+	127, // 101: pedido.Pedido.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
+	130, // 102: pedido.Pedido.cashbackAplicado:type_name -> pedido.CashbackAplicadosModel
+	125, // 103: pedido.Pedido.licenciamento:type_name -> pedido.LicenciamentoModel
+	107, // 104: pedido.Pedido.os:type_name -> pedido.OrdemServico
+	185, // 105: pedido.Pedido.otica:type_name -> pedido.Otica
+	131, // 106: pedido.Pedido.partnership:type_name -> pedido.Partnership
+	133, // 107: pedido.Pedido.cuponsSorteios:type_name -> pedido.CuponsSorteio
+	186, // 108: pedido.Pedido.rentCar:type_name -> rentcarmodel.Reservation
+	108, // 109: pedido.Pedido.contract:type_name -> pedido.Contract
+	178, // 110: pedido.Pedido.files:type_name -> filemanager.File
+	132, // 111: pedido.Pedido.confirmation_receipt:type_name -> pedido.ConfirmationOrderReceipt
+	94,  // 112: pedido.Pedido.origin:type_name -> pedido.OriginInfo
+	90,  // 113: pedido.Pedido.billing:type_name -> pedido.Billing
+	162, // 114: pedido.Pedido.delivery:type_name -> pedido.DeliveryInfo
+	106, // 115: pedido.Pedido.checkout_payment_selection:type_name -> pedido.CheckoutPaymentSelection
+	120, // 116: pedido.Pedido.dfe:type_name -> pedido.Dfe
+	187, // 117: pedido.Pedido.consumption_control:type_name -> pedido.ConsumptionControl
+	182, // 118: pedido.Pedido.events:type_name -> pedido.PedidoEvent
+	176, // 119: pedido.Pedido.dataFimGarantia:type_name -> google.protobuf.Timestamp
+	102, // 120: pedido.Pedido.warranty:type_name -> pedido.Warranty
+	99,  // 121: pedido.Pedido.recorrencias:type_name -> pedido.Pedido
+	101, // 122: pedido.Pedido.webhooks:type_name -> pedido.PedidoWebhook
+	96,  // 123: pedido.Pedido.acompanhamento:type_name -> pedido.OrderAcompanhamento
+	128, // 124: pedido.Pedido.cupomAplicado:type_name -> pedido.CupomAplicadoModel
+	176, // 125: pedido.Pedido.validade:type_name -> google.protobuf.Timestamp
+	100, // 126: pedido.Pedido.qr_code_documento:type_name -> pedido.QrCodeDocumento
+	0,   // 127: pedido.Pedido.resposta_cliente:type_name -> pedido.RespostaCliente
+	171, // 128: pedido.Pedido.custom_fields:type_name -> pedido.Pedido.CustomFieldsEntry
+	93,  // 129: pedido.Pedido.device_info:type_name -> pedido.DeviceInfo
+	6,   // 130: pedido.Pedido.sync_status:type_name -> pedido.SyncStatus
+	176, // 131: pedido.Pedido.last_synced_at:type_name -> google.protobuf.Timestamp
+	176, // 132: pedido.PedidoWebhook.last_attempt_at:type_name -> google.protobuf.Timestamp
+	176, // 133: pedido.Warranty.active_until:type_name -> google.protobuf.Timestamp
+	105, // 134: pedido.OnlineTransactionLink.payment_methods:type_name -> pedido.PaymentMethod
+	176, // 135: pedido.OnlineTransactionLink.preferred_due_date:type_name -> google.protobuf.Timestamp
+	176, // 136: pedido.OnlineTransactionLink.payment_link_expiration_date:type_name -> google.protobuf.Timestamp
+	176, // 137: pedido.TransactionsOnline.preferred_due_date:type_name -> google.protobuf.Timestamp
+	176, // 138: pedido.TransactionsOnline.payment_link_expiration_date:type_name -> google.protobuf.Timestamp
+	105, // 139: pedido.TransactionsOnline.payment_methods:type_name -> pedido.PaymentMethod
+	103, // 140: pedido.TransactionsOnline.links:type_name -> pedido.OnlineTransactionLink
+	8,   // 141: pedido.CheckoutPaymentSelection.charge_mode:type_name -> pedido.CheckoutPaymentChargeMode
+	9,   // 142: pedido.CheckoutPaymentSelection.context:type_name -> pedido.CheckoutPaymentContext
+	176, // 143: pedido.CheckoutPaymentSelection.selected_at:type_name -> google.protobuf.Timestamp
+	176, // 144: pedido.OrdemServico.data_compra:type_name -> google.protobuf.Timestamp
+	10,  // 145: pedido.Contract.type:type_name -> pedido.ContractType
+	3,   // 146: pedido.Contract.recurrence_type:type_name -> pedido.RecurrenceType
+	176, // 147: pedido.Contract.recurrence_due_date:type_name -> google.protobuf.Timestamp
+	11,  // 148: pedido.Contract.status:type_name -> pedido.ContractStatus
+	172, // 149: pedido.Contract.last_access:type_name -> pedido.Contract.LastAccess
+	176, // 150: pedido.Contract.start_date:type_name -> google.protobuf.Timestamp
+	176, // 151: pedido.Contract.released_at:type_name -> google.protobuf.Timestamp
+	176, // 152: pedido.Contract.previous_due_date:type_name -> google.protobuf.Timestamp
+	176, // 153: pedido.Contract.released_until:type_name -> google.protobuf.Timestamp
+	176, // 154: pedido.Contract.trial_ends_at:type_name -> google.protobuf.Timestamp
+	109, // 155: pedido.Contract.readjustment:type_name -> pedido.ContractReadjustment
+	110, // 156: pedido.Contract.readjustment_applied:type_name -> pedido.ContractReadjustmentApplied
+	176, // 157: pedido.Contract.due_date:type_name -> google.protobuf.Timestamp
+	188, // 158: pedido.ContractReadjustment.type:type_name -> readjustmentplan.TipoReajuste
+	176, // 159: pedido.ContractReadjustment.next_date:type_name -> google.protobuf.Timestamp
+	176, // 160: pedido.ContractReadjustment.notice_sent_for:type_name -> google.protobuf.Timestamp
+	176, // 161: pedido.ContractReadjustment.reminder_sent_for:type_name -> google.protobuf.Timestamp
+	176, // 162: pedido.ContractReadjustment.last_date:type_name -> google.protobuf.Timestamp
+	176, // 163: pedido.ContractReadjustmentApplied.date:type_name -> google.protobuf.Timestamp
+	176, // 164: pedido.BatchInfo.expiration_date:type_name -> google.protobuf.Timestamp
+	176, // 165: pedido.BatchInfo.manufacturing_date:type_name -> google.protobuf.Timestamp
+	176, // 166: pedido.Produto.createdAt:type_name -> google.protobuf.Timestamp
+	176, // 167: pedido.Produto.updatedAt:type_name -> google.protobuf.Timestamp
+	127, // 168: pedido.Produto.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
+	113, // 169: pedido.Produto.composicao:type_name -> pedido.Produto
+	111, // 170: pedido.Produto.batch:type_name -> pedido.BatchInfo
+	176, // 171: pedido.Produto.review_date:type_name -> google.protobuf.Timestamp
+	112, // 172: pedido.Produto.serial:type_name -> pedido.SerialInfo
+	176, // 173: pedido.Produto.dataFimGarantia:type_name -> google.protobuf.Timestamp
+	7,   // 174: pedido.Produto.tipoGarantia:type_name -> pedido.TipoGarantia
+	114, // 175: pedido.Produto.producao:type_name -> pedido.ItemProducao
+	176, // 176: pedido.ItemProducao.dataHoraEnvio:type_name -> google.protobuf.Timestamp
+	176, // 177: pedido.ItemProducao.dataHoraImpressao:type_name -> google.protobuf.Timestamp
+	176, // 178: pedido.ItemProducao.dataHoraEntrega:type_name -> google.protobuf.Timestamp
+	176, // 179: pedido.Servico.createdAt:type_name -> google.protobuf.Timestamp
+	176, // 180: pedido.Servico.updatedAt:type_name -> google.protobuf.Timestamp
+	127, // 181: pedido.Servico.descontoAplicado:type_name -> pedido.DescontoAplicadosModel
+	116, // 182: pedido.Servico.composicao:type_name -> pedido.ComposicaoServico
+	176, // 183: pedido.Servico.dataFimGarantia:type_name -> google.protobuf.Timestamp
+	12,  // 184: pedido.Servico.categoria:type_name -> pedido.ServicoCategoria
+	176, // 185: pedido.Servico.hora_inicio:type_name -> google.protobuf.Timestamp
+	176, // 186: pedido.Servico.hora_fim:type_name -> google.protobuf.Timestamp
+	176, // 187: pedido.Pagamento.createdAt:type_name -> google.protobuf.Timestamp
+	176, // 188: pedido.Pagamento.updatedAt:type_name -> google.protobuf.Timestamp
+	118, // 189: pedido.Pagamento.parcelas:type_name -> pedido.Parcelas
+	176, // 190: pedido.Pagamento.dataHoraCancelamento:type_name -> google.protobuf.Timestamp
+	17,  // 191: pedido.Pagamento.origin:type_name -> pedido.Pagamento.paymentOrigin
+	176, // 192: pedido.Parcelas.vencimento:type_name -> google.protobuf.Timestamp
+	117, // 193: pedido.Parcelas.pedidoPagamento:type_name -> pedido.Pagamento
+	122, // 194: pedido.Dfe.nfe:type_name -> pedido.Nfe
+	123, // 195: pedido.Dfe.nfce:type_name -> pedido.Nfce
+	124, // 196: pedido.Dfe.nfse:type_name -> pedido.Nfse
+	121, // 197: pedido.Dfe.emissao_automatica:type_name -> pedido.EmissaoAutomatica
+	13,  // 198: pedido.EmissaoAutomatica.momento:type_name -> pedido.MomentoEmissao
+	176, // 199: pedido.Nfe.dataHoraEmissao:type_name -> google.protobuf.Timestamp
+	173, // 200: pedido.LicenciamentoModel.ultimoAcesso:type_name -> pedido.LicenciamentoModel.UltimoAcesso
+	176, // 201: pedido.PedidoVinculado.data:type_name -> google.protobuf.Timestamp
+	176, // 202: pedido.DescontoAplicadosModel.createdAt:type_name -> google.protobuf.Timestamp
+	176, // 203: pedido.DescontoAplicadosModel.updatedAt:type_name -> google.protobuf.Timestamp
+	129, // 204: pedido.DescontoAplicadosModel.itens:type_name -> pedido.DescontoItemAplicado
+	176, // 205: pedido.CupomAplicadoModel.aplicadoEm:type_name -> google.protobuf.Timestamp
+	129, // 206: pedido.CupomAplicadoModel.itens:type_name -> pedido.DescontoItemAplicado
+	176, // 207: pedido.CashbackAplicadosModel.createdAt:type_name -> google.protobuf.Timestamp
+	176, // 208: pedido.CashbackAplicadosModel.updatedAt:type_name -> google.protobuf.Timestamp
+	176, // 209: pedido.ConfirmationOrderReceipt.date_time:type_name -> google.protobuf.Timestamp
+	14,  // 210: pedido.DfeDanfeRequest.format:type_name -> pedido.DanfeFormat
+	183, // 211: pedido.DfeDanfeResponse.response:type_name -> report.Response
+	99,  // 212: pedido.ImportRequest.orders:type_name -> pedido.Pedido
+	189, // 213: pedido.ImportResponse.report:type_name -> imports.ImportResponse
+	99,  // 214: pedido.SendPaymentLinkRequest.pedidos:type_name -> pedido.Pedido
+	190, // 215: pedido.SimulaCobrancaRequest.billing_plan:type_name -> billingplan.BillingPlan
+	176, // 216: pedido.SimulaCobrancaRequest.data:type_name -> google.protobuf.Timestamp
+	141, // 217: pedido.SimulaCobrancaResponse.itens:type_name -> pedido.SimulaCobrancaItem
+	176, // 218: pedido.SimulaCobrancaResponse.data:type_name -> google.protobuf.Timestamp
+	176, // 219: pedido.SimulaCobrancaItem.referencia:type_name -> google.protobuf.Timestamp
+	99,  // 220: pedido.SendPaymentLinkResponse.pedidos:type_name -> pedido.Pedido
+	143, // 221: pedido.SendPaymentLinkResponse.whatsapp_web:type_name -> pedido.WhatsappWebEnvio
+	99,  // 222: pedido.MesclaPedidosResponse.pedido:type_name -> pedido.Pedido
+	126, // 223: pedido.AddPedidoVinculadoRequest.pedido_vinculado:type_name -> pedido.PedidoVinculado
+	99,  // 224: pedido.AddPedidoVinculadoResponse.pedido:type_name -> pedido.Pedido
+	99,  // 225: pedido.DeletePedidoVinculadoResponse.pedido:type_name -> pedido.Pedido
+	99,  // 226: pedido.EnviaNFeResponse.pedido:type_name -> pedido.Pedido
+	99,  // 227: pedido.SincronizaNFeResponse.pedido:type_name -> pedido.Pedido
+	99,  // 228: pedido.SincronizaPessoaResponse.pedido:type_name -> pedido.Pedido
+	99,  // 229: pedido.VinculoNfManualResponse.pedido:type_name -> pedido.Pedido
+	183, // 230: pedido.PrintPedidoResponse.response:type_name -> report.Response
+	15,  // 231: pedido.DeliveryInfo.delivery_method:type_name -> pedido.DeliveryMethod
+	176, // 232: pedido.DeliveryInfo.estimated_delivery_date:type_name -> google.protobuf.Timestamp
+	163, // 233: pedido.DeliveryInfo.status_history:type_name -> pedido.DeliveryStatusHistory
+	164, // 234: pedido.DeliveryInfo.address:type_name -> pedido.DeliveryAddress
+	176, // 235: pedido.DeliveryInfo.pickup_scheduled_date:type_name -> google.protobuf.Timestamp
+	176, // 236: pedido.DeliveryStatusHistory.timestamp:type_name -> google.protobuf.Timestamp
+	99,  // 237: pedido.ReorderItemsResponse.pedido:type_name -> pedido.Pedido
+	176, // 238: pedido.FaixaResumoVendas.inicio:type_name -> google.protobuf.Timestamp
+	176, // 239: pedido.FaixaResumoVendas.fim:type_name -> google.protobuf.Timestamp
+	167, // 240: pedido.ResumoVendasPorVendedorRequest.faixas:type_name -> pedido.FaixaResumoVendas
+	16,  // 241: pedido.ResumoVendasPorVendedorRequest.base:type_name -> pedido.BaseApuracao
+	169, // 242: pedido.ResumoVendasPorVendedorResponse.totais:type_name -> pedido.TotalVendasVendedor
+	176, // 243: pedido.Contract.LastAccess.last_date:type_name -> google.protobuf.Timestamp
+	176, // 244: pedido.LicenciamentoModel.UltimoAcesso.lastDate:type_name -> google.protobuf.Timestamp
+	31,  // 245: pedido.PedidoService.Create:input_type -> pedido.CreatePedidoRequest
+	31,  // 246: pedido.PedidoService.CreateValidated:input_type -> pedido.CreatePedidoRequest
+	33,  // 247: pedido.PedidoService.Update:input_type -> pedido.UpdatePedidoRequest
+	97,  // 248: pedido.PedidoService.SetAcompanhamento:input_type -> pedido.SetAcompanhamentoRequest
+	165, // 249: pedido.PedidoService.ReorderItems:input_type -> pedido.ReorderItemsRequest
+	35,  // 250: pedido.PedidoService.Delete:input_type -> pedido.DeletePedidoRequest
+	54,  // 251: pedido.PedidoService.Get:input_type -> pedido.GetPedidoRequest
+	37,  // 252: pedido.PedidoService.List:input_type -> pedido.ListPedidoRequest
+	91,  // 253: pedido.PedidoService.Report:input_type -> pedido.ReportRequest
+	158, // 254: pedido.PedidoService.Print:input_type -> pedido.PrintPedidoRequest
+	56,  // 255: pedido.PedidoService.GenerateFromOrcamento:input_type -> pedido.GenerateFromOrcamentoRequest
+	38,  // 256: pedido.PedidoService.Cancel:input_type -> pedido.CancelPedidoRequest
+	40,  // 257: pedido.PedidoService.Clone:input_type -> pedido.ClonePedidoRequest
+	60,  // 258: pedido.PedidoService.AddProduct:input_type -> pedido.AddProductRequest
+	62,  // 259: pedido.PedidoService.UpdateProduct:input_type -> pedido.UpdateProductRequest
+	64,  // 260: pedido.PedidoService.DeleteProduct:input_type -> pedido.DeleteProductRequest
+	66,  // 261: pedido.PedidoService.AddService:input_type -> pedido.AddServiceRequest
+	68,  // 262: pedido.PedidoService.UpdateService:input_type -> pedido.UpdateServiceRequest
+	70,  // 263: pedido.PedidoService.DeleteService:input_type -> pedido.DeleteServiceRequest
+	72,  // 264: pedido.PedidoService.AddPayment:input_type -> pedido.AddPaymentRequest
+	74,  // 265: pedido.PedidoService.DeletePayment:input_type -> pedido.DeletePaymentRequest
+	76,  // 266: pedido.PedidoService.CancelPayment:input_type -> pedido.CancelPaymentRequest
+	78,  // 267: pedido.PedidoService.EffectuatePayments:input_type -> pedido.EffectuatePaymentsRequest
+	80,  // 268: pedido.PedidoService.SendByEmail:input_type -> pedido.SendByEmailRequest
+	84,  // 269: pedido.PedidoService.AplicaTabelaPreco:input_type -> pedido.AplicaTabelaPrecoRequest
+	134, // 270: pedido.PedidoService.DfeDanfe:input_type -> pedido.DfeDanfeRequest
+	136, // 271: pedido.PedidoService.Import:input_type -> pedido.ImportRequest
+	144, // 272: pedido.PedidoService.MesclaPedidos:input_type -> pedido.MesclaPedidosRequest
+	146, // 273: pedido.PedidoService.AddPedidoVinculado:input_type -> pedido.AddPedidoVinculadoRequest
+	148, // 274: pedido.PedidoService.DeletePedidoVinculado:input_type -> pedido.DeletePedidoVinculadoRequest
+	150, // 275: pedido.PedidoService.EnviaNFe:input_type -> pedido.EnviaNFeRequest
+	152, // 276: pedido.PedidoService.SincronizaNFe:input_type -> pedido.SincronizaNFeRequest
+	154, // 277: pedido.PedidoService.SincronizaPessoa:input_type -> pedido.SincronizaPessoaRequest
+	156, // 278: pedido.PedidoService.VinculaNFManual:input_type -> pedido.VinculoNfManualRequest
+	138, // 279: pedido.PedidoService.SendPaymentLink:input_type -> pedido.SendPaymentLinkRequest
+	139, // 280: pedido.PedidoService.SimulaCobranca:input_type -> pedido.SimulaCobrancaRequest
+	160, // 281: pedido.PedidoService.CorrecaoMovimentacao:input_type -> pedido.CorrecaoMovimentacaoRequest
+	42,  // 282: pedido.PedidoService.ConfirmOrderReceipt:input_type -> pedido.ConfirmOrderReceiptRequest
+	44,  // 283: pedido.PedidoService.AddFiles:input_type -> pedido.AddFilesRequest
+	46,  // 284: pedido.PedidoService.RemoveFiles:input_type -> pedido.RemoveFilesRequest
+	48,  // 285: pedido.PedidoService.SetFileApproval:input_type -> pedido.SetFileApprovalRequest
+	50,  // 286: pedido.PedidoService.Export:input_type -> pedido.ExportOrdersRequest
+	52,  // 287: pedido.PedidoService.SendReviewEmail:input_type -> pedido.SendReviewEmailRequest
+	86,  // 288: pedido.PedidoService.RecalcularComissao:input_type -> pedido.RecalcularComissaoRequest
+	88,  // 289: pedido.PedidoService.Renumber:input_type -> pedido.RenumberRequest
+	21,  // 290: pedido.PedidoService.EnviarProducao:input_type -> pedido.EnviarProducaoRequest
+	27,  // 291: pedido.PedidoService.ConfirmarImpressaoProducao:input_type -> pedido.ConfirmarImpressaoProducaoRequest
+	29,  // 292: pedido.PedidoService.MarcarItemEntregue:input_type -> pedido.MarcarItemEntregueRequest
+	18,  // 293: pedido.PedidoService.GetQuickProdutos:input_type -> pedido.GetQuickProdutosRequest
+	168, // 294: pedido.PedidoService.ResumoVendasPorVendedor:input_type -> pedido.ResumoVendasPorVendedorRequest
+	32,  // 295: pedido.PedidoService.Create:output_type -> pedido.CreatePedidoResponse
+	32,  // 296: pedido.PedidoService.CreateValidated:output_type -> pedido.CreatePedidoResponse
+	34,  // 297: pedido.PedidoService.Update:output_type -> pedido.UpdatePedidoResponse
+	98,  // 298: pedido.PedidoService.SetAcompanhamento:output_type -> pedido.SetAcompanhamentoResponse
+	166, // 299: pedido.PedidoService.ReorderItems:output_type -> pedido.ReorderItemsResponse
+	36,  // 300: pedido.PedidoService.Delete:output_type -> pedido.DeletePedidoResponse
+	55,  // 301: pedido.PedidoService.Get:output_type -> pedido.GetPedidoResponse
+	59,  // 302: pedido.PedidoService.List:output_type -> pedido.ListPedidoResponse
+	92,  // 303: pedido.PedidoService.Report:output_type -> pedido.ReportResponse
+	159, // 304: pedido.PedidoService.Print:output_type -> pedido.PrintPedidoResponse
+	58,  // 305: pedido.PedidoService.GenerateFromOrcamento:output_type -> pedido.GenerateFromOrcamentoResponse
+	39,  // 306: pedido.PedidoService.Cancel:output_type -> pedido.CancelPedidoResponse
+	41,  // 307: pedido.PedidoService.Clone:output_type -> pedido.ClonePedidoResponse
+	61,  // 308: pedido.PedidoService.AddProduct:output_type -> pedido.AddProductResponse
+	63,  // 309: pedido.PedidoService.UpdateProduct:output_type -> pedido.UpdateProductResponse
+	65,  // 310: pedido.PedidoService.DeleteProduct:output_type -> pedido.DeleteProductResponse
+	67,  // 311: pedido.PedidoService.AddService:output_type -> pedido.AddServiceResponse
+	69,  // 312: pedido.PedidoService.UpdateService:output_type -> pedido.UpdateServiceResponse
+	71,  // 313: pedido.PedidoService.DeleteService:output_type -> pedido.DeleteServiceResponse
+	73,  // 314: pedido.PedidoService.AddPayment:output_type -> pedido.AddPaymentResponse
+	75,  // 315: pedido.PedidoService.DeletePayment:output_type -> pedido.DeletePaymentResponse
+	77,  // 316: pedido.PedidoService.CancelPayment:output_type -> pedido.CancelPaymentResponse
+	79,  // 317: pedido.PedidoService.EffectuatePayments:output_type -> pedido.EffectuatePaymentsResponse
+	81,  // 318: pedido.PedidoService.SendByEmail:output_type -> pedido.SendByEmailResponse
+	85,  // 319: pedido.PedidoService.AplicaTabelaPreco:output_type -> pedido.AplicaTabelaPrecoResponse
+	135, // 320: pedido.PedidoService.DfeDanfe:output_type -> pedido.DfeDanfeResponse
+	137, // 321: pedido.PedidoService.Import:output_type -> pedido.ImportResponse
+	145, // 322: pedido.PedidoService.MesclaPedidos:output_type -> pedido.MesclaPedidosResponse
+	147, // 323: pedido.PedidoService.AddPedidoVinculado:output_type -> pedido.AddPedidoVinculadoResponse
+	149, // 324: pedido.PedidoService.DeletePedidoVinculado:output_type -> pedido.DeletePedidoVinculadoResponse
+	151, // 325: pedido.PedidoService.EnviaNFe:output_type -> pedido.EnviaNFeResponse
+	153, // 326: pedido.PedidoService.SincronizaNFe:output_type -> pedido.SincronizaNFeResponse
+	155, // 327: pedido.PedidoService.SincronizaPessoa:output_type -> pedido.SincronizaPessoaResponse
+	157, // 328: pedido.PedidoService.VinculaNFManual:output_type -> pedido.VinculoNfManualResponse
+	142, // 329: pedido.PedidoService.SendPaymentLink:output_type -> pedido.SendPaymentLinkResponse
+	140, // 330: pedido.PedidoService.SimulaCobranca:output_type -> pedido.SimulaCobrancaResponse
+	161, // 331: pedido.PedidoService.CorrecaoMovimentacao:output_type -> pedido.CorrecaoMovimentacaoResponse
+	43,  // 332: pedido.PedidoService.ConfirmOrderReceipt:output_type -> pedido.ConfirmOrderReceiptResponse
+	45,  // 333: pedido.PedidoService.AddFiles:output_type -> pedido.AddFilesResponse
+	47,  // 334: pedido.PedidoService.RemoveFiles:output_type -> pedido.RemoveFilesResponse
+	49,  // 335: pedido.PedidoService.SetFileApproval:output_type -> pedido.SetFileApprovalResponse
+	51,  // 336: pedido.PedidoService.Export:output_type -> pedido.ExportOrdersResponse
+	53,  // 337: pedido.PedidoService.SendReviewEmail:output_type -> pedido.SendReviewEmailResponse
+	87,  // 338: pedido.PedidoService.RecalcularComissao:output_type -> pedido.RecalcularComissaoResponse
+	89,  // 339: pedido.PedidoService.Renumber:output_type -> pedido.RenumberResponse
+	25,  // 340: pedido.PedidoService.EnviarProducao:output_type -> pedido.EnviarProducaoResponse
+	28,  // 341: pedido.PedidoService.ConfirmarImpressaoProducao:output_type -> pedido.ConfirmarImpressaoProducaoResponse
+	30,  // 342: pedido.PedidoService.MarcarItemEntregue:output_type -> pedido.MarcarItemEntregueResponse
+	20,  // 343: pedido.PedidoService.GetQuickProdutos:output_type -> pedido.GetQuickProdutosResponse
+	170, // 344: pedido.PedidoService.ResumoVendasPorVendedor:output_type -> pedido.ResumoVendasPorVendedorResponse
+	295, // [295:345] is the sub-list for method output_type
+	245, // [245:295] is the sub-list for method input_type
+	245, // [245:245] is the sub-list for extension type_name
+	245, // [245:245] is the sub-list for extension extendee
+	0,   // [0:245] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_pedido_pedido_proto_init() }

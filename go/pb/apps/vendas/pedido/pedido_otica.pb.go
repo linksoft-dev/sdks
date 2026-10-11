@@ -9,6 +9,7 @@ package pedido
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -22,39 +23,17 @@ const (
 )
 
 type Otica struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	TipoLenteId         string                 `protobuf:"bytes,1,opt,name=tipoLenteId,proto3" json:"tipoLenteId,omitempty"`
-	TipoLenteNome       string                 `protobuf:"bytes,2,opt,name=tipoLenteNome,proto3" json:"tipoLenteNome,omitempty"`
-	TipoLente2Id        string                 `protobuf:"bytes,3,opt,name=tipoLente2Id,proto3" json:"tipoLente2Id,omitempty"`
-	TipoLente2Nome      string                 `protobuf:"bytes,4,opt,name=tipoLente2Nome,proto3" json:"tipoLente2Nome,omitempty"`
-	TipoMaterialId      string                 `protobuf:"bytes,5,opt,name=tipoMaterialId,proto3" json:"tipoMaterialId,omitempty"`
-	TipoMaterialNome    string                 `protobuf:"bytes,6,opt,name=tipoMaterialNome,proto3" json:"tipoMaterialNome,omitempty"`
-	TipoMaterial2Id     string                 `protobuf:"bytes,7,opt,name=tipoMaterial2Id,proto3" json:"tipoMaterial2Id,omitempty"`
-	TipoMaterial2Nome   string                 `protobuf:"bytes,8,opt,name=tipoMaterial2Nome,proto3" json:"tipoMaterial2Nome,omitempty"`
-	TipoTratamentoId    string                 `protobuf:"bytes,9,opt,name=tipoTratamentoId,proto3" json:"tipoTratamentoId,omitempty"`
-	TipoTratamentoNome  string                 `protobuf:"bytes,10,opt,name=tipoTratamentoNome,proto3" json:"tipoTratamentoNome,omitempty"`
-	TipoTratamento2Id   string                 `protobuf:"bytes,11,opt,name=tipoTratamento2Id,proto3" json:"tipoTratamento2Id,omitempty"`
-	TipoTratamento2Nome string                 `protobuf:"bytes,12,opt,name=tipoTratamento2Nome,proto3" json:"tipoTratamento2Nome,omitempty"`
-	LongeDir            *DadosLente            `protobuf:"bytes,13,opt,name=longeDir,proto3" json:"longeDir,omitempty"`
-	PertoDir            *DadosLente            `protobuf:"bytes,14,opt,name=pertoDir,proto3" json:"pertoDir,omitempty"`
-	LongeEsq            *DadosLente            `protobuf:"bytes,15,opt,name=longeEsq,proto3" json:"longeEsq,omitempty"`
-	PertoEsq            *DadosLente            `protobuf:"bytes,16,opt,name=pertoEsq,proto3" json:"pertoEsq,omitempty"`
-	AcuidadeVisual      *AcuidadeVisual        `protobuf:"bytes,17,opt,name=acuidadeVisual,proto3" json:"acuidadeVisual,omitempty"`
-	VencimentoLente     string                 `protobuf:"bytes,18,opt,name=vencimentoLente,proto3" json:"vencimentoLente,omitempty"`
-	FornecedorId        string                 `protobuf:"bytes,19,opt,name=fornecedorId,proto3" json:"fornecedorId,omitempty"`
-	FornecedorNome      string                 `protobuf:"bytes,20,opt,name=fornecedorNome,proto3" json:"fornecedorNome,omitempty"`
-	ArmacaoCor          string                 `protobuf:"bytes,21,opt,name=armacaoCor,proto3" json:"armacaoCor,omitempty"`
-	ArmacaoCor2         string                 `protobuf:"bytes,22,opt,name=armacaoCor2,proto3" json:"armacaoCor2,omitempty"`
-	ArmacaoTamanho      int32                  `protobuf:"varint,23,opt,name=armacaoTamanho,proto3" json:"armacaoTamanho,omitempty"`
-	ArmacaoTamanho2     int32                  `protobuf:"varint,24,opt,name=armacaoTamanho2,proto3" json:"armacaoTamanho2,omitempty"`
-	ArmacaoAltura       float64                `protobuf:"fixed64,25,opt,name=armacaoAltura,proto3" json:"armacaoAltura,omitempty"`
-	ArmacaoAltura2      float64                `protobuf:"fixed64,26,opt,name=armacaoAltura2,proto3" json:"armacaoAltura2,omitempty"`
-	ArmacaoTipoId       string                 `protobuf:"bytes,27,opt,name=armacaoTipoId,proto3" json:"armacaoTipoId,omitempty"`
-	ArmacaoTipoNome     string                 `protobuf:"bytes,28,opt,name=armacaoTipoNome,proto3" json:"armacaoTipoNome,omitempty"`
-	ArmacaoTipo2Id      string                 `protobuf:"bytes,29,opt,name=armacaoTipo2Id,proto3" json:"armacaoTipo2Id,omitempty"`
-	ArmacaoTipo2Nome    string                 `protobuf:"bytes,30,opt,name=armacaoTipo2Nome,proto3" json:"armacaoTipo2Nome,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Receita *OticaReceita          `protobuf:"bytes,1,opt,name=receita,proto3" json:"receita,omitempty"`
+	// Grau em dioptrias, como veio na receita. Grau vazio é plano (0,00).
+	Od             *OticaFormula        `protobuf:"bytes,2,opt,name=od,proto3" json:"od,omitempty"`
+	Oe             *OticaFormula        `protobuf:"bytes,3,opt,name=oe,proto3" json:"oe,omitempty"`
+	AcuidadeVisual *OticaAcuidadeVisual `protobuf:"bytes,4,opt,name=acuidade_visual,json=acuidadeVisual,proto3" json:"acuidade_visual,omitempty"`
+	LenteContato   *OticaLenteContato   `protobuf:"bytes,5,opt,name=lente_contato,json=lenteContato,proto3" json:"lente_contato,omitempty"`
+	Pares          []*OticaPar          `protobuf:"bytes,6,rep,name=pares,proto3" json:"pares,omitempty"`
+	Ocorrencias    []*OticaOcorrencia   `protobuf:"bytes,7,rep,name=ocorrencias,proto3" json:"ocorrencias,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Otica) Reset() {
@@ -87,238 +66,90 @@ func (*Otica) Descriptor() ([]byte, []int) {
 	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Otica) GetTipoLenteId() string {
+func (x *Otica) GetReceita() *OticaReceita {
 	if x != nil {
-		return x.TipoLenteId
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoLenteNome() string {
-	if x != nil {
-		return x.TipoLenteNome
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoLente2Id() string {
-	if x != nil {
-		return x.TipoLente2Id
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoLente2Nome() string {
-	if x != nil {
-		return x.TipoLente2Nome
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoMaterialId() string {
-	if x != nil {
-		return x.TipoMaterialId
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoMaterialNome() string {
-	if x != nil {
-		return x.TipoMaterialNome
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoMaterial2Id() string {
-	if x != nil {
-		return x.TipoMaterial2Id
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoMaterial2Nome() string {
-	if x != nil {
-		return x.TipoMaterial2Nome
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoTratamentoId() string {
-	if x != nil {
-		return x.TipoTratamentoId
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoTratamentoNome() string {
-	if x != nil {
-		return x.TipoTratamentoNome
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoTratamento2Id() string {
-	if x != nil {
-		return x.TipoTratamento2Id
-	}
-	return ""
-}
-
-func (x *Otica) GetTipoTratamento2Nome() string {
-	if x != nil {
-		return x.TipoTratamento2Nome
-	}
-	return ""
-}
-
-func (x *Otica) GetLongeDir() *DadosLente {
-	if x != nil {
-		return x.LongeDir
+		return x.Receita
 	}
 	return nil
 }
 
-func (x *Otica) GetPertoDir() *DadosLente {
+func (x *Otica) GetOd() *OticaFormula {
 	if x != nil {
-		return x.PertoDir
+		return x.Od
 	}
 	return nil
 }
 
-func (x *Otica) GetLongeEsq() *DadosLente {
+func (x *Otica) GetOe() *OticaFormula {
 	if x != nil {
-		return x.LongeEsq
+		return x.Oe
 	}
 	return nil
 }
 
-func (x *Otica) GetPertoEsq() *DadosLente {
-	if x != nil {
-		return x.PertoEsq
-	}
-	return nil
-}
-
-func (x *Otica) GetAcuidadeVisual() *AcuidadeVisual {
+func (x *Otica) GetAcuidadeVisual() *OticaAcuidadeVisual {
 	if x != nil {
 		return x.AcuidadeVisual
 	}
 	return nil
 }
 
-func (x *Otica) GetVencimentoLente() string {
+func (x *Otica) GetLenteContato() *OticaLenteContato {
 	if x != nil {
-		return x.VencimentoLente
+		return x.LenteContato
 	}
-	return ""
+	return nil
 }
 
-func (x *Otica) GetFornecedorId() string {
+func (x *Otica) GetPares() []*OticaPar {
 	if x != nil {
-		return x.FornecedorId
+		return x.Pares
 	}
-	return ""
+	return nil
 }
 
-func (x *Otica) GetFornecedorNome() string {
+func (x *Otica) GetOcorrencias() []*OticaOcorrencia {
 	if x != nil {
-		return x.FornecedorNome
+		return x.Ocorrencias
 	}
-	return ""
+	return nil
 }
 
-func (x *Otica) GetArmacaoCor() string {
-	if x != nil {
-		return x.ArmacaoCor
-	}
-	return ""
+type OticaReceita struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// OCULOS ou LENTE_CONTATO.
+	Tipo       string `protobuf:"bytes,1,opt,name=tipo,proto3" json:"tipo,omitempty"`
+	MedicoId   string `protobuf:"bytes,2,opt,name=medico_id,json=medicoId,proto3" json:"medico_id,omitempty"`
+	MedicoNome string `protobuf:"bytes,3,opt,name=medico_nome,json=medicoNome,proto3" json:"medico_nome,omitempty"`
+	// Registro do profissional no conselho (ex.: CRM 54.221/SP).
+	MedicoRegistro string                 `protobuf:"bytes,4,opt,name=medico_registro,json=medicoRegistro,proto3" json:"medico_registro,omitempty"`
+	Data           *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=data,proto3" json:"data,omitempty"`
+	Validade       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=validade,proto3" json:"validade,omitempty"`
+	// RECEITA_MEDICA, EXAME_LOJA ou REPOSICAO_MESMO_GRAU.
+	Origem string `protobuf:"bytes,7,opt,name=origem,proto3" json:"origem,omitempty"`
+	// Número do pedido de origem da reposição com o mesmo grau.
+	PedidoOrigemNumero string `protobuf:"bytes,8,opt,name=pedido_origem_numero,json=pedidoOrigemNumero,proto3" json:"pedido_origem_numero,omitempty"`
+	// Cliente autorizou receber lembretes sobre a receita.
+	AutorizaLembrete bool   `protobuf:"varint,9,opt,name=autoriza_lembrete,json=autorizaLembrete,proto3" json:"autoriza_lembrete,omitempty"`
+	Obs              string `protobuf:"bytes,10,opt,name=obs,proto3" json:"obs,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
-func (x *Otica) GetArmacaoCor2() string {
-	if x != nil {
-		return x.ArmacaoCor2
-	}
-	return ""
-}
-
-func (x *Otica) GetArmacaoTamanho() int32 {
-	if x != nil {
-		return x.ArmacaoTamanho
-	}
-	return 0
-}
-
-func (x *Otica) GetArmacaoTamanho2() int32 {
-	if x != nil {
-		return x.ArmacaoTamanho2
-	}
-	return 0
-}
-
-func (x *Otica) GetArmacaoAltura() float64 {
-	if x != nil {
-		return x.ArmacaoAltura
-	}
-	return 0
-}
-
-func (x *Otica) GetArmacaoAltura2() float64 {
-	if x != nil {
-		return x.ArmacaoAltura2
-	}
-	return 0
-}
-
-func (x *Otica) GetArmacaoTipoId() string {
-	if x != nil {
-		return x.ArmacaoTipoId
-	}
-	return ""
-}
-
-func (x *Otica) GetArmacaoTipoNome() string {
-	if x != nil {
-		return x.ArmacaoTipoNome
-	}
-	return ""
-}
-
-func (x *Otica) GetArmacaoTipo2Id() string {
-	if x != nil {
-		return x.ArmacaoTipo2Id
-	}
-	return ""
-}
-
-func (x *Otica) GetArmacaoTipo2Nome() string {
-	if x != nil {
-		return x.ArmacaoTipo2Nome
-	}
-	return ""
-}
-
-type AcuidadeVisual struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Sc            *Sc                    `protobuf:"bytes,1,opt,name=sc,proto3" json:"sc,omitempty"`
-	Cc            *Cc                    `protobuf:"bytes,2,opt,name=cc,proto3" json:"cc,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AcuidadeVisual) Reset() {
-	*x = AcuidadeVisual{}
+func (x *OticaReceita) Reset() {
+	*x = OticaReceita{}
 	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AcuidadeVisual) String() string {
+func (x *OticaReceita) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AcuidadeVisual) ProtoMessage() {}
+func (*OticaReceita) ProtoMessage() {}
 
-func (x *AcuidadeVisual) ProtoReflect() protoreflect.Message {
+func (x *OticaReceita) ProtoReflect() protoreflect.Message {
 	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -330,49 +161,261 @@ func (x *AcuidadeVisual) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AcuidadeVisual.ProtoReflect.Descriptor instead.
-func (*AcuidadeVisual) Descriptor() ([]byte, []int) {
+// Deprecated: Use OticaReceita.ProtoReflect.Descriptor instead.
+func (*OticaReceita) Descriptor() ([]byte, []int) {
 	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *AcuidadeVisual) GetSc() *Sc {
+func (x *OticaReceita) GetTipo() string {
+	if x != nil {
+		return x.Tipo
+	}
+	return ""
+}
+
+func (x *OticaReceita) GetMedicoId() string {
+	if x != nil {
+		return x.MedicoId
+	}
+	return ""
+}
+
+func (x *OticaReceita) GetMedicoNome() string {
+	if x != nil {
+		return x.MedicoNome
+	}
+	return ""
+}
+
+func (x *OticaReceita) GetMedicoRegistro() string {
+	if x != nil {
+		return x.MedicoRegistro
+	}
+	return ""
+}
+
+func (x *OticaReceita) GetData() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *OticaReceita) GetValidade() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Validade
+	}
+	return nil
+}
+
+func (x *OticaReceita) GetOrigem() string {
+	if x != nil {
+		return x.Origem
+	}
+	return ""
+}
+
+func (x *OticaReceita) GetPedidoOrigemNumero() string {
+	if x != nil {
+		return x.PedidoOrigemNumero
+	}
+	return ""
+}
+
+func (x *OticaReceita) GetAutorizaLembrete() bool {
+	if x != nil {
+		return x.AutorizaLembrete
+	}
+	return false
+}
+
+func (x *OticaReceita) GetObs() string {
+	if x != nil {
+		return x.Obs
+	}
+	return ""
+}
+
+type OticaFormula struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Esferico float64                `protobuf:"fixed64,1,opt,name=esferico,proto3" json:"esferico,omitempty"`
+	Cilindro float64                `protobuf:"fixed64,2,opt,name=cilindro,proto3" json:"cilindro,omitempty"`
+	// 1 a 180; 0 é não informado.
+	Eixo     int32   `protobuf:"varint,3,opt,name=eixo,proto3" json:"eixo,omitempty"`
+	Adicao   float64 `protobuf:"fixed64,4,opt,name=adicao,proto3" json:"adicao,omitempty"`
+	Dnp      float64 `protobuf:"fixed64,5,opt,name=dnp,proto3" json:"dnp,omitempty"`
+	DnpPerto float64 `protobuf:"fixed64,6,opt,name=dnp_perto,json=dnpPerto,proto3" json:"dnp_perto,omitempty"`
+	Prisma   float64 `protobuf:"fixed64,7,opt,name=prisma,proto3" json:"prisma,omitempty"`
+	// BN, BT, BS ou BI.
+	BasePrisma    string `protobuf:"bytes,8,opt,name=base_prisma,json=basePrisma,proto3" json:"base_prisma,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OticaFormula) Reset() {
+	*x = OticaFormula{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OticaFormula) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OticaFormula) ProtoMessage() {}
+
+func (x *OticaFormula) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OticaFormula.ProtoReflect.Descriptor instead.
+func (*OticaFormula) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *OticaFormula) GetEsferico() float64 {
+	if x != nil {
+		return x.Esferico
+	}
+	return 0
+}
+
+func (x *OticaFormula) GetCilindro() float64 {
+	if x != nil {
+		return x.Cilindro
+	}
+	return 0
+}
+
+func (x *OticaFormula) GetEixo() int32 {
+	if x != nil {
+		return x.Eixo
+	}
+	return 0
+}
+
+func (x *OticaFormula) GetAdicao() float64 {
+	if x != nil {
+		return x.Adicao
+	}
+	return 0
+}
+
+func (x *OticaFormula) GetDnp() float64 {
+	if x != nil {
+		return x.Dnp
+	}
+	return 0
+}
+
+func (x *OticaFormula) GetDnpPerto() float64 {
+	if x != nil {
+		return x.DnpPerto
+	}
+	return 0
+}
+
+func (x *OticaFormula) GetPrisma() float64 {
+	if x != nil {
+		return x.Prisma
+	}
+	return 0
+}
+
+func (x *OticaFormula) GetBasePrisma() string {
+	if x != nil {
+		return x.BasePrisma
+	}
+	return ""
+}
+
+type OticaAcuidadeVisual struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Sem correção.
+	Sc *OticaAcuidadeOlhos `protobuf:"bytes,1,opt,name=sc,proto3" json:"sc,omitempty"`
+	// Com correção.
+	Cc            *OticaAcuidadeOlhos `protobuf:"bytes,2,opt,name=cc,proto3" json:"cc,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OticaAcuidadeVisual) Reset() {
+	*x = OticaAcuidadeVisual{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OticaAcuidadeVisual) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OticaAcuidadeVisual) ProtoMessage() {}
+
+func (x *OticaAcuidadeVisual) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OticaAcuidadeVisual.ProtoReflect.Descriptor instead.
+func (*OticaAcuidadeVisual) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *OticaAcuidadeVisual) GetSc() *OticaAcuidadeOlhos {
 	if x != nil {
 		return x.Sc
 	}
 	return nil
 }
 
-func (x *AcuidadeVisual) GetCc() *Cc {
+func (x *OticaAcuidadeVisual) GetCc() *OticaAcuidadeOlhos {
 	if x != nil {
 		return x.Cc
 	}
 	return nil
 }
 
-type Sc struct {
+type OticaAcuidadeOlhos struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	OlhoDireito   *Acuidade              `protobuf:"bytes,1,opt,name=olhoDireito,proto3" json:"olhoDireito,omitempty"`
-	OlhoEsquerdo  *Acuidade              `protobuf:"bytes,2,opt,name=olhoEsquerdo,proto3" json:"olhoEsquerdo,omitempty"`
-	AmbosOlhos    *Acuidade              `protobuf:"bytes,3,opt,name=ambosOlhos,proto3" json:"ambosOlhos,omitempty"`
+	OlhoDireito   *OticaAcuidade         `protobuf:"bytes,1,opt,name=olho_direito,json=olhoDireito,proto3" json:"olho_direito,omitempty"`
+	OlhoEsquerdo  *OticaAcuidade         `protobuf:"bytes,2,opt,name=olho_esquerdo,json=olhoEsquerdo,proto3" json:"olho_esquerdo,omitempty"`
+	AmbosOlhos    *OticaAcuidade         `protobuf:"bytes,3,opt,name=ambos_olhos,json=ambosOlhos,proto3" json:"ambos_olhos,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Sc) Reset() {
-	*x = Sc{}
-	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[2]
+func (x *OticaAcuidadeOlhos) Reset() {
+	*x = OticaAcuidadeOlhos{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Sc) String() string {
+func (x *OticaAcuidadeOlhos) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Sc) ProtoMessage() {}
+func (*OticaAcuidadeOlhos) ProtoMessage() {}
 
-func (x *Sc) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[2]
+func (x *OticaAcuidadeOlhos) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -383,93 +426,33 @@ func (x *Sc) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Sc.ProtoReflect.Descriptor instead.
-func (*Sc) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{2}
+// Deprecated: Use OticaAcuidadeOlhos.ProtoReflect.Descriptor instead.
+func (*OticaAcuidadeOlhos) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *Sc) GetOlhoDireito() *Acuidade {
+func (x *OticaAcuidadeOlhos) GetOlhoDireito() *OticaAcuidade {
 	if x != nil {
 		return x.OlhoDireito
 	}
 	return nil
 }
 
-func (x *Sc) GetOlhoEsquerdo() *Acuidade {
+func (x *OticaAcuidadeOlhos) GetOlhoEsquerdo() *OticaAcuidade {
 	if x != nil {
 		return x.OlhoEsquerdo
 	}
 	return nil
 }
 
-func (x *Sc) GetAmbosOlhos() *Acuidade {
+func (x *OticaAcuidadeOlhos) GetAmbosOlhos() *OticaAcuidade {
 	if x != nil {
 		return x.AmbosOlhos
 	}
 	return nil
 }
 
-type Cc struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	OlhoDireito   *Acuidade              `protobuf:"bytes,1,opt,name=olhoDireito,proto3" json:"olhoDireito,omitempty"`
-	OlhoEsquerdo  *Acuidade              `protobuf:"bytes,2,opt,name=olhoEsquerdo,proto3" json:"olhoEsquerdo,omitempty"`
-	AmbosOlhos    *Acuidade              `protobuf:"bytes,3,opt,name=ambosOlhos,proto3" json:"ambosOlhos,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Cc) Reset() {
-	*x = Cc{}
-	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Cc) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Cc) ProtoMessage() {}
-
-func (x *Cc) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Cc.ProtoReflect.Descriptor instead.
-func (*Cc) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *Cc) GetOlhoDireito() *Acuidade {
-	if x != nil {
-		return x.OlhoDireito
-	}
-	return nil
-}
-
-func (x *Cc) GetOlhoEsquerdo() *Acuidade {
-	if x != nil {
-		return x.OlhoEsquerdo
-	}
-	return nil
-}
-
-func (x *Cc) GetAmbosOlhos() *Acuidade {
-	if x != nil {
-		return x.AmbosOlhos
-	}
-	return nil
-}
-
-type Acuidade struct {
+type OticaAcuidade struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Longe         string                 `protobuf:"bytes,1,opt,name=longe,proto3" json:"longe,omitempty"`
 	Perto         string                 `protobuf:"bytes,2,opt,name=perto,proto3" json:"perto,omitempty"`
@@ -477,21 +460,21 @@ type Acuidade struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Acuidade) Reset() {
-	*x = Acuidade{}
-	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[4]
+func (x *OticaAcuidade) Reset() {
+	*x = OticaAcuidade{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Acuidade) String() string {
+func (x *OticaAcuidade) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Acuidade) ProtoMessage() {}
+func (*OticaAcuidade) ProtoMessage() {}
 
-func (x *Acuidade) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[4]
+func (x *OticaAcuidade) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -502,54 +485,51 @@ func (x *Acuidade) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Acuidade.ProtoReflect.Descriptor instead.
-func (*Acuidade) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{4}
+// Deprecated: Use OticaAcuidade.ProtoReflect.Descriptor instead.
+func (*OticaAcuidade) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *Acuidade) GetLonge() string {
+func (x *OticaAcuidade) GetLonge() string {
 	if x != nil {
 		return x.Longe
 	}
 	return ""
 }
 
-func (x *Acuidade) GetPerto() string {
+func (x *OticaAcuidade) GetPerto() string {
 	if x != nil {
 		return x.Perto
 	}
 	return ""
 }
 
-type DadosLente struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Esf           float64                `protobuf:"fixed64,1,opt,name=esf,proto3" json:"esf,omitempty"`
-	Cil           float64                `protobuf:"fixed64,2,opt,name=cil,proto3" json:"cil,omitempty"`
-	Eixo          float64                `protobuf:"fixed64,3,opt,name=eixo,proto3" json:"eixo,omitempty"`
-	Dnp           float64                `protobuf:"fixed64,4,opt,name=dnp,proto3" json:"dnp,omitempty"`
-	Dp            float64                `protobuf:"fixed64,5,opt,name=dp,proto3" json:"dp,omitempty"`
-	Co            float64                `protobuf:"fixed64,6,opt,name=co,proto3" json:"co,omitempty"`
-	Pl            float64                `protobuf:"fixed64,7,opt,name=pl,proto3" json:"pl,omitempty"`
-	Adicao        float64                `protobuf:"fixed64,8,opt,name=adicao,proto3" json:"adicao,omitempty"`
+type OticaLenteContato struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Od    *OticaLenteContatoOlho `protobuf:"bytes,1,opt,name=od,proto3" json:"od,omitempty"`
+	Oe    *OticaLenteContatoOlho `protobuf:"bytes,2,opt,name=oe,proto3" json:"oe,omitempty"`
+	// DIARIO, QUINZENAL, MENSAL, TRIMESTRAL ou ANUAL.
+	Descarte      string `protobuf:"bytes,3,opt,name=descarte,proto3" json:"descarte,omitempty"`
+	Caixas        int32  `protobuf:"varint,4,opt,name=caixas,proto3" json:"caixas,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DadosLente) Reset() {
-	*x = DadosLente{}
-	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[5]
+func (x *OticaLenteContato) Reset() {
+	*x = OticaLenteContato{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DadosLente) String() string {
+func (x *OticaLenteContato) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DadosLente) ProtoMessage() {}
+func (*OticaLenteContato) ProtoMessage() {}
 
-func (x *DadosLente) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[5]
+func (x *OticaLenteContato) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -560,134 +540,793 @@ func (x *DadosLente) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DadosLente.ProtoReflect.Descriptor instead.
-func (*DadosLente) Descriptor() ([]byte, []int) {
-	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{5}
+// Deprecated: Use OticaLenteContato.ProtoReflect.Descriptor instead.
+func (*OticaLenteContato) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *DadosLente) GetEsf() float64 {
+func (x *OticaLenteContato) GetOd() *OticaLenteContatoOlho {
 	if x != nil {
-		return x.Esf
+		return x.Od
+	}
+	return nil
+}
+
+func (x *OticaLenteContato) GetOe() *OticaLenteContatoOlho {
+	if x != nil {
+		return x.Oe
+	}
+	return nil
+}
+
+func (x *OticaLenteContato) GetDescarte() string {
+	if x != nil {
+		return x.Descarte
+	}
+	return ""
+}
+
+func (x *OticaLenteContato) GetCaixas() int32 {
+	if x != nil {
+		return x.Caixas
 	}
 	return 0
 }
 
-func (x *DadosLente) GetCil() float64 {
+type OticaLenteContatoOlho struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CurvaBase     string                 `protobuf:"bytes,1,opt,name=curva_base,json=curvaBase,proto3" json:"curva_base,omitempty"`
+	Diametro      string                 `protobuf:"bytes,2,opt,name=diametro,proto3" json:"diametro,omitempty"`
+	MarcaModelo   string                 `protobuf:"bytes,3,opt,name=marca_modelo,json=marcaModelo,proto3" json:"marca_modelo,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OticaLenteContatoOlho) Reset() {
+	*x = OticaLenteContatoOlho{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OticaLenteContatoOlho) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OticaLenteContatoOlho) ProtoMessage() {}
+
+func (x *OticaLenteContatoOlho) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[7]
 	if x != nil {
-		return x.Cil
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OticaLenteContatoOlho.ProtoReflect.Descriptor instead.
+func (*OticaLenteContatoOlho) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *OticaLenteContatoOlho) GetCurvaBase() string {
+	if x != nil {
+		return x.CurvaBase
+	}
+	return ""
+}
+
+func (x *OticaLenteContatoOlho) GetDiametro() string {
+	if x != nil {
+		return x.Diametro
+	}
+	return ""
+}
+
+func (x *OticaLenteContatoOlho) GetMarcaModelo() string {
+	if x != nil {
+		return x.MarcaModelo
+	}
+	return ""
+}
+
+type OticaPar struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// LONGE, PERTO, MULTIFOCAL, BIFOCAL ou OCUPACIONAL.
+	Uso              string   `protobuf:"bytes,2,opt,name=uso,proto3" json:"uso,omitempty"`
+	Solar            bool     `protobuf:"varint,3,opt,name=solar,proto3" json:"solar,omitempty"`
+	LenteProdutoId   string   `protobuf:"bytes,4,opt,name=lente_produto_id,json=lenteProdutoId,proto3" json:"lente_produto_id,omitempty"`
+	LenteDescricao   string   `protobuf:"bytes,5,opt,name=lente_descricao,json=lenteDescricao,proto3" json:"lente_descricao,omitempty"`
+	Material         string   `protobuf:"bytes,6,opt,name=material,proto3" json:"material,omitempty"`
+	Indice           string   `protobuf:"bytes,7,opt,name=indice,proto3" json:"indice,omitempty"`
+	Tratamentos      []string `protobuf:"bytes,8,rep,name=tratamentos,proto3" json:"tratamentos,omitempty"`
+	ArmacaoProdutoId string   `protobuf:"bytes,9,opt,name=armacao_produto_id,json=armacaoProdutoId,proto3" json:"armacao_produto_id,omitempty"`
+	ArmacaoDescricao string   `protobuf:"bytes,10,opt,name=armacao_descricao,json=armacaoDescricao,proto3" json:"armacao_descricao,omitempty"`
+	ArmacaoDoCliente bool     `protobuf:"varint,11,opt,name=armacao_do_cliente,json=armacaoDoCliente,proto3" json:"armacao_do_cliente,omitempty"`
+	// ARO_FECHADO, FIO_NYLON ou PARAFUSADA.
+	Montagem string `protobuf:"bytes,12,opt,name=montagem,proto3" json:"montagem,omitempty"`
+	// Altura de montagem em mm, medida com a armação do par.
+	AlturaOd      float64           `protobuf:"fixed64,13,opt,name=altura_od,json=alturaOd,proto3" json:"altura_od,omitempty"`
+	AlturaOe      float64           `protobuf:"fixed64,14,opt,name=altura_oe,json=alturaOe,proto3" json:"altura_oe,omitempty"`
+	Medidas       *OticaMedidas     `protobuf:"bytes,15,opt,name=medidas,proto3" json:"medidas,omitempty"`
+	Laboratorio   *OticaLaboratorio `protobuf:"bytes,16,opt,name=laboratorio,proto3" json:"laboratorio,omitempty"`
+	Conferencia   *OticaConferencia `protobuf:"bytes,17,opt,name=conferencia,proto3" json:"conferencia,omitempty"`
+	Obs           string            `protobuf:"bytes,18,opt,name=obs,proto3" json:"obs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OticaPar) Reset() {
+	*x = OticaPar{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OticaPar) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OticaPar) ProtoMessage() {}
+
+func (x *OticaPar) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OticaPar.ProtoReflect.Descriptor instead.
+func (*OticaPar) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *OticaPar) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *OticaPar) GetUso() string {
+	if x != nil {
+		return x.Uso
+	}
+	return ""
+}
+
+func (x *OticaPar) GetSolar() bool {
+	if x != nil {
+		return x.Solar
+	}
+	return false
+}
+
+func (x *OticaPar) GetLenteProdutoId() string {
+	if x != nil {
+		return x.LenteProdutoId
+	}
+	return ""
+}
+
+func (x *OticaPar) GetLenteDescricao() string {
+	if x != nil {
+		return x.LenteDescricao
+	}
+	return ""
+}
+
+func (x *OticaPar) GetMaterial() string {
+	if x != nil {
+		return x.Material
+	}
+	return ""
+}
+
+func (x *OticaPar) GetIndice() string {
+	if x != nil {
+		return x.Indice
+	}
+	return ""
+}
+
+func (x *OticaPar) GetTratamentos() []string {
+	if x != nil {
+		return x.Tratamentos
+	}
+	return nil
+}
+
+func (x *OticaPar) GetArmacaoProdutoId() string {
+	if x != nil {
+		return x.ArmacaoProdutoId
+	}
+	return ""
+}
+
+func (x *OticaPar) GetArmacaoDescricao() string {
+	if x != nil {
+		return x.ArmacaoDescricao
+	}
+	return ""
+}
+
+func (x *OticaPar) GetArmacaoDoCliente() bool {
+	if x != nil {
+		return x.ArmacaoDoCliente
+	}
+	return false
+}
+
+func (x *OticaPar) GetMontagem() string {
+	if x != nil {
+		return x.Montagem
+	}
+	return ""
+}
+
+func (x *OticaPar) GetAlturaOd() float64 {
+	if x != nil {
+		return x.AlturaOd
 	}
 	return 0
 }
 
-func (x *DadosLente) GetEixo() float64 {
+func (x *OticaPar) GetAlturaOe() float64 {
 	if x != nil {
-		return x.Eixo
+		return x.AlturaOe
 	}
 	return 0
 }
 
-func (x *DadosLente) GetDnp() float64 {
+func (x *OticaPar) GetMedidas() *OticaMedidas {
 	if x != nil {
-		return x.Dnp
+		return x.Medidas
+	}
+	return nil
+}
+
+func (x *OticaPar) GetLaboratorio() *OticaLaboratorio {
+	if x != nil {
+		return x.Laboratorio
+	}
+	return nil
+}
+
+func (x *OticaPar) GetConferencia() *OticaConferencia {
+	if x != nil {
+		return x.Conferencia
+	}
+	return nil
+}
+
+func (x *OticaPar) GetObs() string {
+	if x != nil {
+		return x.Obs
+	}
+	return ""
+}
+
+// Medidas da armação em mm; pantoscópico e curvatura em graus.
+type OticaMedidas struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Horizontal    float64                `protobuf:"fixed64,1,opt,name=horizontal,proto3" json:"horizontal,omitempty"`
+	Vertical      float64                `protobuf:"fixed64,2,opt,name=vertical,proto3" json:"vertical,omitempty"`
+	Ponte         float64                `protobuf:"fixed64,3,opt,name=ponte,proto3" json:"ponte,omitempty"`
+	Diagonal      float64                `protobuf:"fixed64,4,opt,name=diagonal,proto3" json:"diagonal,omitempty"`
+	Haste         float64                `protobuf:"fixed64,5,opt,name=haste,proto3" json:"haste,omitempty"`
+	Pantoscopico  float64                `protobuf:"fixed64,6,opt,name=pantoscopico,proto3" json:"pantoscopico,omitempty"`
+	Vertice       float64                `protobuf:"fixed64,7,opt,name=vertice,proto3" json:"vertice,omitempty"`
+	Curvatura     float64                `protobuf:"fixed64,8,opt,name=curvatura,proto3" json:"curvatura,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OticaMedidas) Reset() {
+	*x = OticaMedidas{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OticaMedidas) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OticaMedidas) ProtoMessage() {}
+
+func (x *OticaMedidas) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OticaMedidas.ProtoReflect.Descriptor instead.
+func (*OticaMedidas) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *OticaMedidas) GetHorizontal() float64 {
+	if x != nil {
+		return x.Horizontal
 	}
 	return 0
 }
 
-func (x *DadosLente) GetDp() float64 {
+func (x *OticaMedidas) GetVertical() float64 {
 	if x != nil {
-		return x.Dp
+		return x.Vertical
 	}
 	return 0
 }
 
-func (x *DadosLente) GetCo() float64 {
+func (x *OticaMedidas) GetPonte() float64 {
 	if x != nil {
-		return x.Co
+		return x.Ponte
 	}
 	return 0
 }
 
-func (x *DadosLente) GetPl() float64 {
+func (x *OticaMedidas) GetDiagonal() float64 {
 	if x != nil {
-		return x.Pl
+		return x.Diagonal
 	}
 	return 0
 }
 
-func (x *DadosLente) GetAdicao() float64 {
+func (x *OticaMedidas) GetHaste() float64 {
 	if x != nil {
-		return x.Adicao
+		return x.Haste
 	}
 	return 0
+}
+
+func (x *OticaMedidas) GetPantoscopico() float64 {
+	if x != nil {
+		return x.Pantoscopico
+	}
+	return 0
+}
+
+func (x *OticaMedidas) GetVertice() float64 {
+	if x != nil {
+		return x.Vertice
+	}
+	return 0
+}
+
+func (x *OticaMedidas) GetCurvatura() float64 {
+	if x != nil {
+		return x.Curvatura
+	}
+	return 0
+}
+
+type OticaLaboratorio struct {
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	PessoaId   string                 `protobuf:"bytes,1,opt,name=pessoa_id,json=pessoaId,proto3" json:"pessoa_id,omitempty"`
+	PessoaNome string                 `protobuf:"bytes,2,opt,name=pessoa_nome,json=pessoaNome,proto3" json:"pessoa_nome,omitempty"`
+	// Número da ordem de serviço no laboratório.
+	NumeroOs      string                 `protobuf:"bytes,3,opt,name=numero_os,json=numeroOs,proto3" json:"numero_os,omitempty"`
+	EnviadoEm     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=enviado_em,json=enviadoEm,proto3" json:"enviado_em,omitempty"`
+	Previsao      *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=previsao,proto3" json:"previsao,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OticaLaboratorio) Reset() {
+	*x = OticaLaboratorio{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OticaLaboratorio) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OticaLaboratorio) ProtoMessage() {}
+
+func (x *OticaLaboratorio) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OticaLaboratorio.ProtoReflect.Descriptor instead.
+func (*OticaLaboratorio) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *OticaLaboratorio) GetPessoaId() string {
+	if x != nil {
+		return x.PessoaId
+	}
+	return ""
+}
+
+func (x *OticaLaboratorio) GetPessoaNome() string {
+	if x != nil {
+		return x.PessoaNome
+	}
+	return ""
+}
+
+func (x *OticaLaboratorio) GetNumeroOs() string {
+	if x != nil {
+		return x.NumeroOs
+	}
+	return ""
+}
+
+func (x *OticaLaboratorio) GetEnviadoEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EnviadoEm
+	}
+	return nil
+}
+
+func (x *OticaLaboratorio) GetPrevisao() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Previsao
+	}
+	return nil
+}
+
+// Grau medido no lensômetro com os óculos prontos.
+type OticaConferencia struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Od            *OticaFormula          `protobuf:"bytes,1,opt,name=od,proto3" json:"od,omitempty"`
+	Oe            *OticaFormula          `protobuf:"bytes,2,opt,name=oe,proto3" json:"oe,omitempty"`
+	MontadoPor    string                 `protobuf:"bytes,3,opt,name=montado_por,json=montadoPor,proto3" json:"montado_por,omitempty"`
+	ConferidoPor  string                 `protobuf:"bytes,4,opt,name=conferido_por,json=conferidoPor,proto3" json:"conferido_por,omitempty"`
+	ConferidoEm   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=conferido_em,json=conferidoEm,proto3" json:"conferido_em,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OticaConferencia) Reset() {
+	*x = OticaConferencia{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OticaConferencia) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OticaConferencia) ProtoMessage() {}
+
+func (x *OticaConferencia) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OticaConferencia.ProtoReflect.Descriptor instead.
+func (*OticaConferencia) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *OticaConferencia) GetOd() *OticaFormula {
+	if x != nil {
+		return x.Od
+	}
+	return nil
+}
+
+func (x *OticaConferencia) GetOe() *OticaFormula {
+	if x != nil {
+		return x.Oe
+	}
+	return nil
+}
+
+func (x *OticaConferencia) GetMontadoPor() string {
+	if x != nil {
+		return x.MontadoPor
+	}
+	return ""
+}
+
+func (x *OticaConferencia) GetConferidoPor() string {
+	if x != nil {
+		return x.ConferidoPor
+	}
+	return ""
+}
+
+func (x *OticaConferencia) GetConferidoEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ConferidoEm
+	}
+	return nil
+}
+
+// Garantia ou retrabalho de um par.
+type OticaOcorrencia struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Id       string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	ParId    string                 `protobuf:"bytes,2,opt,name=par_id,json=parId,proto3" json:"par_id,omitempty"`
+	AbertaEm *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=aberta_em,json=abertaEm,proto3" json:"aberta_em,omitempty"`
+	Motivo   string                 `protobuf:"bytes,4,opt,name=motivo,proto3" json:"motivo,omitempty"`
+	// LABORATORIO, FORNECEDOR, LOJA ou CLIENTE.
+	Responsavel string  `protobuf:"bytes,5,opt,name=responsavel,proto3" json:"responsavel,omitempty"`
+	Custo       float64 `protobuf:"fixed64,6,opt,name=custo,proto3" json:"custo,omitempty"`
+	Refazer     string  `protobuf:"bytes,7,opt,name=refazer,proto3" json:"refazer,omitempty"`
+	// Chamado aberto no laboratório.
+	ChamadoNumero string                 `protobuf:"bytes,8,opt,name=chamado_numero,json=chamadoNumero,proto3" json:"chamado_numero,omitempty"`
+	ChamadoEm     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=chamado_em,json=chamadoEm,proto3" json:"chamado_em,omitempty"`
+	NovoPrazo     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=novo_prazo,json=novoPrazo,proto3" json:"novo_prazo,omitempty"`
+	Descricao     string                 `protobuf:"bytes,11,opt,name=descricao,proto3" json:"descricao,omitempty"`
+	ResolvidaEm   *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=resolvida_em,json=resolvidaEm,proto3" json:"resolvida_em,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OticaOcorrencia) Reset() {
+	*x = OticaOcorrencia{}
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OticaOcorrencia) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OticaOcorrencia) ProtoMessage() {}
+
+func (x *OticaOcorrencia) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_vendas_pedido_pedido_otica_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OticaOcorrencia.ProtoReflect.Descriptor instead.
+func (*OticaOcorrencia) Descriptor() ([]byte, []int) {
+	return file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *OticaOcorrencia) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *OticaOcorrencia) GetParId() string {
+	if x != nil {
+		return x.ParId
+	}
+	return ""
+}
+
+func (x *OticaOcorrencia) GetAbertaEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AbertaEm
+	}
+	return nil
+}
+
+func (x *OticaOcorrencia) GetMotivo() string {
+	if x != nil {
+		return x.Motivo
+	}
+	return ""
+}
+
+func (x *OticaOcorrencia) GetResponsavel() string {
+	if x != nil {
+		return x.Responsavel
+	}
+	return ""
+}
+
+func (x *OticaOcorrencia) GetCusto() float64 {
+	if x != nil {
+		return x.Custo
+	}
+	return 0
+}
+
+func (x *OticaOcorrencia) GetRefazer() string {
+	if x != nil {
+		return x.Refazer
+	}
+	return ""
+}
+
+func (x *OticaOcorrencia) GetChamadoNumero() string {
+	if x != nil {
+		return x.ChamadoNumero
+	}
+	return ""
+}
+
+func (x *OticaOcorrencia) GetChamadoEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ChamadoEm
+	}
+	return nil
+}
+
+func (x *OticaOcorrencia) GetNovoPrazo() *timestamppb.Timestamp {
+	if x != nil {
+		return x.NovoPrazo
+	}
+	return nil
+}
+
+func (x *OticaOcorrencia) GetDescricao() string {
+	if x != nil {
+		return x.Descricao
+	}
+	return ""
+}
+
+func (x *OticaOcorrencia) GetResolvidaEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ResolvidaEm
+	}
+	return nil
 }
 
 var File_apps_vendas_pedido_pedido_otica_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_pedido_pedido_otica_proto_rawDesc = "" +
 	"\n" +
-	"%apps/vendas/pedido/pedido_otica.proto\"\xdc\t\n" +
-	"\x05Otica\x12 \n" +
-	"\vtipoLenteId\x18\x01 \x01(\tR\vtipoLenteId\x12$\n" +
-	"\rtipoLenteNome\x18\x02 \x01(\tR\rtipoLenteNome\x12\"\n" +
-	"\ftipoLente2Id\x18\x03 \x01(\tR\ftipoLente2Id\x12&\n" +
-	"\x0etipoLente2Nome\x18\x04 \x01(\tR\x0etipoLente2Nome\x12&\n" +
-	"\x0etipoMaterialId\x18\x05 \x01(\tR\x0etipoMaterialId\x12*\n" +
-	"\x10tipoMaterialNome\x18\x06 \x01(\tR\x10tipoMaterialNome\x12(\n" +
-	"\x0ftipoMaterial2Id\x18\a \x01(\tR\x0ftipoMaterial2Id\x12,\n" +
-	"\x11tipoMaterial2Nome\x18\b \x01(\tR\x11tipoMaterial2Nome\x12*\n" +
-	"\x10tipoTratamentoId\x18\t \x01(\tR\x10tipoTratamentoId\x12.\n" +
-	"\x12tipoTratamentoNome\x18\n" +
-	" \x01(\tR\x12tipoTratamentoNome\x12,\n" +
-	"\x11tipoTratamento2Id\x18\v \x01(\tR\x11tipoTratamento2Id\x120\n" +
-	"\x13tipoTratamento2Nome\x18\f \x01(\tR\x13tipoTratamento2Nome\x12'\n" +
-	"\blongeDir\x18\r \x01(\v2\v.DadosLenteR\blongeDir\x12'\n" +
-	"\bpertoDir\x18\x0e \x01(\v2\v.DadosLenteR\bpertoDir\x12'\n" +
-	"\blongeEsq\x18\x0f \x01(\v2\v.DadosLenteR\blongeEsq\x12'\n" +
-	"\bpertoEsq\x18\x10 \x01(\v2\v.DadosLenteR\bpertoEsq\x127\n" +
-	"\x0eacuidadeVisual\x18\x11 \x01(\v2\x0f.AcuidadeVisualR\x0eacuidadeVisual\x12(\n" +
-	"\x0fvencimentoLente\x18\x12 \x01(\tR\x0fvencimentoLente\x12\"\n" +
-	"\ffornecedorId\x18\x13 \x01(\tR\ffornecedorId\x12&\n" +
-	"\x0efornecedorNome\x18\x14 \x01(\tR\x0efornecedorNome\x12\x1e\n" +
-	"\n" +
-	"armacaoCor\x18\x15 \x01(\tR\n" +
-	"armacaoCor\x12 \n" +
-	"\varmacaoCor2\x18\x16 \x01(\tR\varmacaoCor2\x12&\n" +
-	"\x0earmacaoTamanho\x18\x17 \x01(\x05R\x0earmacaoTamanho\x12(\n" +
-	"\x0farmacaoTamanho2\x18\x18 \x01(\x05R\x0farmacaoTamanho2\x12$\n" +
-	"\rarmacaoAltura\x18\x19 \x01(\x01R\rarmacaoAltura\x12&\n" +
-	"\x0earmacaoAltura2\x18\x1a \x01(\x01R\x0earmacaoAltura2\x12$\n" +
-	"\rarmacaoTipoId\x18\x1b \x01(\tR\rarmacaoTipoId\x12(\n" +
-	"\x0farmacaoTipoNome\x18\x1c \x01(\tR\x0farmacaoTipoNome\x12&\n" +
-	"\x0earmacaoTipo2Id\x18\x1d \x01(\tR\x0earmacaoTipo2Id\x12*\n" +
-	"\x10armacaoTipo2Nome\x18\x1e \x01(\tR\x10armacaoTipo2Nome\":\n" +
-	"\x0eAcuidadeVisual\x12\x13\n" +
-	"\x02sc\x18\x01 \x01(\v2\x03.ScR\x02sc\x12\x13\n" +
-	"\x02cc\x18\x02 \x01(\v2\x03.CcR\x02cc\"\x8b\x01\n" +
-	"\x02Sc\x12+\n" +
-	"\volhoDireito\x18\x01 \x01(\v2\t.AcuidadeR\volhoDireito\x12-\n" +
-	"\folhoEsquerdo\x18\x02 \x01(\v2\t.AcuidadeR\folhoEsquerdo\x12)\n" +
-	"\n" +
-	"ambosOlhos\x18\x03 \x01(\v2\t.AcuidadeR\n" +
-	"ambosOlhos\"\x8b\x01\n" +
-	"\x02Cc\x12+\n" +
-	"\volhoDireito\x18\x01 \x01(\v2\t.AcuidadeR\volhoDireito\x12-\n" +
-	"\folhoEsquerdo\x18\x02 \x01(\v2\t.AcuidadeR\folhoEsquerdo\x12)\n" +
-	"\n" +
-	"ambosOlhos\x18\x03 \x01(\v2\t.AcuidadeR\n" +
-	"ambosOlhos\"6\n" +
-	"\bAcuidade\x12\x14\n" +
+	"%apps/vendas/pedido/pedido_otica.proto\x12\x06pedido\x1a\x1fgoogle/protobuf/timestamp.proto\"\xec\x02\n" +
+	"\x05Otica\x12.\n" +
+	"\areceita\x18\x01 \x01(\v2\x14.pedido.OticaReceitaR\areceita\x12$\n" +
+	"\x02od\x18\x02 \x01(\v2\x14.pedido.OticaFormulaR\x02od\x12$\n" +
+	"\x02oe\x18\x03 \x01(\v2\x14.pedido.OticaFormulaR\x02oe\x12D\n" +
+	"\x0facuidade_visual\x18\x04 \x01(\v2\x1b.pedido.OticaAcuidadeVisualR\x0eacuidadeVisual\x12>\n" +
+	"\rlente_contato\x18\x05 \x01(\v2\x19.pedido.OticaLenteContatoR\flenteContato\x12&\n" +
+	"\x05pares\x18\x06 \x03(\v2\x10.pedido.OticaParR\x05pares\x129\n" +
+	"\vocorrencias\x18\a \x03(\v2\x17.pedido.OticaOcorrenciaR\vocorrencias\"\xfa\x02\n" +
+	"\fOticaReceita\x12\x12\n" +
+	"\x04tipo\x18\x01 \x01(\tR\x04tipo\x12\x1b\n" +
+	"\tmedico_id\x18\x02 \x01(\tR\bmedicoId\x12\x1f\n" +
+	"\vmedico_nome\x18\x03 \x01(\tR\n" +
+	"medicoNome\x12'\n" +
+	"\x0fmedico_registro\x18\x04 \x01(\tR\x0emedicoRegistro\x12.\n" +
+	"\x04data\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x04data\x126\n" +
+	"\bvalidade\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\bvalidade\x12\x16\n" +
+	"\x06origem\x18\a \x01(\tR\x06origem\x120\n" +
+	"\x14pedido_origem_numero\x18\b \x01(\tR\x12pedidoOrigemNumero\x12+\n" +
+	"\x11autoriza_lembrete\x18\t \x01(\bR\x10autorizaLembrete\x12\x10\n" +
+	"\x03obs\x18\n" +
+	" \x01(\tR\x03obs\"\xda\x01\n" +
+	"\fOticaFormula\x12\x1a\n" +
+	"\besferico\x18\x01 \x01(\x01R\besferico\x12\x1a\n" +
+	"\bcilindro\x18\x02 \x01(\x01R\bcilindro\x12\x12\n" +
+	"\x04eixo\x18\x03 \x01(\x05R\x04eixo\x12\x16\n" +
+	"\x06adicao\x18\x04 \x01(\x01R\x06adicao\x12\x10\n" +
+	"\x03dnp\x18\x05 \x01(\x01R\x03dnp\x12\x1b\n" +
+	"\tdnp_perto\x18\x06 \x01(\x01R\bdnpPerto\x12\x16\n" +
+	"\x06prisma\x18\a \x01(\x01R\x06prisma\x12\x1f\n" +
+	"\vbase_prisma\x18\b \x01(\tR\n" +
+	"basePrisma\"m\n" +
+	"\x13OticaAcuidadeVisual\x12*\n" +
+	"\x02sc\x18\x01 \x01(\v2\x1a.pedido.OticaAcuidadeOlhosR\x02sc\x12*\n" +
+	"\x02cc\x18\x02 \x01(\v2\x1a.pedido.OticaAcuidadeOlhosR\x02cc\"\xc2\x01\n" +
+	"\x12OticaAcuidadeOlhos\x128\n" +
+	"\folho_direito\x18\x01 \x01(\v2\x15.pedido.OticaAcuidadeR\volhoDireito\x12:\n" +
+	"\rolho_esquerdo\x18\x02 \x01(\v2\x15.pedido.OticaAcuidadeR\folhoEsquerdo\x126\n" +
+	"\vambos_olhos\x18\x03 \x01(\v2\x15.pedido.OticaAcuidadeR\n" +
+	"ambosOlhos\";\n" +
+	"\rOticaAcuidade\x12\x14\n" +
 	"\x05longe\x18\x01 \x01(\tR\x05longe\x12\x14\n" +
-	"\x05perto\x18\x02 \x01(\tR\x05perto\"\x9e\x01\n" +
+	"\x05perto\x18\x02 \x01(\tR\x05perto\"\xa5\x01\n" +
+	"\x11OticaLenteContato\x12-\n" +
+	"\x02od\x18\x01 \x01(\v2\x1d.pedido.OticaLenteContatoOlhoR\x02od\x12-\n" +
+	"\x02oe\x18\x02 \x01(\v2\x1d.pedido.OticaLenteContatoOlhoR\x02oe\x12\x1a\n" +
+	"\bdescarte\x18\x03 \x01(\tR\bdescarte\x12\x16\n" +
+	"\x06caixas\x18\x04 \x01(\x05R\x06caixas\"u\n" +
+	"\x15OticaLenteContatoOlho\x12\x1d\n" +
 	"\n" +
-	"DadosLente\x12\x10\n" +
-	"\x03esf\x18\x01 \x01(\x01R\x03esf\x12\x10\n" +
-	"\x03cil\x18\x02 \x01(\x01R\x03cil\x12\x12\n" +
-	"\x04eixo\x18\x03 \x01(\x01R\x04eixo\x12\x10\n" +
-	"\x03dnp\x18\x04 \x01(\x01R\x03dnp\x12\x0e\n" +
-	"\x02dp\x18\x05 \x01(\x01R\x02dp\x12\x0e\n" +
-	"\x02co\x18\x06 \x01(\x01R\x02co\x12\x0e\n" +
-	"\x02pl\x18\a \x01(\x01R\x02pl\x12\x16\n" +
-	"\x06adicao\x18\b \x01(\x01R\x06adicaoBKB\x10PedidoOticaProtoP\x01Z5github.com/linksoft-dev/sdks/go/pb/apps/vendas/pedidob\x06proto3"
+	"curva_base\x18\x01 \x01(\tR\tcurvaBase\x12\x1a\n" +
+	"\bdiametro\x18\x02 \x01(\tR\bdiametro\x12!\n" +
+	"\fmarca_modelo\x18\x03 \x01(\tR\vmarcaModelo\"\x84\x05\n" +
+	"\bOticaPar\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x10\n" +
+	"\x03uso\x18\x02 \x01(\tR\x03uso\x12\x14\n" +
+	"\x05solar\x18\x03 \x01(\bR\x05solar\x12(\n" +
+	"\x10lente_produto_id\x18\x04 \x01(\tR\x0elenteProdutoId\x12'\n" +
+	"\x0flente_descricao\x18\x05 \x01(\tR\x0elenteDescricao\x12\x1a\n" +
+	"\bmaterial\x18\x06 \x01(\tR\bmaterial\x12\x16\n" +
+	"\x06indice\x18\a \x01(\tR\x06indice\x12 \n" +
+	"\vtratamentos\x18\b \x03(\tR\vtratamentos\x12,\n" +
+	"\x12armacao_produto_id\x18\t \x01(\tR\x10armacaoProdutoId\x12+\n" +
+	"\x11armacao_descricao\x18\n" +
+	" \x01(\tR\x10armacaoDescricao\x12,\n" +
+	"\x12armacao_do_cliente\x18\v \x01(\bR\x10armacaoDoCliente\x12\x1a\n" +
+	"\bmontagem\x18\f \x01(\tR\bmontagem\x12\x1b\n" +
+	"\taltura_od\x18\r \x01(\x01R\balturaOd\x12\x1b\n" +
+	"\taltura_oe\x18\x0e \x01(\x01R\balturaOe\x12.\n" +
+	"\amedidas\x18\x0f \x01(\v2\x14.pedido.OticaMedidasR\amedidas\x12:\n" +
+	"\vlaboratorio\x18\x10 \x01(\v2\x18.pedido.OticaLaboratorioR\vlaboratorio\x12:\n" +
+	"\vconferencia\x18\x11 \x01(\v2\x18.pedido.OticaConferenciaR\vconferencia\x12\x10\n" +
+	"\x03obs\x18\x12 \x01(\tR\x03obs\"\xee\x01\n" +
+	"\fOticaMedidas\x12\x1e\n" +
+	"\n" +
+	"horizontal\x18\x01 \x01(\x01R\n" +
+	"horizontal\x12\x1a\n" +
+	"\bvertical\x18\x02 \x01(\x01R\bvertical\x12\x14\n" +
+	"\x05ponte\x18\x03 \x01(\x01R\x05ponte\x12\x1a\n" +
+	"\bdiagonal\x18\x04 \x01(\x01R\bdiagonal\x12\x14\n" +
+	"\x05haste\x18\x05 \x01(\x01R\x05haste\x12\"\n" +
+	"\fpantoscopico\x18\x06 \x01(\x01R\fpantoscopico\x12\x18\n" +
+	"\avertice\x18\a \x01(\x01R\avertice\x12\x1c\n" +
+	"\tcurvatura\x18\b \x01(\x01R\tcurvatura\"\xe0\x01\n" +
+	"\x10OticaLaboratorio\x12\x1b\n" +
+	"\tpessoa_id\x18\x01 \x01(\tR\bpessoaId\x12\x1f\n" +
+	"\vpessoa_nome\x18\x02 \x01(\tR\n" +
+	"pessoaNome\x12\x1b\n" +
+	"\tnumero_os\x18\x03 \x01(\tR\bnumeroOs\x129\n" +
+	"\n" +
+	"enviado_em\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tenviadoEm\x126\n" +
+	"\bprevisao\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\bprevisao\"\xe3\x01\n" +
+	"\x10OticaConferencia\x12$\n" +
+	"\x02od\x18\x01 \x01(\v2\x14.pedido.OticaFormulaR\x02od\x12$\n" +
+	"\x02oe\x18\x02 \x01(\v2\x14.pedido.OticaFormulaR\x02oe\x12\x1f\n" +
+	"\vmontado_por\x18\x03 \x01(\tR\n" +
+	"montadoPor\x12#\n" +
+	"\rconferido_por\x18\x04 \x01(\tR\fconferidoPor\x12=\n" +
+	"\fconferido_em\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\vconferidoEm\"\xd5\x03\n" +
+	"\x0fOticaOcorrencia\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x15\n" +
+	"\x06par_id\x18\x02 \x01(\tR\x05parId\x127\n" +
+	"\taberta_em\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\babertaEm\x12\x16\n" +
+	"\x06motivo\x18\x04 \x01(\tR\x06motivo\x12 \n" +
+	"\vresponsavel\x18\x05 \x01(\tR\vresponsavel\x12\x14\n" +
+	"\x05custo\x18\x06 \x01(\x01R\x05custo\x12\x18\n" +
+	"\arefazer\x18\a \x01(\tR\arefazer\x12%\n" +
+	"\x0echamado_numero\x18\b \x01(\tR\rchamadoNumero\x129\n" +
+	"\n" +
+	"chamado_em\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tchamadoEm\x129\n" +
+	"\n" +
+	"novo_prazo\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tnovoPrazo\x12\x1c\n" +
+	"\tdescricao\x18\v \x01(\tR\tdescricao\x12=\n" +
+	"\fresolvida_em\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\vresolvidaEmB\x8d\x01\n" +
+	"\n" +
+	"com.pedidoB\x10PedidoOticaProtoP\x01Z5github.com/linksoft-dev/sdks/go/pb/apps/vendas/pedido\xa2\x02\x03PXX\xaa\x02\x06Pedido\xca\x02\x06Pedido\xe2\x02\x12Pedido\\GPBMetadata\xea\x02\x06Pedidob\x06proto3"
 
 var (
 	file_apps_vendas_pedido_pedido_otica_proto_rawDescOnce sync.Once
@@ -701,34 +1340,57 @@ func file_apps_vendas_pedido_pedido_otica_proto_rawDescGZIP() []byte {
 	return file_apps_vendas_pedido_pedido_otica_proto_rawDescData
 }
 
-var file_apps_vendas_pedido_pedido_otica_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_apps_vendas_pedido_pedido_otica_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_apps_vendas_pedido_pedido_otica_proto_goTypes = []any{
-	(*Otica)(nil),          // 0: Otica
-	(*AcuidadeVisual)(nil), // 1: AcuidadeVisual
-	(*Sc)(nil),             // 2: Sc
-	(*Cc)(nil),             // 3: Cc
-	(*Acuidade)(nil),       // 4: Acuidade
-	(*DadosLente)(nil),     // 5: DadosLente
+	(*Otica)(nil),                 // 0: pedido.Otica
+	(*OticaReceita)(nil),          // 1: pedido.OticaReceita
+	(*OticaFormula)(nil),          // 2: pedido.OticaFormula
+	(*OticaAcuidadeVisual)(nil),   // 3: pedido.OticaAcuidadeVisual
+	(*OticaAcuidadeOlhos)(nil),    // 4: pedido.OticaAcuidadeOlhos
+	(*OticaAcuidade)(nil),         // 5: pedido.OticaAcuidade
+	(*OticaLenteContato)(nil),     // 6: pedido.OticaLenteContato
+	(*OticaLenteContatoOlho)(nil), // 7: pedido.OticaLenteContatoOlho
+	(*OticaPar)(nil),              // 8: pedido.OticaPar
+	(*OticaMedidas)(nil),          // 9: pedido.OticaMedidas
+	(*OticaLaboratorio)(nil),      // 10: pedido.OticaLaboratorio
+	(*OticaConferencia)(nil),      // 11: pedido.OticaConferencia
+	(*OticaOcorrencia)(nil),       // 12: pedido.OticaOcorrencia
+	(*timestamppb.Timestamp)(nil), // 13: google.protobuf.Timestamp
 }
 var file_apps_vendas_pedido_pedido_otica_proto_depIdxs = []int32{
-	5,  // 0: Otica.longeDir:type_name -> DadosLente
-	5,  // 1: Otica.pertoDir:type_name -> DadosLente
-	5,  // 2: Otica.longeEsq:type_name -> DadosLente
-	5,  // 3: Otica.pertoEsq:type_name -> DadosLente
-	1,  // 4: Otica.acuidadeVisual:type_name -> AcuidadeVisual
-	2,  // 5: AcuidadeVisual.sc:type_name -> Sc
-	3,  // 6: AcuidadeVisual.cc:type_name -> Cc
-	4,  // 7: Sc.olhoDireito:type_name -> Acuidade
-	4,  // 8: Sc.olhoEsquerdo:type_name -> Acuidade
-	4,  // 9: Sc.ambosOlhos:type_name -> Acuidade
-	4,  // 10: Cc.olhoDireito:type_name -> Acuidade
-	4,  // 11: Cc.olhoEsquerdo:type_name -> Acuidade
-	4,  // 12: Cc.ambosOlhos:type_name -> Acuidade
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	1,  // 0: pedido.Otica.receita:type_name -> pedido.OticaReceita
+	2,  // 1: pedido.Otica.od:type_name -> pedido.OticaFormula
+	2,  // 2: pedido.Otica.oe:type_name -> pedido.OticaFormula
+	3,  // 3: pedido.Otica.acuidade_visual:type_name -> pedido.OticaAcuidadeVisual
+	6,  // 4: pedido.Otica.lente_contato:type_name -> pedido.OticaLenteContato
+	8,  // 5: pedido.Otica.pares:type_name -> pedido.OticaPar
+	12, // 6: pedido.Otica.ocorrencias:type_name -> pedido.OticaOcorrencia
+	13, // 7: pedido.OticaReceita.data:type_name -> google.protobuf.Timestamp
+	13, // 8: pedido.OticaReceita.validade:type_name -> google.protobuf.Timestamp
+	4,  // 9: pedido.OticaAcuidadeVisual.sc:type_name -> pedido.OticaAcuidadeOlhos
+	4,  // 10: pedido.OticaAcuidadeVisual.cc:type_name -> pedido.OticaAcuidadeOlhos
+	5,  // 11: pedido.OticaAcuidadeOlhos.olho_direito:type_name -> pedido.OticaAcuidade
+	5,  // 12: pedido.OticaAcuidadeOlhos.olho_esquerdo:type_name -> pedido.OticaAcuidade
+	5,  // 13: pedido.OticaAcuidadeOlhos.ambos_olhos:type_name -> pedido.OticaAcuidade
+	7,  // 14: pedido.OticaLenteContato.od:type_name -> pedido.OticaLenteContatoOlho
+	7,  // 15: pedido.OticaLenteContato.oe:type_name -> pedido.OticaLenteContatoOlho
+	9,  // 16: pedido.OticaPar.medidas:type_name -> pedido.OticaMedidas
+	10, // 17: pedido.OticaPar.laboratorio:type_name -> pedido.OticaLaboratorio
+	11, // 18: pedido.OticaPar.conferencia:type_name -> pedido.OticaConferencia
+	13, // 19: pedido.OticaLaboratorio.enviado_em:type_name -> google.protobuf.Timestamp
+	13, // 20: pedido.OticaLaboratorio.previsao:type_name -> google.protobuf.Timestamp
+	2,  // 21: pedido.OticaConferencia.od:type_name -> pedido.OticaFormula
+	2,  // 22: pedido.OticaConferencia.oe:type_name -> pedido.OticaFormula
+	13, // 23: pedido.OticaConferencia.conferido_em:type_name -> google.protobuf.Timestamp
+	13, // 24: pedido.OticaOcorrencia.aberta_em:type_name -> google.protobuf.Timestamp
+	13, // 25: pedido.OticaOcorrencia.chamado_em:type_name -> google.protobuf.Timestamp
+	13, // 26: pedido.OticaOcorrencia.novo_prazo:type_name -> google.protobuf.Timestamp
+	13, // 27: pedido.OticaOcorrencia.resolvida_em:type_name -> google.protobuf.Timestamp
+	28, // [28:28] is the sub-list for method output_type
+	28, // [28:28] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_pedido_pedido_otica_proto_init() }
@@ -742,7 +1404,7 @@ func file_apps_vendas_pedido_pedido_otica_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_vendas_pedido_pedido_otica_proto_rawDesc), len(file_apps_vendas_pedido_pedido_otica_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
