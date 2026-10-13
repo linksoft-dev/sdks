@@ -224,6 +224,59 @@ func (Canal) EnumDescriptor() ([]byte, []int) {
 	return file_apps_vendas_billingplan_billingplan_proto_rawDescGZIP(), []int{3}
 }
 
+// Quem recebe a cobrança entre os contatos do cliente.
+type Destinatario int32
+
+const (
+	Destinatario_DESTINATARIO_UNSPECIFIED       Destinatario = 0
+	Destinatario_DESTINATARIO_DOCUMENTO         Destinatario = 1 // contato informado no documento
+	Destinatario_DESTINATARIO_TODOS_CONTATOS    Destinatario = 2 // todos os contatos do cliente
+	Destinatario_DESTINATARIO_CONTATOS_COBRANCA Destinatario = 3 // só os contatos do cadastro do cliente marcados para receber cobrança
+)
+
+// Enum value maps for Destinatario.
+var (
+	Destinatario_name = map[int32]string{
+		0: "DESTINATARIO_UNSPECIFIED",
+		1: "DESTINATARIO_DOCUMENTO",
+		2: "DESTINATARIO_TODOS_CONTATOS",
+		3: "DESTINATARIO_CONTATOS_COBRANCA",
+	}
+	Destinatario_value = map[string]int32{
+		"DESTINATARIO_UNSPECIFIED":       0,
+		"DESTINATARIO_DOCUMENTO":         1,
+		"DESTINATARIO_TODOS_CONTATOS":    2,
+		"DESTINATARIO_CONTATOS_COBRANCA": 3,
+	}
+)
+
+func (x Destinatario) Enum() *Destinatario {
+	p := new(Destinatario)
+	*p = x
+	return p
+}
+
+func (x Destinatario) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Destinatario) Descriptor() protoreflect.EnumDescriptor {
+	return file_apps_vendas_billingplan_billingplan_proto_enumTypes[4].Descriptor()
+}
+
+func (Destinatario) Type() protoreflect.EnumType {
+	return &file_apps_vendas_billingplan_billingplan_proto_enumTypes[4]
+}
+
+func (x Destinatario) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Destinatario.Descriptor instead.
+func (Destinatario) EnumDescriptor() ([]byte, []int) {
+	return file_apps_vendas_billingplan_billingplan_proto_rawDescGZIP(), []int{4}
+}
+
 type BillingPlan struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
 	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -279,7 +332,12 @@ type BillingPlan struct {
 	// antes, 0 = no dia, positivo = depois); documento sem vencimento conta da data dele, só com
 	// dias positivos. Preenchido, vale no lugar de start_days, interval_days, max_billings e
 	// dias_limite
-	DiasDeEnvio   []int32 `protobuf:"varint,35,rep,packed,name=dias_de_envio,json=diasDeEnvio,proto3" json:"dias_de_envio,omitempty"`
+	DiasDeEnvio []int32 `protobuf:"varint,35,rep,packed,name=dias_de_envio,json=diasDeEnvio,proto3" json:"dias_de_envio,omitempty"`
+	// Contatos do cliente que recebem a cobrança. Vazio = contato do documento
+	Destinatario Destinatario `protobuf:"varint,36,opt,name=destinatario,proto3,enum=billingplan.Destinatario" json:"destinatario,omitempty"`
+	// E-mail: anexa o boleto do documento cuja única forma de pagamento é boleto (na conta a
+	// receber, a forma padrão dela)
+	AnexarBoleto  bool `protobuf:"varint,37,opt,name=anexar_boleto,json=anexarBoleto,proto3" json:"anexar_boleto,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -545,11 +603,25 @@ func (x *BillingPlan) GetDiasDeEnvio() []int32 {
 	return nil
 }
 
+func (x *BillingPlan) GetDestinatario() Destinatario {
+	if x != nil {
+		return x.Destinatario
+	}
+	return Destinatario_DESTINATARIO_UNSPECIFIED
+}
+
+func (x *BillingPlan) GetAnexarBoleto() bool {
+	if x != nil {
+		return x.AnexarBoleto
+	}
+	return false
+}
+
 var File_apps_vendas_billingplan_billingplan_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\n" +
-	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x87\n" +
+	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xeb\n" +
 	"\n" +
 	"\vBillingPlan\x129\n" +
 	"\n" +
@@ -592,7 +664,9 @@ const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\fvalor_maximo\x18  \x01(\x01R\vvalorMaximo\x12\x16\n" +
 	"\x06anexos\x18! \x03(\tR\x06anexos\x12,\n" +
 	"\x12sms_integration_id\x18\" \x01(\tR\x10smsIntegrationId\x12\"\n" +
-	"\rdias_de_envio\x18# \x03(\x05R\vdiasDeEnvio:\x03\xc0>\x01*N\n" +
+	"\rdias_de_envio\x18# \x03(\x05R\vdiasDeEnvio\x12=\n" +
+	"\fdestinatario\x18$ \x01(\x0e2\x19.billingplan.DestinatarioR\fdestinatario\x12#\n" +
+	"\ranexar_boleto\x18% \x01(\bR\fanexarBoleto:\x03\xc0>\x01*N\n" +
 	"\bSituacao\x12\x18\n" +
 	"\x14SITUACAO_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eSITUACAO_ATIVO\x10\x01\x12\x14\n" +
@@ -609,7 +683,12 @@ const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\x11CANAL_UNSPECIFIED\x10\x00\x12\x0f\n" +
 	"\vCANAL_EMAIL\x10\x01\x12\x12\n" +
 	"\x0eCANAL_WHATSAPP\x10\x02\x12\r\n" +
-	"\tCANAL_SMS\x10\x03B\xab\x01\n" +
+	"\tCANAL_SMS\x10\x03*\x8d\x01\n" +
+	"\fDestinatario\x12\x1c\n" +
+	"\x18DESTINATARIO_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16DESTINATARIO_DOCUMENTO\x10\x01\x12\x1f\n" +
+	"\x1bDESTINATARIO_TODOS_CONTATOS\x10\x02\x12\"\n" +
+	"\x1eDESTINATARIO_CONTATOS_COBRANCA\x10\x03B\xab\x01\n" +
 	"\x0fcom.billingplanB\x10BillingplanProtoP\x01Z:github.com/linksoft-dev/sdks/go/pb/apps/vendas/billingplan\xa2\x02\x03BXX\xaa\x02\vBillingplan\xca\x02\vBillingplan\xe2\x02\x17Billingplan\\GPBMetadata\xea\x02\vBillingplanb\x06proto3"
 
 var (
@@ -624,31 +703,33 @@ func file_apps_vendas_billingplan_billingplan_proto_rawDescGZIP() []byte {
 	return file_apps_vendas_billingplan_billingplan_proto_rawDescData
 }
 
-var file_apps_vendas_billingplan_billingplan_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
+var file_apps_vendas_billingplan_billingplan_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
 var file_apps_vendas_billingplan_billingplan_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_apps_vendas_billingplan_billingplan_proto_goTypes = []any{
 	(Situacao)(0),                 // 0: billingplan.Situacao
 	(TipoGrupo)(0),                // 1: billingplan.TipoGrupo
 	(Agenda)(0),                   // 2: billingplan.Agenda
 	(Canal)(0),                    // 3: billingplan.Canal
-	(*BillingPlan)(nil),           // 4: billingplan.BillingPlan
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),  // 6: metadata.BasicFields
+	(Destinatario)(0),             // 4: billingplan.Destinatario
+	(*BillingPlan)(nil),           // 5: billingplan.BillingPlan
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),  // 7: metadata.BasicFields
 }
 var file_apps_vendas_billingplan_billingplan_proto_depIdxs = []int32{
-	5, // 0: billingplan.BillingPlan.created_at:type_name -> google.protobuf.Timestamp
-	5, // 1: billingplan.BillingPlan.updated_at:type_name -> google.protobuf.Timestamp
-	6, // 2: billingplan.BillingPlan.fields:type_name -> metadata.BasicFields
+	6, // 0: billingplan.BillingPlan.created_at:type_name -> google.protobuf.Timestamp
+	6, // 1: billingplan.BillingPlan.updated_at:type_name -> google.protobuf.Timestamp
+	7, // 2: billingplan.BillingPlan.fields:type_name -> metadata.BasicFields
 	0, // 3: billingplan.BillingPlan.situacao:type_name -> billingplan.Situacao
 	1, // 4: billingplan.BillingPlan.tipo_grupo:type_name -> billingplan.TipoGrupo
 	2, // 5: billingplan.BillingPlan.agenda:type_name -> billingplan.Agenda
-	5, // 6: billingplan.BillingPlan.cobrar_a_partir_de:type_name -> google.protobuf.Timestamp
+	6, // 6: billingplan.BillingPlan.cobrar_a_partir_de:type_name -> google.protobuf.Timestamp
 	3, // 7: billingplan.BillingPlan.canais:type_name -> billingplan.Canal
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	4, // 8: billingplan.BillingPlan.destinatario:type_name -> billingplan.Destinatario
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_billingplan_billingplan_proto_init() }
@@ -661,7 +742,7 @@ func file_apps_vendas_billingplan_billingplan_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_vendas_billingplan_billingplan_proto_rawDesc), len(file_apps_vendas_billingplan_billingplan_proto_rawDesc)),
-			NumEnums:      4,
+			NumEnums:      5,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,

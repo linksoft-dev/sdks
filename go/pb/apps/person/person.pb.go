@@ -1525,8 +1525,10 @@ type Contact struct {
 	// dispara o código não pode lê-lo e confirmar sozinho.
 	VerificationCode    string `protobuf:"bytes,12,opt,name=verification_code,json=verificationCode,proto3" json:"verification_code,omitempty"`
 	VerificationChannel string `protobuf:"bytes,13,opt,name=verification_channel,json=verificationChannel,proto3" json:"verification_channel,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// Recebe as cobranças enviadas à pessoa
+	ReceivesBilling bool `protobuf:"varint,14,opt,name=receives_billing,json=receivesBilling,proto3" json:"receives_billing,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Contact) Reset() {
@@ -1648,6 +1650,13 @@ func (x *Contact) GetVerificationChannel() string {
 		return x.VerificationChannel
 	}
 	return ""
+}
+
+func (x *Contact) GetReceivesBilling() bool {
+	if x != nil {
+		return x.ReceivesBilling
+	}
+	return false
 }
 
 // Registro de quem garantiu um contato pela equipe.
@@ -3370,7 +3379,7 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\achannel\x18\x03 \x01(\x0e2\x16.person.ContactChannelR\achannel\"S\n" +
 	"\x14VouchContactResponse\x12\x10\n" +
 	"\x03msg\x18\x01 \x01(\tR\x03msg\x12)\n" +
-	"\acontact\x18\x02 \x01(\v2\x0f.person.ContactR\acontact\"\x8b\x04\n" +
+	"\acontact\x18\x02 \x01(\v2\x0f.person.ContactR\acontact\"\xb6\x04\n" +
 	"\aContact\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -3388,7 +3397,8 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\vphone_vouch\x18\v \x01(\v2\x14.person.ContactVouchR\n" +
 	"phoneVouch\x12+\n" +
 	"\x11verification_code\x18\f \x01(\tR\x10verificationCode\x121\n" +
-	"\x14verification_channel\x18\r \x01(\tR\x13verificationChannel\"p\n" +
+	"\x14verification_channel\x18\r \x01(\tR\x13verificationChannel\x12)\n" +
+	"\x10receives_billing\x18\x0e \x01(\bR\x0freceivesBilling\"p\n" +
 	"\fContactVouch\x12*\n" +
 	"\x02at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x02at\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1b\n" +

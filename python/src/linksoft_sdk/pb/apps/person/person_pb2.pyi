@@ -325,7 +325,7 @@ class VouchContactResponse(_message.Message):
     def __init__(self, msg: _Optional[str] = ..., contact: _Optional[_Union[Contact, _Mapping]] = ...) -> None: ...
 
 class Contact(_message.Message):
-    __slots__ = ("id", "name", "email", "phone", "by_whats_app", "by_sms", "by_email", "email_verified_at", "phone_verified_at", "email_vouch", "phone_vouch", "verification_code", "verification_channel")
+    __slots__ = ("id", "name", "email", "phone", "by_whats_app", "by_sms", "by_email", "email_verified_at", "phone_verified_at", "email_vouch", "phone_vouch", "verification_code", "verification_channel", "receives_billing")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
@@ -339,6 +339,7 @@ class Contact(_message.Message):
     PHONE_VOUCH_FIELD_NUMBER: _ClassVar[int]
     VERIFICATION_CODE_FIELD_NUMBER: _ClassVar[int]
     VERIFICATION_CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    RECEIVES_BILLING_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     email: str
@@ -352,7 +353,8 @@ class Contact(_message.Message):
     phone_vouch: ContactVouch
     verification_code: str
     verification_channel: str
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., phone: _Optional[str] = ..., by_whats_app: _Optional[bool] = ..., by_sms: _Optional[bool] = ..., by_email: _Optional[bool] = ..., email_verified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., phone_verified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., email_vouch: _Optional[_Union[ContactVouch, _Mapping]] = ..., phone_vouch: _Optional[_Union[ContactVouch, _Mapping]] = ..., verification_code: _Optional[str] = ..., verification_channel: _Optional[str] = ...) -> None: ...
+    receives_billing: bool
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., phone: _Optional[str] = ..., by_whats_app: _Optional[bool] = ..., by_sms: _Optional[bool] = ..., by_email: _Optional[bool] = ..., email_verified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., phone_verified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., email_vouch: _Optional[_Union[ContactVouch, _Mapping]] = ..., phone_vouch: _Optional[_Union[ContactVouch, _Mapping]] = ..., verification_code: _Optional[str] = ..., verification_channel: _Optional[str] = ..., receives_billing: _Optional[bool] = ...) -> None: ...
 
 class ContactVouch(_message.Message):
     __slots__ = ("at", "user_id", "user_name")
