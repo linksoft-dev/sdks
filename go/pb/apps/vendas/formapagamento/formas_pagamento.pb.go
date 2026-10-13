@@ -128,9 +128,12 @@ type PaymentMethod struct {
 	// Pessoa da adquirente no cadastro de pessoas; adquirente_nome e adquirente_cnpj vêm dela.
 	AdquirenteId string `protobuf:"bytes,48,opt,name=adquirente_id,json=adquirenteId,proto3" json:"adquirente_id,omitempty"`
 	// Bandeira do cartão desta forma (VISA, MASTERCARD, ELO, PIX...). Vazia aceita qualquer uma.
-	Bandeira      string `protobuf:"bytes,49,opt,name=bandeira,proto3" json:"bandeira,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Bandeira string `protobuf:"bytes,49,opt,name=bandeira,proto3" json:"bandeira,omitempty"`
+	// Percentual de desconto concedido ao cliente que paga com esta forma, aplicado sobre o
+	// valor a quitar do pedido.
+	DescontoPercentual float64 `protobuf:"fixed64,50,opt,name=desconto_percentual,json=descontoPercentual,proto3" json:"desconto_percentual,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *PaymentMethod) Reset() {
@@ -420,6 +423,13 @@ func (x *PaymentMethod) GetBandeira() string {
 		return x.Bandeira
 	}
 	return ""
+}
+
+func (x *PaymentMethod) GetDescontoPercentual() float64 {
+	if x != nil {
+		return x.DescontoPercentual
+	}
+	return 0
 }
 
 type FraudIntegration struct {
@@ -1795,7 +1805,7 @@ var File_apps_vendas_formapagamento_formas_pagamento_proto protoreflect.FileDesc
 
 const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\n" +
-	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xfe\f\n" +
+	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\"\xc8\r\n" +
 	"\rPaymentMethod\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1837,7 +1847,8 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x19nao_emite_nfse_automatica\x18. \x01(\bR\x16naoEmiteNfseAutomatica\x12$\n" +
 	"\x0enao_emite_nfce\x18/ \x01(\bR\fnaoEmiteNfce\x12#\n" +
 	"\radquirente_id\x180 \x01(\tR\fadquirenteId\x12\x1a\n" +
-	"\bbandeira\x181 \x01(\tR\bbandeira:\x03\xc0>\x01J\x04\b\b\x10\t\"t\n" +
+	"\bbandeira\x181 \x01(\tR\bbandeira\x12H\n" +
+	"\x13desconto_percentual\x182 \x01(\x01B\x17\xfaB\x14\x12\x12\x19\x00\x00\x00\x00\x00\x00Y@)\x00\x00\x00\x00\x00\x00\x00\x00R\x12descontoPercentual:\x03\xc0>\x01J\x04\b\b\x10\t\"t\n" +
 	"\x10FraudIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +

@@ -9622,6 +9622,7 @@ type Pagamento struct {
 	TransactionNumber              string                 `protobuf:"bytes,36,opt,name=transactionNumber,proto3" json:"transactionNumber,omitempty"`
 	TransactionId                  string                 `protobuf:"bytes,37,opt,name=transactionId,proto3" json:"transactionId,omitempty"`
 	Origin                         PagamentoPaymentOrigin `protobuf:"varint,38,opt,name=origin,proto3,enum=pedido.PagamentoPaymentOrigin" json:"origin,omitempty"`
+	DescontoValor                  float64                `protobuf:"fixed64,39,opt,name=descontoValor,proto3" json:"descontoValor,omitempty"` // Desconto concedido pela forma de pagamento
 	unknownFields                  protoimpl.UnknownFields
 	sizeCache                      protoimpl.SizeCache
 }
@@ -9920,6 +9921,13 @@ func (x *Pagamento) GetOrigin() PagamentoPaymentOrigin {
 		return x.Origin
 	}
 	return Pagamento_PAYMENT_ORIGIN_UNSPECIFIED
+}
+
+func (x *Pagamento) GetDescontoValor() float64 {
+	if x != nil {
+		return x.DescontoValor
+	}
+	return 0
 }
 
 type Parcelas struct {
@@ -14884,7 +14892,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x02un\x18\x06 \x01(\tR\x02un\x12%\n" +
 	"\x0evalor_unitario\x18\a \x01(\x01R\rvalorUnitario\x12\x14\n" +
 	"\x05total\x18\b \x01(\x01R\x05total\x12\x16\n" +
-	"\x06codigo\x18\t \x01(\tR\x06codigo\"\x94\x0e\n" +
+	"\x06codigo\x18\t \x01(\tR\x06codigo\"\xba\x0e\n" +
 	"\tPagamento\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x128\n" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
@@ -14924,7 +14932,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x12motivoCancelamento\x18# \x01(\tR\x12motivoCancelamento\x12,\n" +
 	"\x11transactionNumber\x18$ \x01(\tR\x11transactionNumber\x12$\n" +
 	"\rtransactionId\x18% \x01(\tR\rtransactionId\x127\n" +
-	"\x06origin\x18& \x01(\x0e2\x1f.pedido.Pagamento.paymentOriginR\x06origin\"f\n" +
+	"\x06origin\x18& \x01(\x0e2\x1f.pedido.Pagamento.paymentOriginR\x06origin\x12$\n" +
+	"\rdescontoValor\x18' \x01(\x01R\rdescontoValor\"f\n" +
 	"\rpaymentOrigin\x12\x1e\n" +
 	"\x1aPAYMENT_ORIGIN_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15PAYMENT_ORIGIN_ONLINE\x10\x01\x12\x1a\n" +
