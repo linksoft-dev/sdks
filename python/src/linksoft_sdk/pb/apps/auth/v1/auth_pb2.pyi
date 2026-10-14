@@ -13,16 +13,18 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class LoginRequest(_message.Message):
-    __slots__ = ("username", "password", "device_id", "org_id")
+    __slots__ = ("username", "password", "device_id", "org_id", "machine_id")
     USERNAME_FIELD_NUMBER: _ClassVar[int]
     PASSWORD_FIELD_NUMBER: _ClassVar[int]
     DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
     ORG_ID_FIELD_NUMBER: _ClassVar[int]
+    MACHINE_ID_FIELD_NUMBER: _ClassVar[int]
     username: str
     password: str
     device_id: str
     org_id: str
-    def __init__(self, username: _Optional[str] = ..., password: _Optional[str] = ..., device_id: _Optional[str] = ..., org_id: _Optional[str] = ...) -> None: ...
+    machine_id: str
+    def __init__(self, username: _Optional[str] = ..., password: _Optional[str] = ..., device_id: _Optional[str] = ..., org_id: _Optional[str] = ..., machine_id: _Optional[str] = ...) -> None: ...
 
 class LoginResponse(_message.Message):
     __slots__ = ("user_id", "name", "email", "current_org", "token", "orgs", "avatar_link", "settings")
