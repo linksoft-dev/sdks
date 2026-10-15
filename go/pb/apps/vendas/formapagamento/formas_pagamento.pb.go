@@ -755,8 +755,12 @@ type Integration struct {
 	GatewayWebhookUrl       string                 `protobuf:"bytes,8,opt,name=gateway_webhook_url,json=gatewayWebhookUrl,proto3" json:"gateway_webhook_url,omitempty"`
 	GatewayPix              *GatewayPix            `protobuf:"bytes,9,opt,name=gateway_pix,json=gatewayPix,proto3" json:"gateway_pix,omitempty"`
 	ModalidadeCartao        ModalidadeCartao       `protobuf:"varint,10,opt,name=modalidade_cartao,json=modalidadeCartao,proto3,enum=PaymentMethod.ModalidadeCartao" json:"modalidade_cartao,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	// Encargos do boleto pago depois do vencimento, enviados ao banco no registro: juros ao mês e
+	// multa, em percentual sobre o valor do boleto
+	JurosMesPercentual float64 `protobuf:"fixed64,11,opt,name=juros_mes_percentual,json=jurosMesPercentual,proto3" json:"juros_mes_percentual,omitempty"`
+	MultaPercentual    float64 `protobuf:"fixed64,12,opt,name=multa_percentual,json=multaPercentual,proto3" json:"multa_percentual,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Integration) Reset() {
@@ -850,6 +854,20 @@ func (x *Integration) GetModalidadeCartao() ModalidadeCartao {
 		return x.ModalidadeCartao
 	}
 	return ModalidadeCartao_MODALIDADE_CARTAO_TRANSPARENTE
+}
+
+func (x *Integration) GetJurosMesPercentual() float64 {
+	if x != nil {
+		return x.JurosMesPercentual
+	}
+	return 0
+}
+
+func (x *Integration) GetMultaPercentual() float64 {
+	if x != nil {
+		return x.MultaPercentual
+	}
+	return 0
 }
 
 type GatewayPix struct {
@@ -1877,7 +1895,7 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"min_amount\x18\x04 \x01(\x01R\tminAmount\x12)\n" +
 	"\x10min_installments\x18\x05 \x01(\x05R\x0fminInstallments\x12\x1f\n" +
 	"\vreason_hint\x18\x06 \x01(\tR\n" +
-	"reasonHint\"\xa1\x03\n" +
+	"reasonHint\"\xfe\x03\n" +
 	"\vIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
@@ -1889,7 +1907,9 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\vgateway_pix\x18\t \x01(\v2\x19.PaymentMethod.GatewayPixR\n" +
 	"gatewayPix\x12L\n" +
 	"\x11modalidade_cartao\x18\n" +
-	" \x01(\x0e2\x1f.PaymentMethod.ModalidadeCartaoR\x10modalidadeCartao\"\xcd\x01\n" +
+	" \x01(\x0e2\x1f.PaymentMethod.ModalidadeCartaoR\x10modalidadeCartao\x120\n" +
+	"\x14juros_mes_percentual\x18\v \x01(\x01R\x12jurosMesPercentual\x12)\n" +
+	"\x10multa_percentual\x18\f \x01(\x01R\x0fmultaPercentual\"\xcd\x01\n" +
 	"\n" +
 	"GatewayPix\x12)\n" +
 	"\x10segundos_validos\x18\x01 \x01(\x05R\x0fsegundosValidos\x12\x1b\n" +

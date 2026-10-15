@@ -7835,8 +7835,12 @@ type Contract struct {
 	Readjustment            *ContractReadjustment        `protobuf:"bytes,24,opt,name=readjustment,proto3" json:"readjustment,omitempty"`                                                        // Plano de reajuste do contrato, o que muda nele só para este contrato e a data do próximo reajuste; herdado pelas renovações
 	ReadjustmentApplied     *ContractReadjustmentApplied `protobuf:"bytes,25,opt,name=readjustment_applied,json=readjustmentApplied,proto3" json:"readjustment_applied,omitempty"`               // Reajuste aplicado nesta parcela, quando ela é a primeira com o valor novo
 	DueDate                 *timestamppb.Timestamp       `protobuf:"bytes,26,opt,name=due_date,json=dueDate,proto3" json:"due_date,omitempty"`                                                   // Vencimento da parcela: até quando ela deve ser paga. Vazio na criação, vale o que o tipo do contrato põe na cobertura
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	// Encargos da parcela paga depois do vencimento: juros ao mês e multa, em percentual sobre o
+	// valor em aberto. Zerado vale o padrão da configuração de contratos; herdados pelas renovações
+	JurosMesPercentual float64 `protobuf:"fixed64,27,opt,name=juros_mes_percentual,json=jurosMesPercentual,proto3" json:"juros_mes_percentual,omitempty"`
+	MultaPercentual    float64 `protobuf:"fixed64,28,opt,name=multa_percentual,json=multaPercentual,proto3" json:"multa_percentual,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Contract) Reset() {
@@ -8043,6 +8047,20 @@ func (x *Contract) GetDueDate() *timestamppb.Timestamp {
 		return x.DueDate
 	}
 	return nil
+}
+
+func (x *Contract) GetJurosMesPercentual() float64 {
+	if x != nil {
+		return x.JurosMesPercentual
+	}
+	return 0
+}
+
+func (x *Contract) GetMultaPercentual() float64 {
+	if x != nil {
+		return x.MultaPercentual
+	}
+	return 0
 }
 
 // Reajuste do contrato. Sem plano o contrato não reajusta; plano excluído ou inativo também deixa de
@@ -9641,7 +9659,8 @@ type Pagamento struct {
 	TransactionNumber              string                 `protobuf:"bytes,36,opt,name=transactionNumber,proto3" json:"transactionNumber,omitempty"`
 	TransactionId                  string                 `protobuf:"bytes,37,opt,name=transactionId,proto3" json:"transactionId,omitempty"`
 	Origin                         PagamentoPaymentOrigin `protobuf:"varint,38,opt,name=origin,proto3,enum=pedido.PagamentoPaymentOrigin" json:"origin,omitempty"`
-	DescontoValor                  float64                `protobuf:"fixed64,39,opt,name=descontoValor,proto3" json:"descontoValor,omitempty"` // Desconto concedido pela forma de pagamento
+	DescontoValor                  float64                `protobuf:"fixed64,39,opt,name=descontoValor,proto3" json:"descontoValor,omitempty"`                      // Desconto concedido pela forma de pagamento
+	EncargosValor                  float64                `protobuf:"fixed64,40,opt,name=encargos_valor,json=encargosValor,proto3" json:"encargos_valor,omitempty"` // Juros e multa do atraso pagos junto, somados ao acréscimo do documento
 	unknownFields                  protoimpl.UnknownFields
 	sizeCache                      protoimpl.SizeCache
 }
@@ -9945,6 +9964,13 @@ func (x *Pagamento) GetOrigin() PagamentoPaymentOrigin {
 func (x *Pagamento) GetDescontoValor() float64 {
 	if x != nil {
 		return x.DescontoValor
+	}
+	return 0
+}
+
+func (x *Pagamento) GetEncargosValor() float64 {
+	if x != nil {
+		return x.EncargosValor
 	}
 	return 0
 }
@@ -14683,7 +14709,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x13os_terceiros_numero\x18\x1b \x01(\tR\x11osTerceirosNumero\x120\n" +
 	"\x14os_fabricante_numero\x18\x1c \x01(\tR\x12osFabricanteNumero\x125\n" +
 	"\x17os_terceiros_emissor_id\x18\x1d \x01(\tR\x14osTerceirosEmissorId\x129\n" +
-	"\x19os_terceiros_emissor_nome\x18\x1e \x01(\tR\x16osTerceirosEmissorNome\"\x9e\v\n" +
+	"\x19os_terceiros_emissor_nome\x18\x1e \x01(\tR\x16osTerceirosEmissorNome\"\xfb\v\n" +
 	"\bContract\x12\x16\n" +
 	"\x06number\x18\x01 \x01(\tR\x06number\x12(\n" +
 	"\x04type\x18\x02 \x01(\x0e2\x14.pedido.ContractTypeR\x04type\x12?\n" +
@@ -14714,7 +14740,9 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x11full_period_total\x18\x17 \x01(\x01R\x0ffullPeriodTotal\x12@\n" +
 	"\freadjustment\x18\x18 \x01(\v2\x1c.pedido.ContractReadjustmentR\freadjustment\x12\\\n" +
 	"\x14readjustment_applied\x18\x19 \x01(\v2#.pedido.ContractReadjustmentAppliedB\x04\xe2A\x01\x03R\x13readjustmentApplied\x125\n" +
-	"\bdue_date\x18\x1a \x01(\v2\x1a.google.protobuf.TimestampR\adueDate\x1ab\n" +
+	"\bdue_date\x18\x1a \x01(\v2\x1a.google.protobuf.TimestampR\adueDate\x120\n" +
+	"\x14juros_mes_percentual\x18\x1b \x01(\x01R\x12jurosMesPercentual\x12)\n" +
+	"\x10multa_percentual\x18\x1c \x01(\x01R\x0fmultaPercentual\x1ab\n" +
 	"\n" +
 	"LastAccess\x127\n" +
 	"\tlast_date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\blastDate\x12\x1b\n" +
@@ -14913,7 +14941,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x02un\x18\x06 \x01(\tR\x02un\x12%\n" +
 	"\x0evalor_unitario\x18\a \x01(\x01R\rvalorUnitario\x12\x14\n" +
 	"\x05total\x18\b \x01(\x01R\x05total\x12\x16\n" +
-	"\x06codigo\x18\t \x01(\tR\x06codigo\"\xba\x0e\n" +
+	"\x06codigo\x18\t \x01(\tR\x06codigo\"\xe7\x0e\n" +
 	"\tPagamento\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x128\n" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
@@ -14954,7 +14982,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x11transactionNumber\x18$ \x01(\tR\x11transactionNumber\x12$\n" +
 	"\rtransactionId\x18% \x01(\tR\rtransactionId\x127\n" +
 	"\x06origin\x18& \x01(\x0e2\x1f.pedido.Pagamento.paymentOriginR\x06origin\x12$\n" +
-	"\rdescontoValor\x18' \x01(\x01R\rdescontoValor\"f\n" +
+	"\rdescontoValor\x18' \x01(\x01R\rdescontoValor\x12+\n" +
+	"\x0eencargos_valor\x18( \x01(\x01B\x04\xe2A\x01\x03R\rencargosValor\"f\n" +
 	"\rpaymentOrigin\x12\x1e\n" +
 	"\x1aPAYMENT_ORIGIN_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15PAYMENT_ORIGIN_ONLINE\x10\x01\x12\x1a\n" +

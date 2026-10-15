@@ -554,6 +554,8 @@ type Transaction struct {
 	TestEnvironment bool `protobuf:"varint,40,opt,name=test_environment,json=testEnvironment,proto3" json:"test_environment,omitempty"`
 	// Desconto da forma de pagamento já abatido de value, congelado na criação da cobrança
 	DescontoValor float64 `protobuf:"fixed64,41,opt,name=desconto_valor,json=descontoValor,proto3" json:"desconto_valor,omitempty"`
+	// Juros e multa do atraso já somados a value, congelados na criação da cobrança
+	EncargosValor float64 `protobuf:"fixed64,42,opt,name=encargos_valor,json=encargosValor,proto3" json:"encargos_valor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -871,6 +873,13 @@ func (x *Transaction) GetTestEnvironment() bool {
 func (x *Transaction) GetDescontoValor() float64 {
 	if x != nil {
 		return x.DescontoValor
+	}
+	return 0
+}
+
+func (x *Transaction) GetEncargosValor() float64 {
+	if x != nil {
+		return x.EncargosValor
 	}
 	return 0
 }
@@ -2912,7 +2921,7 @@ var File_apps_vendas_transaction_transaction_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_transaction_transaction_proto_rawDesc = "" +
 	"\n" +
-	")apps/vendas/transaction/transaction.proto\x12\bcheckout\x1a\x1dplugins/service/service.proto\x1a\x1fplugins/validate/validate.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fapps/vendas/pedido/pedido.proto\x1a\x18apps/report/report.proto\"\x93\x0f\n" +
+	")apps/vendas/transaction/transaction.proto\x12\bcheckout\x1a\x1dplugins/service/service.proto\x1a\x1fplugins/validate/validate.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fapps/vendas/pedido/pedido.proto\x1a\x18apps/report/report.proto\"\xc0\x0f\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -2959,7 +2968,8 @@ const file_apps_vendas_transaction_transaction_proto_rawDesc = "" +
 	"\x0efraud_analysis\x18& \x01(\v2\x17.checkout.FraudAnalysisR\rfraudAnalysis\x12;\n" +
 	"\rmanual_review\x18' \x01(\v2\x16.checkout.ManualReviewR\fmanualReview\x12)\n" +
 	"\x10test_environment\x18( \x01(\bR\x0ftestEnvironment\x12%\n" +
-	"\x0edesconto_valor\x18) \x01(\x01R\rdescontoValor:*\xc0>\x01\xeaA$\x12\"checkout.transaction/{transaction}\"\xc9\x02\n" +
+	"\x0edesconto_valor\x18) \x01(\x01R\rdescontoValor\x12+\n" +
+	"\x0eencargos_valor\x18* \x01(\x01B\x04\xe2A\x01\x03R\rencargosValor:*\xc0>\x01\xeaA$\x12\"checkout.transaction/{transaction}\"\xc9\x02\n" +
 	"\x12TransactionHistory\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1b\n" +
