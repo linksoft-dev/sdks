@@ -8,6 +8,7 @@ package billingplan
 
 import (
 	metadata "github.com/linksoft-dev/sdks/go/pb/common/metadata"
+	filter "github.com/linksoft-dev/sdks/go/pb/filter"
 	_ "github.com/linksoft-dev/sdks/go/pb/plugins/service"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -319,11 +320,9 @@ type BillingPlan struct {
 	PularFeriados bool `protobuf:"varint,28,opt,name=pular_feriados,json=pularFeriados,proto3" json:"pular_feriados,omitempty"`
 	// Hora do envio, de 6 a 22 (horário de Brasília). Zero = 10h
 	Hora int32 `protobuf:"varint,29,opt,name=hora,proto3" json:"hora,omitempty"`
-	// Critérios sobre o documento. Tags: cobra só o documento com ao menos uma delas
-	Tags []string `protobuf:"bytes,30,rep,name=tags,proto3" json:"tags,omitempty"`
-	// Faixa de valor do documento. Zero = sem limite
-	ValorMinimo float64 `protobuf:"fixed64,31,opt,name=valor_minimo,json=valorMinimo,proto3" json:"valor_minimo,omitempty"`
-	ValorMaximo float64 `protobuf:"fixed64,32,opt,name=valor_maximo,json=valorMaximo,proto3" json:"valor_maximo,omitempty"`
+	// Critérios sobre o documento, com os campos do filtro da listagem do tipo cobrado
+	// (conditions e or_conditions). Vazio: todos os documentos pendentes do tipo.
+	Filtro *filter.Filter `protobuf:"bytes,38,opt,name=filtro,proto3" json:"filtro,omitempty"`
 	// Layouts de impressão do documento que vão em PDF anexos ao e-mail da cobrança
 	Anexos []string `protobuf:"bytes,33,rep,name=anexos,proto3" json:"anexos,omitempty"`
 	// Conta de SMS que envia a cobrança, um SMS por documento.
@@ -561,25 +560,11 @@ func (x *BillingPlan) GetHora() int32 {
 	return 0
 }
 
-func (x *BillingPlan) GetTags() []string {
+func (x *BillingPlan) GetFiltro() *filter.Filter {
 	if x != nil {
-		return x.Tags
+		return x.Filtro
 	}
 	return nil
-}
-
-func (x *BillingPlan) GetValorMinimo() float64 {
-	if x != nil {
-		return x.ValorMinimo
-	}
-	return 0
-}
-
-func (x *BillingPlan) GetValorMaximo() float64 {
-	if x != nil {
-		return x.ValorMaximo
-	}
-	return 0
 }
 
 func (x *BillingPlan) GetAnexos() []string {
@@ -621,7 +606,7 @@ var File_apps_vendas_billingplan_billingplan_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"\n" +
-	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xeb\n" +
+	")apps/vendas/billingplan/billingplan.proto\x12\vbillingplan\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb2\n" +
 	"\n" +
 	"\vBillingPlan\x129\n" +
 	"\n" +
@@ -658,10 +643,8 @@ const file_apps_vendas_billingplan_billingplan_proto_rawDesc = "" +
 	"diasLimite\x12-\n" +
 	"\x13pular_fim_de_semana\x18\x1b \x01(\bR\x10pularFimDeSemana\x12%\n" +
 	"\x0epular_feriados\x18\x1c \x01(\bR\rpularFeriados\x12\x12\n" +
-	"\x04hora\x18\x1d \x01(\x05R\x04hora\x12\x12\n" +
-	"\x04tags\x18\x1e \x03(\tR\x04tags\x12!\n" +
-	"\fvalor_minimo\x18\x1f \x01(\x01R\vvalorMinimo\x12!\n" +
-	"\fvalor_maximo\x18  \x01(\x01R\vvalorMaximo\x12\x16\n" +
+	"\x04hora\x18\x1d \x01(\x05R\x04hora\x12\x1f\n" +
+	"\x06filtro\x18& \x01(\v2\a.FilterR\x06filtro\x12\x16\n" +
 	"\x06anexos\x18! \x03(\tR\x06anexos\x12,\n" +
 	"\x12sms_integration_id\x18\" \x01(\tR\x10smsIntegrationId\x12\"\n" +
 	"\rdias_de_envio\x18# \x03(\x05R\vdiasDeEnvio\x12=\n" +
@@ -714,22 +697,24 @@ var file_apps_vendas_billingplan_billingplan_proto_goTypes = []any{
 	(*BillingPlan)(nil),           // 5: billingplan.BillingPlan
 	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
 	(*metadata.BasicFields)(nil),  // 7: metadata.BasicFields
+	(*filter.Filter)(nil),         // 8: Filter
 }
 var file_apps_vendas_billingplan_billingplan_proto_depIdxs = []int32{
-	6, // 0: billingplan.BillingPlan.created_at:type_name -> google.protobuf.Timestamp
-	6, // 1: billingplan.BillingPlan.updated_at:type_name -> google.protobuf.Timestamp
-	7, // 2: billingplan.BillingPlan.fields:type_name -> metadata.BasicFields
-	0, // 3: billingplan.BillingPlan.situacao:type_name -> billingplan.Situacao
-	1, // 4: billingplan.BillingPlan.tipo_grupo:type_name -> billingplan.TipoGrupo
-	2, // 5: billingplan.BillingPlan.agenda:type_name -> billingplan.Agenda
-	6, // 6: billingplan.BillingPlan.cobrar_a_partir_de:type_name -> google.protobuf.Timestamp
-	3, // 7: billingplan.BillingPlan.canais:type_name -> billingplan.Canal
-	4, // 8: billingplan.BillingPlan.destinatario:type_name -> billingplan.Destinatario
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	6,  // 0: billingplan.BillingPlan.created_at:type_name -> google.protobuf.Timestamp
+	6,  // 1: billingplan.BillingPlan.updated_at:type_name -> google.protobuf.Timestamp
+	7,  // 2: billingplan.BillingPlan.fields:type_name -> metadata.BasicFields
+	0,  // 3: billingplan.BillingPlan.situacao:type_name -> billingplan.Situacao
+	1,  // 4: billingplan.BillingPlan.tipo_grupo:type_name -> billingplan.TipoGrupo
+	2,  // 5: billingplan.BillingPlan.agenda:type_name -> billingplan.Agenda
+	6,  // 6: billingplan.BillingPlan.cobrar_a_partir_de:type_name -> google.protobuf.Timestamp
+	3,  // 7: billingplan.BillingPlan.canais:type_name -> billingplan.Canal
+	8,  // 8: billingplan.BillingPlan.filtro:type_name -> Filter
+	4,  // 9: billingplan.BillingPlan.destinatario:type_name -> billingplan.Destinatario
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_billingplan_billingplan_proto_init() }

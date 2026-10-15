@@ -1,6 +1,7 @@
 import datetime
 
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
+from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as _metadata_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
@@ -62,7 +63,7 @@ DESTINATARIO_TODOS_CONTATOS: Destinatario
 DESTINATARIO_CONTATOS_COBRANCA: Destinatario
 
 class BillingPlan(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "name", "start_days", "interval_days", "max_billings", "situacao", "tipo_documento", "tipo_grupo", "grupo_id", "grupo_nome", "pessoa_id", "pessoa_nome", "agenda", "dias_do_mes", "cobrar_a_partir_de", "canais", "email_integration_id", "whatsapp_integration_id", "dias_limite", "pular_fim_de_semana", "pular_feriados", "hora", "tags", "valor_minimo", "valor_maximo", "anexos", "sms_integration_id", "dias_de_envio", "destinatario", "anexar_boleto")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "name", "start_days", "interval_days", "max_billings", "situacao", "tipo_documento", "tipo_grupo", "grupo_id", "grupo_nome", "pessoa_id", "pessoa_nome", "agenda", "dias_do_mes", "cobrar_a_partir_de", "canais", "email_integration_id", "whatsapp_integration_id", "dias_limite", "pular_fim_de_semana", "pular_feriados", "hora", "filtro", "anexos", "sms_integration_id", "dias_de_envio", "destinatario", "anexar_boleto")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -90,9 +91,7 @@ class BillingPlan(_message.Message):
     PULAR_FIM_DE_SEMANA_FIELD_NUMBER: _ClassVar[int]
     PULAR_FERIADOS_FIELD_NUMBER: _ClassVar[int]
     HORA_FIELD_NUMBER: _ClassVar[int]
-    TAGS_FIELD_NUMBER: _ClassVar[int]
-    VALOR_MINIMO_FIELD_NUMBER: _ClassVar[int]
-    VALOR_MAXIMO_FIELD_NUMBER: _ClassVar[int]
+    FILTRO_FIELD_NUMBER: _ClassVar[int]
     ANEXOS_FIELD_NUMBER: _ClassVar[int]
     SMS_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     DIAS_DE_ENVIO_FIELD_NUMBER: _ClassVar[int]
@@ -125,12 +124,10 @@ class BillingPlan(_message.Message):
     pular_fim_de_semana: bool
     pular_feriados: bool
     hora: int
-    tags: _containers.RepeatedScalarFieldContainer[str]
-    valor_minimo: float
-    valor_maximo: float
+    filtro: _filter_pb2.Filter
     anexos: _containers.RepeatedScalarFieldContainer[str]
     sms_integration_id: str
     dias_de_envio: _containers.RepeatedScalarFieldContainer[int]
     destinatario: Destinatario
     anexar_boleto: bool
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., name: _Optional[str] = ..., start_days: _Optional[int] = ..., interval_days: _Optional[int] = ..., max_billings: _Optional[int] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., tipo_documento: _Optional[str] = ..., tipo_grupo: _Optional[_Union[TipoGrupo, str]] = ..., grupo_id: _Optional[str] = ..., grupo_nome: _Optional[str] = ..., pessoa_id: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., agenda: _Optional[_Union[Agenda, str]] = ..., dias_do_mes: _Optional[_Iterable[int]] = ..., cobrar_a_partir_de: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., canais: _Optional[_Iterable[_Union[Canal, str]]] = ..., email_integration_id: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., dias_limite: _Optional[int] = ..., pular_fim_de_semana: _Optional[bool] = ..., pular_feriados: _Optional[bool] = ..., hora: _Optional[int] = ..., tags: _Optional[_Iterable[str]] = ..., valor_minimo: _Optional[float] = ..., valor_maximo: _Optional[float] = ..., anexos: _Optional[_Iterable[str]] = ..., sms_integration_id: _Optional[str] = ..., dias_de_envio: _Optional[_Iterable[int]] = ..., destinatario: _Optional[_Union[Destinatario, str]] = ..., anexar_boleto: _Optional[bool] = ...) -> None: ...
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., name: _Optional[str] = ..., start_days: _Optional[int] = ..., interval_days: _Optional[int] = ..., max_billings: _Optional[int] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., tipo_documento: _Optional[str] = ..., tipo_grupo: _Optional[_Union[TipoGrupo, str]] = ..., grupo_id: _Optional[str] = ..., grupo_nome: _Optional[str] = ..., pessoa_id: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., agenda: _Optional[_Union[Agenda, str]] = ..., dias_do_mes: _Optional[_Iterable[int]] = ..., cobrar_a_partir_de: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., canais: _Optional[_Iterable[_Union[Canal, str]]] = ..., email_integration_id: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., dias_limite: _Optional[int] = ..., pular_fim_de_semana: _Optional[bool] = ..., pular_feriados: _Optional[bool] = ..., hora: _Optional[int] = ..., filtro: _Optional[_Union[_filter_pb2.Filter, _Mapping]] = ..., anexos: _Optional[_Iterable[str]] = ..., sms_integration_id: _Optional[str] = ..., dias_de_envio: _Optional[_Iterable[int]] = ..., destinatario: _Optional[_Union[Destinatario, str]] = ..., anexar_boleto: _Optional[bool] = ...) -> None: ...
