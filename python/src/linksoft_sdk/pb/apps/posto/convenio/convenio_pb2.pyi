@@ -6,6 +6,7 @@ from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as _metadata_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from linksoft_sdk.pb.apps.report import report_pb2 as _report_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -25,7 +26,7 @@ FECHAMENTO_QUINZENAL: Fechamento
 FECHAMENTO_SEMANAL: Fechamento
 
 class Convenio(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "pessoa_id", "pessoa_nome", "ativo", "fechamento", "dia_fechamento", "prazo_vencimento_dias", "forma_pagamento_id", "forma_pagamento_nome", "emite_nfe", "exige_km", "exige_motorista", "bloqueia_atraso_dias", "obs")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "pessoa_id", "pessoa_nome", "ativo", "fechamento", "dia_fechamento", "prazo_vencimento_dias", "forma_pagamento_id", "forma_pagamento_nome", "emite_nfe", "exige_km", "exige_motorista", "bloqueia_atraso_dias", "obs", "exige_veiculo_cadastrado", "mensagem_pdv", "vias_comprovante", "nfe_na_fatura")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -45,6 +46,10 @@ class Convenio(_message.Message):
     EXIGE_MOTORISTA_FIELD_NUMBER: _ClassVar[int]
     BLOQUEIA_ATRASO_DIAS_FIELD_NUMBER: _ClassVar[int]
     OBS_FIELD_NUMBER: _ClassVar[int]
+    EXIGE_VEICULO_CADASTRADO_FIELD_NUMBER: _ClassVar[int]
+    MENSAGEM_PDV_FIELD_NUMBER: _ClassVar[int]
+    VIAS_COMPROVANTE_FIELD_NUMBER: _ClassVar[int]
+    NFE_NA_FATURA_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -64,7 +69,11 @@ class Convenio(_message.Message):
     exige_motorista: bool
     bloqueia_atraso_dias: int
     obs: str
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., pessoa_id: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., ativo: _Optional[bool] = ..., fechamento: _Optional[_Union[Fechamento, str]] = ..., dia_fechamento: _Optional[int] = ..., prazo_vencimento_dias: _Optional[int] = ..., forma_pagamento_id: _Optional[str] = ..., forma_pagamento_nome: _Optional[str] = ..., emite_nfe: _Optional[bool] = ..., exige_km: _Optional[bool] = ..., exige_motorista: _Optional[bool] = ..., bloqueia_atraso_dias: _Optional[int] = ..., obs: _Optional[str] = ...) -> None: ...
+    exige_veiculo_cadastrado: bool
+    mensagem_pdv: str
+    vias_comprovante: int
+    nfe_na_fatura: bool
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., pessoa_id: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., ativo: _Optional[bool] = ..., fechamento: _Optional[_Union[Fechamento, str]] = ..., dia_fechamento: _Optional[int] = ..., prazo_vencimento_dias: _Optional[int] = ..., forma_pagamento_id: _Optional[str] = ..., forma_pagamento_nome: _Optional[str] = ..., emite_nfe: _Optional[bool] = ..., exige_km: _Optional[bool] = ..., exige_motorista: _Optional[bool] = ..., bloqueia_atraso_dias: _Optional[int] = ..., obs: _Optional[str] = ..., exige_veiculo_cadastrado: _Optional[bool] = ..., mensagem_pdv: _Optional[str] = ..., vias_comprovante: _Optional[int] = ..., nfe_na_fatura: _Optional[bool] = ...) -> None: ...
 
 class CreateRequest(_message.Message):
     __slots__ = ("convenio",)
@@ -147,11 +156,31 @@ class FaturaRequest(_message.Message):
     def __init__(self, id: _Optional[str] = ...) -> None: ...
 
 class FaturaResponse(_message.Message):
-    __slots__ = ("conta_id", "titulos", "valor")
+    __slots__ = ("conta_id", "titulos", "valor", "avisos")
     CONTA_ID_FIELD_NUMBER: _ClassVar[int]
     TITULOS_FIELD_NUMBER: _ClassVar[int]
     VALOR_FIELD_NUMBER: _ClassVar[int]
+    AVISOS_FIELD_NUMBER: _ClassVar[int]
     conta_id: str
     titulos: int
     valor: float
-    def __init__(self, conta_id: _Optional[str] = ..., titulos: _Optional[int] = ..., valor: _Optional[float] = ...) -> None: ...
+    avisos: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, conta_id: _Optional[str] = ..., titulos: _Optional[int] = ..., valor: _Optional[float] = ..., avisos: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class ExtratoRequest(_message.Message):
+    __slots__ = ("fatura_id", "convenio_id", "data_inicial", "data_final")
+    FATURA_ID_FIELD_NUMBER: _ClassVar[int]
+    CONVENIO_ID_FIELD_NUMBER: _ClassVar[int]
+    DATA_INICIAL_FIELD_NUMBER: _ClassVar[int]
+    DATA_FINAL_FIELD_NUMBER: _ClassVar[int]
+    fatura_id: str
+    convenio_id: str
+    data_inicial: _timestamp_pb2.Timestamp
+    data_final: _timestamp_pb2.Timestamp
+    def __init__(self, fatura_id: _Optional[str] = ..., convenio_id: _Optional[str] = ..., data_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ExtratoResponse(_message.Message):
+    __slots__ = ("response",)
+    RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    response: _report_pb2.Response
+    def __init__(self, response: _Optional[_Union[_report_pb2.Response, _Mapping]] = ...) -> None: ...

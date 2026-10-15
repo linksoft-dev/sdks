@@ -7,6 +7,7 @@
 package convenio
 
 import (
+	report "github.com/linksoft-dev/sdks/go/pb/apps/report"
 	metadata "github.com/linksoft-dev/sdks/go/pb/common/metadata"
 	filter "github.com/linksoft-dev/sdks/go/pb/filter"
 	_ "github.com/linksoft-dev/sdks/go/pb/plugins/service"
@@ -108,8 +109,17 @@ type Convenio struct {
 	// Recusa a venda quando o cliente tem título vencido há mais que estes dias. Zero não bloqueia.
 	BloqueiaAtrasoDias int32  `protobuf:"varint,18,opt,name=bloqueia_atraso_dias,json=bloqueiaAtrasoDias,proto3" json:"bloqueia_atraso_dias,omitempty"`
 	Obs                string `protobuf:"bytes,19,opt,name=obs,proto3" json:"obs,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// Só veículos cadastrados: a venda do cliente exige a placa de um veículo ativo dele. Desligado,
+	// a placa que não está no cadastro pode ser cadastrada no próprio caixa.
+	ExigeVeiculoCadastrado bool `protobuf:"varint,20,opt,name=exige_veiculo_cadastrado,json=exigeVeiculoCadastrado,proto3" json:"exige_veiculo_cadastrado,omitempty"`
+	// Aviso mostrado no caixa quando a venda é para o cliente do convênio.
+	MensagemPdv string `protobuf:"bytes,21,opt,name=mensagem_pdv,json=mensagemPdv,proto3" json:"mensagem_pdv,omitempty"`
+	// Vias do comprovante de venda a prazo que o motorista assina. Zero imprime uma.
+	ViasComprovante int32 `protobuf:"varint,22,opt,name=vias_comprovante,json=viasComprovante,proto3" json:"vias_comprovante,omitempty"`
+	// A venda não tem nota no caixa: as vendas do período saem numa NF-e só, emitida com a fatura.
+	NfeNaFatura   bool `protobuf:"varint,24,opt,name=nfe_na_fatura,json=nfeNaFatura,proto3" json:"nfe_na_fatura,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Convenio) Reset() {
@@ -273,6 +283,34 @@ func (x *Convenio) GetObs() string {
 		return x.Obs
 	}
 	return ""
+}
+
+func (x *Convenio) GetExigeVeiculoCadastrado() bool {
+	if x != nil {
+		return x.ExigeVeiculoCadastrado
+	}
+	return false
+}
+
+func (x *Convenio) GetMensagemPdv() string {
+	if x != nil {
+		return x.MensagemPdv
+	}
+	return ""
+}
+
+func (x *Convenio) GetViasComprovante() int32 {
+	if x != nil {
+		return x.ViasComprovante
+	}
+	return 0
+}
+
+func (x *Convenio) GetNfeNaFatura() bool {
+	if x != nil {
+		return x.NfeNaFatura
+	}
+	return false
 }
 
 type CreateRequest struct {
@@ -818,9 +856,11 @@ func (x *FaturaRequest) GetId() string {
 type FaturaResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Id da conta a receber da fatura; vazio quando não havia título em aberto.
-	ContaId       string  `protobuf:"bytes,1,opt,name=conta_id,json=contaId,proto3" json:"conta_id,omitempty"`
-	Titulos       int32   `protobuf:"varint,2,opt,name=titulos,proto3" json:"titulos,omitempty"`
-	Valor         float64 `protobuf:"fixed64,3,opt,name=valor,proto3" json:"valor,omitempty"`
+	ContaId string  `protobuf:"bytes,1,opt,name=conta_id,json=contaId,proto3" json:"conta_id,omitempty"`
+	Titulos int32   `protobuf:"varint,2,opt,name=titulos,proto3" json:"titulos,omitempty"`
+	Valor   float64 `protobuf:"fixed64,3,opt,name=valor,proto3" json:"valor,omitempty"`
+	// O que não saiu depois da fatura gravada: boleto, NF-e do período ou envio ao cliente.
+	Avisos        []string `protobuf:"bytes,4,rep,name=avisos,proto3" json:"avisos,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -876,11 +916,132 @@ func (x *FaturaResponse) GetValor() float64 {
 	return 0
 }
 
+func (x *FaturaResponse) GetAvisos() []string {
+	if x != nil {
+		return x.Avisos
+	}
+	return nil
+}
+
+type ExtratoRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Conta a receber da fatura.
+	FaturaId string `protobuf:"bytes,1,opt,name=fatura_id,json=faturaId,proto3" json:"fatura_id,omitempty"`
+	// Sem fatura: convênio e período das vendas.
+	ConvenioId    string                 `protobuf:"bytes,2,opt,name=convenio_id,json=convenioId,proto3" json:"convenio_id,omitempty"`
+	DataInicial   *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=data_inicial,json=dataInicial,proto3" json:"data_inicial,omitempty"`
+	DataFinal     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=data_final,json=dataFinal,proto3" json:"data_final,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExtratoRequest) Reset() {
+	*x = ExtratoRequest{}
+	mi := &file_apps_posto_convenio_convenio_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExtratoRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExtratoRequest) ProtoMessage() {}
+
+func (x *ExtratoRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_posto_convenio_convenio_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExtratoRequest.ProtoReflect.Descriptor instead.
+func (*ExtratoRequest) Descriptor() ([]byte, []int) {
+	return file_apps_posto_convenio_convenio_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ExtratoRequest) GetFaturaId() string {
+	if x != nil {
+		return x.FaturaId
+	}
+	return ""
+}
+
+func (x *ExtratoRequest) GetConvenioId() string {
+	if x != nil {
+		return x.ConvenioId
+	}
+	return ""
+}
+
+func (x *ExtratoRequest) GetDataInicial() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataInicial
+	}
+	return nil
+}
+
+func (x *ExtratoRequest) GetDataFinal() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataFinal
+	}
+	return nil
+}
+
+type ExtratoResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Response      *report.Response       `protobuf:"bytes,1,opt,name=response,proto3" json:"response,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExtratoResponse) Reset() {
+	*x = ExtratoResponse{}
+	mi := &file_apps_posto_convenio_convenio_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExtratoResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExtratoResponse) ProtoMessage() {}
+
+func (x *ExtratoResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_posto_convenio_convenio_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExtratoResponse.ProtoReflect.Descriptor instead.
+func (*ExtratoResponse) Descriptor() ([]byte, []int) {
+	return file_apps_posto_convenio_convenio_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ExtratoResponse) GetResponse() *report.Response {
+	if x != nil {
+		return x.Response
+	}
+	return nil
+}
+
 var File_apps_posto_convenio_convenio_proto protoreflect.FileDescriptor
 
 const file_apps_posto_convenio_convenio_proto_rawDesc = "" +
 	"\n" +
-	"\"apps/posto/convenio/convenio.proto\x12\bconvenio\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\x06\n" +
+	"\"apps/posto/convenio/convenio.proto\x12\bconvenio\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xd1\a\n" +
 	"\bConvenio\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -907,7 +1068,11 @@ const file_apps_posto_convenio_convenio_proto_rawDesc = "" +
 	"\x0fexige_motorista\x18\x11 \x01(\bR\x0eexigeMotorista\x12<\n" +
 	"\x14bloqueia_atraso_dias\x18\x12 \x01(\x05B\n" +
 	"\xfaB\a\x1a\x05\x18\xed\x02(\x00R\x12bloqueiaAtrasoDias\x12\x1a\n" +
-	"\x03obs\x18\x13 \x01(\tB\b\xfaB\x05r\x03\x18\xf4\x03R\x03obs:\x03\xc0>\x01\"?\n" +
+	"\x03obs\x18\x13 \x01(\tB\b\xfaB\x05r\x03\x18\xf4\x03R\x03obs\x128\n" +
+	"\x18exige_veiculo_cadastrado\x18\x14 \x01(\bR\x16exigeVeiculoCadastrado\x12+\n" +
+	"\fmensagem_pdv\x18\x15 \x01(\tB\b\xfaB\x05r\x03\x18\xc8\x01R\vmensagemPdv\x124\n" +
+	"\x10vias_comprovante\x18\x16 \x01(\x05B\t\xfaB\x06\x1a\x04\x18\x03(\x00R\x0fviasComprovante\x12\"\n" +
+	"\rnfe_na_fatura\x18\x18 \x01(\bR\vnfeNaFatura:\x03\xc0>\x01\"?\n" +
 	"\rCreateRequest\x12.\n" +
 	"\bconvenio\x18\x01 \x01(\v2\x12.convenio.ConvenioR\bconvenio\"@\n" +
 	"\x0eCreateResponse\x12.\n" +
@@ -939,23 +1104,34 @@ const file_apps_posto_convenio_convenio_proto_rawDesc = "" +
 	"\rconvenio_list\x18\x01 \x03(\v2\x12.convenio.ConvenioR\fconvenioList\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x1f\n" +
 	"\rFaturaRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"[\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"s\n" +
 	"\x0eFaturaResponse\x12\x19\n" +
 	"\bconta_id\x18\x01 \x01(\tR\acontaId\x12\x18\n" +
 	"\atitulos\x18\x02 \x01(\x05R\atitulos\x12\x14\n" +
-	"\x05valor\x18\x03 \x01(\x01R\x05valor*U\n" +
+	"\x05valor\x18\x03 \x01(\x01R\x05valor\x12\x16\n" +
+	"\x06avisos\x18\x04 \x03(\tR\x06avisos\"\xc8\x01\n" +
+	"\x0eExtratoRequest\x12\x1b\n" +
+	"\tfatura_id\x18\x01 \x01(\tR\bfaturaId\x12\x1f\n" +
+	"\vconvenio_id\x18\x02 \x01(\tR\n" +
+	"convenioId\x12=\n" +
+	"\fdata_inicial\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vdataInicial\x129\n" +
+	"\n" +
+	"data_final\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tdataFinal\"?\n" +
+	"\x0fExtratoResponse\x12,\n" +
+	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse*U\n" +
 	"\n" +
 	"Fechamento\x12\x15\n" +
 	"\x11FECHAMENTO_MENSAL\x10\x00\x12\x18\n" +
 	"\x14FECHAMENTO_QUINZENAL\x10\x01\x12\x16\n" +
-	"\x12FECHAMENTO_SEMANAL\x10\x022\xd9\x04\n" +
+	"\x12FECHAMENTO_SEMANAL\x10\x022\xc2\x05\n" +
 	"\x0fConvenioService\x12c\n" +
 	"\x06Create\x12\x17.convenio.CreateRequest\x1a\x18.convenio.CreateResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/posto/convenios/create\x12c\n" +
 	"\x06Update\x12\x17.convenio.UpdateRequest\x1a\x18.convenio.UpdateResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\x1a\x1b/api/posto/convenios/update\x12^\n" +
 	"\x06Delete\x12\x17.convenio.DeleteRequest\x1a\x18.convenio.DeleteResponse\"!\x82\xd3\xe4\x93\x02\x1b*\x19/api/posto/convenios/{id}\x12U\n" +
 	"\x03Get\x12\x14.convenio.GetRequest\x1a\x15.convenio.GetResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/posto/convenios/{id}\x12[\n" +
 	"\x04List\x12\x15.convenio.ListRequest\x1a\x16.convenio.ListResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/posto/convenios/list\x12h\n" +
-	"\x06Fatura\x12\x17.convenio.FaturaRequest\x1a\x18.convenio.FaturaResponse\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/posto/convenios/{id}/faturaB\x95\x01\n" +
+	"\x06Fatura\x12\x17.convenio.FaturaRequest\x1a\x18.convenio.FaturaResponse\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/posto/convenios/{id}/fatura\x12g\n" +
+	"\aExtrato\x12\x18.convenio.ExtratoRequest\x1a\x19.convenio.ExtratoResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/posto/convenios/extratoB\x95\x01\n" +
 	"\fcom.convenioB\rConvenioProtoP\x01Z6github.com/linksoft-dev/sdks/go/pb/apps/posto/convenio\xa2\x02\x03CXX\xaa\x02\bConvenio\xca\x02\bConvenio\xe2\x02\x14Convenio\\GPBMetadata\xea\x02\bConveniob\x06proto3"
 
 var (
@@ -971,7 +1147,7 @@ func file_apps_posto_convenio_convenio_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_posto_convenio_convenio_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_apps_posto_convenio_convenio_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_apps_posto_convenio_convenio_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_apps_posto_convenio_convenio_proto_goTypes = []any{
 	(Fechamento)(0),               // 0: convenio.Fechamento
 	(*Convenio)(nil),              // 1: convenio.Convenio
@@ -987,41 +1163,49 @@ var file_apps_posto_convenio_convenio_proto_goTypes = []any{
 	(*ListResponse)(nil),          // 11: convenio.ListResponse
 	(*FaturaRequest)(nil),         // 12: convenio.FaturaRequest
 	(*FaturaResponse)(nil),        // 13: convenio.FaturaResponse
-	(*timestamppb.Timestamp)(nil), // 14: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),  // 15: metadata.BasicFields
-	(*metadata.FieldMask)(nil),    // 16: metadata.FieldMask
-	(*filter.Filter)(nil),         // 17: Filter
+	(*ExtratoRequest)(nil),        // 14: convenio.ExtratoRequest
+	(*ExtratoResponse)(nil),       // 15: convenio.ExtratoResponse
+	(*timestamppb.Timestamp)(nil), // 16: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),  // 17: metadata.BasicFields
+	(*metadata.FieldMask)(nil),    // 18: metadata.FieldMask
+	(*filter.Filter)(nil),         // 19: Filter
+	(*report.Response)(nil),       // 20: report.Response
 }
 var file_apps_posto_convenio_convenio_proto_depIdxs = []int32{
-	14, // 0: convenio.Convenio.created_at:type_name -> google.protobuf.Timestamp
-	14, // 1: convenio.Convenio.updated_at:type_name -> google.protobuf.Timestamp
-	15, // 2: convenio.Convenio.fields:type_name -> metadata.BasicFields
+	16, // 0: convenio.Convenio.created_at:type_name -> google.protobuf.Timestamp
+	16, // 1: convenio.Convenio.updated_at:type_name -> google.protobuf.Timestamp
+	17, // 2: convenio.Convenio.fields:type_name -> metadata.BasicFields
 	0,  // 3: convenio.Convenio.fechamento:type_name -> convenio.Fechamento
 	1,  // 4: convenio.CreateRequest.convenio:type_name -> convenio.Convenio
 	1,  // 5: convenio.CreateResponse.convenio:type_name -> convenio.Convenio
 	1,  // 6: convenio.UpdateRequest.convenio:type_name -> convenio.Convenio
-	16, // 7: convenio.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	18, // 7: convenio.UpdateRequest.update_mask:type_name -> metadata.FieldMask
 	1,  // 8: convenio.UpdateResponse.convenio:type_name -> convenio.Convenio
 	1,  // 9: convenio.GetResponse.convenio:type_name -> convenio.Convenio
-	17, // 10: convenio.ListRequest.filter:type_name -> Filter
+	19, // 10: convenio.ListRequest.filter:type_name -> Filter
 	1,  // 11: convenio.ListResponse.convenio_list:type_name -> convenio.Convenio
-	2,  // 12: convenio.ConvenioService.Create:input_type -> convenio.CreateRequest
-	4,  // 13: convenio.ConvenioService.Update:input_type -> convenio.UpdateRequest
-	6,  // 14: convenio.ConvenioService.Delete:input_type -> convenio.DeleteRequest
-	8,  // 15: convenio.ConvenioService.Get:input_type -> convenio.GetRequest
-	10, // 16: convenio.ConvenioService.List:input_type -> convenio.ListRequest
-	12, // 17: convenio.ConvenioService.Fatura:input_type -> convenio.FaturaRequest
-	3,  // 18: convenio.ConvenioService.Create:output_type -> convenio.CreateResponse
-	5,  // 19: convenio.ConvenioService.Update:output_type -> convenio.UpdateResponse
-	7,  // 20: convenio.ConvenioService.Delete:output_type -> convenio.DeleteResponse
-	9,  // 21: convenio.ConvenioService.Get:output_type -> convenio.GetResponse
-	11, // 22: convenio.ConvenioService.List:output_type -> convenio.ListResponse
-	13, // 23: convenio.ConvenioService.Fatura:output_type -> convenio.FaturaResponse
-	18, // [18:24] is the sub-list for method output_type
-	12, // [12:18] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	16, // 12: convenio.ExtratoRequest.data_inicial:type_name -> google.protobuf.Timestamp
+	16, // 13: convenio.ExtratoRequest.data_final:type_name -> google.protobuf.Timestamp
+	20, // 14: convenio.ExtratoResponse.response:type_name -> report.Response
+	2,  // 15: convenio.ConvenioService.Create:input_type -> convenio.CreateRequest
+	4,  // 16: convenio.ConvenioService.Update:input_type -> convenio.UpdateRequest
+	6,  // 17: convenio.ConvenioService.Delete:input_type -> convenio.DeleteRequest
+	8,  // 18: convenio.ConvenioService.Get:input_type -> convenio.GetRequest
+	10, // 19: convenio.ConvenioService.List:input_type -> convenio.ListRequest
+	12, // 20: convenio.ConvenioService.Fatura:input_type -> convenio.FaturaRequest
+	14, // 21: convenio.ConvenioService.Extrato:input_type -> convenio.ExtratoRequest
+	3,  // 22: convenio.ConvenioService.Create:output_type -> convenio.CreateResponse
+	5,  // 23: convenio.ConvenioService.Update:output_type -> convenio.UpdateResponse
+	7,  // 24: convenio.ConvenioService.Delete:output_type -> convenio.DeleteResponse
+	9,  // 25: convenio.ConvenioService.Get:output_type -> convenio.GetResponse
+	11, // 26: convenio.ConvenioService.List:output_type -> convenio.ListResponse
+	13, // 27: convenio.ConvenioService.Fatura:output_type -> convenio.FaturaResponse
+	15, // 28: convenio.ConvenioService.Extrato:output_type -> convenio.ExtratoResponse
+	22, // [22:29] is the sub-list for method output_type
+	15, // [15:22] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_apps_posto_convenio_convenio_proto_init() }
@@ -1035,7 +1219,7 @@ func file_apps_posto_convenio_convenio_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_posto_convenio_convenio_proto_rawDesc), len(file_apps_posto_convenio_convenio_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   13,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

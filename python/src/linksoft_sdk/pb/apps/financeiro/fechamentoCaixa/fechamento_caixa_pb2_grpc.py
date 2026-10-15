@@ -75,6 +75,21 @@ class FechamentoCaixaServiceStub:
                 request_serializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FechamentoCaixaValeDiferencaRequest.SerializeToString,
                 response_deserializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FechamentoCaixaValeDiferencaResponse.FromString,
                 _registered_method=True)
+        self.ResumoGeral = channel.unary_unary(
+                '/fechamentocaixa.FechamentoCaixaService/ResumoGeral',
+                request_serializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralRequest.SerializeToString,
+                response_deserializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralResponse.FromString,
+                _registered_method=True)
+        self.EnviaResumoGeral = channel.unary_unary(
+                '/fechamentocaixa.FechamentoCaixaService/EnviaResumoGeral',
+                request_serializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralRequest.SerializeToString,
+                response_deserializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralResponse.FromString,
+                _registered_method=True)
+        self.FormasFechamento = channel.unary_unary(
+                '/fechamentocaixa.FechamentoCaixaService/FormasFechamento',
+                request_serializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FormasFechamentoRequest.SerializeToString,
+                response_deserializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FormasFechamentoResponse.FromString,
+                _registered_method=True)
 
 
 class FechamentoCaixaServiceServicer:
@@ -154,6 +169,29 @@ class FechamentoCaixaServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ResumoGeral(self, request, context):
+        """Resumo de todos os caixas no período: entradas, saídas, formas de pagamento, sangrias por
+        modalidade, pagamentos e o fechamento de cada operador.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def EnviaResumoGeral(self, request, context):
+        """Envia o resumo geral do período a quem recebe o aviso de fechamento geral de caixa.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def FormasFechamento(self, request, context):
+        """Vendas e recebimentos do fechamento por meio de pagamento e bandeira, e as sangrias por
+        modalidade, no período exato do fechamento.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_FechamentoCaixaServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -216,6 +254,21 @@ def add_FechamentoCaixaServiceServicer_to_server(servicer, server):
                     servicer.FechamentoCaixaValeDiferenca,
                     request_deserializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FechamentoCaixaValeDiferencaRequest.FromString,
                     response_serializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FechamentoCaixaValeDiferencaResponse.SerializeToString,
+            ),
+            'ResumoGeral': grpc.unary_unary_rpc_method_handler(
+                    servicer.ResumoGeral,
+                    request_deserializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralRequest.FromString,
+                    response_serializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralResponse.SerializeToString,
+            ),
+            'EnviaResumoGeral': grpc.unary_unary_rpc_method_handler(
+                    servicer.EnviaResumoGeral,
+                    request_deserializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralRequest.FromString,
+                    response_serializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralResponse.SerializeToString,
+            ),
+            'FormasFechamento': grpc.unary_unary_rpc_method_handler(
+                    servicer.FormasFechamento,
+                    request_deserializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FormasFechamentoRequest.FromString,
+                    response_serializer=apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FormasFechamentoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -543,6 +596,87 @@ class FechamentoCaixaService:
             '/fechamentocaixa.FechamentoCaixaService/FechamentoCaixaValeDiferenca',
             apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FechamentoCaixaValeDiferencaRequest.SerializeToString,
             apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FechamentoCaixaValeDiferencaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ResumoGeral(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/fechamentocaixa.FechamentoCaixaService/ResumoGeral',
+            apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralRequest.SerializeToString,
+            apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def EnviaResumoGeral(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/fechamentocaixa.FechamentoCaixaService/EnviaResumoGeral',
+            apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralRequest.SerializeToString,
+            apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.ResumoGeralResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FormasFechamento(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/fechamentocaixa.FechamentoCaixaService/FormasFechamento',
+            apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FormasFechamentoRequest.SerializeToString,
+            apps_dot_financeiro_dot_fechamentoCaixa_dot_fechamento__caixa__pb2.FormasFechamentoResponse.FromString,
             options,
             channel_credentials,
             insecure,

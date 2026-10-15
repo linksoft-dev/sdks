@@ -325,7 +325,7 @@ class VouchContactResponse(_message.Message):
     def __init__(self, msg: _Optional[str] = ..., contact: _Optional[_Union[Contact, _Mapping]] = ...) -> None: ...
 
 class Contact(_message.Message):
-    __slots__ = ("id", "name", "email", "phone", "by_whats_app", "by_sms", "by_email", "email_verified_at", "phone_verified_at", "email_vouch", "phone_vouch", "verification_code", "verification_channel", "receives_billing")
+    __slots__ = ("id", "name", "email", "phone", "by_whats_app", "by_sms", "by_email", "email_verified_at", "phone_verified_at", "email_vouch", "phone_vouch", "verification_code", "verification_channel", "receives_billing", "alerts")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
@@ -340,6 +340,7 @@ class Contact(_message.Message):
     VERIFICATION_CODE_FIELD_NUMBER: _ClassVar[int]
     VERIFICATION_CHANNEL_FIELD_NUMBER: _ClassVar[int]
     RECEIVES_BILLING_FIELD_NUMBER: _ClassVar[int]
+    ALERTS_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     email: str
@@ -354,7 +355,18 @@ class Contact(_message.Message):
     verification_code: str
     verification_channel: str
     receives_billing: bool
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., phone: _Optional[str] = ..., by_whats_app: _Optional[bool] = ..., by_sms: _Optional[bool] = ..., by_email: _Optional[bool] = ..., email_verified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., phone_verified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., email_vouch: _Optional[_Union[ContactVouch, _Mapping]] = ..., phone_vouch: _Optional[_Union[ContactVouch, _Mapping]] = ..., verification_code: _Optional[str] = ..., verification_channel: _Optional[str] = ..., receives_billing: _Optional[bool] = ...) -> None: ...
+    alerts: _containers.RepeatedCompositeFieldContainer[ContactAlert]
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., phone: _Optional[str] = ..., by_whats_app: _Optional[bool] = ..., by_sms: _Optional[bool] = ..., by_email: _Optional[bool] = ..., email_verified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., phone_verified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., email_vouch: _Optional[_Union[ContactVouch, _Mapping]] = ..., phone_vouch: _Optional[_Union[ContactVouch, _Mapping]] = ..., verification_code: _Optional[str] = ..., verification_channel: _Optional[str] = ..., receives_billing: _Optional[bool] = ..., alerts: _Optional[_Iterable[_Union[ContactAlert, _Mapping]]] = ...) -> None: ...
+
+class ContactAlert(_message.Message):
+    __slots__ = ("event", "email", "whatsapp")
+    EVENT_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    WHATSAPP_FIELD_NUMBER: _ClassVar[int]
+    event: str
+    email: bool
+    whatsapp: bool
+    def __init__(self, event: _Optional[str] = ..., email: _Optional[bool] = ..., whatsapp: _Optional[bool] = ...) -> None: ...
 
 class ContactVouch(_message.Message):
     __slots__ = ("at", "user_id", "user_name")

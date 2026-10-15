@@ -28,9 +28,10 @@ from linksoft_sdk.pb.plugins.service import service_pb2 as plugins_dot_service_d
 from linksoft_sdk.pb.filter import filter_pb2 as filter_dot_filter__pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as common_dot_metadata_dot_metadata__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+from linksoft_sdk.pb.apps.report import report_pb2 as apps_dot_report_dot_report__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"apps/posto/convenio/convenio.proto\x12\x08\x63onvenio\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13\x66ilter/filter.proto\x1a\x1e\x63ommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\x06\n\x08\x43onvenio\x12\x39\n\ncreated_at\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x39\n\nupdated_at\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x17\n\x07user_id\x18\x03 \x01(\tR\x06userId\x12\x1b\n\tuser_name\x18\x04 \x01(\tR\x08userName\x12\x0e\n\x02id\x18\x05 \x01(\tR\x02id\x12-\n\x06\x66ields\x18\x06 \x01(\x0b\x32\x15.metadata.BasicFieldsR\x06\x66ields\x12\x1b\n\tpessoa_id\x18\x07 \x01(\tR\x08pessoaId\x12\x1f\n\x0bpessoa_nome\x18\x08 \x01(\tR\npessoaNome\x12\x14\n\x05\x61tivo\x18\t \x01(\x08R\x05\x61tivo\x12\x34\n\nfechamento\x18\n \x01(\x0e\x32\x14.convenio.FechamentoR\nfechamento\x12\x30\n\x0e\x64ia_fechamento\x18\x0b \x01(\x05\x42\t\xfa\x42\x06\x1a\x04\x18\x1f(\x00R\rdiaFechamento\x12=\n\x15prazo_vencimento_dias\x18\x0c \x01(\x05\x42\t\xfa\x42\x06\x1a\x04\x18x(\x00R\x13prazoVencimentoDias\x12,\n\x12\x66orma_pagamento_id\x18\r \x01(\tR\x10\x66ormaPagamentoId\x12\x30\n\x14\x66orma_pagamento_nome\x18\x0e \x01(\tR\x12\x66ormaPagamentoNome\x12\x1b\n\temite_nfe\x18\x0f \x01(\x08R\x08\x65miteNfe\x12\x19\n\x08\x65xige_km\x18\x10 \x01(\x08R\x07\x65xigeKm\x12\'\n\x0f\x65xige_motorista\x18\x11 \x01(\x08R\x0e\x65xigeMotorista\x12<\n\x14\x62loqueia_atraso_dias\x18\x12 \x01(\x05\x42\n\xfa\x42\x07\x1a\x05\x18\xed\x02(\x00R\x12\x62loqueiaAtrasoDias\x12\x1a\n\x03obs\x18\x13 \x01(\tB\x08\xfa\x42\x05r\x03\x18\xf4\x03R\x03obs:\x03\xc0>\x01\"?\n\rCreateRequest\x12.\n\x08\x63onvenio\x18\x01 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\"@\n\x0e\x43reateResponse\x12.\n\x08\x63onvenio\x18\x01 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\"\x85\x01\n\rUpdateRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12.\n\x08\x63onvenio\x18\x02 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\x12\x34\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x13.metadata.FieldMaskR\nupdateMask\"@\n\x0eUpdateResponse\x12.\n\x08\x63onvenio\x18\x01 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\"3\n\rDeleteRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04hard\x18\x02 \x01(\x08R\x04hard\" \n\x0e\x44\x65leteResponse\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"\x1c\n\nGetRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"=\n\x0bGetResponse\x12.\n\x08\x63onvenio\x18\x01 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\"|\n\x0bListRequest\x12\x10\n\x03ids\x18\x01 \x03(\tR\x03ids\x12\x1b\n\tpage_size\x18\x02 \x01(\rR\x08pageSize\x12\x1d\n\npage_token\x18\x03 \x01(\tR\tpageToken\x12\x1f\n\x06\x66ilter\x18\x05 \x01(\x0b\x32\x07.FilterR\x06\x66ilter\"o\n\x0cListResponse\x12\x37\n\rconvenio_list\x18\x01 \x03(\x0b\x32\x12.convenio.ConvenioR\x0c\x63onvenioList\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x1f\n\rFaturaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"[\n\x0e\x46\x61turaResponse\x12\x19\n\x08\x63onta_id\x18\x01 \x01(\tR\x07\x63ontaId\x12\x18\n\x07titulos\x18\x02 \x01(\x05R\x07titulos\x12\x14\n\x05valor\x18\x03 \x01(\x01R\x05valor*U\n\nFechamento\x12\x15\n\x11\x46\x45\x43HAMENTO_MENSAL\x10\x00\x12\x18\n\x14\x46\x45\x43HAMENTO_QUINZENAL\x10\x01\x12\x16\n\x12\x46\x45\x43HAMENTO_SEMANAL\x10\x02\x32\xd9\x04\n\x0f\x43onvenioService\x12\x63\n\x06\x43reate\x12\x17.convenio.CreateRequest\x1a\x18.convenio.CreateResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/posto/convenios/create\x12\x63\n\x06Update\x12\x17.convenio.UpdateRequest\x1a\x18.convenio.UpdateResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\x1a\x1b/api/posto/convenios/update\x12^\n\x06\x44\x65lete\x12\x17.convenio.DeleteRequest\x1a\x18.convenio.DeleteResponse\"!\x82\xd3\xe4\x93\x02\x1b*\x19/api/posto/convenios/{id}\x12U\n\x03Get\x12\x14.convenio.GetRequest\x1a\x15.convenio.GetResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/posto/convenios/{id}\x12[\n\x04List\x12\x15.convenio.ListRequest\x1a\x16.convenio.ListResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/posto/convenios/list\x12h\n\x06\x46\x61tura\x12\x17.convenio.FaturaRequest\x1a\x18.convenio.FaturaResponse\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/posto/convenios/{id}/faturaB\x1eZ\x1c\x63omps/pb/apps/posto/conveniob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"apps/posto/convenio/convenio.proto\x12\x08\x63onvenio\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13\x66ilter/filter.proto\x1a\x1e\x63ommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18\x61pps/report/report.proto\"\xd1\x07\n\x08\x43onvenio\x12\x39\n\ncreated_at\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x39\n\nupdated_at\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x17\n\x07user_id\x18\x03 \x01(\tR\x06userId\x12\x1b\n\tuser_name\x18\x04 \x01(\tR\x08userName\x12\x0e\n\x02id\x18\x05 \x01(\tR\x02id\x12-\n\x06\x66ields\x18\x06 \x01(\x0b\x32\x15.metadata.BasicFieldsR\x06\x66ields\x12\x1b\n\tpessoa_id\x18\x07 \x01(\tR\x08pessoaId\x12\x1f\n\x0bpessoa_nome\x18\x08 \x01(\tR\npessoaNome\x12\x14\n\x05\x61tivo\x18\t \x01(\x08R\x05\x61tivo\x12\x34\n\nfechamento\x18\n \x01(\x0e\x32\x14.convenio.FechamentoR\nfechamento\x12\x30\n\x0e\x64ia_fechamento\x18\x0b \x01(\x05\x42\t\xfa\x42\x06\x1a\x04\x18\x1f(\x00R\rdiaFechamento\x12=\n\x15prazo_vencimento_dias\x18\x0c \x01(\x05\x42\t\xfa\x42\x06\x1a\x04\x18x(\x00R\x13prazoVencimentoDias\x12,\n\x12\x66orma_pagamento_id\x18\r \x01(\tR\x10\x66ormaPagamentoId\x12\x30\n\x14\x66orma_pagamento_nome\x18\x0e \x01(\tR\x12\x66ormaPagamentoNome\x12\x1b\n\temite_nfe\x18\x0f \x01(\x08R\x08\x65miteNfe\x12\x19\n\x08\x65xige_km\x18\x10 \x01(\x08R\x07\x65xigeKm\x12\'\n\x0f\x65xige_motorista\x18\x11 \x01(\x08R\x0e\x65xigeMotorista\x12<\n\x14\x62loqueia_atraso_dias\x18\x12 \x01(\x05\x42\n\xfa\x42\x07\x1a\x05\x18\xed\x02(\x00R\x12\x62loqueiaAtrasoDias\x12\x1a\n\x03obs\x18\x13 \x01(\tB\x08\xfa\x42\x05r\x03\x18\xf4\x03R\x03obs\x12\x38\n\x18\x65xige_veiculo_cadastrado\x18\x14 \x01(\x08R\x16\x65xigeVeiculoCadastrado\x12+\n\x0cmensagem_pdv\x18\x15 \x01(\tB\x08\xfa\x42\x05r\x03\x18\xc8\x01R\x0bmensagemPdv\x12\x34\n\x10vias_comprovante\x18\x16 \x01(\x05\x42\t\xfa\x42\x06\x1a\x04\x18\x03(\x00R\x0fviasComprovante\x12\"\n\rnfe_na_fatura\x18\x18 \x01(\x08R\x0bnfeNaFatura:\x03\xc0>\x01\"?\n\rCreateRequest\x12.\n\x08\x63onvenio\x18\x01 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\"@\n\x0e\x43reateResponse\x12.\n\x08\x63onvenio\x18\x01 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\"\x85\x01\n\rUpdateRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12.\n\x08\x63onvenio\x18\x02 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\x12\x34\n\x0bupdate_mask\x18\x03 \x01(\x0b\x32\x13.metadata.FieldMaskR\nupdateMask\"@\n\x0eUpdateResponse\x12.\n\x08\x63onvenio\x18\x01 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\"3\n\rDeleteRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n\x04hard\x18\x02 \x01(\x08R\x04hard\" \n\x0e\x44\x65leteResponse\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"\x1c\n\nGetRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"=\n\x0bGetResponse\x12.\n\x08\x63onvenio\x18\x01 \x01(\x0b\x32\x12.convenio.ConvenioR\x08\x63onvenio\"|\n\x0bListRequest\x12\x10\n\x03ids\x18\x01 \x03(\tR\x03ids\x12\x1b\n\tpage_size\x18\x02 \x01(\rR\x08pageSize\x12\x1d\n\npage_token\x18\x03 \x01(\tR\tpageToken\x12\x1f\n\x06\x66ilter\x18\x05 \x01(\x0b\x32\x07.FilterR\x06\x66ilter\"o\n\x0cListResponse\x12\x37\n\rconvenio_list\x18\x01 \x03(\x0b\x32\x12.convenio.ConvenioR\x0c\x63onvenioList\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x1f\n\rFaturaRequest\x12\x0e\n\x02id\x18\x01 \x01(\tR\x02id\"s\n\x0e\x46\x61turaResponse\x12\x19\n\x08\x63onta_id\x18\x01 \x01(\tR\x07\x63ontaId\x12\x18\n\x07titulos\x18\x02 \x01(\x05R\x07titulos\x12\x14\n\x05valor\x18\x03 \x01(\x01R\x05valor\x12\x16\n\x06\x61visos\x18\x04 \x03(\tR\x06\x61visos\"\xc8\x01\n\x0e\x45xtratoRequest\x12\x1b\n\tfatura_id\x18\x01 \x01(\tR\x08\x66\x61turaId\x12\x1f\n\x0b\x63onvenio_id\x18\x02 \x01(\tR\nconvenioId\x12=\n\x0c\x64\x61ta_inicial\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\x0b\x64\x61taInicial\x12\x39\n\ndata_final\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\tdataFinal\"?\n\x0f\x45xtratoResponse\x12,\n\x08response\x18\x01 \x01(\x0b\x32\x10.report.ResponseR\x08response*U\n\nFechamento\x12\x15\n\x11\x46\x45\x43HAMENTO_MENSAL\x10\x00\x12\x18\n\x14\x46\x45\x43HAMENTO_QUINZENAL\x10\x01\x12\x16\n\x12\x46\x45\x43HAMENTO_SEMANAL\x10\x02\x32\xc2\x05\n\x0f\x43onvenioService\x12\x63\n\x06\x43reate\x12\x17.convenio.CreateRequest\x1a\x18.convenio.CreateResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/posto/convenios/create\x12\x63\n\x06Update\x12\x17.convenio.UpdateRequest\x1a\x18.convenio.UpdateResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\x1a\x1b/api/posto/convenios/update\x12^\n\x06\x44\x65lete\x12\x17.convenio.DeleteRequest\x1a\x18.convenio.DeleteResponse\"!\x82\xd3\xe4\x93\x02\x1b*\x19/api/posto/convenios/{id}\x12U\n\x03Get\x12\x14.convenio.GetRequest\x1a\x15.convenio.GetResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/posto/convenios/{id}\x12[\n\x04List\x12\x15.convenio.ListRequest\x1a\x16.convenio.ListResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/posto/convenios/list\x12h\n\x06\x46\x61tura\x12\x17.convenio.FaturaRequest\x1a\x18.convenio.FaturaResponse\"+\x82\xd3\xe4\x93\x02%:\x01*\" /api/posto/convenios/{id}/fatura\x12g\n\x07\x45xtrato\x12\x18.convenio.ExtratoRequest\x1a\x19.convenio.ExtratoResponse\"\'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/posto/convenios/extratoB\x1eZ\x1c\x63omps/pb/apps/posto/conveniob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -46,6 +47,10 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CONVENIO'].fields_by_name['bloqueia_atraso_dias']._serialized_options = b'\372B\007\032\005\030\355\002(\000'
   _globals['_CONVENIO'].fields_by_name['obs']._loaded_options = None
   _globals['_CONVENIO'].fields_by_name['obs']._serialized_options = b'\372B\005r\003\030\364\003'
+  _globals['_CONVENIO'].fields_by_name['mensagem_pdv']._loaded_options = None
+  _globals['_CONVENIO'].fields_by_name['mensagem_pdv']._serialized_options = b'\372B\005r\003\030\310\001'
+  _globals['_CONVENIO'].fields_by_name['vias_comprovante']._loaded_options = None
+  _globals['_CONVENIO'].fields_by_name['vias_comprovante']._serialized_options = b'\372B\006\032\004\030\003(\000'
   _globals['_CONVENIO']._loaded_options = None
   _globals['_CONVENIO']._serialized_options = b'\300>\001'
   _globals['_CONVENIOSERVICE'].methods_by_name['Create']._loaded_options = None
@@ -60,34 +65,40 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CONVENIOSERVICE'].methods_by_name['List']._serialized_options = b'\202\323\344\223\002\036:\001*\"\031/api/posto/convenios/list'
   _globals['_CONVENIOSERVICE'].methods_by_name['Fatura']._loaded_options = None
   _globals['_CONVENIOSERVICE'].methods_by_name['Fatura']._serialized_options = b'\202\323\344\223\002%:\001*\" /api/posto/convenios/{id}/fatura'
-  _globals['_FECHAMENTO']._serialized_start=1893
-  _globals['_FECHAMENTO']._serialized_end=1978
-  _globals['_CONVENIO']._serialized_start=229
-  _globals['_CONVENIO']._serialized_end=1013
-  _globals['_CREATEREQUEST']._serialized_start=1015
-  _globals['_CREATEREQUEST']._serialized_end=1078
-  _globals['_CREATERESPONSE']._serialized_start=1080
-  _globals['_CREATERESPONSE']._serialized_end=1144
-  _globals['_UPDATEREQUEST']._serialized_start=1147
-  _globals['_UPDATEREQUEST']._serialized_end=1280
-  _globals['_UPDATERESPONSE']._serialized_start=1282
-  _globals['_UPDATERESPONSE']._serialized_end=1346
-  _globals['_DELETEREQUEST']._serialized_start=1348
-  _globals['_DELETEREQUEST']._serialized_end=1399
-  _globals['_DELETERESPONSE']._serialized_start=1401
-  _globals['_DELETERESPONSE']._serialized_end=1433
-  _globals['_GETREQUEST']._serialized_start=1435
-  _globals['_GETREQUEST']._serialized_end=1463
-  _globals['_GETRESPONSE']._serialized_start=1465
-  _globals['_GETRESPONSE']._serialized_end=1526
-  _globals['_LISTREQUEST']._serialized_start=1528
-  _globals['_LISTREQUEST']._serialized_end=1652
-  _globals['_LISTRESPONSE']._serialized_start=1654
-  _globals['_LISTRESPONSE']._serialized_end=1765
-  _globals['_FATURAREQUEST']._serialized_start=1767
-  _globals['_FATURAREQUEST']._serialized_end=1798
-  _globals['_FATURARESPONSE']._serialized_start=1800
-  _globals['_FATURARESPONSE']._serialized_end=1891
-  _globals['_CONVENIOSERVICE']._serialized_start=1981
-  _globals['_CONVENIOSERVICE']._serialized_end=2582
+  _globals['_CONVENIOSERVICE'].methods_by_name['Extrato']._loaded_options = None
+  _globals['_CONVENIOSERVICE'].methods_by_name['Extrato']._serialized_options = b'\202\323\344\223\002!:\001*\"\034/api/posto/convenios/extrato'
+  _globals['_FECHAMENTO']._serialized_start=2404
+  _globals['_FECHAMENTO']._serialized_end=2489
+  _globals['_CONVENIO']._serialized_start=255
+  _globals['_CONVENIO']._serialized_end=1232
+  _globals['_CREATEREQUEST']._serialized_start=1234
+  _globals['_CREATEREQUEST']._serialized_end=1297
+  _globals['_CREATERESPONSE']._serialized_start=1299
+  _globals['_CREATERESPONSE']._serialized_end=1363
+  _globals['_UPDATEREQUEST']._serialized_start=1366
+  _globals['_UPDATEREQUEST']._serialized_end=1499
+  _globals['_UPDATERESPONSE']._serialized_start=1501
+  _globals['_UPDATERESPONSE']._serialized_end=1565
+  _globals['_DELETEREQUEST']._serialized_start=1567
+  _globals['_DELETEREQUEST']._serialized_end=1618
+  _globals['_DELETERESPONSE']._serialized_start=1620
+  _globals['_DELETERESPONSE']._serialized_end=1652
+  _globals['_GETREQUEST']._serialized_start=1654
+  _globals['_GETREQUEST']._serialized_end=1682
+  _globals['_GETRESPONSE']._serialized_start=1684
+  _globals['_GETRESPONSE']._serialized_end=1745
+  _globals['_LISTREQUEST']._serialized_start=1747
+  _globals['_LISTREQUEST']._serialized_end=1871
+  _globals['_LISTRESPONSE']._serialized_start=1873
+  _globals['_LISTRESPONSE']._serialized_end=1984
+  _globals['_FATURAREQUEST']._serialized_start=1986
+  _globals['_FATURAREQUEST']._serialized_end=2017
+  _globals['_FATURARESPONSE']._serialized_start=2019
+  _globals['_FATURARESPONSE']._serialized_end=2134
+  _globals['_EXTRATOREQUEST']._serialized_start=2137
+  _globals['_EXTRATOREQUEST']._serialized_end=2337
+  _globals['_EXTRATORESPONSE']._serialized_start=2339
+  _globals['_EXTRATORESPONSE']._serialized_end=2402
+  _globals['_CONVENIOSERVICE']._serialized_start=2492
+  _globals['_CONVENIOSERVICE']._serialized_end=3198
 # @@protoc_insertion_point(module_scope)

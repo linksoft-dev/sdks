@@ -31,6 +31,9 @@ const (
 	FechamentoCaixaService_UpdateApuracao_FullMethodName               = "/fechamentocaixa.FechamentoCaixaService/UpdateApuracao"
 	FechamentoCaixaService_FechamentoCaixaImprimir_FullMethodName      = "/fechamentocaixa.FechamentoCaixaService/FechamentoCaixaImprimir"
 	FechamentoCaixaService_FechamentoCaixaValeDiferenca_FullMethodName = "/fechamentocaixa.FechamentoCaixaService/FechamentoCaixaValeDiferenca"
+	FechamentoCaixaService_ResumoGeral_FullMethodName                  = "/fechamentocaixa.FechamentoCaixaService/ResumoGeral"
+	FechamentoCaixaService_EnviaResumoGeral_FullMethodName             = "/fechamentocaixa.FechamentoCaixaService/EnviaResumoGeral"
+	FechamentoCaixaService_FormasFechamento_FullMethodName             = "/fechamentocaixa.FechamentoCaixaService/FormasFechamento"
 )
 
 // FechamentoCaixaServiceClient is the client API for FechamentoCaixaService service.
@@ -52,6 +55,14 @@ type FechamentoCaixaServiceClient interface {
 	UpdateApuracao(ctx context.Context, in *UpdateApuracaoRequest, opts ...grpc.CallOption) (*UpdateApuracaoResponse, error)
 	FechamentoCaixaImprimir(ctx context.Context, in *FechamentoCaixaImprimirRequest, opts ...grpc.CallOption) (*FechamentoCaixaImprimirResponse, error)
 	FechamentoCaixaValeDiferenca(ctx context.Context, in *FechamentoCaixaValeDiferencaRequest, opts ...grpc.CallOption) (*FechamentoCaixaValeDiferencaResponse, error)
+	// Resumo de todos os caixas no período: entradas, saídas, formas de pagamento, sangrias por
+	// modalidade, pagamentos e o fechamento de cada operador.
+	ResumoGeral(ctx context.Context, in *ResumoGeralRequest, opts ...grpc.CallOption) (*ResumoGeralResponse, error)
+	// Envia o resumo geral do período a quem recebe o aviso de fechamento geral de caixa.
+	EnviaResumoGeral(ctx context.Context, in *ResumoGeralRequest, opts ...grpc.CallOption) (*ResumoGeralResponse, error)
+	// Vendas e recebimentos do fechamento por meio de pagamento e bandeira, e as sangrias por
+	// modalidade, no período exato do fechamento.
+	FormasFechamento(ctx context.Context, in *FormasFechamentoRequest, opts ...grpc.CallOption) (*FormasFechamentoResponse, error)
 }
 
 type fechamentoCaixaServiceClient struct {
@@ -182,6 +193,36 @@ func (c *fechamentoCaixaServiceClient) FechamentoCaixaValeDiferenca(ctx context.
 	return out, nil
 }
 
+func (c *fechamentoCaixaServiceClient) ResumoGeral(ctx context.Context, in *ResumoGeralRequest, opts ...grpc.CallOption) (*ResumoGeralResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResumoGeralResponse)
+	err := c.cc.Invoke(ctx, FechamentoCaixaService_ResumoGeral_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fechamentoCaixaServiceClient) EnviaResumoGeral(ctx context.Context, in *ResumoGeralRequest, opts ...grpc.CallOption) (*ResumoGeralResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ResumoGeralResponse)
+	err := c.cc.Invoke(ctx, FechamentoCaixaService_EnviaResumoGeral_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *fechamentoCaixaServiceClient) FormasFechamento(ctx context.Context, in *FormasFechamentoRequest, opts ...grpc.CallOption) (*FormasFechamentoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FormasFechamentoResponse)
+	err := c.cc.Invoke(ctx, FechamentoCaixaService_FormasFechamento_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FechamentoCaixaServiceServer is the server API for FechamentoCaixaService service.
 // All implementations must embed UnimplementedFechamentoCaixaServiceServer
 // for forward compatibility.
@@ -201,6 +242,14 @@ type FechamentoCaixaServiceServer interface {
 	UpdateApuracao(context.Context, *UpdateApuracaoRequest) (*UpdateApuracaoResponse, error)
 	FechamentoCaixaImprimir(context.Context, *FechamentoCaixaImprimirRequest) (*FechamentoCaixaImprimirResponse, error)
 	FechamentoCaixaValeDiferenca(context.Context, *FechamentoCaixaValeDiferencaRequest) (*FechamentoCaixaValeDiferencaResponse, error)
+	// Resumo de todos os caixas no período: entradas, saídas, formas de pagamento, sangrias por
+	// modalidade, pagamentos e o fechamento de cada operador.
+	ResumoGeral(context.Context, *ResumoGeralRequest) (*ResumoGeralResponse, error)
+	// Envia o resumo geral do período a quem recebe o aviso de fechamento geral de caixa.
+	EnviaResumoGeral(context.Context, *ResumoGeralRequest) (*ResumoGeralResponse, error)
+	// Vendas e recebimentos do fechamento por meio de pagamento e bandeira, e as sangrias por
+	// modalidade, no período exato do fechamento.
+	FormasFechamento(context.Context, *FormasFechamentoRequest) (*FormasFechamentoResponse, error)
 	mustEmbedUnimplementedFechamentoCaixaServiceServer()
 }
 
@@ -246,6 +295,15 @@ func (UnimplementedFechamentoCaixaServiceServer) FechamentoCaixaImprimir(context
 }
 func (UnimplementedFechamentoCaixaServiceServer) FechamentoCaixaValeDiferenca(context.Context, *FechamentoCaixaValeDiferencaRequest) (*FechamentoCaixaValeDiferencaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method FechamentoCaixaValeDiferenca not implemented")
+}
+func (UnimplementedFechamentoCaixaServiceServer) ResumoGeral(context.Context, *ResumoGeralRequest) (*ResumoGeralResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ResumoGeral not implemented")
+}
+func (UnimplementedFechamentoCaixaServiceServer) EnviaResumoGeral(context.Context, *ResumoGeralRequest) (*ResumoGeralResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method EnviaResumoGeral not implemented")
+}
+func (UnimplementedFechamentoCaixaServiceServer) FormasFechamento(context.Context, *FormasFechamentoRequest) (*FormasFechamentoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method FormasFechamento not implemented")
 }
 func (UnimplementedFechamentoCaixaServiceServer) mustEmbedUnimplementedFechamentoCaixaServiceServer() {
 }
@@ -485,6 +543,60 @@ func _FechamentoCaixaService_FechamentoCaixaValeDiferenca_Handler(srv interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FechamentoCaixaService_ResumoGeral_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResumoGeralRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FechamentoCaixaServiceServer).ResumoGeral(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FechamentoCaixaService_ResumoGeral_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FechamentoCaixaServiceServer).ResumoGeral(ctx, req.(*ResumoGeralRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FechamentoCaixaService_EnviaResumoGeral_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResumoGeralRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FechamentoCaixaServiceServer).EnviaResumoGeral(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FechamentoCaixaService_EnviaResumoGeral_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FechamentoCaixaServiceServer).EnviaResumoGeral(ctx, req.(*ResumoGeralRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FechamentoCaixaService_FormasFechamento_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FormasFechamentoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FechamentoCaixaServiceServer).FormasFechamento(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: FechamentoCaixaService_FormasFechamento_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FechamentoCaixaServiceServer).FormasFechamento(ctx, req.(*FormasFechamentoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FechamentoCaixaService_ServiceDesc is the grpc.ServiceDesc for FechamentoCaixaService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -539,6 +651,18 @@ var FechamentoCaixaService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FechamentoCaixaValeDiferenca",
 			Handler:    _FechamentoCaixaService_FechamentoCaixaValeDiferenca_Handler,
+		},
+		{
+			MethodName: "ResumoGeral",
+			Handler:    _FechamentoCaixaService_ResumoGeral_Handler,
+		},
+		{
+			MethodName: "EnviaResumoGeral",
+			Handler:    _FechamentoCaixaService_EnviaResumoGeral_Handler,
+		},
+		{
+			MethodName: "FormasFechamento",
+			Handler:    _FechamentoCaixaService_FormasFechamento_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

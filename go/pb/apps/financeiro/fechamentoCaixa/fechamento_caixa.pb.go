@@ -1054,6 +1054,7 @@ type AceitaFechamentoRequest struct {
 	RealizarSangria  bool                   `protobuf:"varint,2,opt,name=realizarSangria,proto3" json:"realizarSangria,omitempty"` // ao aceitar, retira o dinheiro apurado do caixa do operador
 	CaixaDestinoId   string                 `protobuf:"bytes,3,opt,name=caixaDestinoId,proto3" json:"caixaDestinoId,omitempty"`    // se informado, transfere o valor para este caixa; senão apenas retira (sangria)
 	CaixaDestinoNome string                 `protobuf:"bytes,4,opt,name=caixaDestinoNome,proto3" json:"caixaDestinoNome,omitempty"`
+	LancaFalta       bool                   `protobuf:"varint,5,opt,name=lanca_falta,json=lancaFalta,proto3" json:"lanca_falta,omitempty"` // ao aceitar com falta, lança o valor como conta a receber da pessoa ligada ao usuário do caixa
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -1114,6 +1115,13 @@ func (x *AceitaFechamentoRequest) GetCaixaDestinoNome() string {
 		return x.CaixaDestinoNome
 	}
 	return ""
+}
+
+func (x *AceitaFechamentoRequest) GetLancaFalta() bool {
+	if x != nil {
+		return x.LancaFalta
+	}
+	return false
 }
 
 type AceitaFechamentoResponse struct {
@@ -1692,6 +1700,599 @@ func (x *FechamentoCaixaValeDiferencaResponse) GetResponse() *report.Response {
 	return nil
 }
 
+type ResumoGeralRequest struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	DataHoraInicial *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=data_hora_inicial,json=dataHoraInicial,proto3" json:"data_hora_inicial,omitempty"`
+	DataHoraFinal   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=data_hora_final,json=dataHoraFinal,proto3" json:"data_hora_final,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ResumoGeralRequest) Reset() {
+	*x = ResumoGeralRequest{}
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResumoGeralRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResumoGeralRequest) ProtoMessage() {}
+
+func (x *ResumoGeralRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResumoGeralRequest.ProtoReflect.Descriptor instead.
+func (*ResumoGeralRequest) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *ResumoGeralRequest) GetDataHoraInicial() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataHoraInicial
+	}
+	return nil
+}
+
+func (x *ResumoGeralRequest) GetDataHoraFinal() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataHoraFinal
+	}
+	return nil
+}
+
+type ResumoGeralResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	DataHoraInicial *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=data_hora_inicial,json=dataHoraInicial,proto3" json:"data_hora_inicial,omitempty"`
+	DataHoraFinal   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=data_hora_final,json=dataHoraFinal,proto3" json:"data_hora_final,omitempty"`
+	TrocoAbertura   float64                `protobuf:"fixed64,3,opt,name=troco_abertura,json=trocoAbertura,proto3" json:"troco_abertura,omitempty"`
+	Vendas          float64                `protobuf:"fixed64,4,opt,name=vendas,proto3" json:"vendas,omitempty"`
+	// Vendas com pagamento no caixa.
+	QuantidadeVendas int32   `protobuf:"varint,5,opt,name=quantidade_vendas,json=quantidadeVendas,proto3" json:"quantidade_vendas,omitempty"`
+	Recebimentos     float64 `protobuf:"fixed64,6,opt,name=recebimentos,proto3" json:"recebimentos,omitempty"`
+	Suprimentos      float64 `protobuf:"fixed64,7,opt,name=suprimentos,proto3" json:"suprimentos,omitempty"`
+	TotalEntradas    float64 `protobuf:"fixed64,8,opt,name=total_entradas,json=totalEntradas,proto3" json:"total_entradas,omitempty"`
+	Pagamentos       float64 `protobuf:"fixed64,9,opt,name=pagamentos,proto3" json:"pagamentos,omitempty"`
+	Sangrias         float64 `protobuf:"fixed64,10,opt,name=sangrias,proto3" json:"sangrias,omitempty"`
+	TotalSaidas      float64 `protobuf:"fixed64,11,opt,name=total_saidas,json=totalSaidas,proto3" json:"total_saidas,omitempty"`
+	// Entradas menos saídas: o que ainda está nos caixas.
+	Saldo float64 `protobuf:"fixed64,12,opt,name=saldo,proto3" json:"saldo,omitempty"`
+	// Soma das diferenças dos fechamentos dos operadores no período (informado menos apurado).
+	Diferenca float64 `protobuf:"fixed64,13,opt,name=diferenca,proto3" json:"diferenca,omitempty"`
+	// Vendas e recebimentos por modalidade.
+	FormasPagamento       []*ResumoGeralTotal      `protobuf:"bytes,14,rep,name=formas_pagamento,json=formasPagamento,proto3" json:"formas_pagamento,omitempty"`
+	SangriasPorModalidade []*ResumoGeralTotal      `protobuf:"bytes,15,rep,name=sangrias_por_modalidade,json=sangriasPorModalidade,proto3" json:"sangrias_por_modalidade,omitempty"`
+	PagamentosLista       []*ResumoGeralLancamento `protobuf:"bytes,16,rep,name=pagamentos_lista,json=pagamentosLista,proto3" json:"pagamentos_lista,omitempty"`
+	Operadores            []*ResumoGeralOperador   `protobuf:"bytes,17,rep,name=operadores,proto3" json:"operadores,omitempty"`
+	// Movimentos lançados à mão ou transferências entre caixas.
+	OutrasEntradas float64 `protobuf:"fixed64,18,opt,name=outras_entradas,json=outrasEntradas,proto3" json:"outras_entradas,omitempty"`
+	OutrasSaidas   float64 `protobuf:"fixed64,19,opt,name=outras_saidas,json=outrasSaidas,proto3" json:"outras_saidas,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ResumoGeralResponse) Reset() {
+	*x = ResumoGeralResponse{}
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResumoGeralResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResumoGeralResponse) ProtoMessage() {}
+
+func (x *ResumoGeralResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResumoGeralResponse.ProtoReflect.Descriptor instead.
+func (*ResumoGeralResponse) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *ResumoGeralResponse) GetDataHoraInicial() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataHoraInicial
+	}
+	return nil
+}
+
+func (x *ResumoGeralResponse) GetDataHoraFinal() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataHoraFinal
+	}
+	return nil
+}
+
+func (x *ResumoGeralResponse) GetTrocoAbertura() float64 {
+	if x != nil {
+		return x.TrocoAbertura
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetVendas() float64 {
+	if x != nil {
+		return x.Vendas
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetQuantidadeVendas() int32 {
+	if x != nil {
+		return x.QuantidadeVendas
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetRecebimentos() float64 {
+	if x != nil {
+		return x.Recebimentos
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetSuprimentos() float64 {
+	if x != nil {
+		return x.Suprimentos
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetTotalEntradas() float64 {
+	if x != nil {
+		return x.TotalEntradas
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetPagamentos() float64 {
+	if x != nil {
+		return x.Pagamentos
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetSangrias() float64 {
+	if x != nil {
+		return x.Sangrias
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetTotalSaidas() float64 {
+	if x != nil {
+		return x.TotalSaidas
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetSaldo() float64 {
+	if x != nil {
+		return x.Saldo
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetDiferenca() float64 {
+	if x != nil {
+		return x.Diferenca
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetFormasPagamento() []*ResumoGeralTotal {
+	if x != nil {
+		return x.FormasPagamento
+	}
+	return nil
+}
+
+func (x *ResumoGeralResponse) GetSangriasPorModalidade() []*ResumoGeralTotal {
+	if x != nil {
+		return x.SangriasPorModalidade
+	}
+	return nil
+}
+
+func (x *ResumoGeralResponse) GetPagamentosLista() []*ResumoGeralLancamento {
+	if x != nil {
+		return x.PagamentosLista
+	}
+	return nil
+}
+
+func (x *ResumoGeralResponse) GetOperadores() []*ResumoGeralOperador {
+	if x != nil {
+		return x.Operadores
+	}
+	return nil
+}
+
+func (x *ResumoGeralResponse) GetOutrasEntradas() float64 {
+	if x != nil {
+		return x.OutrasEntradas
+	}
+	return 0
+}
+
+func (x *ResumoGeralResponse) GetOutrasSaidas() float64 {
+	if x != nil {
+		return x.OutrasSaidas
+	}
+	return 0
+}
+
+type FormasFechamentoRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // ID do fechamento
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FormasFechamentoRequest) Reset() {
+	*x = FormasFechamentoRequest{}
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FormasFechamentoRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FormasFechamentoRequest) ProtoMessage() {}
+
+func (x *FormasFechamentoRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FormasFechamentoRequest.ProtoReflect.Descriptor instead.
+func (*FormasFechamentoRequest) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *FormasFechamentoRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type FormasFechamentoResponse struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	FormasPagamento       []*ResumoGeralTotal    `protobuf:"bytes,1,rep,name=formas_pagamento,json=formasPagamento,proto3" json:"formas_pagamento,omitempty"`
+	SangriasPorModalidade []*ResumoGeralTotal    `protobuf:"bytes,2,rep,name=sangrias_por_modalidade,json=sangriasPorModalidade,proto3" json:"sangrias_por_modalidade,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *FormasFechamentoResponse) Reset() {
+	*x = FormasFechamentoResponse{}
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FormasFechamentoResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FormasFechamentoResponse) ProtoMessage() {}
+
+func (x *FormasFechamentoResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FormasFechamentoResponse.ProtoReflect.Descriptor instead.
+func (*FormasFechamentoResponse) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *FormasFechamentoResponse) GetFormasPagamento() []*ResumoGeralTotal {
+	if x != nil {
+		return x.FormasPagamento
+	}
+	return nil
+}
+
+func (x *FormasFechamentoResponse) GetSangriasPorModalidade() []*ResumoGeralTotal {
+	if x != nil {
+		return x.SangriasPorModalidade
+	}
+	return nil
+}
+
+type ResumoGeralTotal struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Modalidade    string                 `protobuf:"bytes,1,opt,name=modalidade,proto3" json:"modalidade,omitempty"`
+	Quantidade    int32                  `protobuf:"varint,2,opt,name=quantidade,proto3" json:"quantidade,omitempty"`
+	Valor         float64                `protobuf:"fixed64,3,opt,name=valor,proto3" json:"valor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResumoGeralTotal) Reset() {
+	*x = ResumoGeralTotal{}
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResumoGeralTotal) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResumoGeralTotal) ProtoMessage() {}
+
+func (x *ResumoGeralTotal) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResumoGeralTotal.ProtoReflect.Descriptor instead.
+func (*ResumoGeralTotal) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *ResumoGeralTotal) GetModalidade() string {
+	if x != nil {
+		return x.Modalidade
+	}
+	return ""
+}
+
+func (x *ResumoGeralTotal) GetQuantidade() int32 {
+	if x != nil {
+		return x.Quantidade
+	}
+	return 0
+}
+
+func (x *ResumoGeralTotal) GetValor() float64 {
+	if x != nil {
+		return x.Valor
+	}
+	return 0
+}
+
+type ResumoGeralLancamento struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Descricao     string                 `protobuf:"bytes,1,opt,name=descricao,proto3" json:"descricao,omitempty"`
+	Categoria     string                 `protobuf:"bytes,2,opt,name=categoria,proto3" json:"categoria,omitempty"`
+	Operador      string                 `protobuf:"bytes,3,opt,name=operador,proto3" json:"operador,omitempty"`
+	Modalidade    string                 `protobuf:"bytes,4,opt,name=modalidade,proto3" json:"modalidade,omitempty"`
+	Valor         float64                `protobuf:"fixed64,5,opt,name=valor,proto3" json:"valor,omitempty"`
+	DataHora      *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=data_hora,json=dataHora,proto3" json:"data_hora,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResumoGeralLancamento) Reset() {
+	*x = ResumoGeralLancamento{}
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResumoGeralLancamento) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResumoGeralLancamento) ProtoMessage() {}
+
+func (x *ResumoGeralLancamento) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResumoGeralLancamento.ProtoReflect.Descriptor instead.
+func (*ResumoGeralLancamento) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *ResumoGeralLancamento) GetDescricao() string {
+	if x != nil {
+		return x.Descricao
+	}
+	return ""
+}
+
+func (x *ResumoGeralLancamento) GetCategoria() string {
+	if x != nil {
+		return x.Categoria
+	}
+	return ""
+}
+
+func (x *ResumoGeralLancamento) GetOperador() string {
+	if x != nil {
+		return x.Operador
+	}
+	return ""
+}
+
+func (x *ResumoGeralLancamento) GetModalidade() string {
+	if x != nil {
+		return x.Modalidade
+	}
+	return ""
+}
+
+func (x *ResumoGeralLancamento) GetValor() float64 {
+	if x != nil {
+		return x.Valor
+	}
+	return 0
+}
+
+func (x *ResumoGeralLancamento) GetDataHora() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataHora
+	}
+	return nil
+}
+
+type ResumoGeralOperador struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	FechamentoId    string                 `protobuf:"bytes,1,opt,name=fechamento_id,json=fechamentoId,proto3" json:"fechamento_id,omitempty"`
+	Numero          int32                  `protobuf:"varint,2,opt,name=numero,proto3" json:"numero,omitempty"`
+	Operador        string                 `protobuf:"bytes,3,opt,name=operador,proto3" json:"operador,omitempty"`
+	Situacao        string                 `protobuf:"bytes,4,opt,name=situacao,proto3" json:"situacao,omitempty"`
+	DataHoraInicial *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=data_hora_inicial,json=dataHoraInicial,proto3" json:"data_hora_inicial,omitempty"`
+	DataHoraFinal   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=data_hora_final,json=dataHoraFinal,proto3" json:"data_hora_final,omitempty"`
+	Apurado         float64                `protobuf:"fixed64,7,opt,name=apurado,proto3" json:"apurado,omitempty"`
+	Informado       float64                `protobuf:"fixed64,8,opt,name=informado,proto3" json:"informado,omitempty"`
+	Diferenca       float64                `protobuf:"fixed64,9,opt,name=diferenca,proto3" json:"diferenca,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *ResumoGeralOperador) Reset() {
+	*x = ResumoGeralOperador{}
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResumoGeralOperador) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResumoGeralOperador) ProtoMessage() {}
+
+func (x *ResumoGeralOperador) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResumoGeralOperador.ProtoReflect.Descriptor instead.
+func (*ResumoGeralOperador) Descriptor() ([]byte, []int) {
+	return file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *ResumoGeralOperador) GetFechamentoId() string {
+	if x != nil {
+		return x.FechamentoId
+	}
+	return ""
+}
+
+func (x *ResumoGeralOperador) GetNumero() int32 {
+	if x != nil {
+		return x.Numero
+	}
+	return 0
+}
+
+func (x *ResumoGeralOperador) GetOperador() string {
+	if x != nil {
+		return x.Operador
+	}
+	return ""
+}
+
+func (x *ResumoGeralOperador) GetSituacao() string {
+	if x != nil {
+		return x.Situacao
+	}
+	return ""
+}
+
+func (x *ResumoGeralOperador) GetDataHoraInicial() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataHoraInicial
+	}
+	return nil
+}
+
+func (x *ResumoGeralOperador) GetDataHoraFinal() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DataHoraFinal
+	}
+	return nil
+}
+
+func (x *ResumoGeralOperador) GetApurado() float64 {
+	if x != nil {
+		return x.Apurado
+	}
+	return 0
+}
+
+func (x *ResumoGeralOperador) GetInformado() float64 {
+	if x != nil {
+		return x.Informado
+	}
+	return 0
+}
+
+func (x *ResumoGeralOperador) GetDiferenca() float64 {
+	if x != nil {
+		return x.Diferenca
+	}
+	return 0
+}
+
 var File_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto protoreflect.FileDescriptor
 
 const file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDesc = "" +
@@ -1778,12 +2379,14 @@ const file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDesc = "" +
 	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse\"\x99\x01\n" +
 	"\x1bListFechamentoCaixaResponse\x12R\n" +
 	"\x13fechamentoCaixaList\x18\x01 \x03(\v2 .fechamentocaixa.FechamentoCaixaR\x13fechamentoCaixaList\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa7\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xc8\x01\n" +
 	"\x17AceitaFechamentoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12(\n" +
 	"\x0frealizarSangria\x18\x02 \x01(\bR\x0frealizarSangria\x12&\n" +
 	"\x0ecaixaDestinoId\x18\x03 \x01(\tR\x0ecaixaDestinoId\x12*\n" +
-	"\x10caixaDestinoNome\x18\x04 \x01(\tR\x10caixaDestinoNome\"f\n" +
+	"\x10caixaDestinoNome\x18\x04 \x01(\tR\x10caixaDestinoNome\x12\x1f\n" +
+	"\vlanca_falta\x18\x05 \x01(\bR\n" +
+	"lancaFalta\"f\n" +
 	"\x18AceitaFechamentoResponse\x12J\n" +
 	"\x0ffechamentoCaixa\x18\x01 \x01(\v2 .fechamentocaixa.FechamentoCaixaR\x0ffechamentoCaixa\"B\n" +
 	"\x18RejeitaFechamentoRequest\x12\x0e\n" +
@@ -1817,7 +2420,67 @@ const file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDesc = "" +
 	"#FechamentoCaixaValeDiferencaRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"T\n" +
 	"$FechamentoCaixaValeDiferencaResponse\x12,\n" +
-	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse2\xb9\x0e\n" +
+	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse\"\xa0\x01\n" +
+	"\x12ResumoGeralRequest\x12F\n" +
+	"\x11data_hora_inicial\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraInicial\x12B\n" +
+	"\x0fdata_hora_final\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\rdataHoraFinal\"\x9d\a\n" +
+	"\x13ResumoGeralResponse\x12F\n" +
+	"\x11data_hora_inicial\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraInicial\x12B\n" +
+	"\x0fdata_hora_final\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\rdataHoraFinal\x12%\n" +
+	"\x0etroco_abertura\x18\x03 \x01(\x01R\rtrocoAbertura\x12\x16\n" +
+	"\x06vendas\x18\x04 \x01(\x01R\x06vendas\x12+\n" +
+	"\x11quantidade_vendas\x18\x05 \x01(\x05R\x10quantidadeVendas\x12\"\n" +
+	"\frecebimentos\x18\x06 \x01(\x01R\frecebimentos\x12 \n" +
+	"\vsuprimentos\x18\a \x01(\x01R\vsuprimentos\x12%\n" +
+	"\x0etotal_entradas\x18\b \x01(\x01R\rtotalEntradas\x12\x1e\n" +
+	"\n" +
+	"pagamentos\x18\t \x01(\x01R\n" +
+	"pagamentos\x12\x1a\n" +
+	"\bsangrias\x18\n" +
+	" \x01(\x01R\bsangrias\x12!\n" +
+	"\ftotal_saidas\x18\v \x01(\x01R\vtotalSaidas\x12\x14\n" +
+	"\x05saldo\x18\f \x01(\x01R\x05saldo\x12\x1c\n" +
+	"\tdiferenca\x18\r \x01(\x01R\tdiferenca\x12L\n" +
+	"\x10formas_pagamento\x18\x0e \x03(\v2!.fechamentocaixa.ResumoGeralTotalR\x0fformasPagamento\x12Y\n" +
+	"\x17sangrias_por_modalidade\x18\x0f \x03(\v2!.fechamentocaixa.ResumoGeralTotalR\x15sangriasPorModalidade\x12Q\n" +
+	"\x10pagamentos_lista\x18\x10 \x03(\v2&.fechamentocaixa.ResumoGeralLancamentoR\x0fpagamentosLista\x12D\n" +
+	"\n" +
+	"operadores\x18\x11 \x03(\v2$.fechamentocaixa.ResumoGeralOperadorR\n" +
+	"operadores\x12'\n" +
+	"\x0foutras_entradas\x18\x12 \x01(\x01R\x0eoutrasEntradas\x12#\n" +
+	"\routras_saidas\x18\x13 \x01(\x01R\foutrasSaidas\")\n" +
+	"\x17FormasFechamentoRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xc3\x01\n" +
+	"\x18FormasFechamentoResponse\x12L\n" +
+	"\x10formas_pagamento\x18\x01 \x03(\v2!.fechamentocaixa.ResumoGeralTotalR\x0fformasPagamento\x12Y\n" +
+	"\x17sangrias_por_modalidade\x18\x02 \x03(\v2!.fechamentocaixa.ResumoGeralTotalR\x15sangriasPorModalidade\"h\n" +
+	"\x10ResumoGeralTotal\x12\x1e\n" +
+	"\n" +
+	"modalidade\x18\x01 \x01(\tR\n" +
+	"modalidade\x12\x1e\n" +
+	"\n" +
+	"quantidade\x18\x02 \x01(\x05R\n" +
+	"quantidade\x12\x14\n" +
+	"\x05valor\x18\x03 \x01(\x01R\x05valor\"\xde\x01\n" +
+	"\x15ResumoGeralLancamento\x12\x1c\n" +
+	"\tdescricao\x18\x01 \x01(\tR\tdescricao\x12\x1c\n" +
+	"\tcategoria\x18\x02 \x01(\tR\tcategoria\x12\x1a\n" +
+	"\boperador\x18\x03 \x01(\tR\boperador\x12\x1e\n" +
+	"\n" +
+	"modalidade\x18\x04 \x01(\tR\n" +
+	"modalidade\x12\x14\n" +
+	"\x05valor\x18\x05 \x01(\x01R\x05valor\x127\n" +
+	"\tdata_hora\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\bdataHora\"\xec\x02\n" +
+	"\x13ResumoGeralOperador\x12#\n" +
+	"\rfechamento_id\x18\x01 \x01(\tR\ffechamentoId\x12\x16\n" +
+	"\x06numero\x18\x02 \x01(\x05R\x06numero\x12\x1a\n" +
+	"\boperador\x18\x03 \x01(\tR\boperador\x12\x1a\n" +
+	"\bsituacao\x18\x04 \x01(\tR\bsituacao\x12F\n" +
+	"\x11data_hora_inicial\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraInicial\x12B\n" +
+	"\x0fdata_hora_final\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\rdataHoraFinal\x12\x18\n" +
+	"\aapurado\x18\a \x01(\x01R\aapurado\x12\x1c\n" +
+	"\tinformado\x18\b \x01(\x01R\tinformado\x12\x1c\n" +
+	"\tdiferenca\x18\t \x01(\x01R\tdiferenca2\xeb\x11\n" +
 	"\x16FechamentoCaixaService\x12\x89\x01\n" +
 	"\x06Create\x12-.fechamentocaixa.CreateFechamentoCaixaRequest\x1a..fechamentocaixa.CreateFechamentoCaixaResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/fechamento-caixa\x12\x89\x01\n" +
 	"\x06Update\x12-.fechamentocaixa.UpdateFechamentoCaixaRequest\x1a..fechamentocaixa.UpdateFechamentoCaixaResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\x1a\x15/api/fechamento-caixa\x12\x8b\x01\n" +
@@ -1830,7 +2493,10 @@ const file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDesc = "" +
 	"\x15FechamentoCaixaRapido\x12-.fechamentocaixa.FechamentoCaixaRapidoRequest\x1a..fechamentocaixa.FechamentoCaixaRapidoResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/fechamento-caixa/rapido\x12\xa0\x01\n" +
 	"\x0eUpdateApuracao\x12&.fechamentocaixa.UpdateApuracaoRequest\x1a'.fechamentocaixa.UpdateApuracaoResponse\"=\x82\xd3\xe4\x93\x027:\x01*\x1a2/api/fechamento-caixa/{fechamentoCaixaId}/apuracao\x12\xa7\x01\n" +
 	"\x17FechamentoCaixaImprimir\x12/.fechamentocaixa.FechamentoCaixaImprimirRequest\x1a0.fechamentocaixa.FechamentoCaixaImprimirResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/fechamento-caixa/imprimir\x12\xbc\x01\n" +
-	"\x1cFechamentoCaixaValeDiferenca\x124.fechamentocaixa.FechamentoCaixaValeDiferencaRequest\x1a5.fechamentocaixa.FechamentoCaixaValeDiferencaResponse\"/\x82\xd3\xe4\x93\x02):\x01*\"$/api/fechamento-caixa/vale-diferencaB\xcb\x01\n" +
+	"\x1cFechamentoCaixaValeDiferenca\x124.fechamentocaixa.FechamentoCaixaValeDiferencaRequest\x1a5.fechamentocaixa.FechamentoCaixaValeDiferencaResponse\"/\x82\xd3\xe4\x93\x02):\x01*\"$/api/fechamento-caixa/vale-diferenca\x12\x87\x01\n" +
+	"\vResumoGeral\x12#.fechamentocaixa.ResumoGeralRequest\x1a$.fechamentocaixa.ResumoGeralResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/fechamento-caixa/resumo-geral\x12\x92\x01\n" +
+	"\x10EnviaResumoGeral\x12#.fechamentocaixa.ResumoGeralRequest\x1a$.fechamentocaixa.ResumoGeralResponse\"3\x82\xd3\xe4\x93\x02-:\x01*\"(/api/fechamento-caixa/resumo-geral/envia\x12\x90\x01\n" +
+	"\x10FormasFechamento\x12(.fechamentocaixa.FormasFechamentoRequest\x1a).fechamentocaixa.FormasFechamentoResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/fechamento-caixa/formasB\xcb\x01\n" +
 	"\x13com.fechamentocaixaB\x14FechamentoCaixaProtoP\x01ZBgithub.com/linksoft-dev/sdks/go/pb/apps/financeiro/fechamentoCaixa\xa2\x02\x03FXX\xaa\x02\x0fFechamentocaixa\xca\x02\x0fFechamentocaixa\xe2\x02\x1bFechamentocaixa\\GPBMetadata\xea\x02\x0fFechamentocaixab\x06proto3"
 
 var (
@@ -1845,7 +2511,7 @@ func file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescGZIP() [
 	return file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDescData
 }
 
-var file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
+var file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
 var file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_goTypes = []any{
 	(*FechamentoCaixa)(nil),                      // 0: fechamentocaixa.FechamentoCaixa
 	(*Apuracao)(nil),                             // 1: fechamentocaixa.Apuracao
@@ -1873,72 +2539,98 @@ var file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_goTypes = []any{
 	(*FechamentoCaixaImprimirResponse)(nil),      // 23: fechamentocaixa.FechamentoCaixaImprimirResponse
 	(*FechamentoCaixaValeDiferencaRequest)(nil),  // 24: fechamentocaixa.FechamentoCaixaValeDiferencaRequest
 	(*FechamentoCaixaValeDiferencaResponse)(nil), // 25: fechamentocaixa.FechamentoCaixaValeDiferencaResponse
-	(*timestamppb.Timestamp)(nil),                // 26: google.protobuf.Timestamp
-	(*metadata.FieldMask)(nil),                   // 27: metadata.FieldMask
-	(*filter.Filter)(nil),                        // 28: Filter
-	(*report.Response)(nil),                      // 29: report.Response
+	(*ResumoGeralRequest)(nil),                   // 26: fechamentocaixa.ResumoGeralRequest
+	(*ResumoGeralResponse)(nil),                  // 27: fechamentocaixa.ResumoGeralResponse
+	(*FormasFechamentoRequest)(nil),              // 28: fechamentocaixa.FormasFechamentoRequest
+	(*FormasFechamentoResponse)(nil),             // 29: fechamentocaixa.FormasFechamentoResponse
+	(*ResumoGeralTotal)(nil),                     // 30: fechamentocaixa.ResumoGeralTotal
+	(*ResumoGeralLancamento)(nil),                // 31: fechamentocaixa.ResumoGeralLancamento
+	(*ResumoGeralOperador)(nil),                  // 32: fechamentocaixa.ResumoGeralOperador
+	(*timestamppb.Timestamp)(nil),                // 33: google.protobuf.Timestamp
+	(*metadata.FieldMask)(nil),                   // 34: metadata.FieldMask
+	(*filter.Filter)(nil),                        // 35: Filter
+	(*report.Response)(nil),                      // 36: report.Response
 }
 var file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_depIdxs = []int32{
-	26, // 0: fechamentocaixa.FechamentoCaixa.createdAt:type_name -> google.protobuf.Timestamp
-	26, // 1: fechamentocaixa.FechamentoCaixa.updatedAt:type_name -> google.protobuf.Timestamp
-	26, // 2: fechamentocaixa.FechamentoCaixa.dataHoraInicial:type_name -> google.protobuf.Timestamp
-	26, // 3: fechamentocaixa.FechamentoCaixa.dataHoraFinal:type_name -> google.protobuf.Timestamp
+	33, // 0: fechamentocaixa.FechamentoCaixa.createdAt:type_name -> google.protobuf.Timestamp
+	33, // 1: fechamentocaixa.FechamentoCaixa.updatedAt:type_name -> google.protobuf.Timestamp
+	33, // 2: fechamentocaixa.FechamentoCaixa.dataHoraInicial:type_name -> google.protobuf.Timestamp
+	33, // 3: fechamentocaixa.FechamentoCaixa.dataHoraFinal:type_name -> google.protobuf.Timestamp
 	1,  // 4: fechamentocaixa.FechamentoCaixa.valores:type_name -> fechamentocaixa.Apuracao
-	26, // 5: fechamentocaixa.FechamentoCaixa.dataHoraAprovacao:type_name -> google.protobuf.Timestamp
-	26, // 6: fechamentocaixa.FechamentoCaixa.dataHoraRejeicao:type_name -> google.protobuf.Timestamp
-	26, // 7: fechamentocaixa.Apuracao.createdAt:type_name -> google.protobuf.Timestamp
-	26, // 8: fechamentocaixa.Apuracao.updatedAt:type_name -> google.protobuf.Timestamp
+	33, // 5: fechamentocaixa.FechamentoCaixa.dataHoraAprovacao:type_name -> google.protobuf.Timestamp
+	33, // 6: fechamentocaixa.FechamentoCaixa.dataHoraRejeicao:type_name -> google.protobuf.Timestamp
+	33, // 7: fechamentocaixa.Apuracao.createdAt:type_name -> google.protobuf.Timestamp
+	33, // 8: fechamentocaixa.Apuracao.updatedAt:type_name -> google.protobuf.Timestamp
 	0,  // 9: fechamentocaixa.CreateFechamentoCaixaRequest.fechamentoCaixa:type_name -> fechamentocaixa.FechamentoCaixa
 	0,  // 10: fechamentocaixa.CreateFechamentoCaixaResponse.fechamentoCaixa:type_name -> fechamentocaixa.FechamentoCaixa
 	0,  // 11: fechamentocaixa.UpdateFechamentoCaixaRequest.fechamentoCaixa:type_name -> fechamentocaixa.FechamentoCaixa
-	27, // 12: fechamentocaixa.UpdateFechamentoCaixaRequest.update_mask:type_name -> metadata.FieldMask
+	34, // 12: fechamentocaixa.UpdateFechamentoCaixaRequest.update_mask:type_name -> metadata.FieldMask
 	0,  // 13: fechamentocaixa.UpdateFechamentoCaixaResponse.fechamentoCaixa:type_name -> fechamentocaixa.FechamentoCaixa
 	0,  // 14: fechamentocaixa.GetFechamentoCaixaResponse.fechamentoCaixa:type_name -> fechamentocaixa.FechamentoCaixa
-	26, // 15: fechamentocaixa.ListFechamentoCaixaRequest.dataHoraInicialGte:type_name -> google.protobuf.Timestamp
-	26, // 16: fechamentocaixa.ListFechamentoCaixaRequest.dataHoraInicialLte:type_name -> google.protobuf.Timestamp
-	26, // 17: fechamentocaixa.ListFechamentoCaixaRequest.dataHoraFinalGte:type_name -> google.protobuf.Timestamp
-	26, // 18: fechamentocaixa.ListFechamentoCaixaRequest.dataHoraFinalLte:type_name -> google.protobuf.Timestamp
-	28, // 19: fechamentocaixa.ListFechamentoCaixaRequest.filter:type_name -> Filter
+	33, // 15: fechamentocaixa.ListFechamentoCaixaRequest.dataHoraInicialGte:type_name -> google.protobuf.Timestamp
+	33, // 16: fechamentocaixa.ListFechamentoCaixaRequest.dataHoraInicialLte:type_name -> google.protobuf.Timestamp
+	33, // 17: fechamentocaixa.ListFechamentoCaixaRequest.dataHoraFinalGte:type_name -> google.protobuf.Timestamp
+	33, // 18: fechamentocaixa.ListFechamentoCaixaRequest.dataHoraFinalLte:type_name -> google.protobuf.Timestamp
+	35, // 19: fechamentocaixa.ListFechamentoCaixaRequest.filter:type_name -> Filter
 	10, // 20: fechamentocaixa.ReportFechamentoCaixaRequest.listFechamentoCaixaRequest:type_name -> fechamentocaixa.ListFechamentoCaixaRequest
-	29, // 21: fechamentocaixa.ReportFechamentoCaixaResponse.response:type_name -> report.Response
+	36, // 21: fechamentocaixa.ReportFechamentoCaixaResponse.response:type_name -> report.Response
 	0,  // 22: fechamentocaixa.ListFechamentoCaixaResponse.fechamentoCaixaList:type_name -> fechamentocaixa.FechamentoCaixa
 	0,  // 23: fechamentocaixa.AceitaFechamentoResponse.fechamentoCaixa:type_name -> fechamentocaixa.FechamentoCaixa
 	0,  // 24: fechamentocaixa.RejeitaFechamentoResponse.fechamentoCaixa:type_name -> fechamentocaixa.FechamentoCaixa
 	0,  // 25: fechamentocaixa.FechamentoCaixaRapidoResponse.fechamentoCaixa:type_name -> fechamentocaixa.FechamentoCaixa
 	1,  // 26: fechamentocaixa.UpdateApuracaoRequest.apuracao:type_name -> fechamentocaixa.Apuracao
-	27, // 27: fechamentocaixa.UpdateApuracaoRequest.update_mask:type_name -> metadata.FieldMask
+	34, // 27: fechamentocaixa.UpdateApuracaoRequest.update_mask:type_name -> metadata.FieldMask
 	1,  // 28: fechamentocaixa.UpdateApuracaoResponse.apuracao:type_name -> fechamentocaixa.Apuracao
-	29, // 29: fechamentocaixa.FechamentoCaixaImprimirResponse.response:type_name -> report.Response
-	29, // 30: fechamentocaixa.FechamentoCaixaValeDiferencaResponse.response:type_name -> report.Response
-	2,  // 31: fechamentocaixa.FechamentoCaixaService.Create:input_type -> fechamentocaixa.CreateFechamentoCaixaRequest
-	4,  // 32: fechamentocaixa.FechamentoCaixaService.Update:input_type -> fechamentocaixa.UpdateFechamentoCaixaRequest
-	6,  // 33: fechamentocaixa.FechamentoCaixaService.Delete:input_type -> fechamentocaixa.DeleteFechamentoCaixaRequest
-	8,  // 34: fechamentocaixa.FechamentoCaixaService.Get:input_type -> fechamentocaixa.GetFechamentoCaixaRequest
-	10, // 35: fechamentocaixa.FechamentoCaixaService.List:input_type -> fechamentocaixa.ListFechamentoCaixaRequest
-	11, // 36: fechamentocaixa.FechamentoCaixaService.Report:input_type -> fechamentocaixa.ReportFechamentoCaixaRequest
-	14, // 37: fechamentocaixa.FechamentoCaixaService.AceitaFechamento:input_type -> fechamentocaixa.AceitaFechamentoRequest
-	16, // 38: fechamentocaixa.FechamentoCaixaService.RejeitaFechamento:input_type -> fechamentocaixa.RejeitaFechamentoRequest
-	18, // 39: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaRapido:input_type -> fechamentocaixa.FechamentoCaixaRapidoRequest
-	20, // 40: fechamentocaixa.FechamentoCaixaService.UpdateApuracao:input_type -> fechamentocaixa.UpdateApuracaoRequest
-	22, // 41: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaImprimir:input_type -> fechamentocaixa.FechamentoCaixaImprimirRequest
-	24, // 42: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaValeDiferenca:input_type -> fechamentocaixa.FechamentoCaixaValeDiferencaRequest
-	3,  // 43: fechamentocaixa.FechamentoCaixaService.Create:output_type -> fechamentocaixa.CreateFechamentoCaixaResponse
-	5,  // 44: fechamentocaixa.FechamentoCaixaService.Update:output_type -> fechamentocaixa.UpdateFechamentoCaixaResponse
-	7,  // 45: fechamentocaixa.FechamentoCaixaService.Delete:output_type -> fechamentocaixa.DeleteFechamentoCaixaResponse
-	9,  // 46: fechamentocaixa.FechamentoCaixaService.Get:output_type -> fechamentocaixa.GetFechamentoCaixaResponse
-	13, // 47: fechamentocaixa.FechamentoCaixaService.List:output_type -> fechamentocaixa.ListFechamentoCaixaResponse
-	12, // 48: fechamentocaixa.FechamentoCaixaService.Report:output_type -> fechamentocaixa.ReportFechamentoCaixaResponse
-	15, // 49: fechamentocaixa.FechamentoCaixaService.AceitaFechamento:output_type -> fechamentocaixa.AceitaFechamentoResponse
-	17, // 50: fechamentocaixa.FechamentoCaixaService.RejeitaFechamento:output_type -> fechamentocaixa.RejeitaFechamentoResponse
-	19, // 51: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaRapido:output_type -> fechamentocaixa.FechamentoCaixaRapidoResponse
-	21, // 52: fechamentocaixa.FechamentoCaixaService.UpdateApuracao:output_type -> fechamentocaixa.UpdateApuracaoResponse
-	23, // 53: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaImprimir:output_type -> fechamentocaixa.FechamentoCaixaImprimirResponse
-	25, // 54: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaValeDiferenca:output_type -> fechamentocaixa.FechamentoCaixaValeDiferencaResponse
-	43, // [43:55] is the sub-list for method output_type
-	31, // [31:43] is the sub-list for method input_type
-	31, // [31:31] is the sub-list for extension type_name
-	31, // [31:31] is the sub-list for extension extendee
-	0,  // [0:31] is the sub-list for field type_name
+	36, // 29: fechamentocaixa.FechamentoCaixaImprimirResponse.response:type_name -> report.Response
+	36, // 30: fechamentocaixa.FechamentoCaixaValeDiferencaResponse.response:type_name -> report.Response
+	33, // 31: fechamentocaixa.ResumoGeralRequest.data_hora_inicial:type_name -> google.protobuf.Timestamp
+	33, // 32: fechamentocaixa.ResumoGeralRequest.data_hora_final:type_name -> google.protobuf.Timestamp
+	33, // 33: fechamentocaixa.ResumoGeralResponse.data_hora_inicial:type_name -> google.protobuf.Timestamp
+	33, // 34: fechamentocaixa.ResumoGeralResponse.data_hora_final:type_name -> google.protobuf.Timestamp
+	30, // 35: fechamentocaixa.ResumoGeralResponse.formas_pagamento:type_name -> fechamentocaixa.ResumoGeralTotal
+	30, // 36: fechamentocaixa.ResumoGeralResponse.sangrias_por_modalidade:type_name -> fechamentocaixa.ResumoGeralTotal
+	31, // 37: fechamentocaixa.ResumoGeralResponse.pagamentos_lista:type_name -> fechamentocaixa.ResumoGeralLancamento
+	32, // 38: fechamentocaixa.ResumoGeralResponse.operadores:type_name -> fechamentocaixa.ResumoGeralOperador
+	30, // 39: fechamentocaixa.FormasFechamentoResponse.formas_pagamento:type_name -> fechamentocaixa.ResumoGeralTotal
+	30, // 40: fechamentocaixa.FormasFechamentoResponse.sangrias_por_modalidade:type_name -> fechamentocaixa.ResumoGeralTotal
+	33, // 41: fechamentocaixa.ResumoGeralLancamento.data_hora:type_name -> google.protobuf.Timestamp
+	33, // 42: fechamentocaixa.ResumoGeralOperador.data_hora_inicial:type_name -> google.protobuf.Timestamp
+	33, // 43: fechamentocaixa.ResumoGeralOperador.data_hora_final:type_name -> google.protobuf.Timestamp
+	2,  // 44: fechamentocaixa.FechamentoCaixaService.Create:input_type -> fechamentocaixa.CreateFechamentoCaixaRequest
+	4,  // 45: fechamentocaixa.FechamentoCaixaService.Update:input_type -> fechamentocaixa.UpdateFechamentoCaixaRequest
+	6,  // 46: fechamentocaixa.FechamentoCaixaService.Delete:input_type -> fechamentocaixa.DeleteFechamentoCaixaRequest
+	8,  // 47: fechamentocaixa.FechamentoCaixaService.Get:input_type -> fechamentocaixa.GetFechamentoCaixaRequest
+	10, // 48: fechamentocaixa.FechamentoCaixaService.List:input_type -> fechamentocaixa.ListFechamentoCaixaRequest
+	11, // 49: fechamentocaixa.FechamentoCaixaService.Report:input_type -> fechamentocaixa.ReportFechamentoCaixaRequest
+	14, // 50: fechamentocaixa.FechamentoCaixaService.AceitaFechamento:input_type -> fechamentocaixa.AceitaFechamentoRequest
+	16, // 51: fechamentocaixa.FechamentoCaixaService.RejeitaFechamento:input_type -> fechamentocaixa.RejeitaFechamentoRequest
+	18, // 52: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaRapido:input_type -> fechamentocaixa.FechamentoCaixaRapidoRequest
+	20, // 53: fechamentocaixa.FechamentoCaixaService.UpdateApuracao:input_type -> fechamentocaixa.UpdateApuracaoRequest
+	22, // 54: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaImprimir:input_type -> fechamentocaixa.FechamentoCaixaImprimirRequest
+	24, // 55: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaValeDiferenca:input_type -> fechamentocaixa.FechamentoCaixaValeDiferencaRequest
+	26, // 56: fechamentocaixa.FechamentoCaixaService.ResumoGeral:input_type -> fechamentocaixa.ResumoGeralRequest
+	26, // 57: fechamentocaixa.FechamentoCaixaService.EnviaResumoGeral:input_type -> fechamentocaixa.ResumoGeralRequest
+	28, // 58: fechamentocaixa.FechamentoCaixaService.FormasFechamento:input_type -> fechamentocaixa.FormasFechamentoRequest
+	3,  // 59: fechamentocaixa.FechamentoCaixaService.Create:output_type -> fechamentocaixa.CreateFechamentoCaixaResponse
+	5,  // 60: fechamentocaixa.FechamentoCaixaService.Update:output_type -> fechamentocaixa.UpdateFechamentoCaixaResponse
+	7,  // 61: fechamentocaixa.FechamentoCaixaService.Delete:output_type -> fechamentocaixa.DeleteFechamentoCaixaResponse
+	9,  // 62: fechamentocaixa.FechamentoCaixaService.Get:output_type -> fechamentocaixa.GetFechamentoCaixaResponse
+	13, // 63: fechamentocaixa.FechamentoCaixaService.List:output_type -> fechamentocaixa.ListFechamentoCaixaResponse
+	12, // 64: fechamentocaixa.FechamentoCaixaService.Report:output_type -> fechamentocaixa.ReportFechamentoCaixaResponse
+	15, // 65: fechamentocaixa.FechamentoCaixaService.AceitaFechamento:output_type -> fechamentocaixa.AceitaFechamentoResponse
+	17, // 66: fechamentocaixa.FechamentoCaixaService.RejeitaFechamento:output_type -> fechamentocaixa.RejeitaFechamentoResponse
+	19, // 67: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaRapido:output_type -> fechamentocaixa.FechamentoCaixaRapidoResponse
+	21, // 68: fechamentocaixa.FechamentoCaixaService.UpdateApuracao:output_type -> fechamentocaixa.UpdateApuracaoResponse
+	23, // 69: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaImprimir:output_type -> fechamentocaixa.FechamentoCaixaImprimirResponse
+	25, // 70: fechamentocaixa.FechamentoCaixaService.FechamentoCaixaValeDiferenca:output_type -> fechamentocaixa.FechamentoCaixaValeDiferencaResponse
+	27, // 71: fechamentocaixa.FechamentoCaixaService.ResumoGeral:output_type -> fechamentocaixa.ResumoGeralResponse
+	27, // 72: fechamentocaixa.FechamentoCaixaService.EnviaResumoGeral:output_type -> fechamentocaixa.ResumoGeralResponse
+	29, // 73: fechamentocaixa.FechamentoCaixaService.FormasFechamento:output_type -> fechamentocaixa.FormasFechamentoResponse
+	59, // [59:74] is the sub-list for method output_type
+	44, // [44:59] is the sub-list for method input_type
+	44, // [44:44] is the sub-list for extension type_name
+	44, // [44:44] is the sub-list for extension extendee
+	0,  // [0:44] is the sub-list for field type_name
 }
 
 func init() { file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_init() }
@@ -1952,7 +2644,7 @@ func file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDesc), len(file_apps_financeiro_fechamentoCaixa_fechamento_caixa_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   26,
+			NumMessages:   33,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

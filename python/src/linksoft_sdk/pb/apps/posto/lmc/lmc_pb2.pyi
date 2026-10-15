@@ -216,3 +216,17 @@ class ReportResponse(_message.Message):
     RESPONSE_FIELD_NUMBER: _ClassVar[int]
     response: _report_pb2.Response
     def __init__(self, response: _Optional[_Union[_report_pb2.Response, _Mapping]] = ...) -> None: ...
+
+class FechaDiaRequest(_message.Message):
+    __slots__ = ("data",)
+    DATA_FIELD_NUMBER: _ClassVar[int]
+    data: str
+    def __init__(self, data: _Optional[str] = ...) -> None: ...
+
+class FechaDiaResponse(_message.Message):
+    __slots__ = ("lmcs", "avisos")
+    LMCS_FIELD_NUMBER: _ClassVar[int]
+    AVISOS_FIELD_NUMBER: _ClassVar[int]
+    lmcs: _containers.RepeatedCompositeFieldContainer[Lmc]
+    avisos: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, lmcs: _Optional[_Iterable[_Union[Lmc, _Mapping]]] = ..., avisos: _Optional[_Iterable[str]] = ...) -> None: ...

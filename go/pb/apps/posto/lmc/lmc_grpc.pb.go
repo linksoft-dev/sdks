@@ -25,6 +25,7 @@ const (
 	LmcService_Get_FullMethodName      = "/lmc.LmcService/Get"
 	LmcService_List_FullMethodName     = "/lmc.LmcService/List"
 	LmcService_Preenche_FullMethodName = "/lmc.LmcService/Preenche"
+	LmcService_FechaDia_FullMethodName = "/lmc.LmcService/FechaDia"
 	LmcService_Report_FullMethodName   = "/lmc.LmcService/Report"
 )
 
@@ -43,6 +44,11 @@ type LmcServiceClient interface {
 	// sem gravar: o operador confere e salva.
 	Preenche(ctx context.Context, in *PreencheRequest, opts ...grpc.CallOption) (*PreencheResponse, error)
 	// Dados para impressão das folhas selecionadas.
+	// Fecha os tanques do dia: gera a folha de cada combustível que ainda não tem folha no dia e,
+	// na que já existe, atualiza o fechamento dos tanques pela medição mais recente do dia. A perda
+	// vira despesa quando a empresa configurou o plano de contas, e a posição dos tanques é avisada
+	// a quem acompanha.
+	FechaDia(ctx context.Context, in *FechaDiaRequest, opts ...grpc.CallOption) (*FechaDiaResponse, error)
 	Report(ctx context.Context, in *ReportRequest, opts ...grpc.CallOption) (*ReportResponse, error)
 }
 
@@ -114,6 +120,16 @@ func (c *lmcServiceClient) Preenche(ctx context.Context, in *PreencheRequest, op
 	return out, nil
 }
 
+func (c *lmcServiceClient) FechaDia(ctx context.Context, in *FechaDiaRequest, opts ...grpc.CallOption) (*FechaDiaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FechaDiaResponse)
+	err := c.cc.Invoke(ctx, LmcService_FechaDia_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *lmcServiceClient) Report(ctx context.Context, in *ReportRequest, opts ...grpc.CallOption) (*ReportResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ReportResponse)
@@ -139,6 +155,11 @@ type LmcServiceServer interface {
 	// sem gravar: o operador confere e salva.
 	Preenche(context.Context, *PreencheRequest) (*PreencheResponse, error)
 	// Dados para impressão das folhas selecionadas.
+	// Fecha os tanques do dia: gera a folha de cada combustível que ainda não tem folha no dia e,
+	// na que já existe, atualiza o fechamento dos tanques pela medição mais recente do dia. A perda
+	// vira despesa quando a empresa configurou o plano de contas, e a posição dos tanques é avisada
+	// a quem acompanha.
+	FechaDia(context.Context, *FechaDiaRequest) (*FechaDiaResponse, error)
 	Report(context.Context, *ReportRequest) (*ReportResponse, error)
 	mustEmbedUnimplementedLmcServiceServer()
 }
@@ -167,6 +188,9 @@ func (UnimplementedLmcServiceServer) List(context.Context, *ListRequest) (*ListR
 }
 func (UnimplementedLmcServiceServer) Preenche(context.Context, *PreencheRequest) (*PreencheResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Preenche not implemented")
+}
+func (UnimplementedLmcServiceServer) FechaDia(context.Context, *FechaDiaRequest) (*FechaDiaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method FechaDia not implemented")
 }
 func (UnimplementedLmcServiceServer) Report(context.Context, *ReportRequest) (*ReportResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Report not implemented")
@@ -300,6 +324,24 @@ func _LmcService_Preenche_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LmcService_FechaDia_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FechaDiaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LmcServiceServer).FechaDia(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: LmcService_FechaDia_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LmcServiceServer).FechaDia(ctx, req.(*FechaDiaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _LmcService_Report_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReportRequest)
 	if err := dec(in); err != nil {
@@ -348,6 +390,10 @@ var LmcService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Preenche",
 			Handler:    _LmcService_Preenche_Handler,
+		},
+		{
+			MethodName: "FechaDia",
+			Handler:    _LmcService_FechaDia_Handler,
 		},
 		{
 			MethodName: "Report",

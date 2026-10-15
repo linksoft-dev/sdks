@@ -323,7 +323,8 @@ type BillingPlan struct {
 	// Critérios sobre o documento, com os campos do filtro da listagem do tipo cobrado
 	// (conditions e or_conditions). Vazio: todos os documentos pendentes do tipo.
 	Filtro *filter.Filter `protobuf:"bytes,38,opt,name=filtro,proto3" json:"filtro,omitempty"`
-	// Layouts de impressão do documento que vão em PDF anexos ao e-mail da cobrança
+	// Vão em PDF anexos ao e-mail da cobrança: layouts de impressão do documento ou, na conta a
+	// receber, relatórios do módulo cobranca_conta_receber (nome do relatório)
 	Anexos []string `protobuf:"bytes,33,rep,name=anexos,proto3" json:"anexos,omitempty"`
 	// Conta de SMS que envia a cobrança, um SMS por documento.
 	SmsIntegrationId string `protobuf:"bytes,34,opt,name=sms_integration_id,json=smsIntegrationId,proto3" json:"sms_integration_id,omitempty"`

@@ -19,12 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ConvenioService_Create_FullMethodName = "/convenio.ConvenioService/Create"
-	ConvenioService_Update_FullMethodName = "/convenio.ConvenioService/Update"
-	ConvenioService_Delete_FullMethodName = "/convenio.ConvenioService/Delete"
-	ConvenioService_Get_FullMethodName    = "/convenio.ConvenioService/Get"
-	ConvenioService_List_FullMethodName   = "/convenio.ConvenioService/List"
-	ConvenioService_Fatura_FullMethodName = "/convenio.ConvenioService/Fatura"
+	ConvenioService_Create_FullMethodName  = "/convenio.ConvenioService/Create"
+	ConvenioService_Update_FullMethodName  = "/convenio.ConvenioService/Update"
+	ConvenioService_Delete_FullMethodName  = "/convenio.ConvenioService/Delete"
+	ConvenioService_Get_FullMethodName     = "/convenio.ConvenioService/Get"
+	ConvenioService_List_FullMethodName    = "/convenio.ConvenioService/List"
+	ConvenioService_Fatura_FullMethodName  = "/convenio.ConvenioService/Fatura"
+	ConvenioService_Extrato_FullMethodName = "/convenio.ConvenioService/Extrato"
 )
 
 // ConvenioServiceClient is the client API for ConvenioService service.
@@ -41,6 +42,10 @@ type ConvenioServiceClient interface {
 	// Fatura agora os títulos em aberto do convênio, sem esperar o dia do fechamento. O vencimento
 	// é hoje mais o prazo do convênio.
 	Fatura(ctx context.Context, in *FaturaRequest, opts ...grpc.CallOption) (*FaturaResponse, error)
+	// Extrato de consumo de uma fatura do convênio (cupons, produtos, consumo e km/l por placa),
+	// em HTML para imprimir ou salvar em PDF. Sem fatura, sai o extrato das vendas do cliente no
+	// período.
+	Extrato(ctx context.Context, in *ExtratoRequest, opts ...grpc.CallOption) (*ExtratoResponse, error)
 }
 
 type convenioServiceClient struct {
@@ -111,6 +116,16 @@ func (c *convenioServiceClient) Fatura(ctx context.Context, in *FaturaRequest, o
 	return out, nil
 }
 
+func (c *convenioServiceClient) Extrato(ctx context.Context, in *ExtratoRequest, opts ...grpc.CallOption) (*ExtratoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ExtratoResponse)
+	err := c.cc.Invoke(ctx, ConvenioService_Extrato_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ConvenioServiceServer is the server API for ConvenioService service.
 // All implementations must embed UnimplementedConvenioServiceServer
 // for forward compatibility.
@@ -125,6 +140,10 @@ type ConvenioServiceServer interface {
 	// Fatura agora os títulos em aberto do convênio, sem esperar o dia do fechamento. O vencimento
 	// é hoje mais o prazo do convênio.
 	Fatura(context.Context, *FaturaRequest) (*FaturaResponse, error)
+	// Extrato de consumo de uma fatura do convênio (cupons, produtos, consumo e km/l por placa),
+	// em HTML para imprimir ou salvar em PDF. Sem fatura, sai o extrato das vendas do cliente no
+	// período.
+	Extrato(context.Context, *ExtratoRequest) (*ExtratoResponse, error)
 	mustEmbedUnimplementedConvenioServiceServer()
 }
 
@@ -152,6 +171,9 @@ func (UnimplementedConvenioServiceServer) List(context.Context, *ListRequest) (*
 }
 func (UnimplementedConvenioServiceServer) Fatura(context.Context, *FaturaRequest) (*FaturaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Fatura not implemented")
+}
+func (UnimplementedConvenioServiceServer) Extrato(context.Context, *ExtratoRequest) (*ExtratoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Extrato not implemented")
 }
 func (UnimplementedConvenioServiceServer) mustEmbedUnimplementedConvenioServiceServer() {}
 func (UnimplementedConvenioServiceServer) testEmbeddedByValue()                         {}
@@ -282,6 +304,24 @@ func _ConvenioService_Fatura_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ConvenioService_Extrato_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ExtratoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConvenioServiceServer).Extrato(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ConvenioService_Extrato_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConvenioServiceServer).Extrato(ctx, req.(*ExtratoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ConvenioService_ServiceDesc is the grpc.ServiceDesc for ConvenioService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -312,6 +352,10 @@ var ConvenioService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Fatura",
 			Handler:    _ConvenioService_Fatura_Handler,
+		},
+		{
+			MethodName: "Extrato",
+			Handler:    _ConvenioService_Extrato_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -255,8 +255,14 @@ type EntradasAvulsa struct {
 	Obs                     string                 `protobuf:"bytes,14,opt,name=obs,proto3" json:"obs,omitempty"`
 	Total                   float64                `protobuf:"fixed64,15,opt,name=total,proto3" json:"total,omitempty"`
 	Produtos                []*Item                `protobuf:"bytes,16,rep,name=produtos,proto3" json:"produtos,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	// Parcelas a pagar ao fornecedor. Na finalização cada uma vira uma conta a pagar, e o
+	// cancelamento da entrada cancela as contas.
+	Parcelas []*Parcela `protobuf:"bytes,17,rep,name=parcelas,proto3" json:"parcelas,omitempty"`
+	// Plano de contas das contas a pagar da entrada.
+	PlanoContaId   string `protobuf:"bytes,18,opt,name=plano_conta_id,json=planoContaId,proto3" json:"plano_conta_id,omitempty"`
+	PlanoContaNome string `protobuf:"bytes,19,opt,name=plano_conta_nome,json=planoContaNome,proto3" json:"plano_conta_nome,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *EntradasAvulsa) Reset() {
@@ -401,6 +407,96 @@ func (x *EntradasAvulsa) GetProdutos() []*Item {
 	return nil
 }
 
+func (x *EntradasAvulsa) GetParcelas() []*Parcela {
+	if x != nil {
+		return x.Parcelas
+	}
+	return nil
+}
+
+func (x *EntradasAvulsa) GetPlanoContaId() string {
+	if x != nil {
+		return x.PlanoContaId
+	}
+	return ""
+}
+
+func (x *EntradasAvulsa) GetPlanoContaNome() string {
+	if x != nil {
+		return x.PlanoContaNome
+	}
+	return ""
+}
+
+type Parcela struct {
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	Numero     string                 `protobuf:"bytes,1,opt,name=numero,proto3" json:"numero,omitempty"`
+	Vencimento *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=vencimento,proto3" json:"vencimento,omitempty"`
+	Valor      float64                `protobuf:"fixed64,3,opt,name=valor,proto3" json:"valor,omitempty"`
+	// Conta a pagar gerada na finalização.
+	ContaPagarId  string `protobuf:"bytes,4,opt,name=conta_pagar_id,json=contaPagarId,proto3" json:"conta_pagar_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Parcela) Reset() {
+	*x = Parcela{}
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Parcela) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Parcela) ProtoMessage() {}
+
+func (x *Parcela) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Parcela.ProtoReflect.Descriptor instead.
+func (*Parcela) Descriptor() ([]byte, []int) {
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Parcela) GetNumero() string {
+	if x != nil {
+		return x.Numero
+	}
+	return ""
+}
+
+func (x *Parcela) GetVencimento() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Vencimento
+	}
+	return nil
+}
+
+func (x *Parcela) GetValor() float64 {
+	if x != nil {
+		return x.Valor
+	}
+	return 0
+}
+
+func (x *Parcela) GetContaPagarId() string {
+	if x != nil {
+		return x.ContaPagarId
+	}
+	return ""
+}
+
 type Item struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	CreatedAt          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // Data de criação
@@ -424,7 +520,7 @@ type Item struct {
 
 func (x *Item) Reset() {
 	*x = Item{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[2]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -436,7 +532,7 @@ func (x *Item) String() string {
 func (*Item) ProtoMessage() {}
 
 func (x *Item) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[2]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -449,7 +545,7 @@ func (x *Item) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Item.ProtoReflect.Descriptor instead.
 func (*Item) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{2}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Item) GetCreatedAt() *timestamppb.Timestamp {
@@ -567,7 +663,7 @@ type CreateRequest struct {
 
 func (x *CreateRequest) Reset() {
 	*x = CreateRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[3]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -579,7 +675,7 @@ func (x *CreateRequest) String() string {
 func (*CreateRequest) ProtoMessage() {}
 
 func (x *CreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[3]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -592,7 +688,7 @@ func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
 func (*CreateRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{3}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *CreateRequest) GetEntradasAvulsa() *EntradasAvulsa {
@@ -611,7 +707,7 @@ type CreateResponse struct {
 
 func (x *CreateResponse) Reset() {
 	*x = CreateResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[4]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -623,7 +719,7 @@ func (x *CreateResponse) String() string {
 func (*CreateResponse) ProtoMessage() {}
 
 func (x *CreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[4]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -636,7 +732,7 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{4}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CreateResponse) GetEntradasAvulsa() *EntradasAvulsa {
@@ -658,7 +754,7 @@ type UpdateRequest struct {
 
 func (x *UpdateRequest) Reset() {
 	*x = UpdateRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[5]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -670,7 +766,7 @@ func (x *UpdateRequest) String() string {
 func (*UpdateRequest) ProtoMessage() {}
 
 func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[5]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -683,7 +779,7 @@ func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{5}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateRequest) GetId() string {
@@ -716,7 +812,7 @@ type UpdateResponse struct {
 
 func (x *UpdateResponse) Reset() {
 	*x = UpdateResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[6]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -728,7 +824,7 @@ func (x *UpdateResponse) String() string {
 func (*UpdateResponse) ProtoMessage() {}
 
 func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[6]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -741,7 +837,7 @@ func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
 func (*UpdateResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{6}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *UpdateResponse) GetEntradasAvulsa() *EntradasAvulsa {
@@ -762,7 +858,7 @@ type DeleteRequest struct {
 
 func (x *DeleteRequest) Reset() {
 	*x = DeleteRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[7]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -774,7 +870,7 @@ func (x *DeleteRequest) String() string {
 func (*DeleteRequest) ProtoMessage() {}
 
 func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[7]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -787,7 +883,7 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{7}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteRequest) GetId() string {
@@ -813,7 +909,7 @@ type DeleteResponse struct {
 
 func (x *DeleteResponse) Reset() {
 	*x = DeleteResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[8]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -825,7 +921,7 @@ func (x *DeleteResponse) String() string {
 func (*DeleteResponse) ProtoMessage() {}
 
 func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[8]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -838,7 +934,7 @@ func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
 func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{8}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *DeleteResponse) GetId() string {
@@ -858,7 +954,7 @@ type GetRequest struct {
 
 func (x *GetRequest) Reset() {
 	*x = GetRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[9]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -870,7 +966,7 @@ func (x *GetRequest) String() string {
 func (*GetRequest) ProtoMessage() {}
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[9]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -883,7 +979,7 @@ func (x *GetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{9}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetRequest) GetId() string {
@@ -902,7 +998,7 @@ type GetResponse struct {
 
 func (x *GetResponse) Reset() {
 	*x = GetResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[10]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -914,7 +1010,7 @@ func (x *GetResponse) String() string {
 func (*GetResponse) ProtoMessage() {}
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[10]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -927,7 +1023,7 @@ func (x *GetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
 func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{10}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *GetResponse) GetEntradasAvulsa() *EntradasAvulsa {
@@ -960,7 +1056,7 @@ type ListRequest struct {
 
 func (x *ListRequest) Reset() {
 	*x = ListRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[11]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -972,7 +1068,7 @@ func (x *ListRequest) String() string {
 func (*ListRequest) ProtoMessage() {}
 
 func (x *ListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[11]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -985,7 +1081,7 @@ func (x *ListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
 func (*ListRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{11}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ListRequest) GetIds() []string {
@@ -1096,7 +1192,7 @@ type ListResponse struct {
 
 func (x *ListResponse) Reset() {
 	*x = ListResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[12]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1108,7 +1204,7 @@ func (x *ListResponse) String() string {
 func (*ListResponse) ProtoMessage() {}
 
 func (x *ListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[12]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1121,7 +1217,7 @@ func (x *ListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
 func (*ListResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{12}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListResponse) GetEntradasAvulsaList() []*EntradasAvulsa {
@@ -1149,7 +1245,7 @@ type AddProdutoRequest struct {
 
 func (x *AddProdutoRequest) Reset() {
 	*x = AddProdutoRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[13]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1161,7 +1257,7 @@ func (x *AddProdutoRequest) String() string {
 func (*AddProdutoRequest) ProtoMessage() {}
 
 func (x *AddProdutoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[13]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1174,7 +1270,7 @@ func (x *AddProdutoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddProdutoRequest.ProtoReflect.Descriptor instead.
 func (*AddProdutoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{13}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *AddProdutoRequest) GetEntradaId() string {
@@ -1200,7 +1296,7 @@ type AddProdutoResponse struct {
 
 func (x *AddProdutoResponse) Reset() {
 	*x = AddProdutoResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[14]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1212,7 +1308,7 @@ func (x *AddProdutoResponse) String() string {
 func (*AddProdutoResponse) ProtoMessage() {}
 
 func (x *AddProdutoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[14]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1225,7 +1321,7 @@ func (x *AddProdutoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddProdutoResponse.ProtoReflect.Descriptor instead.
 func (*AddProdutoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{14}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *AddProdutoResponse) GetEntradasAvulsa() *EntradasAvulsa {
@@ -1247,7 +1343,7 @@ type UpdateProdutoRequest struct {
 
 func (x *UpdateProdutoRequest) Reset() {
 	*x = UpdateProdutoRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[15]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1259,7 +1355,7 @@ func (x *UpdateProdutoRequest) String() string {
 func (*UpdateProdutoRequest) ProtoMessage() {}
 
 func (x *UpdateProdutoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[15]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1272,7 +1368,7 @@ func (x *UpdateProdutoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProdutoRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProdutoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{15}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateProdutoRequest) GetEntradaId() string {
@@ -1305,7 +1401,7 @@ type UpdateProdutoResponse struct {
 
 func (x *UpdateProdutoResponse) Reset() {
 	*x = UpdateProdutoResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[16]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1317,7 +1413,7 @@ func (x *UpdateProdutoResponse) String() string {
 func (*UpdateProdutoResponse) ProtoMessage() {}
 
 func (x *UpdateProdutoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[16]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1330,7 +1426,7 @@ func (x *UpdateProdutoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProdutoResponse.ProtoReflect.Descriptor instead.
 func (*UpdateProdutoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{16}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *UpdateProdutoResponse) GetEntradasAvulsa() *EntradasAvulsa {
@@ -1351,7 +1447,7 @@ type DeleteProdutoRequest struct {
 
 func (x *DeleteProdutoRequest) Reset() {
 	*x = DeleteProdutoRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[17]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1363,7 +1459,7 @@ func (x *DeleteProdutoRequest) String() string {
 func (*DeleteProdutoRequest) ProtoMessage() {}
 
 func (x *DeleteProdutoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[17]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1376,7 +1472,7 @@ func (x *DeleteProdutoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteProdutoRequest.ProtoReflect.Descriptor instead.
 func (*DeleteProdutoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{17}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *DeleteProdutoRequest) GetEntradaId() string {
@@ -1402,7 +1498,7 @@ type DeleteProdutoResponse struct {
 
 func (x *DeleteProdutoResponse) Reset() {
 	*x = DeleteProdutoResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[18]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1414,7 +1510,7 @@ func (x *DeleteProdutoResponse) String() string {
 func (*DeleteProdutoResponse) ProtoMessage() {}
 
 func (x *DeleteProdutoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[18]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1427,7 +1523,7 @@ func (x *DeleteProdutoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteProdutoResponse.ProtoReflect.Descriptor instead.
 func (*DeleteProdutoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{18}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *DeleteProdutoResponse) GetEntradasAvulsa() *EntradasAvulsa {
@@ -1447,7 +1543,7 @@ type FinalizaRequest struct {
 
 func (x *FinalizaRequest) Reset() {
 	*x = FinalizaRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[19]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1459,7 +1555,7 @@ func (x *FinalizaRequest) String() string {
 func (*FinalizaRequest) ProtoMessage() {}
 
 func (x *FinalizaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[19]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1472,7 +1568,7 @@ func (x *FinalizaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinalizaRequest.ProtoReflect.Descriptor instead.
 func (*FinalizaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{19}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *FinalizaRequest) GetEntradaId() string {
@@ -1491,7 +1587,7 @@ type FinalizaResponse struct {
 
 func (x *FinalizaResponse) Reset() {
 	*x = FinalizaResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[20]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1503,7 +1599,7 @@ func (x *FinalizaResponse) String() string {
 func (*FinalizaResponse) ProtoMessage() {}
 
 func (x *FinalizaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[20]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1516,7 +1612,7 @@ func (x *FinalizaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinalizaResponse.ProtoReflect.Descriptor instead.
 func (*FinalizaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{20}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *FinalizaResponse) GetEntradasAvulsa() *EntradasAvulsa {
@@ -1537,7 +1633,7 @@ type CancelaRequest struct {
 
 func (x *CancelaRequest) Reset() {
 	*x = CancelaRequest{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[21]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1549,7 +1645,7 @@ func (x *CancelaRequest) String() string {
 func (*CancelaRequest) ProtoMessage() {}
 
 func (x *CancelaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[21]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1562,7 +1658,7 @@ func (x *CancelaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelaRequest.ProtoReflect.Descriptor instead.
 func (*CancelaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{21}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *CancelaRequest) GetEntradaId() string {
@@ -1588,7 +1684,7 @@ type CancelaResponse struct {
 
 func (x *CancelaResponse) Reset() {
 	*x = CancelaResponse{}
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[22]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1600,7 +1696,7 @@ func (x *CancelaResponse) String() string {
 func (*CancelaResponse) ProtoMessage() {}
 
 func (x *CancelaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[22]
+	mi := &file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1613,7 +1709,7 @@ func (x *CancelaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelaResponse.ProtoReflect.Descriptor instead.
 func (*CancelaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{22}
+	return file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *CancelaResponse) GetEntradasAvulsa() *EntradasAvulsa {
@@ -1627,7 +1723,7 @@ var File_apps_estoque_entradasavulsa_entrada_avulsa_proto protoreflect.FileDescr
 
 const file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDesc = "" +
 	"\n" +
-	"0apps/estoque/entradasavulsa/entrada_avulsa.proto\x12\x0eentradasavulsa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9f\x03\n" +
+	"0apps/estoque/entradasavulsa/entrada_avulsa.proto\x12\x0eentradasavulsa\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9f\x03\n" +
 	"\x06Pessoa\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x19\n" +
 	"\bcpf_cnpj\x18\x02 \x01(\tR\acpfCnpj\x12\x12\n" +
@@ -1647,7 +1743,7 @@ const file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDesc = "" +
 	"\x06end_uf\x18\f \x01(\tR\x05endUf\x12'\n" +
 	"\x0fend_complemento\x18\r \x01(\tR\x0eendComplemento\x12\x14\n" +
 	"\x05email\x18\x0e \x01(\tR\x05email\x12\x1a\n" +
-	"\btelefone\x18\x0f \x01(\tR\btelefone\"\xf2\x05\n" +
+	"\btelefone\x18\x0f \x01(\tR\btelefone\"\xf7\x06\n" +
 	"\x0eEntradasAvulsa\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1667,7 +1763,17 @@ const file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDesc = "" +
 	"\x19cancelamento_usuario_nome\x18\r \x01(\tR\x17cancelamentoUsuarioNome\x12\x1a\n" +
 	"\x03obs\x18\x0e \x01(\tB\b\xfaB\x05r\x03\x18\xe8\aR\x03obs\x12\x14\n" +
 	"\x05total\x18\x0f \x01(\x01R\x05total\x120\n" +
-	"\bprodutos\x18\x10 \x03(\v2\x14.entradasavulsa.ItemR\bprodutos:\x03\xc0>\x01\"\x81\x04\n" +
+	"\bprodutos\x18\x10 \x03(\v2\x14.entradasavulsa.ItemR\bprodutos\x123\n" +
+	"\bparcelas\x18\x11 \x03(\v2\x17.entradasavulsa.ParcelaR\bparcelas\x12$\n" +
+	"\x0eplano_conta_id\x18\x12 \x01(\tR\fplanoContaId\x12(\n" +
+	"\x10plano_conta_nome\x18\x13 \x01(\tR\x0eplanoContaNome:\x03\xc0>\x01\"\x9f\x01\n" +
+	"\aParcela\x12\x16\n" +
+	"\x06numero\x18\x01 \x01(\tR\x06numero\x12:\n" +
+	"\n" +
+	"vencimento\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"vencimento\x12\x14\n" +
+	"\x05valor\x18\x03 \x01(\x01R\x05valor\x12*\n" +
+	"\x0econta_pagar_id\x18\x04 \x01(\tB\x04\xe2A\x01\x03R\fcontaPagarId\"\x81\x04\n" +
 	"\x04Item\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1795,91 +1901,94 @@ func file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDescGZIP() []byte 
 }
 
 var file_apps_estoque_entradasavulsa_entrada_avulsa_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_apps_estoque_entradasavulsa_entrada_avulsa_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_apps_estoque_entradasavulsa_entrada_avulsa_proto_goTypes = []any{
 	(Situacao)(0),                 // 0: entradasavulsa.Situacao
 	(*Pessoa)(nil),                // 1: entradasavulsa.Pessoa
 	(*EntradasAvulsa)(nil),        // 2: entradasavulsa.EntradasAvulsa
-	(*Item)(nil),                  // 3: entradasavulsa.Item
-	(*CreateRequest)(nil),         // 4: entradasavulsa.CreateRequest
-	(*CreateResponse)(nil),        // 5: entradasavulsa.CreateResponse
-	(*UpdateRequest)(nil),         // 6: entradasavulsa.UpdateRequest
-	(*UpdateResponse)(nil),        // 7: entradasavulsa.UpdateResponse
-	(*DeleteRequest)(nil),         // 8: entradasavulsa.DeleteRequest
-	(*DeleteResponse)(nil),        // 9: entradasavulsa.DeleteResponse
-	(*GetRequest)(nil),            // 10: entradasavulsa.GetRequest
-	(*GetResponse)(nil),           // 11: entradasavulsa.GetResponse
-	(*ListRequest)(nil),           // 12: entradasavulsa.ListRequest
-	(*ListResponse)(nil),          // 13: entradasavulsa.ListResponse
-	(*AddProdutoRequest)(nil),     // 14: entradasavulsa.AddProdutoRequest
-	(*AddProdutoResponse)(nil),    // 15: entradasavulsa.AddProdutoResponse
-	(*UpdateProdutoRequest)(nil),  // 16: entradasavulsa.UpdateProdutoRequest
-	(*UpdateProdutoResponse)(nil), // 17: entradasavulsa.UpdateProdutoResponse
-	(*DeleteProdutoRequest)(nil),  // 18: entradasavulsa.DeleteProdutoRequest
-	(*DeleteProdutoResponse)(nil), // 19: entradasavulsa.DeleteProdutoResponse
-	(*FinalizaRequest)(nil),       // 20: entradasavulsa.FinalizaRequest
-	(*FinalizaResponse)(nil),      // 21: entradasavulsa.FinalizaResponse
-	(*CancelaRequest)(nil),        // 22: entradasavulsa.CancelaRequest
-	(*CancelaResponse)(nil),       // 23: entradasavulsa.CancelaResponse
-	(*timestamppb.Timestamp)(nil), // 24: google.protobuf.Timestamp
-	(*metadata.FieldMask)(nil),    // 25: metadata.FieldMask
-	(*filter.Filter)(nil),         // 26: Filter
+	(*Parcela)(nil),               // 3: entradasavulsa.Parcela
+	(*Item)(nil),                  // 4: entradasavulsa.Item
+	(*CreateRequest)(nil),         // 5: entradasavulsa.CreateRequest
+	(*CreateResponse)(nil),        // 6: entradasavulsa.CreateResponse
+	(*UpdateRequest)(nil),         // 7: entradasavulsa.UpdateRequest
+	(*UpdateResponse)(nil),        // 8: entradasavulsa.UpdateResponse
+	(*DeleteRequest)(nil),         // 9: entradasavulsa.DeleteRequest
+	(*DeleteResponse)(nil),        // 10: entradasavulsa.DeleteResponse
+	(*GetRequest)(nil),            // 11: entradasavulsa.GetRequest
+	(*GetResponse)(nil),           // 12: entradasavulsa.GetResponse
+	(*ListRequest)(nil),           // 13: entradasavulsa.ListRequest
+	(*ListResponse)(nil),          // 14: entradasavulsa.ListResponse
+	(*AddProdutoRequest)(nil),     // 15: entradasavulsa.AddProdutoRequest
+	(*AddProdutoResponse)(nil),    // 16: entradasavulsa.AddProdutoResponse
+	(*UpdateProdutoRequest)(nil),  // 17: entradasavulsa.UpdateProdutoRequest
+	(*UpdateProdutoResponse)(nil), // 18: entradasavulsa.UpdateProdutoResponse
+	(*DeleteProdutoRequest)(nil),  // 19: entradasavulsa.DeleteProdutoRequest
+	(*DeleteProdutoResponse)(nil), // 20: entradasavulsa.DeleteProdutoResponse
+	(*FinalizaRequest)(nil),       // 21: entradasavulsa.FinalizaRequest
+	(*FinalizaResponse)(nil),      // 22: entradasavulsa.FinalizaResponse
+	(*CancelaRequest)(nil),        // 23: entradasavulsa.CancelaRequest
+	(*CancelaResponse)(nil),       // 24: entradasavulsa.CancelaResponse
+	(*timestamppb.Timestamp)(nil), // 25: google.protobuf.Timestamp
+	(*metadata.FieldMask)(nil),    // 26: metadata.FieldMask
+	(*filter.Filter)(nil),         // 27: Filter
 }
 var file_apps_estoque_entradasavulsa_entrada_avulsa_proto_depIdxs = []int32{
-	24, // 0: entradasavulsa.EntradasAvulsa.created_at:type_name -> google.protobuf.Timestamp
-	24, // 1: entradasavulsa.EntradasAvulsa.updated_at:type_name -> google.protobuf.Timestamp
+	25, // 0: entradasavulsa.EntradasAvulsa.created_at:type_name -> google.protobuf.Timestamp
+	25, // 1: entradasavulsa.EntradasAvulsa.updated_at:type_name -> google.protobuf.Timestamp
 	1,  // 2: entradasavulsa.EntradasAvulsa.pessoa:type_name -> entradasavulsa.Pessoa
-	24, // 3: entradasavulsa.EntradasAvulsa.data_hora_entrada:type_name -> google.protobuf.Timestamp
+	25, // 3: entradasavulsa.EntradasAvulsa.data_hora_entrada:type_name -> google.protobuf.Timestamp
 	0,  // 4: entradasavulsa.EntradasAvulsa.situacao:type_name -> entradasavulsa.Situacao
-	24, // 5: entradasavulsa.EntradasAvulsa.data_hora_cancelamento:type_name -> google.protobuf.Timestamp
-	3,  // 6: entradasavulsa.EntradasAvulsa.produtos:type_name -> entradasavulsa.Item
-	24, // 7: entradasavulsa.Item.created_at:type_name -> google.protobuf.Timestamp
-	24, // 8: entradasavulsa.Item.updated_at:type_name -> google.protobuf.Timestamp
-	2,  // 9: entradasavulsa.CreateRequest.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	2,  // 10: entradasavulsa.CreateResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	2,  // 11: entradasavulsa.UpdateRequest.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	25, // 12: entradasavulsa.UpdateRequest.update_mask:type_name -> metadata.FieldMask
-	2,  // 13: entradasavulsa.UpdateResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	2,  // 14: entradasavulsa.GetResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	26, // 15: entradasavulsa.ListRequest.filter:type_name -> Filter
-	24, // 16: entradasavulsa.ListRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	24, // 17: entradasavulsa.ListRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	24, // 18: entradasavulsa.ListRequest.data_hora_cancelamento_gte:type_name -> google.protobuf.Timestamp
-	24, // 19: entradasavulsa.ListRequest.data_hora_cancelamento_lte:type_name -> google.protobuf.Timestamp
-	0,  // 20: entradasavulsa.ListRequest.situacao:type_name -> entradasavulsa.Situacao
-	2,  // 21: entradasavulsa.ListResponse.entradas_avulsa_list:type_name -> entradasavulsa.EntradasAvulsa
-	3,  // 22: entradasavulsa.AddProdutoRequest.item:type_name -> entradasavulsa.Item
-	2,  // 23: entradasavulsa.AddProdutoResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	3,  // 24: entradasavulsa.UpdateProdutoRequest.item:type_name -> entradasavulsa.Item
-	2,  // 25: entradasavulsa.UpdateProdutoResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	2,  // 26: entradasavulsa.DeleteProdutoResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	2,  // 27: entradasavulsa.FinalizaResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	2,  // 28: entradasavulsa.CancelaResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
-	4,  // 29: entradasavulsa.EntradasAvulsaService.Create:input_type -> entradasavulsa.CreateRequest
-	6,  // 30: entradasavulsa.EntradasAvulsaService.Update:input_type -> entradasavulsa.UpdateRequest
-	8,  // 31: entradasavulsa.EntradasAvulsaService.Delete:input_type -> entradasavulsa.DeleteRequest
-	10, // 32: entradasavulsa.EntradasAvulsaService.Get:input_type -> entradasavulsa.GetRequest
-	12, // 33: entradasavulsa.EntradasAvulsaService.List:input_type -> entradasavulsa.ListRequest
-	14, // 34: entradasavulsa.EntradasAvulsaService.AddProduto:input_type -> entradasavulsa.AddProdutoRequest
-	16, // 35: entradasavulsa.EntradasAvulsaService.UpdateProduto:input_type -> entradasavulsa.UpdateProdutoRequest
-	18, // 36: entradasavulsa.EntradasAvulsaService.DeleteProduto:input_type -> entradasavulsa.DeleteProdutoRequest
-	20, // 37: entradasavulsa.EntradasAvulsaService.Finaliza:input_type -> entradasavulsa.FinalizaRequest
-	22, // 38: entradasavulsa.EntradasAvulsaService.Cancela:input_type -> entradasavulsa.CancelaRequest
-	5,  // 39: entradasavulsa.EntradasAvulsaService.Create:output_type -> entradasavulsa.CreateResponse
-	7,  // 40: entradasavulsa.EntradasAvulsaService.Update:output_type -> entradasavulsa.UpdateResponse
-	9,  // 41: entradasavulsa.EntradasAvulsaService.Delete:output_type -> entradasavulsa.DeleteResponse
-	11, // 42: entradasavulsa.EntradasAvulsaService.Get:output_type -> entradasavulsa.GetResponse
-	13, // 43: entradasavulsa.EntradasAvulsaService.List:output_type -> entradasavulsa.ListResponse
-	15, // 44: entradasavulsa.EntradasAvulsaService.AddProduto:output_type -> entradasavulsa.AddProdutoResponse
-	17, // 45: entradasavulsa.EntradasAvulsaService.UpdateProduto:output_type -> entradasavulsa.UpdateProdutoResponse
-	19, // 46: entradasavulsa.EntradasAvulsaService.DeleteProduto:output_type -> entradasavulsa.DeleteProdutoResponse
-	21, // 47: entradasavulsa.EntradasAvulsaService.Finaliza:output_type -> entradasavulsa.FinalizaResponse
-	23, // 48: entradasavulsa.EntradasAvulsaService.Cancela:output_type -> entradasavulsa.CancelaResponse
-	39, // [39:49] is the sub-list for method output_type
-	29, // [29:39] is the sub-list for method input_type
-	29, // [29:29] is the sub-list for extension type_name
-	29, // [29:29] is the sub-list for extension extendee
-	0,  // [0:29] is the sub-list for field type_name
+	25, // 5: entradasavulsa.EntradasAvulsa.data_hora_cancelamento:type_name -> google.protobuf.Timestamp
+	4,  // 6: entradasavulsa.EntradasAvulsa.produtos:type_name -> entradasavulsa.Item
+	3,  // 7: entradasavulsa.EntradasAvulsa.parcelas:type_name -> entradasavulsa.Parcela
+	25, // 8: entradasavulsa.Parcela.vencimento:type_name -> google.protobuf.Timestamp
+	25, // 9: entradasavulsa.Item.created_at:type_name -> google.protobuf.Timestamp
+	25, // 10: entradasavulsa.Item.updated_at:type_name -> google.protobuf.Timestamp
+	2,  // 11: entradasavulsa.CreateRequest.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	2,  // 12: entradasavulsa.CreateResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	2,  // 13: entradasavulsa.UpdateRequest.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	26, // 14: entradasavulsa.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	2,  // 15: entradasavulsa.UpdateResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	2,  // 16: entradasavulsa.GetResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	27, // 17: entradasavulsa.ListRequest.filter:type_name -> Filter
+	25, // 18: entradasavulsa.ListRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	25, // 19: entradasavulsa.ListRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	25, // 20: entradasavulsa.ListRequest.data_hora_cancelamento_gte:type_name -> google.protobuf.Timestamp
+	25, // 21: entradasavulsa.ListRequest.data_hora_cancelamento_lte:type_name -> google.protobuf.Timestamp
+	0,  // 22: entradasavulsa.ListRequest.situacao:type_name -> entradasavulsa.Situacao
+	2,  // 23: entradasavulsa.ListResponse.entradas_avulsa_list:type_name -> entradasavulsa.EntradasAvulsa
+	4,  // 24: entradasavulsa.AddProdutoRequest.item:type_name -> entradasavulsa.Item
+	2,  // 25: entradasavulsa.AddProdutoResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	4,  // 26: entradasavulsa.UpdateProdutoRequest.item:type_name -> entradasavulsa.Item
+	2,  // 27: entradasavulsa.UpdateProdutoResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	2,  // 28: entradasavulsa.DeleteProdutoResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	2,  // 29: entradasavulsa.FinalizaResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	2,  // 30: entradasavulsa.CancelaResponse.entradas_avulsa:type_name -> entradasavulsa.EntradasAvulsa
+	5,  // 31: entradasavulsa.EntradasAvulsaService.Create:input_type -> entradasavulsa.CreateRequest
+	7,  // 32: entradasavulsa.EntradasAvulsaService.Update:input_type -> entradasavulsa.UpdateRequest
+	9,  // 33: entradasavulsa.EntradasAvulsaService.Delete:input_type -> entradasavulsa.DeleteRequest
+	11, // 34: entradasavulsa.EntradasAvulsaService.Get:input_type -> entradasavulsa.GetRequest
+	13, // 35: entradasavulsa.EntradasAvulsaService.List:input_type -> entradasavulsa.ListRequest
+	15, // 36: entradasavulsa.EntradasAvulsaService.AddProduto:input_type -> entradasavulsa.AddProdutoRequest
+	17, // 37: entradasavulsa.EntradasAvulsaService.UpdateProduto:input_type -> entradasavulsa.UpdateProdutoRequest
+	19, // 38: entradasavulsa.EntradasAvulsaService.DeleteProduto:input_type -> entradasavulsa.DeleteProdutoRequest
+	21, // 39: entradasavulsa.EntradasAvulsaService.Finaliza:input_type -> entradasavulsa.FinalizaRequest
+	23, // 40: entradasavulsa.EntradasAvulsaService.Cancela:input_type -> entradasavulsa.CancelaRequest
+	6,  // 41: entradasavulsa.EntradasAvulsaService.Create:output_type -> entradasavulsa.CreateResponse
+	8,  // 42: entradasavulsa.EntradasAvulsaService.Update:output_type -> entradasavulsa.UpdateResponse
+	10, // 43: entradasavulsa.EntradasAvulsaService.Delete:output_type -> entradasavulsa.DeleteResponse
+	12, // 44: entradasavulsa.EntradasAvulsaService.Get:output_type -> entradasavulsa.GetResponse
+	14, // 45: entradasavulsa.EntradasAvulsaService.List:output_type -> entradasavulsa.ListResponse
+	16, // 46: entradasavulsa.EntradasAvulsaService.AddProduto:output_type -> entradasavulsa.AddProdutoResponse
+	18, // 47: entradasavulsa.EntradasAvulsaService.UpdateProduto:output_type -> entradasavulsa.UpdateProdutoResponse
+	20, // 48: entradasavulsa.EntradasAvulsaService.DeleteProduto:output_type -> entradasavulsa.DeleteProdutoResponse
+	22, // 49: entradasavulsa.EntradasAvulsaService.Finaliza:output_type -> entradasavulsa.FinalizaResponse
+	24, // 50: entradasavulsa.EntradasAvulsaService.Cancela:output_type -> entradasavulsa.CancelaResponse
+	41, // [41:51] is the sub-list for method output_type
+	31, // [31:41] is the sub-list for method input_type
+	31, // [31:31] is the sub-list for extension type_name
+	31, // [31:31] is the sub-list for extension extendee
+	0,  // [0:31] is the sub-list for field type_name
 }
 
 func init() { file_apps_estoque_entradasavulsa_entrada_avulsa_proto_init() }
@@ -1893,7 +2002,7 @@ func file_apps_estoque_entradasavulsa_entrada_avulsa_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDesc), len(file_apps_estoque_entradasavulsa_entrada_avulsa_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   23,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

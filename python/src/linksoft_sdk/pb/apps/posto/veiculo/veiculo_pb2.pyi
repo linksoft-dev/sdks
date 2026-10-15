@@ -1,11 +1,13 @@
 import datetime
 
 from google.api import annotations_pb2 as _annotations_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from linksoft_sdk.pb.plugins.validate import validate_pb2 as _validate_pb2
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as _metadata_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from linksoft_sdk.pb.apps.report import report_pb2 as _report_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -31,7 +33,7 @@ class Motorista(_message.Message):
     def __init__(self, nome: _Optional[str] = ..., cpf: _Optional[str] = ...) -> None: ...
 
 class Veiculo(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "pessoa_id", "pessoa_nome", "placa", "modelo", "combustiveis", "limite_litros_abastecimento", "limite_valor_abastecimento", "limite_litros_dia", "limite_litros_mes", "motoristas", "ultimo_km", "ativo", "obs", "tag")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "pessoa_id", "pessoa_nome", "placa", "modelo", "combustiveis", "limite_litros_abastecimento", "limite_valor_abastecimento", "limite_litros_dia", "limite_litros_mes", "motoristas", "ultimo_km", "ativo", "obs", "tag", "centro_custo", "mensagem_pdv", "limite_valor_fatura", "consumo_fatura_valor", "consumo_fatura_litros")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -52,6 +54,11 @@ class Veiculo(_message.Message):
     ATIVO_FIELD_NUMBER: _ClassVar[int]
     OBS_FIELD_NUMBER: _ClassVar[int]
     TAG_FIELD_NUMBER: _ClassVar[int]
+    CENTRO_CUSTO_FIELD_NUMBER: _ClassVar[int]
+    MENSAGEM_PDV_FIELD_NUMBER: _ClassVar[int]
+    LIMITE_VALOR_FATURA_FIELD_NUMBER: _ClassVar[int]
+    CONSUMO_FATURA_VALOR_FIELD_NUMBER: _ClassVar[int]
+    CONSUMO_FATURA_LITROS_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -72,7 +79,12 @@ class Veiculo(_message.Message):
     ativo: bool
     obs: str
     tag: str
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., pessoa_id: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., placa: _Optional[str] = ..., modelo: _Optional[str] = ..., combustiveis: _Optional[_Iterable[_Union[ProdutoPermitido, _Mapping]]] = ..., limite_litros_abastecimento: _Optional[float] = ..., limite_valor_abastecimento: _Optional[float] = ..., limite_litros_dia: _Optional[float] = ..., limite_litros_mes: _Optional[float] = ..., motoristas: _Optional[_Iterable[_Union[Motorista, _Mapping]]] = ..., ultimo_km: _Optional[float] = ..., ativo: _Optional[bool] = ..., obs: _Optional[str] = ..., tag: _Optional[str] = ...) -> None: ...
+    centro_custo: str
+    mensagem_pdv: str
+    limite_valor_fatura: float
+    consumo_fatura_valor: float
+    consumo_fatura_litros: float
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., pessoa_id: _Optional[str] = ..., pessoa_nome: _Optional[str] = ..., placa: _Optional[str] = ..., modelo: _Optional[str] = ..., combustiveis: _Optional[_Iterable[_Union[ProdutoPermitido, _Mapping]]] = ..., limite_litros_abastecimento: _Optional[float] = ..., limite_valor_abastecimento: _Optional[float] = ..., limite_litros_dia: _Optional[float] = ..., limite_litros_mes: _Optional[float] = ..., motoristas: _Optional[_Iterable[_Union[Motorista, _Mapping]]] = ..., ultimo_km: _Optional[float] = ..., ativo: _Optional[bool] = ..., obs: _Optional[str] = ..., tag: _Optional[str] = ..., centro_custo: _Optional[str] = ..., mensagem_pdv: _Optional[str] = ..., limite_valor_fatura: _Optional[float] = ..., consumo_fatura_valor: _Optional[float] = ..., consumo_fatura_litros: _Optional[float] = ...) -> None: ...
 
 class CreateRequest(_message.Message):
     __slots__ = ("veiculo",)
@@ -163,6 +175,22 @@ class AutorizaResponse(_message.Message):
     litros_dia: float
     litros_mes: float
     def __init__(self, veiculo: _Optional[_Union[Veiculo, _Mapping]] = ..., litros_dia: _Optional[float] = ..., litros_mes: _Optional[float] = ...) -> None: ...
+
+class ComprovanteRequest(_message.Message):
+    __slots__ = ("pedido_id",)
+    PEDIDO_ID_FIELD_NUMBER: _ClassVar[int]
+    pedido_id: str
+    def __init__(self, pedido_id: _Optional[str] = ...) -> None: ...
+
+class ComprovanteResponse(_message.Message):
+    __slots__ = ("response", "vias", "nfe_na_fatura")
+    RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    VIAS_FIELD_NUMBER: _ClassVar[int]
+    NFE_NA_FATURA_FIELD_NUMBER: _ClassVar[int]
+    response: _report_pb2.Response
+    vias: int
+    nfe_na_fatura: bool
+    def __init__(self, response: _Optional[_Union[_report_pb2.Response, _Mapping]] = ..., vias: _Optional[int] = ..., nfe_na_fatura: _Optional[bool] = ...) -> None: ...
 
 class TagsRequest(_message.Message):
     __slots__ = ()

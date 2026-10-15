@@ -45,6 +45,11 @@ class LmcServiceStub:
                 request_serializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.PreencheRequest.SerializeToString,
                 response_deserializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.PreencheResponse.FromString,
                 _registered_method=True)
+        self.FechaDia = channel.unary_unary(
+                '/lmc.LmcService/FechaDia',
+                request_serializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.FechaDiaRequest.SerializeToString,
+                response_deserializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.FechaDiaResponse.FromString,
+                _registered_method=True)
         self.Report = channel.unary_unary(
                 '/lmc.LmcService/Report',
                 request_serializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.ReportRequest.SerializeToString,
@@ -94,9 +99,19 @@ class LmcServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Report(self, request, context):
+    def FechaDia(self, request, context):
         """Dados para impressão das folhas selecionadas.
+        Fecha os tanques do dia: gera a folha de cada combustível que ainda não tem folha no dia e,
+        na que já existe, atualiza o fechamento dos tanques pela medição mais recente do dia. A perda
+        vira despesa quando a empresa configurou o plano de contas, e a posição dos tanques é avisada
+        a quem acompanha.
         """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Report(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -133,6 +148,11 @@ def add_LmcServiceServicer_to_server(servicer, server):
                     servicer.Preenche,
                     request_deserializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.PreencheRequest.FromString,
                     response_serializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.PreencheResponse.SerializeToString,
+            ),
+            'FechaDia': grpc.unary_unary_rpc_method_handler(
+                    servicer.FechaDia,
+                    request_deserializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.FechaDiaRequest.FromString,
+                    response_serializer=apps_dot_posto_dot_lmc_dot_lmc__pb2.FechaDiaResponse.SerializeToString,
             ),
             'Report': grpc.unary_unary_rpc_method_handler(
                     servicer.Report,
@@ -303,6 +323,33 @@ class LmcService:
             '/lmc.LmcService/Preenche',
             apps_dot_posto_dot_lmc_dot_lmc__pb2.PreencheRequest.SerializeToString,
             apps_dot_posto_dot_lmc_dot_lmc__pb2.PreencheResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FechaDia(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/lmc.LmcService/FechaDia',
+            apps_dot_posto_dot_lmc_dot_lmc__pb2.FechaDiaRequest.SerializeToString,
+            apps_dot_posto_dot_lmc_dot_lmc__pb2.FechaDiaResponse.FromString,
             options,
             channel_credentials,
             insecure,

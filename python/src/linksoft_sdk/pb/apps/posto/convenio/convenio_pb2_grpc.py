@@ -45,6 +45,11 @@ class ConvenioServiceStub:
                 request_serializer=apps_dot_posto_dot_convenio_dot_convenio__pb2.FaturaRequest.SerializeToString,
                 response_deserializer=apps_dot_posto_dot_convenio_dot_convenio__pb2.FaturaResponse.FromString,
                 _registered_method=True)
+        self.Extrato = channel.unary_unary(
+                '/convenio.ConvenioService/Extrato',
+                request_serializer=apps_dot_posto_dot_convenio_dot_convenio__pb2.ExtratoRequest.SerializeToString,
+                response_deserializer=apps_dot_posto_dot_convenio_dot_convenio__pb2.ExtratoResponse.FromString,
+                _registered_method=True)
 
 
 class ConvenioServiceServicer:
@@ -89,6 +94,15 @@ class ConvenioServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Extrato(self, request, context):
+        """Extrato de consumo de uma fatura do convênio (cupons, produtos, consumo e km/l por placa),
+        em HTML para imprimir ou salvar em PDF. Sem fatura, sai o extrato das vendas do cliente no
+        período.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ConvenioServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -121,6 +135,11 @@ def add_ConvenioServiceServicer_to_server(servicer, server):
                     servicer.Fatura,
                     request_deserializer=apps_dot_posto_dot_convenio_dot_convenio__pb2.FaturaRequest.FromString,
                     response_serializer=apps_dot_posto_dot_convenio_dot_convenio__pb2.FaturaResponse.SerializeToString,
+            ),
+            'Extrato': grpc.unary_unary_rpc_method_handler(
+                    servicer.Extrato,
+                    request_deserializer=apps_dot_posto_dot_convenio_dot_convenio__pb2.ExtratoRequest.FromString,
+                    response_serializer=apps_dot_posto_dot_convenio_dot_convenio__pb2.ExtratoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -286,6 +305,33 @@ class ConvenioService:
             '/convenio.ConvenioService/Fatura',
             apps_dot_posto_dot_convenio_dot_convenio__pb2.FaturaRequest.SerializeToString,
             apps_dot_posto_dot_convenio_dot_convenio__pb2.FaturaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Extrato(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/convenio.ConvenioService/Extrato',
+            apps_dot_posto_dot_convenio_dot_convenio__pb2.ExtratoRequest.SerializeToString,
+            apps_dot_posto_dot_convenio_dot_convenio__pb2.ExtratoResponse.FromString,
             options,
             channel_credentials,
             insecure,

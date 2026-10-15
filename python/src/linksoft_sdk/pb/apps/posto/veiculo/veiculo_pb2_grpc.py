@@ -45,6 +45,11 @@ class VeiculoServiceStub:
                 request_serializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.AutorizaRequest.SerializeToString,
                 response_deserializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.AutorizaResponse.FromString,
                 _registered_method=True)
+        self.Comprovante = channel.unary_unary(
+                '/veiculo.VeiculoService/Comprovante',
+                request_serializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.ComprovanteRequest.SerializeToString,
+                response_deserializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.ComprovanteResponse.FromString,
+                _registered_method=True)
         self.Tags = channel.unary_unary(
                 '/veiculo.VeiculoService/Tags',
                 request_serializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.TagsRequest.SerializeToString,
@@ -95,6 +100,14 @@ class VeiculoServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Comprovante(self, request, context):
+        """Comprovante da venda a prazo para o motorista assinar: placa, motorista, km, km por litro,
+        centro de custo e a declaração de dívida, nas vias do convênio do cliente.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def Tags(self, request, context):
         """Veículos ativos com tag, para o agente da pista cadastrar na automação. Só o agente pareado
         chama.
@@ -135,6 +148,11 @@ def add_VeiculoServiceServicer_to_server(servicer, server):
                     servicer.Autoriza,
                     request_deserializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.AutorizaRequest.FromString,
                     response_serializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.AutorizaResponse.SerializeToString,
+            ),
+            'Comprovante': grpc.unary_unary_rpc_method_handler(
+                    servicer.Comprovante,
+                    request_deserializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.ComprovanteRequest.FromString,
+                    response_serializer=apps_dot_posto_dot_veiculo_dot_veiculo__pb2.ComprovanteResponse.SerializeToString,
             ),
             'Tags': grpc.unary_unary_rpc_method_handler(
                     servicer.Tags,
@@ -305,6 +323,33 @@ class VeiculoService:
             '/veiculo.VeiculoService/Autoriza',
             apps_dot_posto_dot_veiculo_dot_veiculo__pb2.AutorizaRequest.SerializeToString,
             apps_dot_posto_dot_veiculo_dot_veiculo__pb2.AutorizaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Comprovante(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/veiculo.VeiculoService/Comprovante',
+            apps_dot_posto_dot_veiculo_dot_veiculo__pb2.ComprovanteRequest.SerializeToString,
+            apps_dot_posto_dot_veiculo_dot_veiculo__pb2.ComprovanteResponse.FromString,
             options,
             channel_credentials,
             insecure,

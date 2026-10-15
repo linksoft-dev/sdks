@@ -7,6 +7,7 @@
 package veiculo
 
 import (
+	report "github.com/linksoft-dev/sdks/go/pb/apps/report"
 	metadata "github.com/linksoft-dev/sdks/go/pb/common/metadata"
 	filter "github.com/linksoft-dev/sdks/go/pb/filter"
 	_ "github.com/linksoft-dev/sdks/go/pb/plugins/service"
@@ -160,9 +161,19 @@ type Veiculo struct {
 	Obs      string  `protobuf:"bytes,19,opt,name=obs,proto3" json:"obs,omitempty"`
 	// Código da tag (RFID) instalada no veículo, como a automação da pista lê. Não se repete na
 	// empresa.
-	Tag           string `protobuf:"bytes,20,opt,name=tag,proto3" json:"tag,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Tag string `protobuf:"bytes,20,opt,name=tag,proto3" json:"tag,omitempty"`
+	// Centro de custo do cliente para o veículo (departamento, filial). Sai no comprovante e no extrato.
+	CentroCusto string `protobuf:"bytes,21,opt,name=centro_custo,json=centroCusto,proto3" json:"centro_custo,omitempty"`
+	// Aviso mostrado no caixa quando a placa é informada.
+	MensagemPdv string `protobuf:"bytes,22,opt,name=mensagem_pdv,json=mensagemPdv,proto3" json:"mensagem_pdv,omitempty"`
+	// Teto em reais do consumo do veículo na fatura aberta do convênio. Zero não limita.
+	LimiteValorFatura float64 `protobuf:"fixed64,23,opt,name=limite_valor_fatura,json=limiteValorFatura,proto3" json:"limite_valor_fatura,omitempty"`
+	// Consumo do veículo na fatura aberta (vendas fechadas desde o último fechamento do convênio);
+	// somente leitura.
+	ConsumoFaturaValor  float64 `protobuf:"fixed64,24,opt,name=consumo_fatura_valor,json=consumoFaturaValor,proto3" json:"consumo_fatura_valor,omitempty"`
+	ConsumoFaturaLitros float64 `protobuf:"fixed64,25,opt,name=consumo_fatura_litros,json=consumoFaturaLitros,proto3" json:"consumo_fatura_litros,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Veiculo) Reset() {
@@ -333,6 +344,41 @@ func (x *Veiculo) GetTag() string {
 		return x.Tag
 	}
 	return ""
+}
+
+func (x *Veiculo) GetCentroCusto() string {
+	if x != nil {
+		return x.CentroCusto
+	}
+	return ""
+}
+
+func (x *Veiculo) GetMensagemPdv() string {
+	if x != nil {
+		return x.MensagemPdv
+	}
+	return ""
+}
+
+func (x *Veiculo) GetLimiteValorFatura() float64 {
+	if x != nil {
+		return x.LimiteValorFatura
+	}
+	return 0
+}
+
+func (x *Veiculo) GetConsumoFaturaValor() float64 {
+	if x != nil {
+		return x.ConsumoFaturaValor
+	}
+	return 0
+}
+
+func (x *Veiculo) GetConsumoFaturaLitros() float64 {
+	if x != nil {
+		return x.ConsumoFaturaLitros
+	}
+	return 0
 }
 
 type CreateRequest struct {
@@ -937,6 +983,114 @@ func (x *AutorizaResponse) GetLitrosMes() float64 {
 	return 0
 }
 
+type ComprovanteRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Venda a prazo.
+	PedidoId      string `protobuf:"bytes,1,opt,name=pedido_id,json=pedidoId,proto3" json:"pedido_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ComprovanteRequest) Reset() {
+	*x = ComprovanteRequest{}
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ComprovanteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ComprovanteRequest) ProtoMessage() {}
+
+func (x *ComprovanteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ComprovanteRequest.ProtoReflect.Descriptor instead.
+func (*ComprovanteRequest) Descriptor() ([]byte, []int) {
+	return file_apps_posto_veiculo_veiculo_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ComprovanteRequest) GetPedidoId() string {
+	if x != nil {
+		return x.PedidoId
+	}
+	return ""
+}
+
+type ComprovanteResponse struct {
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	Response *report.Response       `protobuf:"bytes,1,opt,name=response,proto3" json:"response,omitempty"`
+	// Vias que o convênio do cliente pede nesta venda: zero quando a venda não é a prazo no convênio
+	// ou o convênio não imprime o comprovante.
+	Vias int32 `protobuf:"varint,2,opt,name=vias,proto3" json:"vias,omitempty"`
+	// A venda a prazo entra na NF-e que o convênio emite na fatura: o caixa não emite nota dela.
+	NfeNaFatura   bool `protobuf:"varint,3,opt,name=nfe_na_fatura,json=nfeNaFatura,proto3" json:"nfe_na_fatura,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ComprovanteResponse) Reset() {
+	*x = ComprovanteResponse{}
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ComprovanteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ComprovanteResponse) ProtoMessage() {}
+
+func (x *ComprovanteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ComprovanteResponse.ProtoReflect.Descriptor instead.
+func (*ComprovanteResponse) Descriptor() ([]byte, []int) {
+	return file_apps_posto_veiculo_veiculo_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *ComprovanteResponse) GetResponse() *report.Response {
+	if x != nil {
+		return x.Response
+	}
+	return nil
+}
+
+func (x *ComprovanteResponse) GetVias() int32 {
+	if x != nil {
+		return x.Vias
+	}
+	return 0
+}
+
+func (x *ComprovanteResponse) GetNfeNaFatura() bool {
+	if x != nil {
+		return x.NfeNaFatura
+	}
+	return false
+}
+
 type TagsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -945,7 +1099,7 @@ type TagsRequest struct {
 
 func (x *TagsRequest) Reset() {
 	*x = TagsRequest{}
-	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[15]
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -957,7 +1111,7 @@ func (x *TagsRequest) String() string {
 func (*TagsRequest) ProtoMessage() {}
 
 func (x *TagsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[15]
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -970,7 +1124,7 @@ func (x *TagsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagsRequest.ProtoReflect.Descriptor instead.
 func (*TagsRequest) Descriptor() ([]byte, []int) {
-	return file_apps_posto_veiculo_veiculo_proto_rawDescGZIP(), []int{15}
+	return file_apps_posto_veiculo_veiculo_proto_rawDescGZIP(), []int{17}
 }
 
 type TagVeiculo struct {
@@ -988,7 +1142,7 @@ type TagVeiculo struct {
 
 func (x *TagVeiculo) Reset() {
 	*x = TagVeiculo{}
-	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[16]
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1000,7 +1154,7 @@ func (x *TagVeiculo) String() string {
 func (*TagVeiculo) ProtoMessage() {}
 
 func (x *TagVeiculo) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[16]
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1013,7 +1167,7 @@ func (x *TagVeiculo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagVeiculo.ProtoReflect.Descriptor instead.
 func (*TagVeiculo) Descriptor() ([]byte, []int) {
-	return file_apps_posto_veiculo_veiculo_proto_rawDescGZIP(), []int{16}
+	return file_apps_posto_veiculo_veiculo_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *TagVeiculo) GetTag() string {
@@ -1060,7 +1214,7 @@ type TagsResponse struct {
 
 func (x *TagsResponse) Reset() {
 	*x = TagsResponse{}
-	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[17]
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1072,7 +1226,7 @@ func (x *TagsResponse) String() string {
 func (*TagsResponse) ProtoMessage() {}
 
 func (x *TagsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[17]
+	mi := &file_apps_posto_veiculo_veiculo_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1085,7 +1239,7 @@ func (x *TagsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagsResponse.ProtoReflect.Descriptor instead.
 func (*TagsResponse) Descriptor() ([]byte, []int) {
-	return file_apps_posto_veiculo_veiculo_proto_rawDescGZIP(), []int{17}
+	return file_apps_posto_veiculo_veiculo_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *TagsResponse) GetTags() []*TagVeiculo {
@@ -1099,14 +1253,14 @@ var File_apps_posto_veiculo_veiculo_proto protoreflect.FileDescriptor
 
 const file_apps_posto_veiculo_veiculo_proto_rawDesc = "" +
 	"\n" +
-	" apps/posto/veiculo/veiculo.proto\x12\aveiculo\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"T\n" +
+	" apps/posto/veiculo/veiculo.proto\x12\aveiculo\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"T\n" +
 	"\x10ProdutoPermitido\x12\x1d\n" +
 	"\n" +
 	"produto_id\x18\x01 \x01(\tR\tprodutoId\x12!\n" +
 	"\fproduto_nome\x18\x02 \x01(\tR\vprodutoNome\"<\n" +
 	"\tMotorista\x12\x1d\n" +
 	"\x04nome\x18\x01 \x01(\tB\t\xfaB\x06r\x04\x10\x02\x18<R\x04nome\x12\x10\n" +
-	"\x03cpf\x18\x02 \x01(\tR\x03cpf\"\xac\x06\n" +
+	"\x03cpf\x18\x02 \x01(\tR\x03cpf\"\xa7\b\n" +
 	"\aVeiculo\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1133,7 +1287,12 @@ const file_apps_posto_veiculo_veiculo_proto_rawDesc = "" +
 	"\tultimo_km\x18\x11 \x01(\x01R\bultimoKm\x12\x14\n" +
 	"\x05ativo\x18\x12 \x01(\bR\x05ativo\x12\x1a\n" +
 	"\x03obs\x18\x13 \x01(\tB\b\xfaB\x05r\x03\x18\xf4\x03R\x03obs\x12\x19\n" +
-	"\x03tag\x18\x14 \x01(\tB\a\xfaB\x04r\x02\x18<R\x03tag:\x03\xc0>\x01\";\n" +
+	"\x03tag\x18\x14 \x01(\tB\a\xfaB\x04r\x02\x18<R\x03tag\x12*\n" +
+	"\fcentro_custo\x18\x15 \x01(\tB\a\xfaB\x04r\x02\x18<R\vcentroCusto\x12+\n" +
+	"\fmensagem_pdv\x18\x16 \x01(\tB\b\xfaB\x05r\x03\x18\xc8\x01R\vmensagemPdv\x12.\n" +
+	"\x13limite_valor_fatura\x18\x17 \x01(\x01R\x11limiteValorFatura\x126\n" +
+	"\x14consumo_fatura_valor\x18\x18 \x01(\x01B\x04\xe2A\x01\x03R\x12consumoFaturaValor\x128\n" +
+	"\x15consumo_fatura_litros\x18\x19 \x01(\x01B\x04\xe2A\x01\x03R\x13consumoFaturaLitros:\x03\xc0>\x01\";\n" +
 	"\rCreateRequest\x12*\n" +
 	"\aveiculo\x18\x01 \x01(\v2\x10.veiculo.VeiculoR\aveiculo\"<\n" +
 	"\x0eCreateResponse\x12*\n" +
@@ -1171,7 +1330,13 @@ const file_apps_posto_veiculo_veiculo_proto_rawDesc = "" +
 	"\n" +
 	"litros_dia\x18\x02 \x01(\x01R\tlitrosDia\x12\x1d\n" +
 	"\n" +
-	"litros_mes\x18\x03 \x01(\x01R\tlitrosMes\"\r\n" +
+	"litros_mes\x18\x03 \x01(\x01R\tlitrosMes\"1\n" +
+	"\x12ComprovanteRequest\x12\x1b\n" +
+	"\tpedido_id\x18\x01 \x01(\tR\bpedidoId\"{\n" +
+	"\x13ComprovanteResponse\x12,\n" +
+	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse\x12\x12\n" +
+	"\x04vias\x18\x02 \x01(\x05R\x04vias\x12\"\n" +
+	"\rnfe_na_fatura\x18\x03 \x01(\bR\vnfeNaFatura\"\r\n" +
 	"\vTagsRequest\"\x94\x01\n" +
 	"\n" +
 	"TagVeiculo\x12\x10\n" +
@@ -1182,14 +1347,15 @@ const file_apps_posto_veiculo_veiculo_proto_rawDesc = "" +
 	"\vnivel_preco\x18\x05 \x01(\x05R\n" +
 	"nivelPreco\"7\n" +
 	"\fTagsResponse\x12'\n" +
-	"\x04tags\x18\x01 \x03(\v2\x13.veiculo.TagVeiculoR\x04tags2\xa3\x05\n" +
+	"\x04tags\x18\x01 \x03(\v2\x13.veiculo.TagVeiculoR\x04tags2\x99\x06\n" +
 	"\x0eVeiculoService\x12`\n" +
 	"\x06Create\x12\x16.veiculo.CreateRequest\x1a\x17.veiculo.CreateResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/posto/veiculos/create\x12`\n" +
 	"\x06Update\x12\x16.veiculo.UpdateRequest\x1a\x17.veiculo.UpdateResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\x1a\x1a/api/posto/veiculos/update\x12[\n" +
 	"\x06Delete\x12\x16.veiculo.DeleteRequest\x1a\x17.veiculo.DeleteResponse\" \x82\xd3\xe4\x93\x02\x1a*\x18/api/posto/veiculos/{id}\x12R\n" +
 	"\x03Get\x12\x13.veiculo.GetRequest\x1a\x14.veiculo.GetResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/api/posto/veiculos/{id}\x12X\n" +
 	"\x04List\x12\x14.veiculo.ListRequest\x1a\x15.veiculo.ListResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/posto/veiculos/list\x12h\n" +
-	"\bAutoriza\x12\x18.veiculo.AutorizaRequest\x1a\x19.veiculo.AutorizaResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/posto/veiculos/autoriza\x12X\n" +
+	"\bAutoriza\x12\x18.veiculo.AutorizaRequest\x1a\x19.veiculo.AutorizaResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/posto/veiculos/autoriza\x12t\n" +
+	"\vComprovante\x12\x1b.veiculo.ComprovanteRequest\x1a\x1c.veiculo.ComprovanteResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/api/posto/veiculos/comprovante\x12X\n" +
 	"\x04Tags\x12\x14.veiculo.TagsRequest\x1a\x15.veiculo.TagsResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/posto/veiculos/tagsB\x8e\x01\n" +
 	"\vcom.veiculoB\fVeiculoProtoP\x01Z5github.com/linksoft-dev/sdks/go/pb/apps/posto/veiculo\xa2\x02\x03VXX\xaa\x02\aVeiculo\xca\x02\aVeiculo\xe2\x02\x13Veiculo\\GPBMetadata\xea\x02\aVeiculob\x06proto3"
 
@@ -1205,7 +1371,7 @@ func file_apps_posto_veiculo_veiculo_proto_rawDescGZIP() []byte {
 	return file_apps_posto_veiculo_veiculo_proto_rawDescData
 }
 
-var file_apps_posto_veiculo_veiculo_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_apps_posto_veiculo_veiculo_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_apps_posto_veiculo_veiculo_proto_goTypes = []any{
 	(*ProdutoPermitido)(nil),      // 0: veiculo.ProdutoPermitido
 	(*Motorista)(nil),             // 1: veiculo.Motorista
@@ -1222,49 +1388,55 @@ var file_apps_posto_veiculo_veiculo_proto_goTypes = []any{
 	(*ListResponse)(nil),          // 12: veiculo.ListResponse
 	(*AutorizaRequest)(nil),       // 13: veiculo.AutorizaRequest
 	(*AutorizaResponse)(nil),      // 14: veiculo.AutorizaResponse
-	(*TagsRequest)(nil),           // 15: veiculo.TagsRequest
-	(*TagVeiculo)(nil),            // 16: veiculo.TagVeiculo
-	(*TagsResponse)(nil),          // 17: veiculo.TagsResponse
-	(*timestamppb.Timestamp)(nil), // 18: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),  // 19: metadata.BasicFields
-	(*metadata.FieldMask)(nil),    // 20: metadata.FieldMask
-	(*filter.Filter)(nil),         // 21: Filter
+	(*ComprovanteRequest)(nil),    // 15: veiculo.ComprovanteRequest
+	(*ComprovanteResponse)(nil),   // 16: veiculo.ComprovanteResponse
+	(*TagsRequest)(nil),           // 17: veiculo.TagsRequest
+	(*TagVeiculo)(nil),            // 18: veiculo.TagVeiculo
+	(*TagsResponse)(nil),          // 19: veiculo.TagsResponse
+	(*timestamppb.Timestamp)(nil), // 20: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),  // 21: metadata.BasicFields
+	(*metadata.FieldMask)(nil),    // 22: metadata.FieldMask
+	(*filter.Filter)(nil),         // 23: Filter
+	(*report.Response)(nil),       // 24: report.Response
 }
 var file_apps_posto_veiculo_veiculo_proto_depIdxs = []int32{
-	18, // 0: veiculo.Veiculo.created_at:type_name -> google.protobuf.Timestamp
-	18, // 1: veiculo.Veiculo.updated_at:type_name -> google.protobuf.Timestamp
-	19, // 2: veiculo.Veiculo.fields:type_name -> metadata.BasicFields
+	20, // 0: veiculo.Veiculo.created_at:type_name -> google.protobuf.Timestamp
+	20, // 1: veiculo.Veiculo.updated_at:type_name -> google.protobuf.Timestamp
+	21, // 2: veiculo.Veiculo.fields:type_name -> metadata.BasicFields
 	0,  // 3: veiculo.Veiculo.combustiveis:type_name -> veiculo.ProdutoPermitido
 	1,  // 4: veiculo.Veiculo.motoristas:type_name -> veiculo.Motorista
 	2,  // 5: veiculo.CreateRequest.veiculo:type_name -> veiculo.Veiculo
 	2,  // 6: veiculo.CreateResponse.veiculo:type_name -> veiculo.Veiculo
 	2,  // 7: veiculo.UpdateRequest.veiculo:type_name -> veiculo.Veiculo
-	20, // 8: veiculo.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	22, // 8: veiculo.UpdateRequest.update_mask:type_name -> metadata.FieldMask
 	2,  // 9: veiculo.UpdateResponse.veiculo:type_name -> veiculo.Veiculo
 	2,  // 10: veiculo.GetResponse.veiculo:type_name -> veiculo.Veiculo
-	21, // 11: veiculo.ListRequest.filter:type_name -> Filter
+	23, // 11: veiculo.ListRequest.filter:type_name -> Filter
 	2,  // 12: veiculo.ListResponse.veiculo_list:type_name -> veiculo.Veiculo
 	2,  // 13: veiculo.AutorizaResponse.veiculo:type_name -> veiculo.Veiculo
-	16, // 14: veiculo.TagsResponse.tags:type_name -> veiculo.TagVeiculo
-	3,  // 15: veiculo.VeiculoService.Create:input_type -> veiculo.CreateRequest
-	5,  // 16: veiculo.VeiculoService.Update:input_type -> veiculo.UpdateRequest
-	7,  // 17: veiculo.VeiculoService.Delete:input_type -> veiculo.DeleteRequest
-	9,  // 18: veiculo.VeiculoService.Get:input_type -> veiculo.GetRequest
-	11, // 19: veiculo.VeiculoService.List:input_type -> veiculo.ListRequest
-	13, // 20: veiculo.VeiculoService.Autoriza:input_type -> veiculo.AutorizaRequest
-	15, // 21: veiculo.VeiculoService.Tags:input_type -> veiculo.TagsRequest
-	4,  // 22: veiculo.VeiculoService.Create:output_type -> veiculo.CreateResponse
-	6,  // 23: veiculo.VeiculoService.Update:output_type -> veiculo.UpdateResponse
-	8,  // 24: veiculo.VeiculoService.Delete:output_type -> veiculo.DeleteResponse
-	10, // 25: veiculo.VeiculoService.Get:output_type -> veiculo.GetResponse
-	12, // 26: veiculo.VeiculoService.List:output_type -> veiculo.ListResponse
-	14, // 27: veiculo.VeiculoService.Autoriza:output_type -> veiculo.AutorizaResponse
-	17, // 28: veiculo.VeiculoService.Tags:output_type -> veiculo.TagsResponse
-	22, // [22:29] is the sub-list for method output_type
-	15, // [15:22] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	24, // 14: veiculo.ComprovanteResponse.response:type_name -> report.Response
+	18, // 15: veiculo.TagsResponse.tags:type_name -> veiculo.TagVeiculo
+	3,  // 16: veiculo.VeiculoService.Create:input_type -> veiculo.CreateRequest
+	5,  // 17: veiculo.VeiculoService.Update:input_type -> veiculo.UpdateRequest
+	7,  // 18: veiculo.VeiculoService.Delete:input_type -> veiculo.DeleteRequest
+	9,  // 19: veiculo.VeiculoService.Get:input_type -> veiculo.GetRequest
+	11, // 20: veiculo.VeiculoService.List:input_type -> veiculo.ListRequest
+	13, // 21: veiculo.VeiculoService.Autoriza:input_type -> veiculo.AutorizaRequest
+	15, // 22: veiculo.VeiculoService.Comprovante:input_type -> veiculo.ComprovanteRequest
+	17, // 23: veiculo.VeiculoService.Tags:input_type -> veiculo.TagsRequest
+	4,  // 24: veiculo.VeiculoService.Create:output_type -> veiculo.CreateResponse
+	6,  // 25: veiculo.VeiculoService.Update:output_type -> veiculo.UpdateResponse
+	8,  // 26: veiculo.VeiculoService.Delete:output_type -> veiculo.DeleteResponse
+	10, // 27: veiculo.VeiculoService.Get:output_type -> veiculo.GetResponse
+	12, // 28: veiculo.VeiculoService.List:output_type -> veiculo.ListResponse
+	14, // 29: veiculo.VeiculoService.Autoriza:output_type -> veiculo.AutorizaResponse
+	16, // 30: veiculo.VeiculoService.Comprovante:output_type -> veiculo.ComprovanteResponse
+	19, // 31: veiculo.VeiculoService.Tags:output_type -> veiculo.TagsResponse
+	24, // [24:32] is the sub-list for method output_type
+	16, // [16:24] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_apps_posto_veiculo_veiculo_proto_init() }
@@ -1278,7 +1450,7 @@ func file_apps_posto_veiculo_veiculo_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_posto_veiculo_veiculo_proto_rawDesc), len(file_apps_posto_veiculo_veiculo_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

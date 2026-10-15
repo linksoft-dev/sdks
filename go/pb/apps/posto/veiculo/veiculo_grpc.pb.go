@@ -19,13 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	VeiculoService_Create_FullMethodName   = "/veiculo.VeiculoService/Create"
-	VeiculoService_Update_FullMethodName   = "/veiculo.VeiculoService/Update"
-	VeiculoService_Delete_FullMethodName   = "/veiculo.VeiculoService/Delete"
-	VeiculoService_Get_FullMethodName      = "/veiculo.VeiculoService/Get"
-	VeiculoService_List_FullMethodName     = "/veiculo.VeiculoService/List"
-	VeiculoService_Autoriza_FullMethodName = "/veiculo.VeiculoService/Autoriza"
-	VeiculoService_Tags_FullMethodName     = "/veiculo.VeiculoService/Tags"
+	VeiculoService_Create_FullMethodName      = "/veiculo.VeiculoService/Create"
+	VeiculoService_Update_FullMethodName      = "/veiculo.VeiculoService/Update"
+	VeiculoService_Delete_FullMethodName      = "/veiculo.VeiculoService/Delete"
+	VeiculoService_Get_FullMethodName         = "/veiculo.VeiculoService/Get"
+	VeiculoService_List_FullMethodName        = "/veiculo.VeiculoService/List"
+	VeiculoService_Autoriza_FullMethodName    = "/veiculo.VeiculoService/Autoriza"
+	VeiculoService_Comprovante_FullMethodName = "/veiculo.VeiculoService/Comprovante"
+	VeiculoService_Tags_FullMethodName        = "/veiculo.VeiculoService/Tags"
 )
 
 // VeiculoServiceClient is the client API for VeiculoService service.
@@ -43,6 +44,9 @@ type VeiculoServiceClient interface {
 	// permitido, limites, km, motorista e títulos em atraso. É a mesma regra aplicada no
 	// pagamento da venda.
 	Autoriza(ctx context.Context, in *AutorizaRequest, opts ...grpc.CallOption) (*AutorizaResponse, error)
+	// Comprovante da venda a prazo para o motorista assinar: placa, motorista, km, km por litro,
+	// centro de custo e a declaração de dívida, nas vias do convênio do cliente.
+	Comprovante(ctx context.Context, in *ComprovanteRequest, opts ...grpc.CallOption) (*ComprovanteResponse, error)
 	// Veículos ativos com tag, para o agente da pista cadastrar na automação. Só o agente pareado
 	// chama.
 	Tags(ctx context.Context, in *TagsRequest, opts ...grpc.CallOption) (*TagsResponse, error)
@@ -116,6 +120,16 @@ func (c *veiculoServiceClient) Autoriza(ctx context.Context, in *AutorizaRequest
 	return out, nil
 }
 
+func (c *veiculoServiceClient) Comprovante(ctx context.Context, in *ComprovanteRequest, opts ...grpc.CallOption) (*ComprovanteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ComprovanteResponse)
+	err := c.cc.Invoke(ctx, VeiculoService_Comprovante_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *veiculoServiceClient) Tags(ctx context.Context, in *TagsRequest, opts ...grpc.CallOption) (*TagsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TagsResponse)
@@ -141,6 +155,9 @@ type VeiculoServiceServer interface {
 	// permitido, limites, km, motorista e títulos em atraso. É a mesma regra aplicada no
 	// pagamento da venda.
 	Autoriza(context.Context, *AutorizaRequest) (*AutorizaResponse, error)
+	// Comprovante da venda a prazo para o motorista assinar: placa, motorista, km, km por litro,
+	// centro de custo e a declaração de dívida, nas vias do convênio do cliente.
+	Comprovante(context.Context, *ComprovanteRequest) (*ComprovanteResponse, error)
 	// Veículos ativos com tag, para o agente da pista cadastrar na automação. Só o agente pareado
 	// chama.
 	Tags(context.Context, *TagsRequest) (*TagsResponse, error)
@@ -171,6 +188,9 @@ func (UnimplementedVeiculoServiceServer) List(context.Context, *ListRequest) (*L
 }
 func (UnimplementedVeiculoServiceServer) Autoriza(context.Context, *AutorizaRequest) (*AutorizaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Autoriza not implemented")
+}
+func (UnimplementedVeiculoServiceServer) Comprovante(context.Context, *ComprovanteRequest) (*ComprovanteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Comprovante not implemented")
 }
 func (UnimplementedVeiculoServiceServer) Tags(context.Context, *TagsRequest) (*TagsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Tags not implemented")
@@ -304,6 +324,24 @@ func _VeiculoService_Autoriza_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _VeiculoService_Comprovante_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ComprovanteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VeiculoServiceServer).Comprovante(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VeiculoService_Comprovante_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VeiculoServiceServer).Comprovante(ctx, req.(*ComprovanteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _VeiculoService_Tags_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TagsRequest)
 	if err := dec(in); err != nil {
@@ -352,6 +390,10 @@ var VeiculoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Autoriza",
 			Handler:    _VeiculoService_Autoriza_Handler,
+		},
+		{
+			MethodName: "Comprovante",
+			Handler:    _VeiculoService_Comprovante_Handler,
 		},
 		{
 			MethodName: "Tags",

@@ -819,6 +819,9 @@ type Produto struct {
 	Variation  *Produto_ProductVariationMeta        `protobuf:"bytes,212,opt,name=variation,proto3" json:"variation,omitempty"`
 	Variations map[string]*Produto_ProductVariation `protobuf:"bytes,213,rep,name=variations,proto3" json:"variations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // Snapshot/meta das variações do produto pai (key = combo de atributos, ex: "VERDE|G")
 	Comissao   float64                              `protobuf:"fixed64,214,opt,name=comissao,proto3" json:"comissao,omitempty"`                                                                             // Percentual de comissão do produto; quando preenchido, tem prioridade sobre a comissão do vendedor
+	// Comissão em reais por unidade vendida (por litro, no combustível). Quando preenchida, vale no
+	// lugar do percentual.
+	ComissaoValor float64 `protobuf:"fixed64,228,opt,name=comissao_valor,json=comissaoValor,proto3" json:"comissao_valor,omitempty"`
 	// Impressora de produção do item (override). Quando vazio, herda o grupo de
 	// produção da categoria. Usado no roteamento da impressão para cozinha/bar.
 	ImpressoraId   string `protobuf:"bytes,215,opt,name=impressoraId,proto3" json:"impressoraId,omitempty"`
@@ -1518,6 +1521,13 @@ func (x *Produto) GetVariations() map[string]*Produto_ProductVariation {
 func (x *Produto) GetComissao() float64 {
 	if x != nil {
 		return x.Comissao
+	}
+	return 0
+}
+
+func (x *Produto) GetComissaoValor() float64 {
+	if x != nil {
+		return x.ComissaoValor
 	}
 	return 0
 }
@@ -6294,7 +6304,7 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"ProdutoTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xfb6\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xa37\n" +
 	"\aProduto\x123\n" +
 	"\x06fields\x18\x01 \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12B\n" +
@@ -6403,7 +6413,8 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"variations\x18\xd5\x01 \x03(\v2 .produto.Produto.VariationsEntryR\n" +
 	"variations\x12\x1b\n" +
-	"\bcomissao\x18\xd6\x01 \x01(\x01R\bcomissao\x12#\n" +
+	"\bcomissao\x18\xd6\x01 \x01(\x01R\bcomissao\x12&\n" +
+	"\x0ecomissao_valor\x18\xe4\x01 \x01(\x01R\rcomissaoValor\x12#\n" +
 	"\fimpressoraId\x18\xd7\x01 \x01(\tR\fimpressoraId\x12'\n" +
 	"\x0eimpressoraNome\x18\xd8\x01 \x01(\tR\x0eimpressoraNome\x12%\n" +
 	"\rgrupoProducao\x18\xd9\x01 \x01(\tR\rgrupoProducao\x121\n" +

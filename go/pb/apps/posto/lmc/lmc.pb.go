@@ -1199,6 +1199,103 @@ func (x *ReportResponse) GetResponse() *report.Response {
 	return nil
 }
 
+type FechaDiaRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Dia das folhas (AAAA-MM-DD).
+	Data          string `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FechaDiaRequest) Reset() {
+	*x = FechaDiaRequest{}
+	mi := &file_apps_posto_lmc_lmc_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FechaDiaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FechaDiaRequest) ProtoMessage() {}
+
+func (x *FechaDiaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_posto_lmc_lmc_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FechaDiaRequest.ProtoReflect.Descriptor instead.
+func (*FechaDiaRequest) Descriptor() ([]byte, []int) {
+	return file_apps_posto_lmc_lmc_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *FechaDiaRequest) GetData() string {
+	if x != nil {
+		return x.Data
+	}
+	return ""
+}
+
+type FechaDiaResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Lmcs          []*Lmc                 `protobuf:"bytes,1,rep,name=lmcs,proto3" json:"lmcs,omitempty"`
+	Avisos        []string               `protobuf:"bytes,2,rep,name=avisos,proto3" json:"avisos,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FechaDiaResponse) Reset() {
+	*x = FechaDiaResponse{}
+	mi := &file_apps_posto_lmc_lmc_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FechaDiaResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FechaDiaResponse) ProtoMessage() {}
+
+func (x *FechaDiaResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_posto_lmc_lmc_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FechaDiaResponse.ProtoReflect.Descriptor instead.
+func (*FechaDiaResponse) Descriptor() ([]byte, []int) {
+	return file_apps_posto_lmc_lmc_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *FechaDiaResponse) GetLmcs() []*Lmc {
+	if x != nil {
+		return x.Lmcs
+	}
+	return nil
+}
+
+func (x *FechaDiaResponse) GetAvisos() []string {
+	if x != nil {
+		return x.Avisos
+	}
+	return nil
+}
+
 var File_apps_posto_lmc_lmc_proto protoreflect.FileDescriptor
 
 const file_apps_posto_lmc_lmc_proto_rawDesc = "" +
@@ -1299,7 +1396,12 @@ const file_apps_posto_lmc_lmc_proto_rawDesc = "" +
 	"\flist_request\x18\x01 \x01(\v2\x10.lmc.ListRequestR\vlistRequest\x12%\n" +
 	"\x0etipo_relatorio\x18\x02 \x01(\tR\rtipoRelatorio\">\n" +
 	"\x0eReportResponse\x12,\n" +
-	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse2\xd3\x04\n" +
+	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse\"%\n" +
+	"\x0fFechaDiaRequest\x12\x12\n" +
+	"\x04data\x18\x01 \x01(\tR\x04data\"H\n" +
+	"\x10FechaDiaResponse\x12\x1c\n" +
+	"\x04lmcs\x18\x01 \x03(\v2\b.lmc.LmcR\x04lmcs\x12\x16\n" +
+	"\x06avisos\x18\x02 \x03(\tR\x06avisos2\xb2\x05\n" +
 	"\n" +
 	"LmcService\x12T\n" +
 	"\x06Create\x12\x12.lmc.CreateRequest\x1a\x13.lmc.CreateResponse\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/api/posto/lmcs/create\x12T\n" +
@@ -1307,7 +1409,8 @@ const file_apps_posto_lmc_lmc_proto_rawDesc = "" +
 	"\x06Delete\x12\x12.lmc.DeleteRequest\x1a\x13.lmc.DeleteResponse\"\x1c\x82\xd3\xe4\x93\x02\x16*\x14/api/posto/lmcs/{id}\x12F\n" +
 	"\x03Get\x12\x0f.lmc.GetRequest\x1a\x10.lmc.GetResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/api/posto/lmcs/{id}\x12L\n" +
 	"\x04List\x12\x10.lmc.ListRequest\x1a\x11.lmc.ListResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/posto/lmcs/list\x12\\\n" +
-	"\bPreenche\x12\x14.lmc.PreencheRequest\x1a\x15.lmc.PreencheResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/posto/lmcs/preenche\x12T\n" +
+	"\bPreenche\x12\x14.lmc.PreencheRequest\x1a\x15.lmc.PreencheResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/api/posto/lmcs/preenche\x12]\n" +
+	"\bFechaDia\x12\x14.lmc.FechaDiaRequest\x1a\x15.lmc.FechaDiaResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/posto/lmcs/fecha-dia\x12T\n" +
 	"\x06Report\x12\x12.lmc.ReportRequest\x1a\x13.lmc.ReportResponse\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\"\x16/api/posto/lmcs/reportBr\n" +
 	"\acom.lmcB\bLmcProtoP\x01Z1github.com/linksoft-dev/sdks/go/pb/apps/posto/lmc\xa2\x02\x03LXX\xaa\x02\x03Lmc\xca\x02\x03Lmc\xe2\x02\x0fLmc\\GPBMetadata\xea\x02\x03Lmcb\x06proto3"
 
@@ -1323,7 +1426,7 @@ func file_apps_posto_lmc_lmc_proto_rawDescGZIP() []byte {
 	return file_apps_posto_lmc_lmc_proto_rawDescData
 }
 
-var file_apps_posto_lmc_lmc_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_apps_posto_lmc_lmc_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_apps_posto_lmc_lmc_proto_goTypes = []any{
 	(*LmcTanque)(nil),             // 0: lmc.LmcTanque
 	(*LmcEntrada)(nil),            // 1: lmc.LmcEntrada
@@ -1343,50 +1446,55 @@ var file_apps_posto_lmc_lmc_proto_goTypes = []any{
 	(*PreencheResponse)(nil),      // 15: lmc.PreencheResponse
 	(*ReportRequest)(nil),         // 16: lmc.ReportRequest
 	(*ReportResponse)(nil),        // 17: lmc.ReportResponse
-	(*timestamppb.Timestamp)(nil), // 18: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),  // 19: metadata.BasicFields
-	(*metadata.FieldMask)(nil),    // 20: metadata.FieldMask
-	(*filter.Filter)(nil),         // 21: Filter
-	(*report.Response)(nil),       // 22: report.Response
+	(*FechaDiaRequest)(nil),       // 18: lmc.FechaDiaRequest
+	(*FechaDiaResponse)(nil),      // 19: lmc.FechaDiaResponse
+	(*timestamppb.Timestamp)(nil), // 20: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),  // 21: metadata.BasicFields
+	(*metadata.FieldMask)(nil),    // 22: metadata.FieldMask
+	(*filter.Filter)(nil),         // 23: Filter
+	(*report.Response)(nil),       // 24: report.Response
 }
 var file_apps_posto_lmc_lmc_proto_depIdxs = []int32{
-	18, // 0: lmc.Lmc.created_at:type_name -> google.protobuf.Timestamp
-	18, // 1: lmc.Lmc.updated_at:type_name -> google.protobuf.Timestamp
-	19, // 2: lmc.Lmc.fields:type_name -> metadata.BasicFields
-	18, // 3: lmc.Lmc.data:type_name -> google.protobuf.Timestamp
+	20, // 0: lmc.Lmc.created_at:type_name -> google.protobuf.Timestamp
+	20, // 1: lmc.Lmc.updated_at:type_name -> google.protobuf.Timestamp
+	21, // 2: lmc.Lmc.fields:type_name -> metadata.BasicFields
+	20, // 3: lmc.Lmc.data:type_name -> google.protobuf.Timestamp
 	0,  // 4: lmc.Lmc.tanques:type_name -> lmc.LmcTanque
 	1,  // 5: lmc.Lmc.entradas:type_name -> lmc.LmcEntrada
 	2,  // 6: lmc.Lmc.vendas:type_name -> lmc.LmcVenda
 	3,  // 7: lmc.CreateRequest.lmc:type_name -> lmc.Lmc
 	3,  // 8: lmc.CreateResponse.lmc:type_name -> lmc.Lmc
 	3,  // 9: lmc.UpdateRequest.lmc:type_name -> lmc.Lmc
-	20, // 10: lmc.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	22, // 10: lmc.UpdateRequest.update_mask:type_name -> metadata.FieldMask
 	3,  // 11: lmc.UpdateResponse.lmc:type_name -> lmc.Lmc
 	3,  // 12: lmc.GetResponse.lmc:type_name -> lmc.Lmc
-	21, // 13: lmc.ListRequest.filter:type_name -> Filter
+	23, // 13: lmc.ListRequest.filter:type_name -> Filter
 	3,  // 14: lmc.ListResponse.lmc_list:type_name -> lmc.Lmc
 	3,  // 15: lmc.PreencheResponse.lmc:type_name -> lmc.Lmc
 	12, // 16: lmc.ReportRequest.list_request:type_name -> lmc.ListRequest
-	22, // 17: lmc.ReportResponse.response:type_name -> report.Response
-	4,  // 18: lmc.LmcService.Create:input_type -> lmc.CreateRequest
-	6,  // 19: lmc.LmcService.Update:input_type -> lmc.UpdateRequest
-	8,  // 20: lmc.LmcService.Delete:input_type -> lmc.DeleteRequest
-	10, // 21: lmc.LmcService.Get:input_type -> lmc.GetRequest
-	12, // 22: lmc.LmcService.List:input_type -> lmc.ListRequest
-	14, // 23: lmc.LmcService.Preenche:input_type -> lmc.PreencheRequest
-	16, // 24: lmc.LmcService.Report:input_type -> lmc.ReportRequest
-	5,  // 25: lmc.LmcService.Create:output_type -> lmc.CreateResponse
-	7,  // 26: lmc.LmcService.Update:output_type -> lmc.UpdateResponse
-	9,  // 27: lmc.LmcService.Delete:output_type -> lmc.DeleteResponse
-	11, // 28: lmc.LmcService.Get:output_type -> lmc.GetResponse
-	13, // 29: lmc.LmcService.List:output_type -> lmc.ListResponse
-	15, // 30: lmc.LmcService.Preenche:output_type -> lmc.PreencheResponse
-	17, // 31: lmc.LmcService.Report:output_type -> lmc.ReportResponse
-	25, // [25:32] is the sub-list for method output_type
-	18, // [18:25] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	24, // 17: lmc.ReportResponse.response:type_name -> report.Response
+	3,  // 18: lmc.FechaDiaResponse.lmcs:type_name -> lmc.Lmc
+	4,  // 19: lmc.LmcService.Create:input_type -> lmc.CreateRequest
+	6,  // 20: lmc.LmcService.Update:input_type -> lmc.UpdateRequest
+	8,  // 21: lmc.LmcService.Delete:input_type -> lmc.DeleteRequest
+	10, // 22: lmc.LmcService.Get:input_type -> lmc.GetRequest
+	12, // 23: lmc.LmcService.List:input_type -> lmc.ListRequest
+	14, // 24: lmc.LmcService.Preenche:input_type -> lmc.PreencheRequest
+	18, // 25: lmc.LmcService.FechaDia:input_type -> lmc.FechaDiaRequest
+	16, // 26: lmc.LmcService.Report:input_type -> lmc.ReportRequest
+	5,  // 27: lmc.LmcService.Create:output_type -> lmc.CreateResponse
+	7,  // 28: lmc.LmcService.Update:output_type -> lmc.UpdateResponse
+	9,  // 29: lmc.LmcService.Delete:output_type -> lmc.DeleteResponse
+	11, // 30: lmc.LmcService.Get:output_type -> lmc.GetResponse
+	13, // 31: lmc.LmcService.List:output_type -> lmc.ListResponse
+	15, // 32: lmc.LmcService.Preenche:output_type -> lmc.PreencheResponse
+	19, // 33: lmc.LmcService.FechaDia:output_type -> lmc.FechaDiaResponse
+	17, // 34: lmc.LmcService.Report:output_type -> lmc.ReportResponse
+	27, // [27:35] is the sub-list for method output_type
+	19, // [19:27] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_apps_posto_lmc_lmc_proto_init() }
@@ -1400,7 +1508,7 @@ func file_apps_posto_lmc_lmc_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_posto_lmc_lmc_proto_rawDesc), len(file_apps_posto_lmc_lmc_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

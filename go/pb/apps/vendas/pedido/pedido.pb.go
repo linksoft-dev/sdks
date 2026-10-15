@@ -6102,12 +6102,14 @@ type Pedido struct {
 	// Valores dos campos personalizados da empresa (nome do campo → valor).
 	CustomFields map[string]string `protobuf:"bytes,126,rep,name=custom_fields,json=customFields,proto3" json:"custom_fields,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Sincronização do PDV offline
-	DeviceInfo    *DeviceInfo            `protobuf:"bytes,127,opt,name=device_info,json=deviceInfo,proto3" json:"device_info,omitempty"`                         // Dispositivo que criou o pedido
-	LocalId       string                 `protobuf:"bytes,128,opt,name=local_id,json=localId,proto3" json:"local_id,omitempty"`                                  // Id local do PDV, usado na reconciliação
-	SyncStatus    SyncStatus             `protobuf:"varint,129,opt,name=sync_status,json=syncStatus,proto3,enum=pedido.SyncStatus" json:"sync_status,omitempty"` // Situação da sincronização
-	LastSyncedAt  *timestamppb.Timestamp `protobuf:"bytes,130,opt,name=last_synced_at,json=lastSyncedAt,proto3" json:"last_synced_at,omitempty"`                 // Última sincronização
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	DeviceInfo   *DeviceInfo            `protobuf:"bytes,127,opt,name=device_info,json=deviceInfo,proto3" json:"device_info,omitempty"`                         // Dispositivo que criou o pedido
+	LocalId      string                 `protobuf:"bytes,128,opt,name=local_id,json=localId,proto3" json:"local_id,omitempty"`                                  // Id local do PDV, usado na reconciliação
+	SyncStatus   SyncStatus             `protobuf:"varint,129,opt,name=sync_status,json=syncStatus,proto3,enum=pedido.SyncStatus" json:"sync_status,omitempty"` // Situação da sincronização
+	LastSyncedAt *timestamppb.Timestamp `protobuf:"bytes,130,opt,name=last_synced_at,json=lastSyncedAt,proto3" json:"last_synced_at,omitempty"`                 // Última sincronização
+	// A nota fiscal desta venda sai sem o encerrante dos combustíveis.
+	PostoSemEncerranteNota bool `protobuf:"varint,131,opt,name=posto_sem_encerrante_nota,json=postoSemEncerranteNota,proto3" json:"posto_sem_encerrante_nota,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *Pedido) Reset() {
@@ -6971,6 +6973,13 @@ func (x *Pedido) GetLastSyncedAt() *timestamppb.Timestamp {
 		return x.LastSyncedAt
 	}
 	return nil
+}
+
+func (x *Pedido) GetPostoSemEncerranteNota() bool {
+	if x != nil {
+		return x.PostoSemEncerranteNota
+	}
+	return false
 }
 
 type QrCodeDocumento struct {
@@ -8429,6 +8438,9 @@ type Produto struct {
 	DiasGarantia          float64                 `protobuf:"fixed64,57,opt,name=diasGarantia,proto3" json:"diasGarantia,omitempty"`                          // Snapshot dos dias de garantia do produto no momento do fechamento
 	DataFimGarantia       *timestamppb.Timestamp  `protobuf:"bytes,58,opt,name=dataFimGarantia,proto3" json:"dataFimGarantia,omitempty"`                      // Data calculada (dataHoraFechamento + diasGarantia) no fechamento
 	ComissaoManual        bool                    `protobuf:"varint,59,opt,name=comissao_manual,json=comissaoManual,proto3" json:"comissao_manual,omitempty"` // Quando true, o percentual de comissão foi definido manualmente e não deve ser sobrescrito pelo padrão do vendedor
+	// Comissão em reais por unidade do item, vinda do cadastro do produto. Quando preenchida, vale no
+	// lugar do percentual.
+	ComissaoPorUnidade float64 `protobuf:"fixed64,75,opt,name=comissao_por_unidade,json=comissaoPorUnidade,proto3" json:"comissao_por_unidade,omitempty"`
 	// Origem da garantia aplicada no item (snapshot do cadastro: empresa ou fornecedor).
 	TipoGarantia TipoGarantia `protobuf:"varint,64,opt,name=tipoGarantia,proto3,enum=pedido.TipoGarantia" json:"tipoGarantia,omitempty"`
 	// Comodato — bem cedido em empréstimo durante a vigência do contrato.
@@ -8927,6 +8939,13 @@ func (x *Produto) GetComissaoManual() bool {
 		return x.ComissaoManual
 	}
 	return false
+}
+
+func (x *Produto) GetComissaoPorUnidade() float64 {
+	if x != nil {
+		return x.ComissaoPorUnidade
+	}
+	return 0
 }
 
 func (x *Produto) GetTipoGarantia() TipoGarantia {
@@ -14440,7 +14459,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x04code\x18\x03 \x01(\tR\x04code\"\xa8\x01\n" +
 	"\x19SetAcompanhamentoResponse\x12C\n" +
 	"\x0eacompanhamento\x18\x01 \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\x12F\n" +
-	"\x11data_hora_entrega\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\"\xf3-\n" +
+	"\x11data_hora_entrega\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\"\xaf.\n" +
 	"\x06Pedido\x12>\n" +
 	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12>\n" +
 	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1c\n" +
@@ -14575,7 +14594,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\blocal_id\x18\x80\x01 \x01(\tR\alocalId\x124\n" +
 	"\vsync_status\x18\x81\x01 \x01(\x0e2\x12.pedido.SyncStatusR\n" +
 	"syncStatus\x12A\n" +
-	"\x0elast_synced_at\x18\x82\x01 \x01(\v2\x1a.google.protobuf.TimestampR\flastSyncedAt\x1a?\n" +
+	"\x0elast_synced_at\x18\x82\x01 \x01(\v2\x1a.google.protobuf.TimestampR\flastSyncedAt\x12:\n" +
+	"\x19posto_sem_encerrante_nota\x18\x83\x01 \x01(\bR\x16postoSemEncerranteNota\x1a?\n" +
 	"\x11CustomFieldsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x03\xc0>\x01J\x04\bi\x10jJ\x04\bj\x10kJ\x04\bk\x10l\"L\n" +
@@ -14727,7 +14747,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\n" +
 	"SerialInfo\x12\x10\n" +
 	"\x03ids\x18\x01 \x03(\tR\x03ids\x12%\n" +
-	"\x0eserial_numbers\x18\x02 \x03(\tR\rserialNumbers\"\xc1\x16\n" +
+	"\x0eserial_numbers\x18\x02 \x03(\tR\rserialNumbers\"\xf3\x16\n" +
 	"\aProduto\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x128\n" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
@@ -14802,7 +14822,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x06serial\x188 \x01(\v2\x12.pedido.SerialInfoR\x06serial\x12\"\n" +
 	"\fdiasGarantia\x189 \x01(\x01R\fdiasGarantia\x12D\n" +
 	"\x0fdataFimGarantia\x18: \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataFimGarantia\x12'\n" +
-	"\x0fcomissao_manual\x18; \x01(\bR\x0ecomissaoManual\x128\n" +
+	"\x0fcomissao_manual\x18; \x01(\bR\x0ecomissaoManual\x120\n" +
+	"\x14comissao_por_unidade\x18K \x01(\x01R\x12comissaoPorUnidade\x128\n" +
 	"\ftipoGarantia\x18@ \x01(\x0e2\x14.pedido.TipoGarantiaR\ftipoGarantia\x12\x1a\n" +
 	"\bcomodato\x18< \x01(\bR\bcomodato\x12'\n" +
 	"\x0fvalor_reposicao\x18= \x01(\x01R\x0evalorReposicao\x124\n" +

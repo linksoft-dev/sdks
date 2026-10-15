@@ -199,16 +199,18 @@ class ListFechamentoCaixaResponse(_message.Message):
     def __init__(self, fechamentoCaixaList: _Optional[_Iterable[_Union[FechamentoCaixa, _Mapping]]] = ..., next_page_token: _Optional[str] = ...) -> None: ...
 
 class AceitaFechamentoRequest(_message.Message):
-    __slots__ = ("id", "realizarSangria", "caixaDestinoId", "caixaDestinoNome")
+    __slots__ = ("id", "realizarSangria", "caixaDestinoId", "caixaDestinoNome", "lanca_falta")
     ID_FIELD_NUMBER: _ClassVar[int]
     REALIZARSANGRIA_FIELD_NUMBER: _ClassVar[int]
     CAIXADESTINOID_FIELD_NUMBER: _ClassVar[int]
     CAIXADESTINONOME_FIELD_NUMBER: _ClassVar[int]
+    LANCA_FALTA_FIELD_NUMBER: _ClassVar[int]
     id: str
     realizarSangria: bool
     caixaDestinoId: str
     caixaDestinoNome: str
-    def __init__(self, id: _Optional[str] = ..., realizarSangria: _Optional[bool] = ..., caixaDestinoId: _Optional[str] = ..., caixaDestinoNome: _Optional[str] = ...) -> None: ...
+    lanca_falta: bool
+    def __init__(self, id: _Optional[str] = ..., realizarSangria: _Optional[bool] = ..., caixaDestinoId: _Optional[str] = ..., caixaDestinoNome: _Optional[str] = ..., lanca_falta: _Optional[bool] = ...) -> None: ...
 
 class AceitaFechamentoResponse(_message.Message):
     __slots__ = ("fechamentoCaixa",)
@@ -297,3 +299,115 @@ class FechamentoCaixaValeDiferencaResponse(_message.Message):
     RESPONSE_FIELD_NUMBER: _ClassVar[int]
     response: _report_pb2.Response
     def __init__(self, response: _Optional[_Union[_report_pb2.Response, _Mapping]] = ...) -> None: ...
+
+class ResumoGeralRequest(_message.Message):
+    __slots__ = ("data_hora_inicial", "data_hora_final")
+    DATA_HORA_INICIAL_FIELD_NUMBER: _ClassVar[int]
+    DATA_HORA_FINAL_FIELD_NUMBER: _ClassVar[int]
+    data_hora_inicial: _timestamp_pb2.Timestamp
+    data_hora_final: _timestamp_pb2.Timestamp
+    def __init__(self, data_hora_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_hora_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ResumoGeralResponse(_message.Message):
+    __slots__ = ("data_hora_inicial", "data_hora_final", "troco_abertura", "vendas", "quantidade_vendas", "recebimentos", "suprimentos", "total_entradas", "pagamentos", "sangrias", "total_saidas", "saldo", "diferenca", "formas_pagamento", "sangrias_por_modalidade", "pagamentos_lista", "operadores", "outras_entradas", "outras_saidas")
+    DATA_HORA_INICIAL_FIELD_NUMBER: _ClassVar[int]
+    DATA_HORA_FINAL_FIELD_NUMBER: _ClassVar[int]
+    TROCO_ABERTURA_FIELD_NUMBER: _ClassVar[int]
+    VENDAS_FIELD_NUMBER: _ClassVar[int]
+    QUANTIDADE_VENDAS_FIELD_NUMBER: _ClassVar[int]
+    RECEBIMENTOS_FIELD_NUMBER: _ClassVar[int]
+    SUPRIMENTOS_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_ENTRADAS_FIELD_NUMBER: _ClassVar[int]
+    PAGAMENTOS_FIELD_NUMBER: _ClassVar[int]
+    SANGRIAS_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_SAIDAS_FIELD_NUMBER: _ClassVar[int]
+    SALDO_FIELD_NUMBER: _ClassVar[int]
+    DIFERENCA_FIELD_NUMBER: _ClassVar[int]
+    FORMAS_PAGAMENTO_FIELD_NUMBER: _ClassVar[int]
+    SANGRIAS_POR_MODALIDADE_FIELD_NUMBER: _ClassVar[int]
+    PAGAMENTOS_LISTA_FIELD_NUMBER: _ClassVar[int]
+    OPERADORES_FIELD_NUMBER: _ClassVar[int]
+    OUTRAS_ENTRADAS_FIELD_NUMBER: _ClassVar[int]
+    OUTRAS_SAIDAS_FIELD_NUMBER: _ClassVar[int]
+    data_hora_inicial: _timestamp_pb2.Timestamp
+    data_hora_final: _timestamp_pb2.Timestamp
+    troco_abertura: float
+    vendas: float
+    quantidade_vendas: int
+    recebimentos: float
+    suprimentos: float
+    total_entradas: float
+    pagamentos: float
+    sangrias: float
+    total_saidas: float
+    saldo: float
+    diferenca: float
+    formas_pagamento: _containers.RepeatedCompositeFieldContainer[ResumoGeralTotal]
+    sangrias_por_modalidade: _containers.RepeatedCompositeFieldContainer[ResumoGeralTotal]
+    pagamentos_lista: _containers.RepeatedCompositeFieldContainer[ResumoGeralLancamento]
+    operadores: _containers.RepeatedCompositeFieldContainer[ResumoGeralOperador]
+    outras_entradas: float
+    outras_saidas: float
+    def __init__(self, data_hora_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_hora_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., troco_abertura: _Optional[float] = ..., vendas: _Optional[float] = ..., quantidade_vendas: _Optional[int] = ..., recebimentos: _Optional[float] = ..., suprimentos: _Optional[float] = ..., total_entradas: _Optional[float] = ..., pagamentos: _Optional[float] = ..., sangrias: _Optional[float] = ..., total_saidas: _Optional[float] = ..., saldo: _Optional[float] = ..., diferenca: _Optional[float] = ..., formas_pagamento: _Optional[_Iterable[_Union[ResumoGeralTotal, _Mapping]]] = ..., sangrias_por_modalidade: _Optional[_Iterable[_Union[ResumoGeralTotal, _Mapping]]] = ..., pagamentos_lista: _Optional[_Iterable[_Union[ResumoGeralLancamento, _Mapping]]] = ..., operadores: _Optional[_Iterable[_Union[ResumoGeralOperador, _Mapping]]] = ..., outras_entradas: _Optional[float] = ..., outras_saidas: _Optional[float] = ...) -> None: ...
+
+class FormasFechamentoRequest(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    def __init__(self, id: _Optional[str] = ...) -> None: ...
+
+class FormasFechamentoResponse(_message.Message):
+    __slots__ = ("formas_pagamento", "sangrias_por_modalidade")
+    FORMAS_PAGAMENTO_FIELD_NUMBER: _ClassVar[int]
+    SANGRIAS_POR_MODALIDADE_FIELD_NUMBER: _ClassVar[int]
+    formas_pagamento: _containers.RepeatedCompositeFieldContainer[ResumoGeralTotal]
+    sangrias_por_modalidade: _containers.RepeatedCompositeFieldContainer[ResumoGeralTotal]
+    def __init__(self, formas_pagamento: _Optional[_Iterable[_Union[ResumoGeralTotal, _Mapping]]] = ..., sangrias_por_modalidade: _Optional[_Iterable[_Union[ResumoGeralTotal, _Mapping]]] = ...) -> None: ...
+
+class ResumoGeralTotal(_message.Message):
+    __slots__ = ("modalidade", "quantidade", "valor")
+    MODALIDADE_FIELD_NUMBER: _ClassVar[int]
+    QUANTIDADE_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    modalidade: str
+    quantidade: int
+    valor: float
+    def __init__(self, modalidade: _Optional[str] = ..., quantidade: _Optional[int] = ..., valor: _Optional[float] = ...) -> None: ...
+
+class ResumoGeralLancamento(_message.Message):
+    __slots__ = ("descricao", "categoria", "operador", "modalidade", "valor", "data_hora")
+    DESCRICAO_FIELD_NUMBER: _ClassVar[int]
+    CATEGORIA_FIELD_NUMBER: _ClassVar[int]
+    OPERADOR_FIELD_NUMBER: _ClassVar[int]
+    MODALIDADE_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    DATA_HORA_FIELD_NUMBER: _ClassVar[int]
+    descricao: str
+    categoria: str
+    operador: str
+    modalidade: str
+    valor: float
+    data_hora: _timestamp_pb2.Timestamp
+    def __init__(self, descricao: _Optional[str] = ..., categoria: _Optional[str] = ..., operador: _Optional[str] = ..., modalidade: _Optional[str] = ..., valor: _Optional[float] = ..., data_hora: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ResumoGeralOperador(_message.Message):
+    __slots__ = ("fechamento_id", "numero", "operador", "situacao", "data_hora_inicial", "data_hora_final", "apurado", "informado", "diferenca")
+    FECHAMENTO_ID_FIELD_NUMBER: _ClassVar[int]
+    NUMERO_FIELD_NUMBER: _ClassVar[int]
+    OPERADOR_FIELD_NUMBER: _ClassVar[int]
+    SITUACAO_FIELD_NUMBER: _ClassVar[int]
+    DATA_HORA_INICIAL_FIELD_NUMBER: _ClassVar[int]
+    DATA_HORA_FINAL_FIELD_NUMBER: _ClassVar[int]
+    APURADO_FIELD_NUMBER: _ClassVar[int]
+    INFORMADO_FIELD_NUMBER: _ClassVar[int]
+    DIFERENCA_FIELD_NUMBER: _ClassVar[int]
+    fechamento_id: str
+    numero: int
+    operador: str
+    situacao: str
+    data_hora_inicial: _timestamp_pb2.Timestamp
+    data_hora_final: _timestamp_pb2.Timestamp
+    apurado: float
+    informado: float
+    diferenca: float
+    def __init__(self, fechamento_id: _Optional[str] = ..., numero: _Optional[int] = ..., operador: _Optional[str] = ..., situacao: _Optional[str] = ..., data_hora_inicial: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_hora_final: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., apurado: _Optional[float] = ..., informado: _Optional[float] = ..., diferenca: _Optional[float] = ...) -> None: ...
