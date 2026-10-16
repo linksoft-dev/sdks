@@ -40,6 +40,7 @@ const (
 	TransactionStatus_TRANSACTION_STATUS_REFUNDED              TransactionStatus = 5
 	TransactionStatus_TRANSACTION_STATUS_PENDING_ANTIFRAUD     TransactionStatus = 6
 	TransactionStatus_TRANSACTION_STATUS_PENDING_MANUAL_REVIEW TransactionStatus = 7
+	TransactionStatus_TRANSACTION_STATUS_EXPIRED               TransactionStatus = 8
 )
 
 // Enum value maps for TransactionStatus.
@@ -53,6 +54,7 @@ var (
 		5: "TRANSACTION_STATUS_REFUNDED",
 		6: "TRANSACTION_STATUS_PENDING_ANTIFRAUD",
 		7: "TRANSACTION_STATUS_PENDING_MANUAL_REVIEW",
+		8: "TRANSACTION_STATUS_EXPIRED",
 	}
 	TransactionStatus_value = map[string]int32{
 		"TRANSACTION_STATUS_UNSPECIFIED":           0,
@@ -63,6 +65,7 @@ var (
 		"TRANSACTION_STATUS_REFUNDED":              5,
 		"TRANSACTION_STATUS_PENDING_ANTIFRAUD":     6,
 		"TRANSACTION_STATUS_PENDING_MANUAL_REVIEW": 7,
+		"TRANSACTION_STATUS_EXPIRED":               8,
 	}
 )
 
@@ -556,8 +559,10 @@ type Transaction struct {
 	DescontoValor float64 `protobuf:"fixed64,41,opt,name=desconto_valor,json=descontoValor,proto3" json:"desconto_valor,omitempty"`
 	// Juros e multa do atraso já somados a value, congelados na criação da cobrança
 	EncargosValor float64 `protobuf:"fixed64,42,opt,name=encargos_valor,json=encargosValor,proto3" json:"encargos_valor,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Último dia em que o boleto vencido ainda aceita pagamento
+	PaymentDeadline *timestamppb.Timestamp `protobuf:"bytes,43,opt,name=payment_deadline,json=paymentDeadline,proto3" json:"payment_deadline,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Transaction) Reset() {
@@ -882,6 +887,13 @@ func (x *Transaction) GetEncargosValor() float64 {
 		return x.EncargosValor
 	}
 	return 0
+}
+
+func (x *Transaction) GetPaymentDeadline() *timestamppb.Timestamp {
+	if x != nil {
+		return x.PaymentDeadline
+	}
+	return nil
 }
 
 type TransactionHistory struct {
@@ -2921,7 +2933,7 @@ var File_apps_vendas_transaction_transaction_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_transaction_transaction_proto_rawDesc = "" +
 	"\n" +
-	")apps/vendas/transaction/transaction.proto\x12\bcheckout\x1a\x1dplugins/service/service.proto\x1a\x1fplugins/validate/validate.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fapps/vendas/pedido/pedido.proto\x1a\x18apps/report/report.proto\"\xc0\x0f\n" +
+	")apps/vendas/transaction/transaction.proto\x12\bcheckout\x1a\x1dplugins/service/service.proto\x1a\x1fplugins/validate/validate.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x19google/api/resource.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fapps/vendas/pedido/pedido.proto\x1a\x18apps/report/report.proto\"\x8d\x10\n" +
 	"\vTransaction\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -2969,7 +2981,8 @@ const file_apps_vendas_transaction_transaction_proto_rawDesc = "" +
 	"\rmanual_review\x18' \x01(\v2\x16.checkout.ManualReviewR\fmanualReview\x12)\n" +
 	"\x10test_environment\x18( \x01(\bR\x0ftestEnvironment\x12%\n" +
 	"\x0edesconto_valor\x18) \x01(\x01R\rdescontoValor\x12+\n" +
-	"\x0eencargos_valor\x18* \x01(\x01B\x04\xe2A\x01\x03R\rencargosValor:*\xc0>\x01\xeaA$\x12\"checkout.transaction/{transaction}\"\xc9\x02\n" +
+	"\x0eencargos_valor\x18* \x01(\x01B\x04\xe2A\x01\x03R\rencargosValor\x12K\n" +
+	"\x10payment_deadline\x18+ \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x0fpaymentDeadline:*\xc0>\x01\xeaA$\x12\"checkout.transaction/{transaction}\"\xc9\x02\n" +
 	"\x12TransactionHistory\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1b\n" +
@@ -3133,7 +3146,7 @@ const file_apps_vendas_transaction_transaction_proto_rawDesc = "" +
 	"\x0etipo_relatorio\x18\x03 \x01(\tR\rtipoRelatorio\x12\"\n" +
 	"\rsend_by_email\x18\x04 \x01(\tR\vsendByEmail\">\n" +
 	"\x0eReportResponse\x12,\n" +
-	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse*\xb2\x02\n" +
+	"\bresponse\x18\x01 \x01(\v2\x10.report.ResponseR\bresponse*\xd2\x02\n" +
 	"\x11TransactionStatus\x12\"\n" +
 	"\x1eTRANSACTION_STATUS_UNSPECIFIED\x10\x00\x12!\n" +
 	"\x1dTRANSACTION_STATUS_AUTHORIZED\x10\x01\x12\x1e\n" +
@@ -3142,7 +3155,8 @@ const file_apps_vendas_transaction_transaction_proto_rawDesc = "" +
 	"\x1cTRANSACTION_STATUS_CANCELLED\x10\x04\x12\x1f\n" +
 	"\x1bTRANSACTION_STATUS_REFUNDED\x10\x05\x12(\n" +
 	"$TRANSACTION_STATUS_PENDING_ANTIFRAUD\x10\x06\x12,\n" +
-	"(TRANSACTION_STATUS_PENDING_MANUAL_REVIEW\x10\a*\x85\x01\n" +
+	"(TRANSACTION_STATUS_PENDING_MANUAL_REVIEW\x10\a\x12\x1e\n" +
+	"\x1aTRANSACTION_STATUS_EXPIRED\x10\b*\x85\x01\n" +
 	"\x0fTransactionType\x12 \n" +
 	"\x1cTRANSACTION_TYPE_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15TRANSACTION_TYPE_CARD\x10\x01\x12\x1b\n" +
@@ -3290,62 +3304,63 @@ var file_apps_vendas_transaction_transaction_proto_depIdxs = []int32{
 	16, // 14: checkout.Transaction.contact:type_name -> checkout.Contact
 	10, // 15: checkout.Transaction.fraud_analysis:type_name -> checkout.FraudAnalysis
 	11, // 16: checkout.Transaction.manual_review:type_name -> checkout.ManualReview
-	0,  // 17: checkout.TransactionHistory.status:type_name -> checkout.TransactionStatus
-	39, // 18: checkout.TransactionHistory.date_time:type_name -> google.protobuf.Timestamp
-	5,  // 19: checkout.TransactionHistory.sync_trigger:type_name -> checkout.SyncTrigger
-	6,  // 20: checkout.FraudAnalysis.status:type_name -> checkout.FraudDecisionStatus
-	39, // 21: checkout.FraudAnalysis.requested_at:type_name -> google.protobuf.Timestamp
-	39, // 22: checkout.FraudAnalysis.responded_at:type_name -> google.protobuf.Timestamp
-	7,  // 23: checkout.ManualReview.status:type_name -> checkout.ManualReviewStatus
-	39, // 24: checkout.ManualReview.reviewed_at:type_name -> google.protobuf.Timestamp
-	39, // 25: checkout.CancelDetails.date_time:type_name -> google.protobuf.Timestamp
-	8,  // 26: checkout.CreateRequest.transaction:type_name -> checkout.Transaction
-	8,  // 27: checkout.CreateResponse.transaction:type_name -> checkout.Transaction
-	8,  // 28: checkout.UpdateRequest.transaction:type_name -> checkout.Transaction
-	40, // 29: checkout.UpdateRequest.update_mask:type_name -> metadata.FieldMask
-	8,  // 30: checkout.UpdateResponse.transaction:type_name -> checkout.Transaction
-	8,  // 31: checkout.GetResponse.transaction:type_name -> checkout.Transaction
-	0,  // 32: checkout.ListRequest.status:type_name -> checkout.TransactionStatus
-	1,  // 33: checkout.ListRequest.payment_type:type_name -> checkout.TransactionType
-	41, // 34: checkout.ListRequest.filter:type_name -> Filter
-	8,  // 35: checkout.ListResponse.transaction_list:type_name -> checkout.Transaction
-	0,  // 36: checkout.CancelResponse.status:type_name -> checkout.TransactionStatus
-	42, // 37: checkout.CancelResponse.order:type_name -> pedido.Pedido
-	5,  // 38: checkout.SyncRequest.sync_trigger:type_name -> checkout.SyncTrigger
-	0,  // 39: checkout.SyncResponse.status:type_name -> checkout.TransactionStatus
-	8,  // 40: checkout.ApproveManualReviewResponse.transaction:type_name -> checkout.Transaction
-	8,  // 41: checkout.RejectManualReviewResponse.transaction:type_name -> checkout.Transaction
-	8,  // 42: checkout.SimulatePaymentResponse.transaction:type_name -> checkout.Transaction
-	25, // 43: checkout.ReportRequest.list_request:type_name -> checkout.ListRequest
-	3,  // 44: checkout.ReportRequest.report_type:type_name -> checkout.ReportType
-	43, // 45: checkout.ReportResponse.response:type_name -> report.Response
-	17, // 46: checkout.TransactionService.Create:input_type -> checkout.CreateRequest
-	19, // 47: checkout.TransactionService.Update:input_type -> checkout.UpdateRequest
-	21, // 48: checkout.TransactionService.Delete:input_type -> checkout.DeleteRequest
-	25, // 49: checkout.TransactionService.List:input_type -> checkout.ListRequest
-	23, // 50: checkout.TransactionService.Get:input_type -> checkout.GetRequest
-	27, // 51: checkout.TransactionService.Cancel:input_type -> checkout.CancelRequest
-	29, // 52: checkout.TransactionService.Sync:input_type -> checkout.SyncRequest
-	37, // 53: checkout.TransactionService.Report:input_type -> checkout.ReportRequest
-	31, // 54: checkout.TransactionService.ApproveManualReview:input_type -> checkout.ApproveManualReviewRequest
-	33, // 55: checkout.TransactionService.RejectManualReview:input_type -> checkout.RejectManualReviewRequest
-	35, // 56: checkout.TransactionService.SimulatePayment:input_type -> checkout.SimulatePaymentRequest
-	18, // 57: checkout.TransactionService.Create:output_type -> checkout.CreateResponse
-	20, // 58: checkout.TransactionService.Update:output_type -> checkout.UpdateResponse
-	22, // 59: checkout.TransactionService.Delete:output_type -> checkout.DeleteResponse
-	26, // 60: checkout.TransactionService.List:output_type -> checkout.ListResponse
-	24, // 61: checkout.TransactionService.Get:output_type -> checkout.GetResponse
-	28, // 62: checkout.TransactionService.Cancel:output_type -> checkout.CancelResponse
-	30, // 63: checkout.TransactionService.Sync:output_type -> checkout.SyncResponse
-	38, // 64: checkout.TransactionService.Report:output_type -> checkout.ReportResponse
-	32, // 65: checkout.TransactionService.ApproveManualReview:output_type -> checkout.ApproveManualReviewResponse
-	34, // 66: checkout.TransactionService.RejectManualReview:output_type -> checkout.RejectManualReviewResponse
-	36, // 67: checkout.TransactionService.SimulatePayment:output_type -> checkout.SimulatePaymentResponse
-	57, // [57:68] is the sub-list for method output_type
-	46, // [46:57] is the sub-list for method input_type
-	46, // [46:46] is the sub-list for extension type_name
-	46, // [46:46] is the sub-list for extension extendee
-	0,  // [0:46] is the sub-list for field type_name
+	39, // 17: checkout.Transaction.payment_deadline:type_name -> google.protobuf.Timestamp
+	0,  // 18: checkout.TransactionHistory.status:type_name -> checkout.TransactionStatus
+	39, // 19: checkout.TransactionHistory.date_time:type_name -> google.protobuf.Timestamp
+	5,  // 20: checkout.TransactionHistory.sync_trigger:type_name -> checkout.SyncTrigger
+	6,  // 21: checkout.FraudAnalysis.status:type_name -> checkout.FraudDecisionStatus
+	39, // 22: checkout.FraudAnalysis.requested_at:type_name -> google.protobuf.Timestamp
+	39, // 23: checkout.FraudAnalysis.responded_at:type_name -> google.protobuf.Timestamp
+	7,  // 24: checkout.ManualReview.status:type_name -> checkout.ManualReviewStatus
+	39, // 25: checkout.ManualReview.reviewed_at:type_name -> google.protobuf.Timestamp
+	39, // 26: checkout.CancelDetails.date_time:type_name -> google.protobuf.Timestamp
+	8,  // 27: checkout.CreateRequest.transaction:type_name -> checkout.Transaction
+	8,  // 28: checkout.CreateResponse.transaction:type_name -> checkout.Transaction
+	8,  // 29: checkout.UpdateRequest.transaction:type_name -> checkout.Transaction
+	40, // 30: checkout.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	8,  // 31: checkout.UpdateResponse.transaction:type_name -> checkout.Transaction
+	8,  // 32: checkout.GetResponse.transaction:type_name -> checkout.Transaction
+	0,  // 33: checkout.ListRequest.status:type_name -> checkout.TransactionStatus
+	1,  // 34: checkout.ListRequest.payment_type:type_name -> checkout.TransactionType
+	41, // 35: checkout.ListRequest.filter:type_name -> Filter
+	8,  // 36: checkout.ListResponse.transaction_list:type_name -> checkout.Transaction
+	0,  // 37: checkout.CancelResponse.status:type_name -> checkout.TransactionStatus
+	42, // 38: checkout.CancelResponse.order:type_name -> pedido.Pedido
+	5,  // 39: checkout.SyncRequest.sync_trigger:type_name -> checkout.SyncTrigger
+	0,  // 40: checkout.SyncResponse.status:type_name -> checkout.TransactionStatus
+	8,  // 41: checkout.ApproveManualReviewResponse.transaction:type_name -> checkout.Transaction
+	8,  // 42: checkout.RejectManualReviewResponse.transaction:type_name -> checkout.Transaction
+	8,  // 43: checkout.SimulatePaymentResponse.transaction:type_name -> checkout.Transaction
+	25, // 44: checkout.ReportRequest.list_request:type_name -> checkout.ListRequest
+	3,  // 45: checkout.ReportRequest.report_type:type_name -> checkout.ReportType
+	43, // 46: checkout.ReportResponse.response:type_name -> report.Response
+	17, // 47: checkout.TransactionService.Create:input_type -> checkout.CreateRequest
+	19, // 48: checkout.TransactionService.Update:input_type -> checkout.UpdateRequest
+	21, // 49: checkout.TransactionService.Delete:input_type -> checkout.DeleteRequest
+	25, // 50: checkout.TransactionService.List:input_type -> checkout.ListRequest
+	23, // 51: checkout.TransactionService.Get:input_type -> checkout.GetRequest
+	27, // 52: checkout.TransactionService.Cancel:input_type -> checkout.CancelRequest
+	29, // 53: checkout.TransactionService.Sync:input_type -> checkout.SyncRequest
+	37, // 54: checkout.TransactionService.Report:input_type -> checkout.ReportRequest
+	31, // 55: checkout.TransactionService.ApproveManualReview:input_type -> checkout.ApproveManualReviewRequest
+	33, // 56: checkout.TransactionService.RejectManualReview:input_type -> checkout.RejectManualReviewRequest
+	35, // 57: checkout.TransactionService.SimulatePayment:input_type -> checkout.SimulatePaymentRequest
+	18, // 58: checkout.TransactionService.Create:output_type -> checkout.CreateResponse
+	20, // 59: checkout.TransactionService.Update:output_type -> checkout.UpdateResponse
+	22, // 60: checkout.TransactionService.Delete:output_type -> checkout.DeleteResponse
+	26, // 61: checkout.TransactionService.List:output_type -> checkout.ListResponse
+	24, // 62: checkout.TransactionService.Get:output_type -> checkout.GetResponse
+	28, // 63: checkout.TransactionService.Cancel:output_type -> checkout.CancelResponse
+	30, // 64: checkout.TransactionService.Sync:output_type -> checkout.SyncResponse
+	38, // 65: checkout.TransactionService.Report:output_type -> checkout.ReportResponse
+	32, // 66: checkout.TransactionService.ApproveManualReview:output_type -> checkout.ApproveManualReviewResponse
+	34, // 67: checkout.TransactionService.RejectManualReview:output_type -> checkout.RejectManualReviewResponse
+	36, // 68: checkout.TransactionService.SimulatePayment:output_type -> checkout.SimulatePaymentResponse
+	58, // [58:69] is the sub-list for method output_type
+	47, // [47:58] is the sub-list for method input_type
+	47, // [47:47] is the sub-list for extension type_name
+	47, // [47:47] is the sub-list for extension extendee
+	0,  // [0:47] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_transaction_transaction_proto_init() }

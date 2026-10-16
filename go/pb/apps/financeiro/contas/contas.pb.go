@@ -1105,9 +1105,12 @@ type Contas struct {
 	ValorJuros float64 `protobuf:"fixed64,80,opt,name=valor_juros,json=valorJuros,proto3" json:"valor_juros,omitempty"`
 	ValorMulta float64 `protobuf:"fixed64,81,opt,name=valor_multa,json=valorMulta,proto3" json:"valor_multa,omitempty"`
 	// Fatura que cobra este título; somente leitura.
-	FaturaId      string `protobuf:"bytes,82,opt,name=fatura_id,json=faturaId,proto3" json:"fatura_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	FaturaId string `protobuf:"bytes,82,opt,name=fatura_id,json=faturaId,proto3" json:"fatura_id,omitempty"`
+	// Dias depois do vencimento em que o boleto ainda aceita pagamento; sem valor, vale o da
+	// forma de pagamento.
+	DiasPagamentoAposVencimento int32 `protobuf:"varint,83,opt,name=dias_pagamento_apos_vencimento,json=diasPagamentoAposVencimento,proto3" json:"dias_pagamento_apos_vencimento,omitempty"`
+	unknownFields               protoimpl.UnknownFields
+	sizeCache                   protoimpl.SizeCache
 }
 
 func (x *Contas) Reset() {
@@ -1712,6 +1715,13 @@ func (x *Contas) GetFaturaId() string {
 		return x.FaturaId
 	}
 	return ""
+}
+
+func (x *Contas) GetDiasPagamentoAposVencimento() int32 {
+	if x != nil {
+		return x.DiasPagamentoAposVencimento
+	}
+	return 0
 }
 
 // Taxa detalha uma taxa retida sobre o recebimento: quem recebe a taxa, o percentual e o valor.
@@ -5329,7 +5339,7 @@ const file_apps_financeiro_contas_contas_proto_rawDesc = "" +
 	"\fwhatsapp_web\x18\x02 \x03(\v2\x18.contas.WhatsappWebEnvioR\vwhatsappWeb\"F\n" +
 	"\x10WhatsappWebEnvio\x12\x16\n" +
 	"\x06numero\x18\x01 \x01(\tR\x06numero\x12\x1a\n" +
-	"\bmensagem\x18\x02 \x01(\tR\bmensagem\"\x86\x1d\n" +
+	"\bmensagem\x18\x02 \x01(\tR\bmensagem\"\xcb\x1d\n" +
 	"\x06Contas\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -5427,7 +5437,8 @@ const file_apps_financeiro_contas_contas_proto_rawDesc = "" +
 	"valorJuros\x12\x1f\n" +
 	"\vvalor_multa\x18Q \x01(\x01R\n" +
 	"valorMulta\x12\x1b\n" +
-	"\tfatura_id\x18R \x01(\tR\bfaturaId\x1aV\n" +
+	"\tfatura_id\x18R \x01(\tR\bfaturaId\x12C\n" +
+	"\x1edias_pagamento_apos_vencimento\x18S \x01(\x05R\x1bdiasPagamentoAposVencimento\x1aV\n" +
 	"\x11CustomFieldsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12+\n" +
 	"\x05value\x18\x02 \x01(\v2\x15.metadata.CustomFieldR\x05value:\x028\x01:\x03\xc0>\x01\"\xb2\x01\n" +

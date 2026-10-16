@@ -29,6 +29,7 @@ class TransactionStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     TRANSACTION_STATUS_REFUNDED: _ClassVar[TransactionStatus]
     TRANSACTION_STATUS_PENDING_ANTIFRAUD: _ClassVar[TransactionStatus]
     TRANSACTION_STATUS_PENDING_MANUAL_REVIEW: _ClassVar[TransactionStatus]
+    TRANSACTION_STATUS_EXPIRED: _ClassVar[TransactionStatus]
 
 class TransactionType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -103,6 +104,7 @@ TRANSACTION_STATUS_CANCELLED: TransactionStatus
 TRANSACTION_STATUS_REFUNDED: TransactionStatus
 TRANSACTION_STATUS_PENDING_ANTIFRAUD: TransactionStatus
 TRANSACTION_STATUS_PENDING_MANUAL_REVIEW: TransactionStatus
+TRANSACTION_STATUS_EXPIRED: TransactionStatus
 TRANSACTION_TYPE_UNSPECIFIED: TransactionType
 TRANSACTION_TYPE_CARD: TransactionType
 TRANSACTION_TYPE_BOLETO: TransactionType
@@ -150,7 +152,7 @@ MANUAL_REVIEW_STATUS_APPROVED: ManualReviewStatus
 MANUAL_REVIEW_STATUS_DENIED: ManualReviewStatus
 
 class Transaction(_message.Message):
-    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "status", "number", "payment_type", "payment_method_id", "payment_method_name", "payment_gateway", "transaction_id", "autorization_code", "nsu", "gateway_code", "tid", "return_code", "transaction_return", "origin_description", "origin_id", "origin_number", "due_date", "url", "confirmation_date_time", "gateway_response_date_time", "gateway_response_time", "currency", "currency_rate", "boleto_details", "card_details", "pix_details", "cancel_details", "value", "installments", "history", "timeout", "contact", "fraud_analysis", "manual_review", "test_environment", "desconto_valor", "encargos_valor")
+    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "status", "number", "payment_type", "payment_method_id", "payment_method_name", "payment_gateway", "transaction_id", "autorization_code", "nsu", "gateway_code", "tid", "return_code", "transaction_return", "origin_description", "origin_id", "origin_number", "due_date", "url", "confirmation_date_time", "gateway_response_date_time", "gateway_response_time", "currency", "currency_rate", "boleto_details", "card_details", "pix_details", "cancel_details", "value", "installments", "history", "timeout", "contact", "fraud_analysis", "manual_review", "test_environment", "desconto_valor", "encargos_valor", "payment_deadline")
     ID_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
@@ -193,6 +195,7 @@ class Transaction(_message.Message):
     TEST_ENVIRONMENT_FIELD_NUMBER: _ClassVar[int]
     DESCONTO_VALOR_FIELD_NUMBER: _ClassVar[int]
     ENCARGOS_VALOR_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_DEADLINE_FIELD_NUMBER: _ClassVar[int]
     id: str
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
@@ -235,7 +238,8 @@ class Transaction(_message.Message):
     test_environment: bool
     desconto_valor: float
     encargos_valor: float
-    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., status: _Optional[_Union[TransactionStatus, str]] = ..., number: _Optional[int] = ..., payment_type: _Optional[_Union[TransactionType, str]] = ..., payment_method_id: _Optional[str] = ..., payment_method_name: _Optional[str] = ..., payment_gateway: _Optional[_Union[Gateway, str]] = ..., transaction_id: _Optional[str] = ..., autorization_code: _Optional[str] = ..., nsu: _Optional[str] = ..., gateway_code: _Optional[str] = ..., tid: _Optional[str] = ..., return_code: _Optional[str] = ..., transaction_return: _Optional[str] = ..., origin_description: _Optional[str] = ..., origin_id: _Optional[str] = ..., origin_number: _Optional[str] = ..., due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., url: _Optional[str] = ..., confirmation_date_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., gateway_response_date_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., gateway_response_time: _Optional[float] = ..., currency: _Optional[_Union[Currency, str]] = ..., currency_rate: _Optional[float] = ..., boleto_details: _Optional[_Union[BoletoDetails, _Mapping]] = ..., card_details: _Optional[_Union[CardDetails, _Mapping]] = ..., pix_details: _Optional[_Union[PixDetails, _Mapping]] = ..., cancel_details: _Optional[_Union[CancelDetails, _Mapping]] = ..., value: _Optional[float] = ..., installments: _Optional[int] = ..., history: _Optional[_Iterable[_Union[TransactionHistory, _Mapping]]] = ..., timeout: _Optional[bool] = ..., contact: _Optional[_Union[Contact, _Mapping]] = ..., fraud_analysis: _Optional[_Union[FraudAnalysis, _Mapping]] = ..., manual_review: _Optional[_Union[ManualReview, _Mapping]] = ..., test_environment: _Optional[bool] = ..., desconto_valor: _Optional[float] = ..., encargos_valor: _Optional[float] = ...) -> None: ...
+    payment_deadline: _timestamp_pb2.Timestamp
+    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., status: _Optional[_Union[TransactionStatus, str]] = ..., number: _Optional[int] = ..., payment_type: _Optional[_Union[TransactionType, str]] = ..., payment_method_id: _Optional[str] = ..., payment_method_name: _Optional[str] = ..., payment_gateway: _Optional[_Union[Gateway, str]] = ..., transaction_id: _Optional[str] = ..., autorization_code: _Optional[str] = ..., nsu: _Optional[str] = ..., gateway_code: _Optional[str] = ..., tid: _Optional[str] = ..., return_code: _Optional[str] = ..., transaction_return: _Optional[str] = ..., origin_description: _Optional[str] = ..., origin_id: _Optional[str] = ..., origin_number: _Optional[str] = ..., due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., url: _Optional[str] = ..., confirmation_date_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., gateway_response_date_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., gateway_response_time: _Optional[float] = ..., currency: _Optional[_Union[Currency, str]] = ..., currency_rate: _Optional[float] = ..., boleto_details: _Optional[_Union[BoletoDetails, _Mapping]] = ..., card_details: _Optional[_Union[CardDetails, _Mapping]] = ..., pix_details: _Optional[_Union[PixDetails, _Mapping]] = ..., cancel_details: _Optional[_Union[CancelDetails, _Mapping]] = ..., value: _Optional[float] = ..., installments: _Optional[int] = ..., history: _Optional[_Iterable[_Union[TransactionHistory, _Mapping]]] = ..., timeout: _Optional[bool] = ..., contact: _Optional[_Union[Contact, _Mapping]] = ..., fraud_analysis: _Optional[_Union[FraudAnalysis, _Mapping]] = ..., manual_review: _Optional[_Union[ManualReview, _Mapping]] = ..., test_environment: _Optional[bool] = ..., desconto_valor: _Optional[float] = ..., encargos_valor: _Optional[float] = ..., payment_deadline: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class TransactionHistory(_message.Message):
     __slots__ = ("id", "user_id", "user_name", "status", "date_time", "response_time", "description", "sync_trigger")

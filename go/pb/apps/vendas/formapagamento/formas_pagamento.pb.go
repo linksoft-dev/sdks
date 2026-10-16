@@ -759,8 +759,10 @@ type Integration struct {
 	// multa, em percentual sobre o valor do boleto
 	JurosMesPercentual float64 `protobuf:"fixed64,11,opt,name=juros_mes_percentual,json=jurosMesPercentual,proto3" json:"juros_mes_percentual,omitempty"`
 	MultaPercentual    float64 `protobuf:"fixed64,12,opt,name=multa_percentual,json=multaPercentual,proto3" json:"multa_percentual,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// Dias depois do vencimento em que o boleto ainda aceita pagamento
+	DiasPagamentoAposVencimento int32 `protobuf:"varint,13,opt,name=dias_pagamento_apos_vencimento,json=diasPagamentoAposVencimento,proto3" json:"dias_pagamento_apos_vencimento,omitempty"`
+	unknownFields               protoimpl.UnknownFields
+	sizeCache                   protoimpl.SizeCache
 }
 
 func (x *Integration) Reset() {
@@ -866,6 +868,13 @@ func (x *Integration) GetJurosMesPercentual() float64 {
 func (x *Integration) GetMultaPercentual() float64 {
 	if x != nil {
 		return x.MultaPercentual
+	}
+	return 0
+}
+
+func (x *Integration) GetDiasPagamentoAposVencimento() int32 {
+	if x != nil {
+		return x.DiasPagamentoAposVencimento
 	}
 	return 0
 }
@@ -1895,7 +1904,7 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"min_amount\x18\x04 \x01(\x01R\tminAmount\x12)\n" +
 	"\x10min_installments\x18\x05 \x01(\x05R\x0fminInstallments\x12\x1f\n" +
 	"\vreason_hint\x18\x06 \x01(\tR\n" +
-	"reasonHint\"\xfe\x03\n" +
+	"reasonHint\"\xc3\x04\n" +
 	"\vIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
@@ -1909,7 +1918,8 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x11modalidade_cartao\x18\n" +
 	" \x01(\x0e2\x1f.PaymentMethod.ModalidadeCartaoR\x10modalidadeCartao\x120\n" +
 	"\x14juros_mes_percentual\x18\v \x01(\x01R\x12jurosMesPercentual\x12)\n" +
-	"\x10multa_percentual\x18\f \x01(\x01R\x0fmultaPercentual\"\xcd\x01\n" +
+	"\x10multa_percentual\x18\f \x01(\x01R\x0fmultaPercentual\x12C\n" +
+	"\x1edias_pagamento_apos_vencimento\x18\r \x01(\x05R\x1bdiasPagamentoAposVencimento\"\xcd\x01\n" +
 	"\n" +
 	"GatewayPix\x12)\n" +
 	"\x10segundos_validos\x18\x01 \x01(\x05R\x0fsegundosValidos\x12\x1b\n" +
