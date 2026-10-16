@@ -1389,19 +1389,21 @@ func (x *BoletoDetails) GetAccountName() string {
 }
 
 type CardDetails struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	NameOnBill    string                 `protobuf:"bytes,1,opt,name=name_on_bill,json=nameOnBill,proto3" json:"name_on_bill,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Expiration    string                 `protobuf:"bytes,3,opt,name=expiration,proto3" json:"expiration,omitempty"`
-	Last4Digits   string                 `protobuf:"bytes,4,opt,name=last4_digits,json=last4Digits,proto3" json:"last4_digits,omitempty"`
-	Number        string                 `protobuf:"bytes,5,opt,name=number,proto3" json:"number,omitempty"`
-	Cvc           string                 `protobuf:"bytes,6,opt,name=cvc,proto3" json:"cvc,omitempty"`
-	Year          string                 `protobuf:"bytes,7,opt,name=year,proto3" json:"year,omitempty"`
-	Month         string                 `protobuf:"bytes,8,opt,name=month,proto3" json:"month,omitempty"`
-	Brand         string                 `protobuf:"bytes,9,opt,name=brand,proto3" json:"brand,omitempty"`
-	Token         string                 `protobuf:"bytes,10,opt,name=token,proto3" json:"token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	NameOnBill  string                 `protobuf:"bytes,1,opt,name=name_on_bill,json=nameOnBill,proto3" json:"name_on_bill,omitempty"`
+	Name        string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Expiration  string                 `protobuf:"bytes,3,opt,name=expiration,proto3" json:"expiration,omitempty"`
+	Last4Digits string                 `protobuf:"bytes,4,opt,name=last4_digits,json=last4Digits,proto3" json:"last4_digits,omitempty"`
+	Number      string                 `protobuf:"bytes,5,opt,name=number,proto3" json:"number,omitempty"`
+	Cvc         string                 `protobuf:"bytes,6,opt,name=cvc,proto3" json:"cvc,omitempty"`
+	Year        string                 `protobuf:"bytes,7,opt,name=year,proto3" json:"year,omitempty"`
+	Month       string                 `protobuf:"bytes,8,opt,name=month,proto3" json:"month,omitempty"`
+	Brand       string                 `protobuf:"bytes,9,opt,name=brand,proto3" json:"brand,omitempty"`
+	Token       string                 `protobuf:"bytes,10,opt,name=token,proto3" json:"token,omitempty"`
+	// Cliente autorizou guardar o cartão para débito automático das próximas faturas.
+	SaveForBilling bool `protobuf:"varint,11,opt,name=save_for_billing,json=saveForBilling,proto3" json:"save_for_billing,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *CardDetails) Reset() {
@@ -1502,6 +1504,13 @@ func (x *CardDetails) GetToken() string {
 		return x.Token
 	}
 	return ""
+}
+
+func (x *CardDetails) GetSaveForBilling() bool {
+	if x != nil {
+		return x.SaveForBilling
+	}
+	return false
 }
 
 type PixDetails struct {
@@ -3030,7 +3039,7 @@ const file_apps_vendas_transaction_transaction_proto_rawDesc = "" +
 	"\faccount_type\x18\b \x01(\tR\vaccountType\x12#\n" +
 	"\raccount_digit\x18\t \x01(\tR\faccountDigit\x12!\n" +
 	"\faccount_name\x18\n" +
-	" \x01(\tR\vaccountName\"\x86\x02\n" +
+	" \x01(\tR\vaccountName\"\xb0\x02\n" +
 	"\vCardDetails\x12 \n" +
 	"\fname_on_bill\x18\x01 \x01(\tR\n" +
 	"nameOnBill\x12\x12\n" +
@@ -3045,7 +3054,8 @@ const file_apps_vendas_transaction_transaction_proto_rawDesc = "" +
 	"\x05month\x18\b \x01(\tR\x05month\x12\x14\n" +
 	"\x05brand\x18\t \x01(\tR\x05brand\x12\x14\n" +
 	"\x05token\x18\n" +
-	" \x01(\tR\x05token\"z\n" +
+	" \x01(\tR\x05token\x12(\n" +
+	"\x10save_for_billing\x18\v \x01(\bR\x0esaveForBilling\"z\n" +
 	"\n" +
 	"PixDetails\x12$\n" +
 	"\x0eqr_code_base64\x18\x01 \x01(\tR\fqrCodeBase64\x12$\n" +

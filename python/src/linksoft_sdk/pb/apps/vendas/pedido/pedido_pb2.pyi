@@ -991,7 +991,7 @@ class RenumberResponse(_message.Message):
     def __init__(self, renumbered: _Optional[int] = ..., last_number: _Optional[int] = ...) -> None: ...
 
 class Billing(_message.Message):
-    __slots__ = ("enabled", "billing_plan_id", "billing_plan_name", "next_billing_date", "billings_count", "last_billing_date", "send_whatsapp", "whatsapp_integration_id", "ignore_billing_plan")
+    __slots__ = ("enabled", "billing_plan_id", "billing_plan_name", "next_billing_date", "billings_count", "last_billing_date", "send_whatsapp", "whatsapp_integration_id", "ignore_billing_plan", "auto_charge")
     ENABLED_FIELD_NUMBER: _ClassVar[int]
     BILLING_PLAN_ID_FIELD_NUMBER: _ClassVar[int]
     BILLING_PLAN_NAME_FIELD_NUMBER: _ClassVar[int]
@@ -1001,6 +1001,7 @@ class Billing(_message.Message):
     SEND_WHATSAPP_FIELD_NUMBER: _ClassVar[int]
     WHATSAPP_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
     IGNORE_BILLING_PLAN_FIELD_NUMBER: _ClassVar[int]
+    AUTO_CHARGE_FIELD_NUMBER: _ClassVar[int]
     enabled: bool
     billing_plan_id: str
     billing_plan_name: str
@@ -1010,7 +1011,30 @@ class Billing(_message.Message):
     send_whatsapp: bool
     whatsapp_integration_id: str
     ignore_billing_plan: bool
-    def __init__(self, enabled: _Optional[bool] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., next_billing_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., billings_count: _Optional[int] = ..., last_billing_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., send_whatsapp: _Optional[bool] = ..., whatsapp_integration_id: _Optional[str] = ..., ignore_billing_plan: _Optional[bool] = ...) -> None: ...
+    auto_charge: BillingAutoCharge
+    def __init__(self, enabled: _Optional[bool] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., next_billing_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., billings_count: _Optional[int] = ..., last_billing_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., send_whatsapp: _Optional[bool] = ..., whatsapp_integration_id: _Optional[str] = ..., ignore_billing_plan: _Optional[bool] = ..., auto_charge: _Optional[_Union[BillingAutoCharge, _Mapping]] = ...) -> None: ...
+
+class BillingAutoCharge(_message.Message):
+    __slots__ = ("enabled", "gateway", "payment_method_id", "card_token", "card_last4", "card_brand", "attempts", "last_attempt_at", "installments")
+    ENABLED_FIELD_NUMBER: _ClassVar[int]
+    GATEWAY_FIELD_NUMBER: _ClassVar[int]
+    PAYMENT_METHOD_ID_FIELD_NUMBER: _ClassVar[int]
+    CARD_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    CARD_LAST4_FIELD_NUMBER: _ClassVar[int]
+    CARD_BRAND_FIELD_NUMBER: _ClassVar[int]
+    ATTEMPTS_FIELD_NUMBER: _ClassVar[int]
+    LAST_ATTEMPT_AT_FIELD_NUMBER: _ClassVar[int]
+    INSTALLMENTS_FIELD_NUMBER: _ClassVar[int]
+    enabled: bool
+    gateway: str
+    payment_method_id: str
+    card_token: str
+    card_last4: str
+    card_brand: str
+    attempts: int
+    last_attempt_at: _timestamp_pb2.Timestamp
+    installments: int
+    def __init__(self, enabled: _Optional[bool] = ..., gateway: _Optional[str] = ..., payment_method_id: _Optional[str] = ..., card_token: _Optional[str] = ..., card_last4: _Optional[str] = ..., card_brand: _Optional[str] = ..., attempts: _Optional[int] = ..., last_attempt_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., installments: _Optional[int] = ...) -> None: ...
 
 class ReportRequest(_message.Message):
     __slots__ = ("list_request", "reportType", "tipoRelatorio", "sendByEmail")

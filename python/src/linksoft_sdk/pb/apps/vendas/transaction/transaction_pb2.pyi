@@ -340,7 +340,7 @@ class BoletoDetails(_message.Message):
     def __init__(self, our_number: _Optional[str] = ..., document_number: _Optional[str] = ..., instruction: _Optional[str] = ..., bank: _Optional[str] = ..., agency: _Optional[str] = ..., account: _Optional[str] = ..., account_type: _Optional[str] = ..., account_digit: _Optional[str] = ..., account_name: _Optional[str] = ...) -> None: ...
 
 class CardDetails(_message.Message):
-    __slots__ = ("name_on_bill", "name", "expiration", "last4_digits", "number", "cvc", "year", "month", "brand", "token")
+    __slots__ = ("name_on_bill", "name", "expiration", "last4_digits", "number", "cvc", "year", "month", "brand", "token", "save_for_billing")
     NAME_ON_BILL_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     EXPIRATION_FIELD_NUMBER: _ClassVar[int]
@@ -351,6 +351,7 @@ class CardDetails(_message.Message):
     MONTH_FIELD_NUMBER: _ClassVar[int]
     BRAND_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
+    SAVE_FOR_BILLING_FIELD_NUMBER: _ClassVar[int]
     name_on_bill: str
     name: str
     expiration: str
@@ -361,7 +362,8 @@ class CardDetails(_message.Message):
     month: str
     brand: str
     token: str
-    def __init__(self, name_on_bill: _Optional[str] = ..., name: _Optional[str] = ..., expiration: _Optional[str] = ..., last4_digits: _Optional[str] = ..., number: _Optional[str] = ..., cvc: _Optional[str] = ..., year: _Optional[str] = ..., month: _Optional[str] = ..., brand: _Optional[str] = ..., token: _Optional[str] = ...) -> None: ...
+    save_for_billing: bool
+    def __init__(self, name_on_bill: _Optional[str] = ..., name: _Optional[str] = ..., expiration: _Optional[str] = ..., last4_digits: _Optional[str] = ..., number: _Optional[str] = ..., cvc: _Optional[str] = ..., year: _Optional[str] = ..., month: _Optional[str] = ..., brand: _Optional[str] = ..., token: _Optional[str] = ..., save_for_billing: _Optional[bool] = ...) -> None: ...
 
 class PixDetails(_message.Message):
     __slots__ = ("qr_code_base64", "qr_code_string", "id", "url")
