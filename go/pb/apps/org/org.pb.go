@@ -383,9 +383,11 @@ type Licenciamento struct {
 	Licencas           []*LicencaDetalhe      `protobuf:"bytes,12,rep,name=licencas,proto3" json:"licencas,omitempty"`
 	AiCreditsMonthly   int32                  `protobuf:"varint,13,opt,name=ai_credits_monthly,json=aiCreditsMonthly,proto3" json:"ai_credits_monthly,omitempty"` // Cota mensal de creditos de IA incluida no plano (0 = sem cota)
 	Planos             []*LicencaPlano        `protobuf:"bytes,14,rep,name=planos,proto3" json:"planos,omitempty"`
-	Periodicidade      string                 `protobuf:"bytes,15,opt,name=periodicidade,proto3" json:"periodicidade,omitempty"`                                                                        // Periodicidade da recorrencia do contrato: MENSAL, ANUAL, SEMANAL, DIARIA
+	Periodicidade      string                 `protobuf:"bytes,15,opt,name=periodicidade,proto3" json:"periodicidade,omitempty"`                                                                        // Periodicidade da recorrencia do contrato: MENSAL, SEMESTRAL, ANUAL, SEMANAL, DIARIA
 	AcessoAte          *timestamppb.Timestamp `protobuf:"bytes,16,opt,name=acessoAte,proto3" json:"acessoAte,omitempty"`                                                                                // Ate quando a licenca libera o acesso: vencimento com a carencia e a liberacao manual ja aplicadas
 	Quantidades        map[string]int32       `protobuf:"bytes,17,rep,name=quantidades,proto3" json:"quantidades,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"` // Quantidade contratada de cada servico da licenca, pelo codigo do servico
+	UsuariosPermitidos int32                  `protobuf:"varint,18,opt,name=usuarios_permitidos,json=usuariosPermitidos,proto3" json:"usuarios_permitidos,omitempty"`                                   // Usuarios que a licenca libera, contando os adicionais; 0 = sem limite
+	Testes             []*LicencaTeste        `protobuf:"bytes,19,rep,name=testes,proto3" json:"testes,omitempty"`                                                                                      // Produtos testados pela empresa, com o prazo de cada teste
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -539,6 +541,81 @@ func (x *Licenciamento) GetQuantidades() map[string]int32 {
 	return nil
 }
 
+func (x *Licenciamento) GetUsuariosPermitidos() int32 {
+	if x != nil {
+		return x.UsuariosPermitidos
+	}
+	return 0
+}
+
+func (x *Licenciamento) GetTestes() []*LicencaTeste {
+	if x != nil {
+		return x.Testes
+	}
+	return nil
+}
+
+// Teste de um produto, liberado sem contrato ate a data.
+type LicencaTeste struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Codigo        string                 `protobuf:"bytes,1,opt,name=codigo,proto3" json:"codigo,omitempty"`   // Plano testado (ex.: ATENDIMENTO_PRO)
+	Ate           *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=ate,proto3" json:"ate,omitempty"`         // Ultimo dia do teste
+	Modulos       []string               `protobuf:"bytes,3,rep,name=modulos,proto3" json:"modulos,omitempty"` // Modulos que o teste libera
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LicencaTeste) Reset() {
+	*x = LicencaTeste{}
+	mi := &file_apps_org_org_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LicencaTeste) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LicencaTeste) ProtoMessage() {}
+
+func (x *LicencaTeste) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_org_org_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LicencaTeste.ProtoReflect.Descriptor instead.
+func (*LicencaTeste) Descriptor() ([]byte, []int) {
+	return file_apps_org_org_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *LicencaTeste) GetCodigo() string {
+	if x != nil {
+		return x.Codigo
+	}
+	return ""
+}
+
+func (x *LicencaTeste) GetAte() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Ate
+	}
+	return nil
+}
+
+func (x *LicencaTeste) GetModulos() []string {
+	if x != nil {
+		return x.Modulos
+	}
+	return nil
+}
+
 // Plano composto do licenciamento: um serviço/pacote que agrupa vários módulos
 type LicencaPlano struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -552,7 +629,7 @@ type LicencaPlano struct {
 
 func (x *LicencaPlano) Reset() {
 	*x = LicencaPlano{}
-	mi := &file_apps_org_org_proto_msgTypes[4]
+	mi := &file_apps_org_org_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -564,7 +641,7 @@ func (x *LicencaPlano) String() string {
 func (*LicencaPlano) ProtoMessage() {}
 
 func (x *LicencaPlano) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_org_org_proto_msgTypes[4]
+	mi := &file_apps_org_org_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -577,7 +654,7 @@ func (x *LicencaPlano) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LicencaPlano.ProtoReflect.Descriptor instead.
 func (*LicencaPlano) Descriptor() ([]byte, []int) {
-	return file_apps_org_org_proto_rawDescGZIP(), []int{4}
+	return file_apps_org_org_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *LicencaPlano) GetNome() string {
@@ -618,7 +695,7 @@ type LicencaPlanoModulo struct {
 
 func (x *LicencaPlanoModulo) Reset() {
 	*x = LicencaPlanoModulo{}
-	mi := &file_apps_org_org_proto_msgTypes[5]
+	mi := &file_apps_org_org_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -630,7 +707,7 @@ func (x *LicencaPlanoModulo) String() string {
 func (*LicencaPlanoModulo) ProtoMessage() {}
 
 func (x *LicencaPlanoModulo) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_org_org_proto_msgTypes[5]
+	mi := &file_apps_org_org_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -643,7 +720,7 @@ func (x *LicencaPlanoModulo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LicencaPlanoModulo.ProtoReflect.Descriptor instead.
 func (*LicencaPlanoModulo) Descriptor() ([]byte, []int) {
-	return file_apps_org_org_proto_rawDescGZIP(), []int{5}
+	return file_apps_org_org_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *LicencaPlanoModulo) GetCodigo() string {
@@ -701,7 +778,7 @@ const file_apps_org_org_proto_rawDesc = "" +
 	"\vcheckoutUrl\x18\x06 \x01(\tR\vcheckoutUrl\x1a:\n" +
 	"\fModulosEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\bR\x05value:\x028\x01\"\x81\a\n" +
+	"\x05value\x18\x02 \x01(\bR\x05value:\x028\x01\"\xe9\a\n" +
 	"\rLicenciamento\x12\x1a\n" +
 	"\bsituacao\x18\x01 \x01(\tR\bsituacao\x12 \n" +
 	"\vnumeroSerie\x18\x02 \x01(\tR\vnumeroSerie\x12\x14\n" +
@@ -722,13 +799,19 @@ const file_apps_org_org_proto_rawDesc = "" +
 	"\x06planos\x18\x0e \x03(\v2\x11.org.LicencaPlanoR\x06planos\x12$\n" +
 	"\rperiodicidade\x18\x0f \x01(\tR\rperiodicidade\x128\n" +
 	"\tacessoAte\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\tacessoAte\x12E\n" +
-	"\vquantidades\x18\x11 \x03(\v2#.org.Licenciamento.QuantidadesEntryR\vquantidades\x1a:\n" +
+	"\vquantidades\x18\x11 \x03(\v2#.org.Licenciamento.QuantidadesEntryR\vquantidades\x125\n" +
+	"\x13usuarios_permitidos\x18\x12 \x01(\x05B\x04\xe2A\x01\x03R\x12usuariosPermitidos\x12/\n" +
+	"\x06testes\x18\x13 \x03(\v2\x11.org.LicencaTesteB\x04\xe2A\x01\x03R\x06testes\x1a:\n" +
 	"\fModulosEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\bR\x05value:\x028\x01\x1a>\n" +
 	"\x10QuantidadesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\"\x83\x01\n" +
+	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\"n\n" +
+	"\fLicencaTeste\x12\x16\n" +
+	"\x06codigo\x18\x01 \x01(\tR\x06codigo\x12,\n" +
+	"\x03ate\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x03ate\x12\x18\n" +
+	"\amodulos\x18\x03 \x03(\tR\amodulos\"\x83\x01\n" +
 	"\fLicencaPlano\x12\x12\n" +
 	"\x04nome\x18\x01 \x01(\tR\x04nome\x12\x16\n" +
 	"\x06codigo\x18\x02 \x01(\tR\x06codigo\x12\x14\n" +
@@ -759,41 +842,44 @@ func file_apps_org_org_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_org_org_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_apps_org_org_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_apps_org_org_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_apps_org_org_proto_goTypes = []any{
 	(WhiteLabelStatus)(0),          // 0: org.WhiteLabelStatus
 	(*WhiteLabelConfig)(nil),       // 1: org.WhiteLabelConfig
 	(*WhiteLabelHistoryEntry)(nil), // 2: org.WhiteLabelHistoryEntry
 	(*LicencaDetalhe)(nil),         // 3: org.LicencaDetalhe
 	(*Licenciamento)(nil),          // 4: org.Licenciamento
-	(*LicencaPlano)(nil),           // 5: org.LicencaPlano
-	(*LicencaPlanoModulo)(nil),     // 6: org.LicencaPlanoModulo
-	nil,                            // 7: org.LicencaDetalhe.ModulosEntry
-	nil,                            // 8: org.Licenciamento.ModulosEntry
-	nil,                            // 9: org.Licenciamento.QuantidadesEntry
-	(*timestamppb.Timestamp)(nil),  // 10: google.protobuf.Timestamp
+	(*LicencaTeste)(nil),           // 5: org.LicencaTeste
+	(*LicencaPlano)(nil),           // 6: org.LicencaPlano
+	(*LicencaPlanoModulo)(nil),     // 7: org.LicencaPlanoModulo
+	nil,                            // 8: org.LicencaDetalhe.ModulosEntry
+	nil,                            // 9: org.Licenciamento.ModulosEntry
+	nil,                            // 10: org.Licenciamento.QuantidadesEntry
+	(*timestamppb.Timestamp)(nil),  // 11: google.protobuf.Timestamp
 }
 var file_apps_org_org_proto_depIdxs = []int32{
 	0,  // 0: org.WhiteLabelConfig.status:type_name -> org.WhiteLabelStatus
-	10, // 1: org.WhiteLabelConfig.submitted_at:type_name -> google.protobuf.Timestamp
+	11, // 1: org.WhiteLabelConfig.submitted_at:type_name -> google.protobuf.Timestamp
 	2,  // 2: org.WhiteLabelConfig.history:type_name -> org.WhiteLabelHistoryEntry
-	10, // 3: org.WhiteLabelHistoryEntry.at:type_name -> google.protobuf.Timestamp
+	11, // 3: org.WhiteLabelHistoryEntry.at:type_name -> google.protobuf.Timestamp
 	0,  // 4: org.WhiteLabelHistoryEntry.status:type_name -> org.WhiteLabelStatus
-	10, // 5: org.LicencaDetalhe.vencimento:type_name -> google.protobuf.Timestamp
-	7,  // 6: org.LicencaDetalhe.modulos:type_name -> org.LicencaDetalhe.ModulosEntry
-	8,  // 7: org.Licenciamento.modulos:type_name -> org.Licenciamento.ModulosEntry
-	10, // 8: org.Licenciamento.vencimento:type_name -> google.protobuf.Timestamp
-	10, // 9: org.Licenciamento.vencimentoAnterior:type_name -> google.protobuf.Timestamp
+	11, // 5: org.LicencaDetalhe.vencimento:type_name -> google.protobuf.Timestamp
+	8,  // 6: org.LicencaDetalhe.modulos:type_name -> org.LicencaDetalhe.ModulosEntry
+	9,  // 7: org.Licenciamento.modulos:type_name -> org.Licenciamento.ModulosEntry
+	11, // 8: org.Licenciamento.vencimento:type_name -> google.protobuf.Timestamp
+	11, // 9: org.Licenciamento.vencimentoAnterior:type_name -> google.protobuf.Timestamp
 	3,  // 10: org.Licenciamento.licencas:type_name -> org.LicencaDetalhe
-	5,  // 11: org.Licenciamento.planos:type_name -> org.LicencaPlano
-	10, // 12: org.Licenciamento.acessoAte:type_name -> google.protobuf.Timestamp
-	9,  // 13: org.Licenciamento.quantidades:type_name -> org.Licenciamento.QuantidadesEntry
-	6,  // 14: org.LicencaPlano.modulos:type_name -> org.LicencaPlanoModulo
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	6,  // 11: org.Licenciamento.planos:type_name -> org.LicencaPlano
+	11, // 12: org.Licenciamento.acessoAte:type_name -> google.protobuf.Timestamp
+	10, // 13: org.Licenciamento.quantidades:type_name -> org.Licenciamento.QuantidadesEntry
+	5,  // 14: org.Licenciamento.testes:type_name -> org.LicencaTeste
+	11, // 15: org.LicencaTeste.ate:type_name -> google.protobuf.Timestamp
+	7,  // 16: org.LicencaPlano.modulos:type_name -> org.LicencaPlanoModulo
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_apps_org_org_proto_init() }
@@ -807,7 +893,7 @@ func file_apps_org_org_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_org_org_proto_rawDesc), len(file_apps_org_org_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

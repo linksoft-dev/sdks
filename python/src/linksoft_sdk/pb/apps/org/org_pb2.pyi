@@ -89,7 +89,7 @@ class LicencaDetalhe(_message.Message):
     def __init__(self, situacao: _Optional[str] = ..., numero: _Optional[str] = ..., total: _Optional[float] = ..., vencimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modulos: _Optional[_Mapping[str, bool]] = ..., checkoutUrl: _Optional[str] = ...) -> None: ...
 
 class Licenciamento(_message.Message):
-    __slots__ = ("situacao", "numeroSerie", "total", "licenca", "modulos", "vencimento", "vencimentoAnterior", "diasExpirar", "checkoutUrl", "motivoBloqueio", "usuariosExtras", "licencas", "ai_credits_monthly", "planos", "periodicidade", "acessoAte", "quantidades")
+    __slots__ = ("situacao", "numeroSerie", "total", "licenca", "modulos", "vencimento", "vencimentoAnterior", "diasExpirar", "checkoutUrl", "motivoBloqueio", "usuariosExtras", "licencas", "ai_credits_monthly", "planos", "periodicidade", "acessoAte", "quantidades", "usuarios_permitidos", "testes")
     class ModulosEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -121,6 +121,8 @@ class Licenciamento(_message.Message):
     PERIODICIDADE_FIELD_NUMBER: _ClassVar[int]
     ACESSOATE_FIELD_NUMBER: _ClassVar[int]
     QUANTIDADES_FIELD_NUMBER: _ClassVar[int]
+    USUARIOS_PERMITIDOS_FIELD_NUMBER: _ClassVar[int]
+    TESTES_FIELD_NUMBER: _ClassVar[int]
     situacao: str
     numeroSerie: str
     total: float
@@ -138,7 +140,19 @@ class Licenciamento(_message.Message):
     periodicidade: str
     acessoAte: _timestamp_pb2.Timestamp
     quantidades: _containers.ScalarMap[str, int]
-    def __init__(self, situacao: _Optional[str] = ..., numeroSerie: _Optional[str] = ..., total: _Optional[float] = ..., licenca: _Optional[str] = ..., modulos: _Optional[_Mapping[str, bool]] = ..., vencimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., vencimentoAnterior: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., diasExpirar: _Optional[int] = ..., checkoutUrl: _Optional[str] = ..., motivoBloqueio: _Optional[str] = ..., usuariosExtras: _Optional[int] = ..., licencas: _Optional[_Iterable[_Union[LicencaDetalhe, _Mapping]]] = ..., ai_credits_monthly: _Optional[int] = ..., planos: _Optional[_Iterable[_Union[LicencaPlano, _Mapping]]] = ..., periodicidade: _Optional[str] = ..., acessoAte: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., quantidades: _Optional[_Mapping[str, int]] = ...) -> None: ...
+    usuarios_permitidos: int
+    testes: _containers.RepeatedCompositeFieldContainer[LicencaTeste]
+    def __init__(self, situacao: _Optional[str] = ..., numeroSerie: _Optional[str] = ..., total: _Optional[float] = ..., licenca: _Optional[str] = ..., modulos: _Optional[_Mapping[str, bool]] = ..., vencimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., vencimentoAnterior: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., diasExpirar: _Optional[int] = ..., checkoutUrl: _Optional[str] = ..., motivoBloqueio: _Optional[str] = ..., usuariosExtras: _Optional[int] = ..., licencas: _Optional[_Iterable[_Union[LicencaDetalhe, _Mapping]]] = ..., ai_credits_monthly: _Optional[int] = ..., planos: _Optional[_Iterable[_Union[LicencaPlano, _Mapping]]] = ..., periodicidade: _Optional[str] = ..., acessoAte: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., quantidades: _Optional[_Mapping[str, int]] = ..., usuarios_permitidos: _Optional[int] = ..., testes: _Optional[_Iterable[_Union[LicencaTeste, _Mapping]]] = ...) -> None: ...
+
+class LicencaTeste(_message.Message):
+    __slots__ = ("codigo", "ate", "modulos")
+    CODIGO_FIELD_NUMBER: _ClassVar[int]
+    ATE_FIELD_NUMBER: _ClassVar[int]
+    MODULOS_FIELD_NUMBER: _ClassVar[int]
+    codigo: str
+    ate: _timestamp_pb2.Timestamp
+    modulos: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, codigo: _Optional[str] = ..., ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modulos: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class LicencaPlano(_message.Message):
     __slots__ = ("nome", "codigo", "valor", "modulos")

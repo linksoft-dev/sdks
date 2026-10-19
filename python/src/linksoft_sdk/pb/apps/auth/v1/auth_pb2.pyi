@@ -4,6 +4,7 @@ from google.api import annotations_pb2 as _annotations_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from linksoft_sdk.pb.apps.org import org_pb2 as _org_pb2
 from linksoft_sdk.pb.apps.user import user_pb2 as _user_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message

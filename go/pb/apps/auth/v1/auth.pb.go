@@ -382,7 +382,7 @@ var File_apps_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_apps_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x17apps/auth/v1/auth.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x12apps/org/org.proto\x1a\x14apps/user/user.proto\"\x99\x01\n" +
+	"\x17apps/auth/v1/auth.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x12apps/org/org.proto\x1a\x14apps/user/user.proto\x1a\x1fgoogle/api/field_behavior.proto\"\x99\x01\n" +
 	"\fLoginRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1b\n" +
