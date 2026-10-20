@@ -356,10 +356,14 @@ type Person struct {
 	// Profissional: especialidades (cadastro de especialidades). specialty guarda os nomes.
 	Specialties []*Specialty `protobuf:"bytes,42,rep,name=specialties,proto3" json:"specialties,omitempty"`
 	// Convênio: benefícios que o portal mostra junto do convênio.
-	PortalBenefits    string                 `protobuf:"bytes,43,opt,name=portal_benefits,json=portalBenefits,proto3" json:"portal_benefits,omitempty"`
-	SaldoAtualizadoEm *timestamppb.Timestamp `protobuf:"bytes,44,opt,name=saldo_atualizado_em,json=saldoAtualizadoEm,proto3" json:"saldo_atualizado_em,omitempty"` // Hora da última mudança do saldo devedor
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	PortalBenefits string `protobuf:"bytes,43,opt,name=portal_benefits,json=portalBenefits,proto3" json:"portal_benefits,omitempty"`
+	// Serviço cujo contrato válido o convênio exige na autorização. Vazio, vale o serviço
+	// de código CARTEIRA.
+	ContractServiceId   string                 `protobuf:"bytes,61,opt,name=contract_service_id,json=contractServiceId,proto3" json:"contract_service_id,omitempty"`
+	ContractServiceName string                 `protobuf:"bytes,62,opt,name=contract_service_name,json=contractServiceName,proto3" json:"contract_service_name,omitempty"`
+	SaldoAtualizadoEm   *timestamppb.Timestamp `protobuf:"bytes,44,opt,name=saldo_atualizado_em,json=saldoAtualizadoEm,proto3" json:"saldo_atualizado_em,omitempty"` // Hora da última mudança do saldo devedor
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Person) Reset() {
@@ -682,6 +686,20 @@ func (x *Person) GetSpecialties() []*Specialty {
 func (x *Person) GetPortalBenefits() string {
 	if x != nil {
 		return x.PortalBenefits
+	}
+	return ""
+}
+
+func (x *Person) GetContractServiceId() string {
+	if x != nil {
+		return x.ContractServiceId
+	}
+	return ""
+}
+
+func (x *Person) GetContractServiceName() string {
+	if x != nil {
+		return x.ContractServiceName
 	}
 	return ""
 }
@@ -3320,7 +3338,7 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x18apps/person/person.proto\x12\x06person\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\x1a\x15exports/exports.proto\"7\n" +
 	"\tPersonTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xf5\x0e\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xd9\x0f\n" +
 	"\x06Person\x12?\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
@@ -3373,7 +3391,9 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x1fauthorization_requires_schedule\x18( \x01(\bR\x1dauthorizationRequiresSchedule\x12E\n" +
 	"\rcustom_fields\x18) \x03(\v2 .person.Person.CustomFieldsEntryR\fcustomFields\x123\n" +
 	"\vspecialties\x18* \x03(\v2\x11.person.SpecialtyR\vspecialties\x12'\n" +
-	"\x0fportal_benefits\x18+ \x01(\tR\x0eportalBenefits\x12P\n" +
+	"\x0fportal_benefits\x18+ \x01(\tR\x0eportalBenefits\x12.\n" +
+	"\x13contract_service_id\x18= \x01(\tR\x11contractServiceId\x122\n" +
+	"\x15contract_service_name\x18> \x01(\tR\x13contractServiceName\x12P\n" +
 	"\x13saldo_atualizado_em\x18, \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x11saldoAtualizadoEm\x1a6\n" +
 	"\bIesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
