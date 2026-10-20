@@ -1530,7 +1530,7 @@ class OrdemServico(_message.Message):
     def __init__(self, situacao: _Optional[str] = ..., numeroSerie: _Optional[str] = ..., chassi: _Optional[str] = ..., km: _Optional[str] = ..., tipoObjetoId: _Optional[str] = ..., tipoObjetoNome: _Optional[str] = ..., marcaId: _Optional[str] = ..., marcaNome: _Optional[str] = ..., modelo: _Optional[str] = ..., defeitoReclamado: _Optional[str] = ..., acessorios: _Optional[str] = ..., parecerTecnico: _Optional[str] = ..., responsavelTecnicoId: _Optional[str] = ..., responsavelTecnicoNome: _Optional[str] = ..., observacoes_internas: _Optional[str] = ..., garantidor_id: _Optional[str] = ..., garantidor_nome: _Optional[str] = ..., garantidor_senha: _Optional[str] = ..., nf_venda_numero: _Optional[str] = ..., certificado_garantia_numero: _Optional[str] = ..., data_compra: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revendedor: _Optional[str] = ..., nf_entrada_numero: _Optional[str] = ..., nf_entrada_valor: _Optional[float] = ..., nf_entrada_emissor_id: _Optional[str] = ..., nf_entrada_emissor_nome: _Optional[str] = ..., os_terceiros_numero: _Optional[str] = ..., os_fabricante_numero: _Optional[str] = ..., os_terceiros_emissor_id: _Optional[str] = ..., os_terceiros_emissor_nome: _Optional[str] = ...) -> None: ...
 
 class Contract(_message.Message):
-    __slots__ = ("number", "type", "recurrence_type", "recurrence_increment", "recurrence_due_date", "status", "block_reason", "last_access", "recurrence_created_id", "recurrence_created_number", "start_date", "courtesy", "renewal_number", "grace_period_days", "auto_renew_disabled", "status_reason", "released_at", "trial_days", "previous_due_date", "released_until", "trial_ends_at", "full_period_total", "readjustment", "readjustment_applied", "due_date", "juros_mes_percentual", "multa_percentual")
+    __slots__ = ("number", "type", "recurrence_type", "recurrence_increment", "recurrence_due_date", "status", "block_reason", "last_access", "recurrence_created_id", "recurrence_created_number", "start_date", "courtesy", "renewal_number", "grace_period_days", "auto_renew_disabled", "status_reason", "released_at", "trial_days", "previous_due_date", "released_until", "trial_ends_at", "full_period_total", "readjustment", "readjustment_applied", "due_date", "juros_mes_percentual", "multa_percentual", "services_change")
     class LastAccess(_message.Message):
         __slots__ = ("last_date", "user_name")
         LAST_DATE_FIELD_NUMBER: _ClassVar[int]
@@ -1565,6 +1565,7 @@ class Contract(_message.Message):
     DUE_DATE_FIELD_NUMBER: _ClassVar[int]
     JUROS_MES_PERCENTUAL_FIELD_NUMBER: _ClassVar[int]
     MULTA_PERCENTUAL_FIELD_NUMBER: _ClassVar[int]
+    SERVICES_CHANGE_FIELD_NUMBER: _ClassVar[int]
     number: str
     type: ContractType
     recurrence_type: RecurrenceType
@@ -1592,7 +1593,8 @@ class Contract(_message.Message):
     due_date: _timestamp_pb2.Timestamp
     juros_mes_percentual: float
     multa_percentual: float
-    def __init__(self, number: _Optional[str] = ..., type: _Optional[_Union[ContractType, str]] = ..., recurrence_type: _Optional[_Union[RecurrenceType, str]] = ..., recurrence_increment: _Optional[int] = ..., recurrence_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., status: _Optional[_Union[ContractStatus, str]] = ..., block_reason: _Optional[str] = ..., last_access: _Optional[_Union[Contract.LastAccess, _Mapping]] = ..., recurrence_created_id: _Optional[str] = ..., recurrence_created_number: _Optional[str] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., courtesy: _Optional[bool] = ..., renewal_number: _Optional[int] = ..., grace_period_days: _Optional[int] = ..., auto_renew_disabled: _Optional[bool] = ..., status_reason: _Optional[str] = ..., released_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_days: _Optional[int] = ..., previous_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., released_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_ends_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., full_period_total: _Optional[float] = ..., readjustment: _Optional[_Union[ContractReadjustment, _Mapping]] = ..., readjustment_applied: _Optional[_Union[ContractReadjustmentApplied, _Mapping]] = ..., due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., juros_mes_percentual: _Optional[float] = ..., multa_percentual: _Optional[float] = ...) -> None: ...
+    services_change: ContractServicesChange
+    def __init__(self, number: _Optional[str] = ..., type: _Optional[_Union[ContractType, str]] = ..., recurrence_type: _Optional[_Union[RecurrenceType, str]] = ..., recurrence_increment: _Optional[int] = ..., recurrence_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., status: _Optional[_Union[ContractStatus, str]] = ..., block_reason: _Optional[str] = ..., last_access: _Optional[_Union[Contract.LastAccess, _Mapping]] = ..., recurrence_created_id: _Optional[str] = ..., recurrence_created_number: _Optional[str] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., courtesy: _Optional[bool] = ..., renewal_number: _Optional[int] = ..., grace_period_days: _Optional[int] = ..., auto_renew_disabled: _Optional[bool] = ..., status_reason: _Optional[str] = ..., released_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_days: _Optional[int] = ..., previous_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., released_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_ends_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., full_period_total: _Optional[float] = ..., readjustment: _Optional[_Union[ContractReadjustment, _Mapping]] = ..., readjustment_applied: _Optional[_Union[ContractReadjustmentApplied, _Mapping]] = ..., due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., juros_mes_percentual: _Optional[float] = ..., multa_percentual: _Optional[float] = ..., services_change: _Optional[_Union[ContractServicesChange, _Mapping]] = ...) -> None: ...
 
 class ContractReadjustment(_message.Message):
     __slots__ = ("plan_id", "plan_name", "type", "value", "interval_months", "notice_days", "next_date", "notice_sent_for", "reminder_sent_for", "last_date")
@@ -1617,6 +1619,28 @@ class ContractReadjustment(_message.Message):
     reminder_sent_for: _timestamp_pb2.Timestamp
     last_date: _timestamp_pb2.Timestamp
     def __init__(self, plan_id: _Optional[str] = ..., plan_name: _Optional[str] = ..., type: _Optional[_Union[_readjustmentplan_pb2.TipoReajuste, str]] = ..., value: _Optional[float] = ..., interval_months: _Optional[int] = ..., notice_days: _Optional[int] = ..., next_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., notice_sent_for: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., reminder_sent_for: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ContractServicesChange(_message.Message):
+    __slots__ = ("servicos", "effective_at", "previous_total", "new_total", "proportional", "changed_at", "user_name", "recurrence_type", "recurrence_increment")
+    SERVICOS_FIELD_NUMBER: _ClassVar[int]
+    EFFECTIVE_AT_FIELD_NUMBER: _ClassVar[int]
+    PREVIOUS_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    NEW_TOTAL_FIELD_NUMBER: _ClassVar[int]
+    PROPORTIONAL_FIELD_NUMBER: _ClassVar[int]
+    CHANGED_AT_FIELD_NUMBER: _ClassVar[int]
+    USER_NAME_FIELD_NUMBER: _ClassVar[int]
+    RECURRENCE_TYPE_FIELD_NUMBER: _ClassVar[int]
+    RECURRENCE_INCREMENT_FIELD_NUMBER: _ClassVar[int]
+    servicos: _containers.RepeatedCompositeFieldContainer[Servico]
+    effective_at: _timestamp_pb2.Timestamp
+    previous_total: float
+    new_total: float
+    proportional: float
+    changed_at: _timestamp_pb2.Timestamp
+    user_name: str
+    recurrence_type: RecurrenceType
+    recurrence_increment: int
+    def __init__(self, servicos: _Optional[_Iterable[_Union[Servico, _Mapping]]] = ..., effective_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., previous_total: _Optional[float] = ..., new_total: _Optional[float] = ..., proportional: _Optional[float] = ..., changed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_name: _Optional[str] = ..., recurrence_type: _Optional[_Union[RecurrenceType, str]] = ..., recurrence_increment: _Optional[int] = ...) -> None: ...
 
 class ContractReadjustmentApplied(_message.Message):
     __slots__ = ("date", "description", "previous_total", "new_total", "plan_name")
