@@ -35,9 +35,12 @@ type LoginRequest struct {
 	OrgId string `protobuf:"bytes,4,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
 	// Identificação do computador. Os navegadores com a mesma identificação dividem o
 	// acesso; sem ela, cada navegador conta como um computador.
-	MachineId     string `protobuf:"bytes,5,opt,name=machine_id,json=machineId,proto3" json:"machine_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	MachineId string `protobuf:"bytes,5,opt,name=machine_id,json=machineId,proto3" json:"machine_id,omitempty"`
+	// Só identifica o usuário, sem abrir sessão no sistema: a sessão que ele já tem
+	// aberta continua valendo, e o token devolvido não vale como sessão do sistema.
+	WithoutSession bool `protobuf:"varint,6,opt,name=without_session,json=withoutSession,proto3" json:"without_session,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *LoginRequest) Reset() {
@@ -103,6 +106,13 @@ func (x *LoginRequest) GetMachineId() string {
 		return x.MachineId
 	}
 	return ""
+}
+
+func (x *LoginRequest) GetWithoutSession() bool {
+	if x != nil {
+		return x.WithoutSession
+	}
+	return false
 }
 
 type LoginResponse struct {
@@ -382,14 +392,15 @@ var File_apps_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_apps_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x17apps/auth/v1/auth.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x12apps/org/org.proto\x1a\x14apps/user/user.proto\x1a\x1fgoogle/api/field_behavior.proto\"\x99\x01\n" +
+	"\x17apps/auth/v1/auth.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x12apps/org/org.proto\x1a\x14apps/user/user.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xc2\x01\n" +
 	"\fLoginRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1b\n" +
 	"\tdevice_id\x18\x03 \x01(\tR\bdeviceId\x12\x15\n" +
 	"\x06org_id\x18\x04 \x01(\tR\x05orgId\x12\x1d\n" +
 	"\n" +
-	"machine_id\x18\x05 \x01(\tR\tmachineId\"\x8e\x02\n" +
+	"machine_id\x18\x05 \x01(\tR\tmachineId\x12'\n" +
+	"\x0fwithout_session\x18\x06 \x01(\bR\x0ewithoutSession\"\x8e\x02\n" +
 	"\rLoginResponse\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12\x14\n" +
