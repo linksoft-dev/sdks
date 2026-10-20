@@ -483,8 +483,10 @@ type NfeEntradaAceitarRequest struct {
 	EmitirEventoConfirmacao        bool                   `protobuf:"varint,4,opt,name=emitir_evento_confirmacao,json=emitirEventoConfirmacao,proto3" json:"emitir_evento_confirmacao,omitempty"` // Ao aceitar, se estiver marcado o sistema tenta emitir o evento de confirmação para o SEFAZ
 	NaturezaOperacao               string                 `protobuf:"bytes,5,opt,name=natureza_operacao,json=naturezaOperacao,proto3" json:"natureza_operacao,omitempty"`
 	EntradaDataHoraAceite          *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=entrada_data_hora_aceite,json=entradaDataHoraAceite,proto3" json:"entrada_data_hora_aceite,omitempty"`
-	unknownFields                  protoimpl.UnknownFields
-	sizeCache                      protoimpl.SizeCache
+	// Item cujo produto está inativo no estoque: reativa o cadastro e vincula o item a ele. Sem isso o aceite é recusado com o código PRODUTO_INATIVO
+	ReativaProdutosInativos bool `protobuf:"varint,7,opt,name=reativa_produtos_inativos,json=reativaProdutosInativos,proto3" json:"reativa_produtos_inativos,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *NfeEntradaAceitarRequest) Reset() {
@@ -557,6 +559,13 @@ func (x *NfeEntradaAceitarRequest) GetEntradaDataHoraAceite() *timestamppb.Times
 		return x.EntradaDataHoraAceite
 	}
 	return nil
+}
+
+func (x *NfeEntradaAceitarRequest) GetReativaProdutosInativos() bool {
+	if x != nil {
+		return x.ReativaProdutosInativos
+	}
+	return false
 }
 
 type NfeEntradaAceitarResponse struct {
@@ -1573,14 +1582,15 @@ const file_apps_dfe_nfe_nfe_entrada_proto_rawDesc = "" +
 	"\fpreco_avista\x18\x02 \x01(\x01R\vprecoAvista\x12\x16\n" +
 	"\x06motivo\x18\x03 \x01(\tR\x06motivo\"R\n" +
 	" NfeEntradaSugerePrecosIaResponse\x12.\n" +
-	"\x06precos\x18\x01 \x03(\v2\x16.nfe.NfeEntradaPrecoIaR\x06precos\"\xec\x02\n" +
+	"\x06precos\x18\x01 \x03(\v2\x16.nfe.NfeEntradaPrecoIaR\x06precos\"\xa8\x03\n" +
 	"\x18NfeEntradaAceitarRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x126\n" +
 	"\x17cadastra_nao_vinculados\x18\x02 \x01(\bR\x15cadastraNaoVinculados\x12J\n" +
 	"\"entrada_aplica_calculo_venda_custo\x18\x03 \x01(\bR\x1eentradaAplicaCalculoVendaCusto\x12:\n" +
 	"\x19emitir_evento_confirmacao\x18\x04 \x01(\bR\x17emitirEventoConfirmacao\x12+\n" +
 	"\x11natureza_operacao\x18\x05 \x01(\tR\x10naturezaOperacao\x12S\n" +
-	"\x18entrada_data_hora_aceite\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x15entradaDataHoraAceite\"7\n" +
+	"\x18entrada_data_hora_aceite\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x15entradaDataHoraAceite\x12:\n" +
+	"\x19reativa_produtos_inativos\x18\a \x01(\bR\x17reativaProdutosInativos\"7\n" +
 	"\x19NfeEntradaAceitarResponse\x12\x1a\n" +
 	"\x03nfe\x18\x01 \x01(\v2\b.nfe.NfeR\x03nfe\"/\n" +
 	"\x1dNfeEntradaDesfazAceiteRequest\x12\x0e\n" +

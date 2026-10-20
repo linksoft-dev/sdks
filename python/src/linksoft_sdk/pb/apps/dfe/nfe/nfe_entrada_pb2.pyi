@@ -84,20 +84,22 @@ class NfeEntradaSugerePrecosIaResponse(_message.Message):
     def __init__(self, precos: _Optional[_Iterable[_Union[NfeEntradaPrecoIa, _Mapping]]] = ...) -> None: ...
 
 class NfeEntradaAceitarRequest(_message.Message):
-    __slots__ = ("id", "cadastra_nao_vinculados", "entrada_aplica_calculo_venda_custo", "emitir_evento_confirmacao", "natureza_operacao", "entrada_data_hora_aceite")
+    __slots__ = ("id", "cadastra_nao_vinculados", "entrada_aplica_calculo_venda_custo", "emitir_evento_confirmacao", "natureza_operacao", "entrada_data_hora_aceite", "reativa_produtos_inativos")
     ID_FIELD_NUMBER: _ClassVar[int]
     CADASTRA_NAO_VINCULADOS_FIELD_NUMBER: _ClassVar[int]
     ENTRADA_APLICA_CALCULO_VENDA_CUSTO_FIELD_NUMBER: _ClassVar[int]
     EMITIR_EVENTO_CONFIRMACAO_FIELD_NUMBER: _ClassVar[int]
     NATUREZA_OPERACAO_FIELD_NUMBER: _ClassVar[int]
     ENTRADA_DATA_HORA_ACEITE_FIELD_NUMBER: _ClassVar[int]
+    REATIVA_PRODUTOS_INATIVOS_FIELD_NUMBER: _ClassVar[int]
     id: str
     cadastra_nao_vinculados: bool
     entrada_aplica_calculo_venda_custo: bool
     emitir_evento_confirmacao: bool
     natureza_operacao: str
     entrada_data_hora_aceite: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., cadastra_nao_vinculados: _Optional[bool] = ..., entrada_aplica_calculo_venda_custo: _Optional[bool] = ..., emitir_evento_confirmacao: _Optional[bool] = ..., natureza_operacao: _Optional[str] = ..., entrada_data_hora_aceite: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    reativa_produtos_inativos: bool
+    def __init__(self, id: _Optional[str] = ..., cadastra_nao_vinculados: _Optional[bool] = ..., entrada_aplica_calculo_venda_custo: _Optional[bool] = ..., emitir_evento_confirmacao: _Optional[bool] = ..., natureza_operacao: _Optional[str] = ..., entrada_data_hora_aceite: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., reativa_produtos_inativos: _Optional[bool] = ...) -> None: ...
 
 class NfeEntradaAceitarResponse(_message.Message):
     __slots__ = ("nfe",)
