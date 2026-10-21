@@ -1,6 +1,7 @@
 import datetime
 
 from google.api import annotations_pb2 as _annotations_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from linksoft_sdk.pb.plugins.validate import validate_pb2 as _validate_pb2
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
@@ -70,7 +71,7 @@ class Pessoa(_message.Message):
     def __init__(self, id: _Optional[str] = ..., cpf_cnpj: _Optional[str] = ..., nome: _Optional[str] = ..., nome_2: _Optional[str] = ..., ie: _Optional[str] = ..., end_cep: _Optional[str] = ..., end_endereco: _Optional[str] = ..., end_numero: _Optional[str] = ..., end_bairro: _Optional[str] = ..., end_cidade: _Optional[str] = ..., end_cidade_cod: _Optional[str] = ..., end_uf: _Optional[str] = ..., end_complemento: _Optional[str] = ..., email: _Optional[str] = ..., telefone: _Optional[str] = ...) -> None: ...
 
 class StockMovement(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "numero", "pessoa", "data_hora_movimento", "situacao", "motivo_cancelamento", "data_hora_cancelamento", "cancelamento_usuario_id", "cancelamento_usuario_nome", "obs", "total", "produtos", "type", "batch_id", "serial_ids")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "numero", "pessoa", "data_hora_movimento", "situacao", "motivo_cancelamento", "data_hora_cancelamento", "cancelamento_usuario_id", "cancelamento_usuario_nome", "obs", "total", "produtos", "type", "batch_id", "parcelas", "plano_conta_id", "plano_conta_nome", "motivo")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -89,7 +90,10 @@ class StockMovement(_message.Message):
     PRODUTOS_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     BATCH_ID_FIELD_NUMBER: _ClassVar[int]
-    SERIAL_IDS_FIELD_NUMBER: _ClassVar[int]
+    PARCELAS_FIELD_NUMBER: _ClassVar[int]
+    PLANO_CONTA_ID_FIELD_NUMBER: _ClassVar[int]
+    PLANO_CONTA_NOME_FIELD_NUMBER: _ClassVar[int]
+    MOTIVO_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -108,11 +112,34 @@ class StockMovement(_message.Message):
     produtos: _containers.RepeatedCompositeFieldContainer[Item]
     type: MovementType
     batch_id: str
-    serial_ids: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., numero: _Optional[int] = ..., pessoa: _Optional[_Union[Pessoa, _Mapping]] = ..., data_hora_movimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., motivo_cancelamento: _Optional[str] = ..., data_hora_cancelamento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., cancelamento_usuario_id: _Optional[str] = ..., cancelamento_usuario_nome: _Optional[str] = ..., obs: _Optional[str] = ..., total: _Optional[float] = ..., produtos: _Optional[_Iterable[_Union[Item, _Mapping]]] = ..., type: _Optional[_Union[MovementType, str]] = ..., batch_id: _Optional[str] = ..., serial_ids: _Optional[_Iterable[str]] = ...) -> None: ...
+    parcelas: _containers.RepeatedCompositeFieldContainer[Parcela]
+    plano_conta_id: str
+    plano_conta_nome: str
+    motivo: str
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., numero: _Optional[int] = ..., pessoa: _Optional[_Union[Pessoa, _Mapping]] = ..., data_hora_movimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., motivo_cancelamento: _Optional[str] = ..., data_hora_cancelamento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., cancelamento_usuario_id: _Optional[str] = ..., cancelamento_usuario_nome: _Optional[str] = ..., obs: _Optional[str] = ..., total: _Optional[float] = ..., produtos: _Optional[_Iterable[_Union[Item, _Mapping]]] = ..., type: _Optional[_Union[MovementType, str]] = ..., batch_id: _Optional[str] = ..., parcelas: _Optional[_Iterable[_Union[Parcela, _Mapping]]] = ..., plano_conta_id: _Optional[str] = ..., plano_conta_nome: _Optional[str] = ..., motivo: _Optional[str] = ...) -> None: ...
+
+class Parcela(_message.Message):
+    __slots__ = ("numero", "vencimento", "valor", "conta_pagar_id")
+    NUMERO_FIELD_NUMBER: _ClassVar[int]
+    VENCIMENTO_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    CONTA_PAGAR_ID_FIELD_NUMBER: _ClassVar[int]
+    numero: str
+    vencimento: _timestamp_pb2.Timestamp
+    valor: float
+    conta_pagar_id: str
+    def __init__(self, numero: _Optional[str] = ..., vencimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valor: _Optional[float] = ..., conta_pagar_id: _Optional[str] = ...) -> None: ...
+
+class SerialInfo(_message.Message):
+    __slots__ = ("ids", "serial_numbers")
+    IDS_FIELD_NUMBER: _ClassVar[int]
+    SERIAL_NUMBERS_FIELD_NUMBER: _ClassVar[int]
+    ids: _containers.RepeatedScalarFieldContainer[str]
+    serial_numbers: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, ids: _Optional[_Iterable[str]] = ..., serial_numbers: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Item(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "produto_id", "produto_nome", "un", "servico_nome", "servico_id", "obs", "valor_unitario", "quantidade", "total", "batch_id", "variation_product_id", "serial_ids")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "produto_id", "produto_nome", "un", "servico_nome", "servico_id", "obs", "valor_unitario", "quantidade", "total", "batch_id", "variation_product_id", "serial")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -129,7 +156,7 @@ class Item(_message.Message):
     TOTAL_FIELD_NUMBER: _ClassVar[int]
     BATCH_ID_FIELD_NUMBER: _ClassVar[int]
     VARIATION_PRODUCT_ID_FIELD_NUMBER: _ClassVar[int]
-    SERIAL_IDS_FIELD_NUMBER: _ClassVar[int]
+    SERIAL_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -146,8 +173,8 @@ class Item(_message.Message):
     total: float
     batch_id: str
     variation_product_id: str
-    serial_ids: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., produto_id: _Optional[str] = ..., produto_nome: _Optional[str] = ..., un: _Optional[str] = ..., servico_nome: _Optional[str] = ..., servico_id: _Optional[str] = ..., obs: _Optional[str] = ..., valor_unitario: _Optional[float] = ..., quantidade: _Optional[float] = ..., total: _Optional[float] = ..., batch_id: _Optional[str] = ..., variation_product_id: _Optional[str] = ..., serial_ids: _Optional[_Iterable[str]] = ...) -> None: ...
+    serial: SerialInfo
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., produto_id: _Optional[str] = ..., produto_nome: _Optional[str] = ..., un: _Optional[str] = ..., servico_nome: _Optional[str] = ..., servico_id: _Optional[str] = ..., obs: _Optional[str] = ..., valor_unitario: _Optional[float] = ..., quantidade: _Optional[float] = ..., total: _Optional[float] = ..., batch_id: _Optional[str] = ..., variation_product_id: _Optional[str] = ..., serial: _Optional[_Union[SerialInfo, _Mapping]] = ...) -> None: ...
 
 class CreateRequest(_message.Message):
     __slots__ = ("stock_movement",)
