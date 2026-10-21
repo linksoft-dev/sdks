@@ -1067,16 +1067,30 @@ class DeviceInfo(_message.Message):
     def __init__(self, device_id: _Optional[str] = ..., device_name: _Optional[str] = ..., app_type: _Optional[_Union[AppType, str]] = ..., app_version: _Optional[str] = ...) -> None: ...
 
 class OriginInfo(_message.Message):
-    __slots__ = ("name", "id", "reference_number", "origin_type")
+    __slots__ = ("name", "id", "reference_number", "origin_type", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid", "fbclid")
     NAME_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     REFERENCE_NUMBER_FIELD_NUMBER: _ClassVar[int]
     ORIGIN_TYPE_FIELD_NUMBER: _ClassVar[int]
+    UTM_SOURCE_FIELD_NUMBER: _ClassVar[int]
+    UTM_MEDIUM_FIELD_NUMBER: _ClassVar[int]
+    UTM_CAMPAIGN_FIELD_NUMBER: _ClassVar[int]
+    UTM_CONTENT_FIELD_NUMBER: _ClassVar[int]
+    UTM_TERM_FIELD_NUMBER: _ClassVar[int]
+    GCLID_FIELD_NUMBER: _ClassVar[int]
+    FBCLID_FIELD_NUMBER: _ClassVar[int]
     name: str
     id: str
     reference_number: str
     origin_type: Origin
-    def __init__(self, name: _Optional[str] = ..., id: _Optional[str] = ..., reference_number: _Optional[str] = ..., origin_type: _Optional[_Union[Origin, str]] = ...) -> None: ...
+    utm_source: str
+    utm_medium: str
+    utm_campaign: str
+    utm_content: str
+    utm_term: str
+    gclid: str
+    fbclid: str
+    def __init__(self, name: _Optional[str] = ..., id: _Optional[str] = ..., reference_number: _Optional[str] = ..., origin_type: _Optional[_Union[Origin, str]] = ..., utm_source: _Optional[str] = ..., utm_medium: _Optional[str] = ..., utm_campaign: _Optional[str] = ..., utm_content: _Optional[str] = ..., utm_term: _Optional[str] = ..., gclid: _Optional[str] = ..., fbclid: _Optional[str] = ...) -> None: ...
 
 class OrderTag(_message.Message):
     __slots__ = ("value", "color")

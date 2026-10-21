@@ -150,6 +150,8 @@ type AdsCampaign struct {
 	EndDate        *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	Currency       string                 `protobuf:"bytes,13,opt,name=currency,proto3" json:"currency,omitempty"` // Moeda original (USD, BRL)
 	LastSyncAt     *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=last_sync_at,json=lastSyncAt,proto3" json:"last_sync_at,omitempty"`
+	AccountId      string                 `protobuf:"bytes,15,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"` // Conta de anuncio na plataforma
+	AccountName    string                 `protobuf:"bytes,16,opt,name=account_name,json=accountName,proto3" json:"account_name,omitempty"`
 	// Metricas agregadas (ultimas sincronizadas)
 	TotalImpressions int64   `protobuf:"varint,20,opt,name=total_impressions,json=totalImpressions,proto3" json:"total_impressions,omitempty"`
 	TotalReach       int64   `protobuf:"varint,21,opt,name=total_reach,json=totalReach,proto3" json:"total_reach,omitempty"`
@@ -159,6 +161,7 @@ type AdsCampaign struct {
 	Cpc              float64 `protobuf:"fixed64,25,opt,name=cpc,proto3" json:"cpc,omitempty"`
 	Cpm              float64 `protobuf:"fixed64,26,opt,name=cpm,proto3" json:"cpm,omitempty"`
 	TotalConversions int64   `protobuf:"varint,27,opt,name=total_conversions,json=totalConversions,proto3" json:"total_conversions,omitempty"`
+	ConversionValue  float64 `protobuf:"fixed64,28,opt,name=conversion_value,json=conversionValue,proto3" json:"conversion_value,omitempty"` // Valor das compras atribuidas pela plataforma (BRL)
 	// Metricas diarias
 	DailyMetrics  []*AdsCampaignDailyMetric `protobuf:"bytes,30,rep,name=daily_metrics,json=dailyMetrics,proto3" json:"daily_metrics,omitempty"`
 	CreatedAt     *timestamppb.Timestamp    `protobuf:"bytes,100,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -295,6 +298,20 @@ func (x *AdsCampaign) GetLastSyncAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *AdsCampaign) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *AdsCampaign) GetAccountName() string {
+	if x != nil {
+		return x.AccountName
+	}
+	return ""
+}
+
 func (x *AdsCampaign) GetTotalImpressions() int64 {
 	if x != nil {
 		return x.TotalImpressions
@@ -351,6 +368,13 @@ func (x *AdsCampaign) GetTotalConversions() int64 {
 	return 0
 }
 
+func (x *AdsCampaign) GetConversionValue() float64 {
+	if x != nil {
+		return x.ConversionValue
+	}
+	return 0
+}
+
 func (x *AdsCampaign) GetDailyMetrics() []*AdsCampaignDailyMetric {
 	if x != nil {
 		return x.DailyMetrics
@@ -373,18 +397,19 @@ func (x *AdsCampaign) GetUpdatedAt() *timestamppb.Timestamp {
 }
 
 type AdsCampaignDailyMetric struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Date          string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"` // Formato YYYY-MM-DD
-	Impressions   int64                  `protobuf:"varint,2,opt,name=impressions,proto3" json:"impressions,omitempty"`
-	Reach         int64                  `protobuf:"varint,3,opt,name=reach,proto3" json:"reach,omitempty"`
-	Clicks        int64                  `protobuf:"varint,4,opt,name=clicks,proto3" json:"clicks,omitempty"`
-	Ctr           float64                `protobuf:"fixed64,5,opt,name=ctr,proto3" json:"ctr,omitempty"`
-	Cpc           float64                `protobuf:"fixed64,6,opt,name=cpc,proto3" json:"cpc,omitempty"`
-	Cpm           float64                `protobuf:"fixed64,7,opt,name=cpm,proto3" json:"cpm,omitempty"`
-	Spend         float64                `protobuf:"fixed64,8,opt,name=spend,proto3" json:"spend,omitempty"` // Em BRL
-	Conversions   int64                  `protobuf:"varint,9,opt,name=conversions,proto3" json:"conversions,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Date            string                 `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"` // Formato YYYY-MM-DD
+	Impressions     int64                  `protobuf:"varint,2,opt,name=impressions,proto3" json:"impressions,omitempty"`
+	Reach           int64                  `protobuf:"varint,3,opt,name=reach,proto3" json:"reach,omitempty"`
+	Clicks          int64                  `protobuf:"varint,4,opt,name=clicks,proto3" json:"clicks,omitempty"`
+	Ctr             float64                `protobuf:"fixed64,5,opt,name=ctr,proto3" json:"ctr,omitempty"`
+	Cpc             float64                `protobuf:"fixed64,6,opt,name=cpc,proto3" json:"cpc,omitempty"`
+	Cpm             float64                `protobuf:"fixed64,7,opt,name=cpm,proto3" json:"cpm,omitempty"`
+	Spend           float64                `protobuf:"fixed64,8,opt,name=spend,proto3" json:"spend,omitempty"` // Em BRL
+	Conversions     int64                  `protobuf:"varint,9,opt,name=conversions,proto3" json:"conversions,omitempty"`
+	ConversionValue float64                `protobuf:"fixed64,10,opt,name=conversion_value,json=conversionValue,proto3" json:"conversion_value,omitempty"` // Em BRL
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *AdsCampaignDailyMetric) Reset() {
@@ -476,6 +501,13 @@ func (x *AdsCampaignDailyMetric) GetSpend() float64 {
 func (x *AdsCampaignDailyMetric) GetConversions() int64 {
 	if x != nil {
 		return x.Conversions
+	}
+	return 0
+}
+
+func (x *AdsCampaignDailyMetric) GetConversionValue() float64 {
+	if x != nil {
+		return x.ConversionValue
 	}
 	return 0
 }
@@ -1405,8 +1437,11 @@ func (x *DailySpend) GetClicks() int64 {
 
 type GetROIRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	DateFrom      string                 `protobuf:"bytes,1,opt,name=date_from,json=dateFrom,proto3" json:"date_from,omitempty"` // YYYY-MM-DD
-	DateTo        string                 `protobuf:"bytes,2,opt,name=date_to,json=dateTo,proto3" json:"date_to,omitempty"`       // YYYY-MM-DD
+	DateFrom      string                 `protobuf:"bytes,1,opt,name=date_from,json=dateFrom,proto3" json:"date_from,omitempty"`                 // YYYY-MM-DD
+	DateTo        string                 `protobuf:"bytes,2,opt,name=date_to,json=dateTo,proto3" json:"date_to,omitempty"`                       // YYYY-MM-DD
+	Platform      AdsPlatform            `protobuf:"varint,3,opt,name=platform,proto3,enum=marketing_ads.AdsPlatform" json:"platform,omitempty"` // Opcional: so uma plataforma
+	AccountId     string                 `protobuf:"bytes,4,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`              // Opcional: so uma conta de anuncio
+	UtmSource     string                 `protobuf:"bytes,5,opt,name=utm_source,json=utmSource,proto3" json:"utm_source,omitempty"`              // Opcional: so vendas cuja origem tem este utm_source
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1455,16 +1490,46 @@ func (x *GetROIRequest) GetDateTo() string {
 	return ""
 }
 
+func (x *GetROIRequest) GetPlatform() AdsPlatform {
+	if x != nil {
+		return x.Platform
+	}
+	return AdsPlatform_ADS_PLATFORM_UNSPECIFIED
+}
+
+func (x *GetROIRequest) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *GetROIRequest) GetUtmSource() string {
+	if x != nil {
+		return x.UtmSource
+	}
+	return ""
+}
+
 type GetROIResponse struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	TotalAdSpend      float64                `protobuf:"fixed64,1,opt,name=total_ad_spend,json=totalAdSpend,proto3" json:"total_ad_spend,omitempty"`                // Gasto total em ads (BRL)
-	TotalRevenue      float64                `protobuf:"fixed64,2,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`                  // Faturamento total (BRL) — do modulo de Vendas
-	RoiPercentage     float64                `protobuf:"fixed64,3,opt,name=roi_percentage,json=roiPercentage,proto3" json:"roi_percentage,omitempty"`               // (revenue - spend) / spend * 100
-	AvgTicket         float64                `protobuf:"fixed64,4,opt,name=avg_ticket,json=avgTicket,proto3" json:"avg_ticket,omitempty"`                           // Ticket medio
-	TotalOrders       int32                  `protobuf:"varint,5,opt,name=total_orders,json=totalOrders,proto3" json:"total_orders,omitempty"`                      // Total de pedidos no periodo
-	PreviousPeriodRoi float64                `protobuf:"fixed64,6,opt,name=previous_period_roi,json=previousPeriodRoi,proto3" json:"previous_period_roi,omitempty"` // ROI do periodo anterior para comparacao
+	state                   protoimpl.MessageState `protogen:"open.v1"`
+	TotalAdSpend            float64                `protobuf:"fixed64,1,opt,name=total_ad_spend,json=totalAdSpend,proto3" json:"total_ad_spend,omitempty"`  // Gasto total em ads (BRL)
+	TotalRevenue            float64                `protobuf:"fixed64,2,opt,name=total_revenue,json=totalRevenue,proto3" json:"total_revenue,omitempty"`    // Faturamento liquido dos pedidos fechados (BRL)
+	RoiPercentage           float64                `protobuf:"fixed64,3,opt,name=roi_percentage,json=roiPercentage,proto3" json:"roi_percentage,omitempty"` // (revenue - spend) / spend * 100
+	AvgTicket               float64                `protobuf:"fixed64,4,opt,name=avg_ticket,json=avgTicket,proto3" json:"avg_ticket,omitempty"`             // Ticket medio
+	TotalOrders             int32                  `protobuf:"varint,5,opt,name=total_orders,json=totalOrders,proto3" json:"total_orders,omitempty"`        // Pedidos fechados no periodo
+	Cost                    float64                `protobuf:"fixed64,6,opt,name=cost,proto3" json:"cost,omitempty"`                                        // Custo dos itens vendidos (BRL)
+	Profit                  float64                `protobuf:"fixed64,7,opt,name=profit,proto3" json:"profit,omitempty"`                                    // revenue - cost - spend
+	Roas                    float64                `protobuf:"fixed64,8,opt,name=roas,proto3" json:"roas,omitempty"`                                        // revenue / spend
+	Margin                  float64                `protobuf:"fixed64,9,opt,name=margin,proto3" json:"margin,omitempty"`                                    // profit / revenue * 100
+	PendingValue            float64                `protobuf:"fixed64,10,opt,name=pending_value,json=pendingValue,proto3" json:"pending_value,omitempty"`   // Pedidos pendentes de pagamento (BRL)
+	PendingOrders           int32                  `protobuf:"varint,11,opt,name=pending_orders,json=pendingOrders,proto3" json:"pending_orders,omitempty"`
+	PlatformConversionValue float64                `protobuf:"fixed64,12,opt,name=platform_conversion_value,json=platformConversionValue,proto3" json:"platform_conversion_value,omitempty"` // Valor de compra reportado pelas plataformas (BRL)
+	SalesByPayment          []*SalesByPayment      `protobuf:"bytes,13,rep,name=sales_by_payment,json=salesByPayment,proto3" json:"sales_by_payment,omitempty"`
+	Accounts                []*AdsAccount          `protobuf:"bytes,14,rep,name=accounts,proto3" json:"accounts,omitempty"`                                   // Contas de anuncio sincronizadas (para filtro)
+	TrafficSources          []string               `protobuf:"bytes,15,rep,name=traffic_sources,json=trafficSources,proto3" json:"traffic_sources,omitempty"` // utm_source encontrados nas vendas do periodo (para filtro)
 	// Evolucao diaria
-	DailyRoi      []*DailyROI `protobuf:"bytes,10,rep,name=daily_roi,json=dailyRoi,proto3" json:"daily_roi,omitempty"`
+	DailyRoi      []*DailyROI `protobuf:"bytes,20,rep,name=daily_roi,json=dailyRoi,proto3" json:"daily_roi,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1534,11 +1599,74 @@ func (x *GetROIResponse) GetTotalOrders() int32 {
 	return 0
 }
 
-func (x *GetROIResponse) GetPreviousPeriodRoi() float64 {
+func (x *GetROIResponse) GetCost() float64 {
 	if x != nil {
-		return x.PreviousPeriodRoi
+		return x.Cost
 	}
 	return 0
+}
+
+func (x *GetROIResponse) GetProfit() float64 {
+	if x != nil {
+		return x.Profit
+	}
+	return 0
+}
+
+func (x *GetROIResponse) GetRoas() float64 {
+	if x != nil {
+		return x.Roas
+	}
+	return 0
+}
+
+func (x *GetROIResponse) GetMargin() float64 {
+	if x != nil {
+		return x.Margin
+	}
+	return 0
+}
+
+func (x *GetROIResponse) GetPendingValue() float64 {
+	if x != nil {
+		return x.PendingValue
+	}
+	return 0
+}
+
+func (x *GetROIResponse) GetPendingOrders() int32 {
+	if x != nil {
+		return x.PendingOrders
+	}
+	return 0
+}
+
+func (x *GetROIResponse) GetPlatformConversionValue() float64 {
+	if x != nil {
+		return x.PlatformConversionValue
+	}
+	return 0
+}
+
+func (x *GetROIResponse) GetSalesByPayment() []*SalesByPayment {
+	if x != nil {
+		return x.SalesByPayment
+	}
+	return nil
+}
+
+func (x *GetROIResponse) GetAccounts() []*AdsAccount {
+	if x != nil {
+		return x.Accounts
+	}
+	return nil
+}
+
+func (x *GetROIResponse) GetTrafficSources() []string {
+	if x != nil {
+		return x.TrafficSources
+	}
+	return nil
 }
 
 func (x *GetROIResponse) GetDailyRoi() []*DailyROI {
@@ -1546,6 +1674,126 @@ func (x *GetROIResponse) GetDailyRoi() []*DailyROI {
 		return x.DailyRoi
 	}
 	return nil
+}
+
+type SalesByPayment struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	PaymentType   string                 `protobuf:"bytes,1,opt,name=payment_type,json=paymentType,proto3" json:"payment_type,omitempty"` // PIX, BOLETO, CARTAO CREDITO...
+	Orders        int32                  `protobuf:"varint,2,opt,name=orders,proto3" json:"orders,omitempty"`
+	Value         float64                `protobuf:"fixed64,3,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SalesByPayment) Reset() {
+	*x = SalesByPayment{}
+	mi := &file_apps_marketing_ads_ads_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SalesByPayment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SalesByPayment) ProtoMessage() {}
+
+func (x *SalesByPayment) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_marketing_ads_ads_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SalesByPayment.ProtoReflect.Descriptor instead.
+func (*SalesByPayment) Descriptor() ([]byte, []int) {
+	return file_apps_marketing_ads_ads_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *SalesByPayment) GetPaymentType() string {
+	if x != nil {
+		return x.PaymentType
+	}
+	return ""
+}
+
+func (x *SalesByPayment) GetOrders() int32 {
+	if x != nil {
+		return x.Orders
+	}
+	return 0
+}
+
+func (x *SalesByPayment) GetValue() float64 {
+	if x != nil {
+		return x.Value
+	}
+	return 0
+}
+
+type AdsAccount struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Platform      AdsPlatform            `protobuf:"varint,1,opt,name=platform,proto3,enum=marketing_ads.AdsPlatform" json:"platform,omitempty"`
+	AccountId     string                 `protobuf:"bytes,2,opt,name=account_id,json=accountId,proto3" json:"account_id,omitempty"`
+	AccountName   string                 `protobuf:"bytes,3,opt,name=account_name,json=accountName,proto3" json:"account_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AdsAccount) Reset() {
+	*x = AdsAccount{}
+	mi := &file_apps_marketing_ads_ads_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdsAccount) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdsAccount) ProtoMessage() {}
+
+func (x *AdsAccount) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_marketing_ads_ads_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdsAccount.ProtoReflect.Descriptor instead.
+func (*AdsAccount) Descriptor() ([]byte, []int) {
+	return file_apps_marketing_ads_ads_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *AdsAccount) GetPlatform() AdsPlatform {
+	if x != nil {
+		return x.Platform
+	}
+	return AdsPlatform_ADS_PLATFORM_UNSPECIFIED
+}
+
+func (x *AdsAccount) GetAccountId() string {
+	if x != nil {
+		return x.AccountId
+	}
+	return ""
+}
+
+func (x *AdsAccount) GetAccountName() string {
+	if x != nil {
+		return x.AccountName
+	}
+	return ""
 }
 
 type DailyROI struct {
@@ -1559,7 +1807,7 @@ type DailyROI struct {
 
 func (x *DailyROI) Reset() {
 	*x = DailyROI{}
-	mi := &file_apps_marketing_ads_ads_proto_msgTypes[20]
+	mi := &file_apps_marketing_ads_ads_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1571,7 +1819,7 @@ func (x *DailyROI) String() string {
 func (*DailyROI) ProtoMessage() {}
 
 func (x *DailyROI) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_marketing_ads_ads_proto_msgTypes[20]
+	mi := &file_apps_marketing_ads_ads_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1584,7 +1832,7 @@ func (x *DailyROI) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DailyROI.ProtoReflect.Descriptor instead.
 func (*DailyROI) Descriptor() ([]byte, []int) {
-	return file_apps_marketing_ads_ads_proto_rawDescGZIP(), []int{20}
+	return file_apps_marketing_ads_ads_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *DailyROI) GetDate() string {
@@ -1612,7 +1860,7 @@ var File_apps_marketing_ads_ads_proto protoreflect.FileDescriptor
 
 const file_apps_marketing_ads_ads_proto_rawDesc = "" +
 	"\n" +
-	"\x1capps/marketing/ads/ads.proto\x12\rmarketing_ads\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa6\b\n" +
+	"\x1capps/marketing/ads/ads.proto\x12\rmarketing_ads\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x93\t\n" +
 	"\vAdsCampaign\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x126\n" +
 	"\bplatform\x18\x02 \x01(\x0e2\x1a.marketing_ads.AdsPlatformR\bplatform\x12\x1f\n" +
@@ -1631,7 +1879,10 @@ const file_apps_marketing_ads_ads_proto_rawDesc = "" +
 	"\bend_date\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\x12\x1a\n" +
 	"\bcurrency\x18\r \x01(\tR\bcurrency\x12<\n" +
 	"\flast_sync_at\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"lastSyncAt\x12+\n" +
+	"lastSyncAt\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x0f \x01(\tR\taccountId\x12!\n" +
+	"\faccount_name\x18\x10 \x01(\tR\vaccountName\x12+\n" +
 	"\x11total_impressions\x18\x14 \x01(\x03R\x10totalImpressions\x12\x1f\n" +
 	"\vtotal_reach\x18\x15 \x01(\x03R\n" +
 	"totalReach\x12!\n" +
@@ -1641,12 +1892,13 @@ const file_apps_marketing_ads_ads_proto_rawDesc = "" +
 	"\x03ctr\x18\x18 \x01(\x01R\x03ctr\x12\x10\n" +
 	"\x03cpc\x18\x19 \x01(\x01R\x03cpc\x12\x10\n" +
 	"\x03cpm\x18\x1a \x01(\x01R\x03cpm\x12+\n" +
-	"\x11total_conversions\x18\x1b \x01(\x03R\x10totalConversions\x12J\n" +
+	"\x11total_conversions\x18\x1b \x01(\x03R\x10totalConversions\x12)\n" +
+	"\x10conversion_value\x18\x1c \x01(\x01R\x0fconversionValue\x12J\n" +
 	"\rdaily_metrics\x18\x1e \x03(\v2%.marketing_ads.AdsCampaignDailyMetricR\fdailyMetrics\x129\n" +
 	"\n" +
 	"created_at\x18d \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18e \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\x1d\xc0>\x01\xca>\x17marketing_ads_campaigns\"\xea\x01\n" +
+	"updated_at\x18e \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\x1d\xc0>\x01\xca>\x17marketing_ads_campaigns\"\x95\x02\n" +
 	"\x16AdsCampaignDailyMetric\x12\x12\n" +
 	"\x04date\x18\x01 \x01(\tR\x04date\x12 \n" +
 	"\vimpressions\x18\x02 \x01(\x03R\vimpressions\x12\x14\n" +
@@ -1656,7 +1908,9 @@ const file_apps_marketing_ads_ads_proto_rawDesc = "" +
 	"\x03cpc\x18\x06 \x01(\x01R\x03cpc\x12\x10\n" +
 	"\x03cpm\x18\a \x01(\x01R\x03cpm\x12\x14\n" +
 	"\x05spend\x18\b \x01(\x01R\x05spend\x12 \n" +
-	"\vconversions\x18\t \x01(\x03R\vconversions\"N\n" +
+	"\vconversions\x18\t \x01(\x03R\vconversions\x12)\n" +
+	"\x10conversion_value\x18\n" +
+	" \x01(\x01R\x0fconversionValue\"N\n" +
 	"\rCreateRequest\x12=\n" +
 	"\fads_campaign\x18\x01 \x01(\v2\x1a.marketing_ads.AdsCampaignR\vadsCampaign\"O\n" +
 	"\x0eCreateResponse\x12=\n" +
@@ -1722,20 +1976,44 @@ const file_apps_marketing_ads_ads_proto_rawDesc = "" +
 	"\x04date\x18\x01 \x01(\tR\x04date\x12\x14\n" +
 	"\x05spend\x18\x02 \x01(\x01R\x05spend\x12 \n" +
 	"\vimpressions\x18\x03 \x01(\x03R\vimpressions\x12\x16\n" +
-	"\x06clicks\x18\x04 \x01(\x03R\x06clicks\"E\n" +
+	"\x06clicks\x18\x04 \x01(\x03R\x06clicks\"\xbb\x01\n" +
 	"\rGetROIRequest\x12\x1b\n" +
 	"\tdate_from\x18\x01 \x01(\tR\bdateFrom\x12\x17\n" +
-	"\adate_to\x18\x02 \x01(\tR\x06dateTo\"\xaa\x02\n" +
+	"\adate_to\x18\x02 \x01(\tR\x06dateTo\x126\n" +
+	"\bplatform\x18\x03 \x01(\x0e2\x1a.marketing_ads.AdsPlatformR\bplatform\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x04 \x01(\tR\taccountId\x12\x1d\n" +
+	"\n" +
+	"utm_source\x18\x05 \x01(\tR\tutmSource\"\x83\x05\n" +
 	"\x0eGetROIResponse\x12$\n" +
 	"\x0etotal_ad_spend\x18\x01 \x01(\x01R\ftotalAdSpend\x12#\n" +
 	"\rtotal_revenue\x18\x02 \x01(\x01R\ftotalRevenue\x12%\n" +
 	"\x0eroi_percentage\x18\x03 \x01(\x01R\rroiPercentage\x12\x1d\n" +
 	"\n" +
 	"avg_ticket\x18\x04 \x01(\x01R\tavgTicket\x12!\n" +
-	"\ftotal_orders\x18\x05 \x01(\x05R\vtotalOrders\x12.\n" +
-	"\x13previous_period_roi\x18\x06 \x01(\x01R\x11previousPeriodRoi\x124\n" +
-	"\tdaily_roi\x18\n" +
-	" \x03(\v2\x17.marketing_ads.DailyROIR\bdailyRoi\"S\n" +
+	"\ftotal_orders\x18\x05 \x01(\x05R\vtotalOrders\x12\x12\n" +
+	"\x04cost\x18\x06 \x01(\x01R\x04cost\x12\x16\n" +
+	"\x06profit\x18\a \x01(\x01R\x06profit\x12\x12\n" +
+	"\x04roas\x18\b \x01(\x01R\x04roas\x12\x16\n" +
+	"\x06margin\x18\t \x01(\x01R\x06margin\x12#\n" +
+	"\rpending_value\x18\n" +
+	" \x01(\x01R\fpendingValue\x12%\n" +
+	"\x0epending_orders\x18\v \x01(\x05R\rpendingOrders\x12:\n" +
+	"\x19platform_conversion_value\x18\f \x01(\x01R\x17platformConversionValue\x12G\n" +
+	"\x10sales_by_payment\x18\r \x03(\v2\x1d.marketing_ads.SalesByPaymentR\x0esalesByPayment\x125\n" +
+	"\baccounts\x18\x0e \x03(\v2\x19.marketing_ads.AdsAccountR\baccounts\x12'\n" +
+	"\x0ftraffic_sources\x18\x0f \x03(\tR\x0etrafficSources\x124\n" +
+	"\tdaily_roi\x18\x14 \x03(\v2\x17.marketing_ads.DailyROIR\bdailyRoi\"a\n" +
+	"\x0eSalesByPayment\x12!\n" +
+	"\fpayment_type\x18\x01 \x01(\tR\vpaymentType\x12\x16\n" +
+	"\x06orders\x18\x02 \x01(\x05R\x06orders\x12\x14\n" +
+	"\x05value\x18\x03 \x01(\x01R\x05value\"\x86\x01\n" +
+	"\n" +
+	"AdsAccount\x126\n" +
+	"\bplatform\x18\x01 \x01(\x0e2\x1a.marketing_ads.AdsPlatformR\bplatform\x12\x1d\n" +
+	"\n" +
+	"account_id\x18\x02 \x01(\tR\taccountId\x12!\n" +
+	"\faccount_name\x18\x03 \x01(\tR\vaccountName\"S\n" +
 	"\bDailyROI\x12\x12\n" +
 	"\x04date\x18\x01 \x01(\tR\x04date\x12\x19\n" +
 	"\bad_spend\x18\x02 \x01(\x01R\aadSpend\x12\x18\n" +
@@ -1775,7 +2053,7 @@ func file_apps_marketing_ads_ads_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_marketing_ads_ads_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_apps_marketing_ads_ads_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_apps_marketing_ads_ads_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_apps_marketing_ads_ads_proto_goTypes = []any{
 	(AdsPlatform)(0),               // 0: marketing_ads.AdsPlatform
 	(AdsCampaignStatus)(0),         // 1: marketing_ads.AdsCampaignStatus
@@ -1799,56 +2077,62 @@ var file_apps_marketing_ads_ads_proto_goTypes = []any{
 	(*DailySpend)(nil),             // 19: marketing_ads.DailySpend
 	(*GetROIRequest)(nil),          // 20: marketing_ads.GetROIRequest
 	(*GetROIResponse)(nil),         // 21: marketing_ads.GetROIResponse
-	(*DailyROI)(nil),               // 22: marketing_ads.DailyROI
-	(*timestamppb.Timestamp)(nil),  // 23: google.protobuf.Timestamp
-	(*metadata.FieldMask)(nil),     // 24: metadata.FieldMask
-	(*filter.Filter)(nil),          // 25: Filter
+	(*SalesByPayment)(nil),         // 22: marketing_ads.SalesByPayment
+	(*AdsAccount)(nil),             // 23: marketing_ads.AdsAccount
+	(*DailyROI)(nil),               // 24: marketing_ads.DailyROI
+	(*timestamppb.Timestamp)(nil),  // 25: google.protobuf.Timestamp
+	(*metadata.FieldMask)(nil),     // 26: metadata.FieldMask
+	(*filter.Filter)(nil),          // 27: Filter
 }
 var file_apps_marketing_ads_ads_proto_depIdxs = []int32{
 	0,  // 0: marketing_ads.AdsCampaign.platform:type_name -> marketing_ads.AdsPlatform
 	1,  // 1: marketing_ads.AdsCampaign.status:type_name -> marketing_ads.AdsCampaignStatus
-	23, // 2: marketing_ads.AdsCampaign.start_date:type_name -> google.protobuf.Timestamp
-	23, // 3: marketing_ads.AdsCampaign.end_date:type_name -> google.protobuf.Timestamp
-	23, // 4: marketing_ads.AdsCampaign.last_sync_at:type_name -> google.protobuf.Timestamp
+	25, // 2: marketing_ads.AdsCampaign.start_date:type_name -> google.protobuf.Timestamp
+	25, // 3: marketing_ads.AdsCampaign.end_date:type_name -> google.protobuf.Timestamp
+	25, // 4: marketing_ads.AdsCampaign.last_sync_at:type_name -> google.protobuf.Timestamp
 	3,  // 5: marketing_ads.AdsCampaign.daily_metrics:type_name -> marketing_ads.AdsCampaignDailyMetric
-	23, // 6: marketing_ads.AdsCampaign.created_at:type_name -> google.protobuf.Timestamp
-	23, // 7: marketing_ads.AdsCampaign.updated_at:type_name -> google.protobuf.Timestamp
+	25, // 6: marketing_ads.AdsCampaign.created_at:type_name -> google.protobuf.Timestamp
+	25, // 7: marketing_ads.AdsCampaign.updated_at:type_name -> google.protobuf.Timestamp
 	2,  // 8: marketing_ads.CreateRequest.ads_campaign:type_name -> marketing_ads.AdsCampaign
 	2,  // 9: marketing_ads.CreateResponse.ads_campaign:type_name -> marketing_ads.AdsCampaign
 	2,  // 10: marketing_ads.UpdateRequest.ads_campaign:type_name -> marketing_ads.AdsCampaign
-	24, // 11: marketing_ads.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	26, // 11: marketing_ads.UpdateRequest.update_mask:type_name -> metadata.FieldMask
 	2,  // 12: marketing_ads.UpdateResponse.ads_campaign:type_name -> marketing_ads.AdsCampaign
 	2,  // 13: marketing_ads.GetResponse.ads_campaign:type_name -> marketing_ads.AdsCampaign
 	0,  // 14: marketing_ads.ListRequest.platform:type_name -> marketing_ads.AdsPlatform
 	1,  // 15: marketing_ads.ListRequest.status:type_name -> marketing_ads.AdsCampaignStatus
-	25, // 16: marketing_ads.ListRequest.filter:type_name -> Filter
+	27, // 16: marketing_ads.ListRequest.filter:type_name -> Filter
 	2,  // 17: marketing_ads.ListResponse.ads_campaign_list:type_name -> marketing_ads.AdsCampaign
 	0,  // 18: marketing_ads.SyncRequest.platform:type_name -> marketing_ads.AdsPlatform
 	18, // 19: marketing_ads.GetDashboardResponse.spend_by_platform:type_name -> marketing_ads.PlatformSpend
 	19, // 20: marketing_ads.GetDashboardResponse.daily_spend:type_name -> marketing_ads.DailySpend
 	0,  // 21: marketing_ads.PlatformSpend.platform:type_name -> marketing_ads.AdsPlatform
-	22, // 22: marketing_ads.GetROIResponse.daily_roi:type_name -> marketing_ads.DailyROI
-	4,  // 23: marketing_ads.AdsCampaignService.Create:input_type -> marketing_ads.CreateRequest
-	6,  // 24: marketing_ads.AdsCampaignService.Update:input_type -> marketing_ads.UpdateRequest
-	8,  // 25: marketing_ads.AdsCampaignService.Delete:input_type -> marketing_ads.DeleteRequest
-	10, // 26: marketing_ads.AdsCampaignService.Get:input_type -> marketing_ads.GetRequest
-	12, // 27: marketing_ads.AdsCampaignService.List:input_type -> marketing_ads.ListRequest
-	14, // 28: marketing_ads.AdsCampaignService.Sync:input_type -> marketing_ads.SyncRequest
-	16, // 29: marketing_ads.AdsCampaignService.GetDashboard:input_type -> marketing_ads.GetDashboardRequest
-	20, // 30: marketing_ads.AdsCampaignService.GetROI:input_type -> marketing_ads.GetROIRequest
-	5,  // 31: marketing_ads.AdsCampaignService.Create:output_type -> marketing_ads.CreateResponse
-	7,  // 32: marketing_ads.AdsCampaignService.Update:output_type -> marketing_ads.UpdateResponse
-	9,  // 33: marketing_ads.AdsCampaignService.Delete:output_type -> marketing_ads.DeleteResponse
-	11, // 34: marketing_ads.AdsCampaignService.Get:output_type -> marketing_ads.GetResponse
-	13, // 35: marketing_ads.AdsCampaignService.List:output_type -> marketing_ads.ListResponse
-	15, // 36: marketing_ads.AdsCampaignService.Sync:output_type -> marketing_ads.SyncResponse
-	17, // 37: marketing_ads.AdsCampaignService.GetDashboard:output_type -> marketing_ads.GetDashboardResponse
-	21, // 38: marketing_ads.AdsCampaignService.GetROI:output_type -> marketing_ads.GetROIResponse
-	31, // [31:39] is the sub-list for method output_type
-	23, // [23:31] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	0,  // 22: marketing_ads.GetROIRequest.platform:type_name -> marketing_ads.AdsPlatform
+	22, // 23: marketing_ads.GetROIResponse.sales_by_payment:type_name -> marketing_ads.SalesByPayment
+	23, // 24: marketing_ads.GetROIResponse.accounts:type_name -> marketing_ads.AdsAccount
+	24, // 25: marketing_ads.GetROIResponse.daily_roi:type_name -> marketing_ads.DailyROI
+	0,  // 26: marketing_ads.AdsAccount.platform:type_name -> marketing_ads.AdsPlatform
+	4,  // 27: marketing_ads.AdsCampaignService.Create:input_type -> marketing_ads.CreateRequest
+	6,  // 28: marketing_ads.AdsCampaignService.Update:input_type -> marketing_ads.UpdateRequest
+	8,  // 29: marketing_ads.AdsCampaignService.Delete:input_type -> marketing_ads.DeleteRequest
+	10, // 30: marketing_ads.AdsCampaignService.Get:input_type -> marketing_ads.GetRequest
+	12, // 31: marketing_ads.AdsCampaignService.List:input_type -> marketing_ads.ListRequest
+	14, // 32: marketing_ads.AdsCampaignService.Sync:input_type -> marketing_ads.SyncRequest
+	16, // 33: marketing_ads.AdsCampaignService.GetDashboard:input_type -> marketing_ads.GetDashboardRequest
+	20, // 34: marketing_ads.AdsCampaignService.GetROI:input_type -> marketing_ads.GetROIRequest
+	5,  // 35: marketing_ads.AdsCampaignService.Create:output_type -> marketing_ads.CreateResponse
+	7,  // 36: marketing_ads.AdsCampaignService.Update:output_type -> marketing_ads.UpdateResponse
+	9,  // 37: marketing_ads.AdsCampaignService.Delete:output_type -> marketing_ads.DeleteResponse
+	11, // 38: marketing_ads.AdsCampaignService.Get:output_type -> marketing_ads.GetResponse
+	13, // 39: marketing_ads.AdsCampaignService.List:output_type -> marketing_ads.ListResponse
+	15, // 40: marketing_ads.AdsCampaignService.Sync:output_type -> marketing_ads.SyncResponse
+	17, // 41: marketing_ads.AdsCampaignService.GetDashboard:output_type -> marketing_ads.GetDashboardResponse
+	21, // 42: marketing_ads.AdsCampaignService.GetROI:output_type -> marketing_ads.GetROIResponse
+	35, // [35:43] is the sub-list for method output_type
+	27, // [27:35] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_apps_marketing_ads_ads_proto_init() }
@@ -1862,7 +2146,7 @@ func file_apps_marketing_ads_ads_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_marketing_ads_ads_proto_rawDesc), len(file_apps_marketing_ads_ads_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   21,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -16,7 +16,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Segment(_message.Message):
-    __slots__ = ("id", "name", "description", "filters", "tags", "created_at", "updated_at", "contact_count", "contact_ids", "custom_attributes", "contacts", "field_definitions", "criteria", "kind")
+    __slots__ = ("id", "name", "description", "filters", "tags", "created_at", "updated_at", "contact_count", "contact_ids", "custom_attributes", "contacts", "field_definitions", "criteria", "kind", "creator_id", "creator_name")
     class CustomAttributesEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -38,6 +38,8 @@ class Segment(_message.Message):
     FIELD_DEFINITIONS_FIELD_NUMBER: _ClassVar[int]
     CRITERIA_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
+    CREATOR_ID_FIELD_NUMBER: _ClassVar[int]
+    CREATOR_NAME_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     description: str
@@ -52,7 +54,9 @@ class Segment(_message.Message):
     field_definitions: _containers.RepeatedCompositeFieldContainer[FieldDefinition]
     criteria: _containers.RepeatedCompositeFieldContainer[SegmentCriteria]
     kind: str
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., filters: _Optional[_Iterable[str]] = ..., tags: _Optional[_Iterable[str]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contact_count: _Optional[int] = ..., contact_ids: _Optional[_Iterable[str]] = ..., custom_attributes: _Optional[_Mapping[str, str]] = ..., contacts: _Optional[_Iterable[_Union[SegmentContact, _Mapping]]] = ..., field_definitions: _Optional[_Iterable[_Union[FieldDefinition, _Mapping]]] = ..., criteria: _Optional[_Iterable[_Union[SegmentCriteria, _Mapping]]] = ..., kind: _Optional[str] = ...) -> None: ...
+    creator_id: str
+    creator_name: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., filters: _Optional[_Iterable[str]] = ..., tags: _Optional[_Iterable[str]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., contact_count: _Optional[int] = ..., contact_ids: _Optional[_Iterable[str]] = ..., custom_attributes: _Optional[_Mapping[str, str]] = ..., contacts: _Optional[_Iterable[_Union[SegmentContact, _Mapping]]] = ..., field_definitions: _Optional[_Iterable[_Union[FieldDefinition, _Mapping]]] = ..., criteria: _Optional[_Iterable[_Union[SegmentCriteria, _Mapping]]] = ..., kind: _Optional[str] = ..., creator_id: _Optional[str] = ..., creator_name: _Optional[str] = ...) -> None: ...
 
 class SegmentCriteria(_message.Message):
     __slots__ = ("field", "operator", "value", "module")
@@ -153,7 +157,7 @@ class FieldDefinition(_message.Message):
     def __init__(self, name: _Optional[str] = ..., label: _Optional[str] = ..., type: _Optional[str] = ..., default_value: _Optional[str] = ..., options: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class SegmentContact(_message.Message):
-    __slots__ = ("id", "name", "email", "phone", "attributes", "status", "unsubscribe_token", "subscribed_at", "unsubscribed_at", "unsubscribe_reason")
+    __slots__ = ("id", "name", "email", "phone", "attributes", "status", "unsubscribe_token", "subscribed_at", "unsubscribed_at", "unsubscribe_reason", "company")
     class AttributesEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -171,6 +175,7 @@ class SegmentContact(_message.Message):
     SUBSCRIBED_AT_FIELD_NUMBER: _ClassVar[int]
     UNSUBSCRIBED_AT_FIELD_NUMBER: _ClassVar[int]
     UNSUBSCRIBE_REASON_FIELD_NUMBER: _ClassVar[int]
+    COMPANY_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     email: str
@@ -181,7 +186,8 @@ class SegmentContact(_message.Message):
     subscribed_at: str
     unsubscribed_at: str
     unsubscribe_reason: str
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., phone: _Optional[str] = ..., attributes: _Optional[_Mapping[str, str]] = ..., status: _Optional[str] = ..., unsubscribe_token: _Optional[str] = ..., subscribed_at: _Optional[str] = ..., unsubscribed_at: _Optional[str] = ..., unsubscribe_reason: _Optional[str] = ...) -> None: ...
+    company: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., phone: _Optional[str] = ..., attributes: _Optional[_Mapping[str, str]] = ..., status: _Optional[str] = ..., unsubscribe_token: _Optional[str] = ..., subscribed_at: _Optional[str] = ..., unsubscribed_at: _Optional[str] = ..., unsubscribe_reason: _Optional[str] = ..., company: _Optional[str] = ...) -> None: ...
 
 class ResolveContactsRequest(_message.Message):
     __slots__ = ("id", "filter")

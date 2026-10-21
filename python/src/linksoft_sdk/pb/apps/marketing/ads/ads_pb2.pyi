@@ -40,7 +40,7 @@ ADS_CAMPAIGN_STATUS_REMOVED: AdsCampaignStatus
 ADS_CAMPAIGN_STATUS_ARCHIVED: AdsCampaignStatus
 
 class AdsCampaign(_message.Message):
-    __slots__ = ("id", "platform", "external_id", "integration_id", "name", "status", "objective", "campaign_type", "daily_budget", "lifetime_budget", "start_date", "end_date", "currency", "last_sync_at", "total_impressions", "total_reach", "total_clicks", "total_spend", "ctr", "cpc", "cpm", "total_conversions", "daily_metrics", "created_at", "updated_at")
+    __slots__ = ("id", "platform", "external_id", "integration_id", "name", "status", "objective", "campaign_type", "daily_budget", "lifetime_budget", "start_date", "end_date", "currency", "last_sync_at", "account_id", "account_name", "total_impressions", "total_reach", "total_clicks", "total_spend", "ctr", "cpc", "cpm", "total_conversions", "conversion_value", "daily_metrics", "created_at", "updated_at")
     ID_FIELD_NUMBER: _ClassVar[int]
     PLATFORM_FIELD_NUMBER: _ClassVar[int]
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
@@ -55,6 +55,8 @@ class AdsCampaign(_message.Message):
     END_DATE_FIELD_NUMBER: _ClassVar[int]
     CURRENCY_FIELD_NUMBER: _ClassVar[int]
     LAST_SYNC_AT_FIELD_NUMBER: _ClassVar[int]
+    ACCOUNT_ID_FIELD_NUMBER: _ClassVar[int]
+    ACCOUNT_NAME_FIELD_NUMBER: _ClassVar[int]
     TOTAL_IMPRESSIONS_FIELD_NUMBER: _ClassVar[int]
     TOTAL_REACH_FIELD_NUMBER: _ClassVar[int]
     TOTAL_CLICKS_FIELD_NUMBER: _ClassVar[int]
@@ -63,6 +65,7 @@ class AdsCampaign(_message.Message):
     CPC_FIELD_NUMBER: _ClassVar[int]
     CPM_FIELD_NUMBER: _ClassVar[int]
     TOTAL_CONVERSIONS_FIELD_NUMBER: _ClassVar[int]
+    CONVERSION_VALUE_FIELD_NUMBER: _ClassVar[int]
     DAILY_METRICS_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
@@ -80,6 +83,8 @@ class AdsCampaign(_message.Message):
     end_date: _timestamp_pb2.Timestamp
     currency: str
     last_sync_at: _timestamp_pb2.Timestamp
+    account_id: str
+    account_name: str
     total_impressions: int
     total_reach: int
     total_clicks: int
@@ -88,13 +93,14 @@ class AdsCampaign(_message.Message):
     cpc: float
     cpm: float
     total_conversions: int
+    conversion_value: float
     daily_metrics: _containers.RepeatedCompositeFieldContainer[AdsCampaignDailyMetric]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., platform: _Optional[_Union[AdsPlatform, str]] = ..., external_id: _Optional[str] = ..., integration_id: _Optional[str] = ..., name: _Optional[str] = ..., status: _Optional[_Union[AdsCampaignStatus, str]] = ..., objective: _Optional[str] = ..., campaign_type: _Optional[str] = ..., daily_budget: _Optional[float] = ..., lifetime_budget: _Optional[float] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., end_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., currency: _Optional[str] = ..., last_sync_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., total_impressions: _Optional[int] = ..., total_reach: _Optional[int] = ..., total_clicks: _Optional[int] = ..., total_spend: _Optional[float] = ..., ctr: _Optional[float] = ..., cpc: _Optional[float] = ..., cpm: _Optional[float] = ..., total_conversions: _Optional[int] = ..., daily_metrics: _Optional[_Iterable[_Union[AdsCampaignDailyMetric, _Mapping]]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., platform: _Optional[_Union[AdsPlatform, str]] = ..., external_id: _Optional[str] = ..., integration_id: _Optional[str] = ..., name: _Optional[str] = ..., status: _Optional[_Union[AdsCampaignStatus, str]] = ..., objective: _Optional[str] = ..., campaign_type: _Optional[str] = ..., daily_budget: _Optional[float] = ..., lifetime_budget: _Optional[float] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., end_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., currency: _Optional[str] = ..., last_sync_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., account_id: _Optional[str] = ..., account_name: _Optional[str] = ..., total_impressions: _Optional[int] = ..., total_reach: _Optional[int] = ..., total_clicks: _Optional[int] = ..., total_spend: _Optional[float] = ..., ctr: _Optional[float] = ..., cpc: _Optional[float] = ..., cpm: _Optional[float] = ..., total_conversions: _Optional[int] = ..., conversion_value: _Optional[float] = ..., daily_metrics: _Optional[_Iterable[_Union[AdsCampaignDailyMetric, _Mapping]]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class AdsCampaignDailyMetric(_message.Message):
-    __slots__ = ("date", "impressions", "reach", "clicks", "ctr", "cpc", "cpm", "spend", "conversions")
+    __slots__ = ("date", "impressions", "reach", "clicks", "ctr", "cpc", "cpm", "spend", "conversions", "conversion_value")
     DATE_FIELD_NUMBER: _ClassVar[int]
     IMPRESSIONS_FIELD_NUMBER: _ClassVar[int]
     REACH_FIELD_NUMBER: _ClassVar[int]
@@ -104,6 +110,7 @@ class AdsCampaignDailyMetric(_message.Message):
     CPM_FIELD_NUMBER: _ClassVar[int]
     SPEND_FIELD_NUMBER: _ClassVar[int]
     CONVERSIONS_FIELD_NUMBER: _ClassVar[int]
+    CONVERSION_VALUE_FIELD_NUMBER: _ClassVar[int]
     date: str
     impressions: int
     reach: int
@@ -113,7 +120,8 @@ class AdsCampaignDailyMetric(_message.Message):
     cpm: float
     spend: float
     conversions: int
-    def __init__(self, date: _Optional[str] = ..., impressions: _Optional[int] = ..., reach: _Optional[int] = ..., clicks: _Optional[int] = ..., ctr: _Optional[float] = ..., cpc: _Optional[float] = ..., cpm: _Optional[float] = ..., spend: _Optional[float] = ..., conversions: _Optional[int] = ...) -> None: ...
+    conversion_value: float
+    def __init__(self, date: _Optional[str] = ..., impressions: _Optional[int] = ..., reach: _Optional[int] = ..., clicks: _Optional[int] = ..., ctr: _Optional[float] = ..., cpc: _Optional[float] = ..., cpm: _Optional[float] = ..., spend: _Optional[float] = ..., conversions: _Optional[int] = ..., conversion_value: _Optional[float] = ...) -> None: ...
 
 class CreateRequest(_message.Message):
     __slots__ = ("ads_campaign",)
@@ -266,30 +274,74 @@ class DailySpend(_message.Message):
     def __init__(self, date: _Optional[str] = ..., spend: _Optional[float] = ..., impressions: _Optional[int] = ..., clicks: _Optional[int] = ...) -> None: ...
 
 class GetROIRequest(_message.Message):
-    __slots__ = ("date_from", "date_to")
+    __slots__ = ("date_from", "date_to", "platform", "account_id", "utm_source")
     DATE_FROM_FIELD_NUMBER: _ClassVar[int]
     DATE_TO_FIELD_NUMBER: _ClassVar[int]
+    PLATFORM_FIELD_NUMBER: _ClassVar[int]
+    ACCOUNT_ID_FIELD_NUMBER: _ClassVar[int]
+    UTM_SOURCE_FIELD_NUMBER: _ClassVar[int]
     date_from: str
     date_to: str
-    def __init__(self, date_from: _Optional[str] = ..., date_to: _Optional[str] = ...) -> None: ...
+    platform: AdsPlatform
+    account_id: str
+    utm_source: str
+    def __init__(self, date_from: _Optional[str] = ..., date_to: _Optional[str] = ..., platform: _Optional[_Union[AdsPlatform, str]] = ..., account_id: _Optional[str] = ..., utm_source: _Optional[str] = ...) -> None: ...
 
 class GetROIResponse(_message.Message):
-    __slots__ = ("total_ad_spend", "total_revenue", "roi_percentage", "avg_ticket", "total_orders", "previous_period_roi", "daily_roi")
+    __slots__ = ("total_ad_spend", "total_revenue", "roi_percentage", "avg_ticket", "total_orders", "cost", "profit", "roas", "margin", "pending_value", "pending_orders", "platform_conversion_value", "sales_by_payment", "accounts", "traffic_sources", "daily_roi")
     TOTAL_AD_SPEND_FIELD_NUMBER: _ClassVar[int]
     TOTAL_REVENUE_FIELD_NUMBER: _ClassVar[int]
     ROI_PERCENTAGE_FIELD_NUMBER: _ClassVar[int]
     AVG_TICKET_FIELD_NUMBER: _ClassVar[int]
     TOTAL_ORDERS_FIELD_NUMBER: _ClassVar[int]
-    PREVIOUS_PERIOD_ROI_FIELD_NUMBER: _ClassVar[int]
+    COST_FIELD_NUMBER: _ClassVar[int]
+    PROFIT_FIELD_NUMBER: _ClassVar[int]
+    ROAS_FIELD_NUMBER: _ClassVar[int]
+    MARGIN_FIELD_NUMBER: _ClassVar[int]
+    PENDING_VALUE_FIELD_NUMBER: _ClassVar[int]
+    PENDING_ORDERS_FIELD_NUMBER: _ClassVar[int]
+    PLATFORM_CONVERSION_VALUE_FIELD_NUMBER: _ClassVar[int]
+    SALES_BY_PAYMENT_FIELD_NUMBER: _ClassVar[int]
+    ACCOUNTS_FIELD_NUMBER: _ClassVar[int]
+    TRAFFIC_SOURCES_FIELD_NUMBER: _ClassVar[int]
     DAILY_ROI_FIELD_NUMBER: _ClassVar[int]
     total_ad_spend: float
     total_revenue: float
     roi_percentage: float
     avg_ticket: float
     total_orders: int
-    previous_period_roi: float
+    cost: float
+    profit: float
+    roas: float
+    margin: float
+    pending_value: float
+    pending_orders: int
+    platform_conversion_value: float
+    sales_by_payment: _containers.RepeatedCompositeFieldContainer[SalesByPayment]
+    accounts: _containers.RepeatedCompositeFieldContainer[AdsAccount]
+    traffic_sources: _containers.RepeatedScalarFieldContainer[str]
     daily_roi: _containers.RepeatedCompositeFieldContainer[DailyROI]
-    def __init__(self, total_ad_spend: _Optional[float] = ..., total_revenue: _Optional[float] = ..., roi_percentage: _Optional[float] = ..., avg_ticket: _Optional[float] = ..., total_orders: _Optional[int] = ..., previous_period_roi: _Optional[float] = ..., daily_roi: _Optional[_Iterable[_Union[DailyROI, _Mapping]]] = ...) -> None: ...
+    def __init__(self, total_ad_spend: _Optional[float] = ..., total_revenue: _Optional[float] = ..., roi_percentage: _Optional[float] = ..., avg_ticket: _Optional[float] = ..., total_orders: _Optional[int] = ..., cost: _Optional[float] = ..., profit: _Optional[float] = ..., roas: _Optional[float] = ..., margin: _Optional[float] = ..., pending_value: _Optional[float] = ..., pending_orders: _Optional[int] = ..., platform_conversion_value: _Optional[float] = ..., sales_by_payment: _Optional[_Iterable[_Union[SalesByPayment, _Mapping]]] = ..., accounts: _Optional[_Iterable[_Union[AdsAccount, _Mapping]]] = ..., traffic_sources: _Optional[_Iterable[str]] = ..., daily_roi: _Optional[_Iterable[_Union[DailyROI, _Mapping]]] = ...) -> None: ...
+
+class SalesByPayment(_message.Message):
+    __slots__ = ("payment_type", "orders", "value")
+    PAYMENT_TYPE_FIELD_NUMBER: _ClassVar[int]
+    ORDERS_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    payment_type: str
+    orders: int
+    value: float
+    def __init__(self, payment_type: _Optional[str] = ..., orders: _Optional[int] = ..., value: _Optional[float] = ...) -> None: ...
+
+class AdsAccount(_message.Message):
+    __slots__ = ("platform", "account_id", "account_name")
+    PLATFORM_FIELD_NUMBER: _ClassVar[int]
+    ACCOUNT_ID_FIELD_NUMBER: _ClassVar[int]
+    ACCOUNT_NAME_FIELD_NUMBER: _ClassVar[int]
+    platform: AdsPlatform
+    account_id: str
+    account_name: str
+    def __init__(self, platform: _Optional[_Union[AdsPlatform, str]] = ..., account_id: _Optional[str] = ..., account_name: _Optional[str] = ...) -> None: ...
 
 class DailyROI(_message.Message):
     __slots__ = ("date", "ad_spend", "revenue")

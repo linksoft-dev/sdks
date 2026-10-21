@@ -47,6 +47,8 @@ type Segment struct {
 	// Tipo do publico: "LIST" (contatos gravados, importaveis) ou "SEGMENT"
 	// (criterios resolvidos a cada uso). Vazio na criacao assume LIST.
 	Kind          string `protobuf:"bytes,14,opt,name=kind,proto3" json:"kind,omitempty"`
+	CreatorId     string `protobuf:"bytes,15,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	CreatorName   string `protobuf:"bytes,16,opt,name=creator_name,json=creatorName,proto3" json:"creator_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -175,6 +177,20 @@ func (x *Segment) GetCriteria() []*SegmentCriteria {
 func (x *Segment) GetKind() string {
 	if x != nil {
 		return x.Kind
+	}
+	return ""
+}
+
+func (x *Segment) GetCreatorId() string {
+	if x != nil {
+		return x.CreatorId
+	}
+	return ""
+}
+
+func (x *Segment) GetCreatorName() string {
+	if x != nil {
+		return x.CreatorName
 	}
 	return ""
 }
@@ -836,6 +852,7 @@ type SegmentContact struct {
 	SubscribedAt      string                 `protobuf:"bytes,8,opt,name=subscribed_at,json=subscribedAt,proto3" json:"subscribed_at,omitempty"`                                                   // ISO timestamp da inscricao
 	UnsubscribedAt    string                 `protobuf:"bytes,9,opt,name=unsubscribed_at,json=unsubscribedAt,proto3" json:"unsubscribed_at,omitempty"`                                             // ISO timestamp da desinscricao
 	UnsubscribeReason string                 `protobuf:"bytes,10,opt,name=unsubscribe_reason,json=unsubscribeReason,proto3" json:"unsubscribe_reason,omitempty"`                                   // Motivo da desinscricao
+	Company           string                 `protobuf:"bytes,11,opt,name=company,proto3" json:"company,omitempty"`                                                                                // Empresa do contato; name e a pessoa de contato
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -936,6 +953,13 @@ func (x *SegmentContact) GetUnsubscribedAt() string {
 func (x *SegmentContact) GetUnsubscribeReason() string {
 	if x != nil {
 		return x.UnsubscribeReason
+	}
+	return ""
+}
+
+func (x *SegmentContact) GetCompany() string {
+	if x != nil {
+		return x.Company
 	}
 	return ""
 }
@@ -1656,7 +1680,7 @@ var File_apps_marketing_segment_segment_proto protoreflect.FileDescriptor
 
 const file_apps_marketing_segment_segment_proto_rawDesc = "" +
 	"\n" +
-	"$apps/marketing/segment/segment.proto\x12\x11marketing_segment\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xf0\x05\n" +
+	"$apps/marketing/segment/segment.proto\x12\x11marketing_segment\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xb2\x06\n" +
 	"\aSegment\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
 	"\x04name\x18\x02 \x01(\tB\t\xfaB\x06r\x04\x10\x03\x18xR\x04name\x12*\n" +
@@ -1675,7 +1699,10 @@ const file_apps_marketing_segment_segment_proto_rawDesc = "" +
 	"\bcontacts\x18\v \x03(\v2!.marketing_segment.SegmentContactR\bcontacts\x12O\n" +
 	"\x11field_definitions\x18\f \x03(\v2\".marketing_segment.FieldDefinitionR\x10fieldDefinitions\x12>\n" +
 	"\bcriteria\x18\r \x03(\v2\".marketing_segment.SegmentCriteriaR\bcriteria\x12\x12\n" +
-	"\x04kind\x18\x0e \x01(\tR\x04kind\x1aC\n" +
+	"\x04kind\x18\x0e \x01(\tR\x04kind\x12\x1d\n" +
+	"\n" +
+	"creator_id\x18\x0f \x01(\tR\tcreatorId\x12!\n" +
+	"\fcreator_name\x18\x10 \x01(\tR\vcreatorName\x1aC\n" +
 	"\x15CustomAttributesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x18\xc0>\x01\xca>\x12marketing_segments\"q\n" +
@@ -1717,7 +1744,7 @@ const file_apps_marketing_segment_segment_proto_rawDesc = "" +
 	"\x05label\x18\x02 \x01(\tR\x05label\x12\x12\n" +
 	"\x04type\x18\x03 \x01(\tR\x04type\x12#\n" +
 	"\rdefault_value\x18\x04 \x01(\tR\fdefaultValue\x12\x18\n" +
-	"\aoptions\x18\x05 \x03(\tR\aoptions\"\xb4\x03\n" +
+	"\aoptions\x18\x05 \x03(\tR\aoptions\"\xce\x03\n" +
 	"\x0eSegmentContact\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -1731,7 +1758,8 @@ const file_apps_marketing_segment_segment_proto_rawDesc = "" +
 	"\rsubscribed_at\x18\b \x01(\tR\fsubscribedAt\x12'\n" +
 	"\x0funsubscribed_at\x18\t \x01(\tR\x0eunsubscribedAt\x12-\n" +
 	"\x12unsubscribe_reason\x18\n" +
-	" \x01(\tR\x11unsubscribeReason\x1a=\n" +
+	" \x01(\tR\x11unsubscribeReason\x12\x18\n" +
+	"\acompany\x18\v \x01(\tR\acompany\x1a=\n" +
 	"\x0fAttributesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"I\n" +

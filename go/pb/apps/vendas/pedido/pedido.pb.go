@@ -5766,8 +5766,16 @@ type OriginInfo struct {
 	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`                                                       // ID da origem
 	ReferenceNumber string                 `protobuf:"bytes,3,opt,name=reference_number,json=referenceNumber,proto3" json:"reference_number,omitempty"`      // Número de referência do processo que originou o pedido (ex: número do pedido no Mercado Livre)
 	OriginType      Origin                 `protobuf:"varint,4,opt,name=origin_type,json=originType,proto3,enum=pedido.Origin" json:"origin_type,omitempty"` // Tipo da origem do pedido
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Parâmetros de rastreio do link que trouxe o comprador (UTM e ids de clique das plataformas de anúncio)
+	UtmSource     string `protobuf:"bytes,5,opt,name=utm_source,json=utmSource,proto3" json:"utm_source,omitempty"`
+	UtmMedium     string `protobuf:"bytes,6,opt,name=utm_medium,json=utmMedium,proto3" json:"utm_medium,omitempty"`
+	UtmCampaign   string `protobuf:"bytes,7,opt,name=utm_campaign,json=utmCampaign,proto3" json:"utm_campaign,omitempty"`
+	UtmContent    string `protobuf:"bytes,8,opt,name=utm_content,json=utmContent,proto3" json:"utm_content,omitempty"`
+	UtmTerm       string `protobuf:"bytes,9,opt,name=utm_term,json=utmTerm,proto3" json:"utm_term,omitempty"`
+	Gclid         string `protobuf:"bytes,10,opt,name=gclid,proto3" json:"gclid,omitempty"`
+	Fbclid        string `protobuf:"bytes,11,opt,name=fbclid,proto3" json:"fbclid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *OriginInfo) Reset() {
@@ -5826,6 +5834,55 @@ func (x *OriginInfo) GetOriginType() Origin {
 		return x.OriginType
 	}
 	return Origin_ORIGIN_MARKETPLACE
+}
+
+func (x *OriginInfo) GetUtmSource() string {
+	if x != nil {
+		return x.UtmSource
+	}
+	return ""
+}
+
+func (x *OriginInfo) GetUtmMedium() string {
+	if x != nil {
+		return x.UtmMedium
+	}
+	return ""
+}
+
+func (x *OriginInfo) GetUtmCampaign() string {
+	if x != nil {
+		return x.UtmCampaign
+	}
+	return ""
+}
+
+func (x *OriginInfo) GetUtmContent() string {
+	if x != nil {
+		return x.UtmContent
+	}
+	return ""
+}
+
+func (x *OriginInfo) GetUtmTerm() string {
+	if x != nil {
+		return x.UtmTerm
+	}
+	return ""
+}
+
+func (x *OriginInfo) GetGclid() string {
+	if x != nil {
+		return x.Gclid
+	}
+	return ""
+}
+
+func (x *OriginInfo) GetFbclid() string {
+	if x != nil {
+		return x.Fbclid
+	}
+	return ""
 }
 
 type OrderTag struct {
@@ -14720,14 +14777,25 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"deviceName\x12*\n" +
 	"\bapp_type\x18\x03 \x01(\x0e2\x0f.pedido.AppTypeR\aappType\x12\x1f\n" +
 	"\vapp_version\x18\x04 \x01(\tR\n" +
-	"appVersion\"\x8c\x01\n" +
+	"appVersion\"\xd7\x02\n" +
 	"\n" +
 	"OriginInfo\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\x12)\n" +
 	"\x10reference_number\x18\x03 \x01(\tR\x0freferenceNumber\x12/\n" +
 	"\vorigin_type\x18\x04 \x01(\x0e2\x0e.pedido.OriginR\n" +
-	"originType\"6\n" +
+	"originType\x12\x1d\n" +
+	"\n" +
+	"utm_source\x18\x05 \x01(\tR\tutmSource\x12\x1d\n" +
+	"\n" +
+	"utm_medium\x18\x06 \x01(\tR\tutmMedium\x12!\n" +
+	"\futm_campaign\x18\a \x01(\tR\vutmCampaign\x12\x1f\n" +
+	"\vutm_content\x18\b \x01(\tR\n" +
+	"utmContent\x12\x19\n" +
+	"\butm_term\x18\t \x01(\tR\autmTerm\x12\x14\n" +
+	"\x05gclid\x18\n" +
+	" \x01(\tR\x05gclid\x12\x16\n" +
+	"\x06fbclid\x18\v \x01(\tR\x06fbclid\"6\n" +
 	"\bOrderTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
 	"\x05color\x18\x02 \x01(\tR\x05color\"c\n" +
