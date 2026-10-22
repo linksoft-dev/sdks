@@ -85,19 +85,20 @@ func (ConsumptionStatus) EnumDescriptor() ([]byte, []int) {
 type PedidoEventType int32
 
 const (
-	PedidoEventType_PEDIDO_EVENT_TYPE_UNSPECIFIED       PedidoEventType = 0
-	PedidoEventType_PEDIDO_EVENT_TYPE_CREATED           PedidoEventType = 1  // Pedido criado
-	PedidoEventType_PEDIDO_EVENT_TYPE_TABLE_TRANSFER    PedidoEventType = 2  // Transferencia de mesa
-	PedidoEventType_PEDIDO_EVENT_TYPE_REQUEST_CLOSING   PedidoEventType = 3  // Solicitacao de fechamento
-	PedidoEventType_PEDIDO_EVENT_TYPE_FROM_RESERVATION  PedidoEventType = 4  // Criado a partir de reserva
-	PedidoEventType_PEDIDO_EVENT_TYPE_TABLE_RELEASED    PedidoEventType = 5  // Mesa liberada (manual ou automático); pedido segue pendente
-	PedidoEventType_PEDIDO_EVENT_TYPE_TABLE_REASSIGNED  PedidoEventType = 6  // Mesa reocupada apos liberacao
-	PedidoEventType_PEDIDO_EVENT_TYPE_STAGE_CHANGED     PedidoEventType = 7  // Etapa do documento alterada
-	PedidoEventType_PEDIDO_EVENT_TYPE_SENT_TO_CUSTOMER  PedidoEventType = 8  // Documento enviado ao cliente por e-mail ou WhatsApp
-	PedidoEventType_PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED   PedidoEventType = 9  // Cliente abriu o documento pelo link
-	PedidoEventType_PEDIDO_EVENT_TYPE_REMINDER_SENT     PedidoEventType = 10 // Lembrete automático enviado ao cliente
-	PedidoEventType_PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE PedidoEventType = 11 // Cliente respondeu pelo link do documento
-	PedidoEventType_PEDIDO_EVENT_TYPE_RECEITA_ALTERADA  PedidoEventType = 12 // Receita da ótica alterada depois do envio ao laboratório
+	PedidoEventType_PEDIDO_EVENT_TYPE_UNSPECIFIED         PedidoEventType = 0
+	PedidoEventType_PEDIDO_EVENT_TYPE_CREATED             PedidoEventType = 1  // Pedido criado
+	PedidoEventType_PEDIDO_EVENT_TYPE_TABLE_TRANSFER      PedidoEventType = 2  // Transferencia de mesa
+	PedidoEventType_PEDIDO_EVENT_TYPE_REQUEST_CLOSING     PedidoEventType = 3  // Solicitacao de fechamento
+	PedidoEventType_PEDIDO_EVENT_TYPE_FROM_RESERVATION    PedidoEventType = 4  // Criado a partir de reserva
+	PedidoEventType_PEDIDO_EVENT_TYPE_TABLE_RELEASED      PedidoEventType = 5  // Mesa liberada (manual ou automático); pedido segue pendente
+	PedidoEventType_PEDIDO_EVENT_TYPE_TABLE_REASSIGNED    PedidoEventType = 6  // Mesa reocupada apos liberacao
+	PedidoEventType_PEDIDO_EVENT_TYPE_STAGE_CHANGED       PedidoEventType = 7  // Etapa do documento alterada
+	PedidoEventType_PEDIDO_EVENT_TYPE_SENT_TO_CUSTOMER    PedidoEventType = 8  // Documento enviado ao cliente por e-mail ou WhatsApp
+	PedidoEventType_PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED     PedidoEventType = 9  // Cliente abriu o documento pelo link
+	PedidoEventType_PEDIDO_EVENT_TYPE_REMINDER_SENT       PedidoEventType = 10 // Lembrete automático enviado ao cliente
+	PedidoEventType_PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE   PedidoEventType = 11 // Cliente respondeu pelo link do documento
+	PedidoEventType_PEDIDO_EVENT_TYPE_RECEITA_ALTERADA    PedidoEventType = 12 // Receita da ótica alterada depois do envio ao laboratório
+	PedidoEventType_PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER PedidoEventType = 13 // Lembrete de recompra dos itens que chegaram na data
 )
 
 // Enum value maps for PedidoEventType.
@@ -116,21 +117,23 @@ var (
 		10: "PEDIDO_EVENT_TYPE_REMINDER_SENT",
 		11: "PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE",
 		12: "PEDIDO_EVENT_TYPE_RECEITA_ALTERADA",
+		13: "PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER",
 	}
 	PedidoEventType_value = map[string]int32{
-		"PEDIDO_EVENT_TYPE_UNSPECIFIED":       0,
-		"PEDIDO_EVENT_TYPE_CREATED":           1,
-		"PEDIDO_EVENT_TYPE_TABLE_TRANSFER":    2,
-		"PEDIDO_EVENT_TYPE_REQUEST_CLOSING":   3,
-		"PEDIDO_EVENT_TYPE_FROM_RESERVATION":  4,
-		"PEDIDO_EVENT_TYPE_TABLE_RELEASED":    5,
-		"PEDIDO_EVENT_TYPE_TABLE_REASSIGNED":  6,
-		"PEDIDO_EVENT_TYPE_STAGE_CHANGED":     7,
-		"PEDIDO_EVENT_TYPE_SENT_TO_CUSTOMER":  8,
-		"PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED":   9,
-		"PEDIDO_EVENT_TYPE_REMINDER_SENT":     10,
-		"PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE": 11,
-		"PEDIDO_EVENT_TYPE_RECEITA_ALTERADA":  12,
+		"PEDIDO_EVENT_TYPE_UNSPECIFIED":         0,
+		"PEDIDO_EVENT_TYPE_CREATED":             1,
+		"PEDIDO_EVENT_TYPE_TABLE_TRANSFER":      2,
+		"PEDIDO_EVENT_TYPE_REQUEST_CLOSING":     3,
+		"PEDIDO_EVENT_TYPE_FROM_RESERVATION":    4,
+		"PEDIDO_EVENT_TYPE_TABLE_RELEASED":      5,
+		"PEDIDO_EVENT_TYPE_TABLE_REASSIGNED":    6,
+		"PEDIDO_EVENT_TYPE_STAGE_CHANGED":       7,
+		"PEDIDO_EVENT_TYPE_SENT_TO_CUSTOMER":    8,
+		"PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED":     9,
+		"PEDIDO_EVENT_TYPE_REMINDER_SENT":       10,
+		"PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE":   11,
+		"PEDIDO_EVENT_TYPE_RECEITA_ALTERADA":    12,
+		"PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER": 13,
 	}
 )
 
@@ -414,7 +417,7 @@ const file_apps_vendas_pedido_pedido_mesa_proto_rawDesc = "" +
 	"\x1bCONSUMPTION_STATUS_OCCUPIED\x10\x02\x12\x1f\n" +
 	"\x1bCONSUMPTION_STATUS_RESERVED\x10\x03\x12\x1e\n" +
 	"\x1aCONSUMPTION_STATUS_BLOCKED\x10\x04\x12\x1e\n" +
-	"\x1aCONSUMPTION_STATUS_CLOSING\x10\x05*\x80\x04\n" +
+	"\x1aCONSUMPTION_STATUS_CLOSING\x10\x05*\xab\x04\n" +
 	"\x0fPedidoEventType\x12!\n" +
 	"\x1dPEDIDO_EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19PEDIDO_EVENT_TYPE_CREATED\x10\x01\x12$\n" +
@@ -429,7 +432,8 @@ const file_apps_vendas_pedido_pedido_mesa_proto_rawDesc = "" +
 	"\x1fPEDIDO_EVENT_TYPE_REMINDER_SENT\x10\n" +
 	"\x12'\n" +
 	"#PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE\x10\v\x12&\n" +
-	"\"PEDIDO_EVENT_TYPE_RECEITA_ALTERADA\x10\fB\x8c\x01\n" +
+	"\"PEDIDO_EVENT_TYPE_RECEITA_ALTERADA\x10\f\x12)\n" +
+	"%PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER\x10\rB\x8c\x01\n" +
 	"\n" +
 	"com.pedidoB\x0fPedidoMesaProtoP\x01Z5github.com/linksoft-dev/sdks/go/pb/apps/vendas/pedido\xa2\x02\x03PXX\xaa\x02\x06Pedido\xca\x02\x06Pedido\xe2\x02\x12Pedido\\GPBMetadata\xea\x02\x06Pedidob\x06proto3"
 

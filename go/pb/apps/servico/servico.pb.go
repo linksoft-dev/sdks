@@ -82,28 +82,31 @@ func (ServicoMediaType) EnumDescriptor() ([]byte, []int) {
 
 // Dados do Servico
 type Servico struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	UserId        string                 `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	UserName      string                 `protobuf:"bytes,5,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
-	Nome          string                 `protobuf:"bytes,6,opt,name=nome,proto3" json:"nome,omitempty"`
-	Codigo        string                 `protobuf:"bytes,7,opt,name=codigo,proto3" json:"codigo,omitempty"`
-	DiasValidade  uint32                 `protobuf:"varint,8,opt,name=dias_validade,json=diasValidade,proto3" json:"dias_validade,omitempty"`
-	DiasGarantia  uint32                 `protobuf:"varint,21,opt,name=dias_garantia,json=diasGarantia,proto3" json:"dias_garantia,omitempty"` // Dias de garantia padrao do servico, copiados como snapshot no item do pedido/OS no momento do fechamento
-	Un            string                 `protobuf:"bytes,9,opt,name=un,proto3" json:"un,omitempty"`
-	ValorUnitario float64                `protobuf:"fixed64,10,opt,name=valor_unitario,json=valorUnitario,proto3" json:"valor_unitario,omitempty"`
-	Promocao      string                 `protobuf:"bytes,14,opt,name=promocao,proto3" json:"promocao,omitempty"`
-	Ecommerce     *Servico_Ecommerce     `protobuf:"bytes,15,opt,name=ecommerce,proto3" json:"ecommerce,omitempty"`
-	Module        *Module                `protobuf:"bytes,16,opt,name=module,proto3" json:"module,omitempty"`
-	Tributacao    *Servico_Tributacao    `protobuf:"bytes,17,opt,name=tributacao,proto3" json:"tributacao,omitempty"`
-	Composicao    []*Composicao          `protobuf:"bytes,19,rep,name=composicao,proto3" json:"composicao,omitempty"`
-	Composto      bool                   `protobuf:"varint,20,opt,name=composto,proto3" json:"composto,omitempty"`
-	Situacao      string                 `protobuf:"bytes,22,opt,name=situacao,proto3" json:"situacao,omitempty"` // ATIVO ou INATIVO. Servico INATIVO fica fora da listagem padrao e nao pode ser vendido
-	Fields        *metadata.BasicFields  `protobuf:"bytes,23,opt,name=fields,proto3" json:"fields,omitempty"`
-	CategoriaId   string                 `protobuf:"bytes,24,opt,name=categoria_id,json=categoriaId,proto3" json:"categoria_id,omitempty"`
-	CategoriaNome string                 `protobuf:"bytes,25,opt,name=categoria_nome,json=categoriaNome,proto3" json:"categoria_nome,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Id           string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	CreatedAt    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt    *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	UserId       string                 `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserName     string                 `protobuf:"bytes,5,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	Nome         string                 `protobuf:"bytes,6,opt,name=nome,proto3" json:"nome,omitempty"`
+	Codigo       string                 `protobuf:"bytes,7,opt,name=codigo,proto3" json:"codigo,omitempty"`
+	DiasValidade uint32                 `protobuf:"varint,8,opt,name=dias_validade,json=diasValidade,proto3" json:"dias_validade,omitempty"`
+	DiasGarantia uint32                 `protobuf:"varint,21,opt,name=dias_garantia,json=diasGarantia,proto3" json:"dias_garantia,omitempty"` // Dias de garantia padrao do servico, copiados como snapshot no item do pedido/OS no momento do fechamento
+	// Dias depois da venda em que o cliente é lembrado de contratar o serviço de novo. Zero: sem
+	// lembrete.
+	RecompraDias  uint32                `protobuf:"varint,28,opt,name=recompra_dias,json=recompraDias,proto3" json:"recompra_dias,omitempty"`
+	Un            string                `protobuf:"bytes,9,opt,name=un,proto3" json:"un,omitempty"`
+	ValorUnitario float64               `protobuf:"fixed64,10,opt,name=valor_unitario,json=valorUnitario,proto3" json:"valor_unitario,omitempty"`
+	Promocao      string                `protobuf:"bytes,14,opt,name=promocao,proto3" json:"promocao,omitempty"`
+	Ecommerce     *Servico_Ecommerce    `protobuf:"bytes,15,opt,name=ecommerce,proto3" json:"ecommerce,omitempty"`
+	Module        *Module               `protobuf:"bytes,16,opt,name=module,proto3" json:"module,omitempty"`
+	Tributacao    *Servico_Tributacao   `protobuf:"bytes,17,opt,name=tributacao,proto3" json:"tributacao,omitempty"`
+	Composicao    []*Composicao         `protobuf:"bytes,19,rep,name=composicao,proto3" json:"composicao,omitempty"`
+	Composto      bool                  `protobuf:"varint,20,opt,name=composto,proto3" json:"composto,omitempty"`
+	Situacao      string                `protobuf:"bytes,22,opt,name=situacao,proto3" json:"situacao,omitempty"` // ATIVO ou INATIVO. Servico INATIVO fica fora da listagem padrao e nao pode ser vendido
+	Fields        *metadata.BasicFields `protobuf:"bytes,23,opt,name=fields,proto3" json:"fields,omitempty"`
+	CategoriaId   string                `protobuf:"bytes,24,opt,name=categoria_id,json=categoriaId,proto3" json:"categoria_id,omitempty"`
+	CategoriaNome string                `protobuf:"bytes,25,opt,name=categoria_nome,json=categoriaNome,proto3" json:"categoria_nome,omitempty"`
 	// Especialidade que atende o serviço (cadastro de especialidades).
 	EspecialidadeId   string `protobuf:"bytes,26,opt,name=especialidade_id,json=especialidadeId,proto3" json:"especialidade_id,omitempty"`
 	EspecialidadeNome string `protobuf:"bytes,27,opt,name=especialidade_nome,json=especialidadeNome,proto3" json:"especialidade_nome,omitempty"`
@@ -200,6 +203,13 @@ func (x *Servico) GetDiasValidade() uint32 {
 func (x *Servico) GetDiasGarantia() uint32 {
 	if x != nil {
 		return x.DiasGarantia
+	}
+	return 0
+}
+
+func (x *Servico) GetRecompraDias() uint32 {
+	if x != nil {
+		return x.RecompraDias
 	}
 	return 0
 }
@@ -1974,7 +1984,7 @@ var File_apps_servico_servico_proto protoreflect.FileDescriptor
 
 const file_apps_servico_servico_proto_rawDesc = "" +
 	"\n" +
-	"\x1aapps/servico/servico.proto\x12\aservico\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15imports/imports.proto\x1a\x18apps/report/report.proto\"\xcb\r\n" +
+	"\x1aapps/servico/servico.proto\x12\aservico\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15imports/imports.proto\x1a\x18apps/report/report.proto\"\xf0\r\n" +
 	"\aServico\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -1986,7 +1996,8 @@ const file_apps_servico_servico_proto_rawDesc = "" +
 	"\x04nome\x18\x06 \x01(\tB\t\xfaB\x06r\x04\x10\x03\x18<R\x04nome\x12\x16\n" +
 	"\x06codigo\x18\a \x01(\tR\x06codigo\x12#\n" +
 	"\rdias_validade\x18\b \x01(\rR\fdiasValidade\x12#\n" +
-	"\rdias_garantia\x18\x15 \x01(\rR\fdiasGarantia\x12\x0e\n" +
+	"\rdias_garantia\x18\x15 \x01(\rR\fdiasGarantia\x12#\n" +
+	"\rrecompra_dias\x18\x1c \x01(\rR\frecompraDias\x12\x0e\n" +
 	"\x02un\x18\t \x01(\tR\x02un\x12%\n" +
 	"\x0evalor_unitario\x18\n" +
 	" \x01(\x01R\rvalorUnitario\x12\x1a\n" +

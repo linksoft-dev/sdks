@@ -27,7 +27,7 @@ SERVICO_MEDIA_TYPE_IMAGE: ServicoMediaType
 SERVICO_MEDIA_TYPE_VIDEO: ServicoMediaType
 
 class Servico(_message.Message):
-    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "nome", "codigo", "dias_validade", "dias_garantia", "un", "valor_unitario", "promocao", "ecommerce", "module", "tributacao", "composicao", "composto", "situacao", "fields", "categoria_id", "categoria_nome", "especialidade_id", "especialidade_nome")
+    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "nome", "codigo", "dias_validade", "dias_garantia", "recompra_dias", "un", "valor_unitario", "promocao", "ecommerce", "module", "tributacao", "composicao", "composto", "situacao", "fields", "categoria_id", "categoria_nome", "especialidade_id", "especialidade_nome")
     class Ecommerce(_message.Message):
         __slots__ = ("slug", "available_online", "featured", "short_description", "full_description", "tags", "meta_title", "meta_description", "display_order", "video_url", "estimated_duration_minutes", "requires_scheduling", "primary_media", "media")
         SLUG_FIELD_NUMBER: _ClassVar[int]
@@ -83,6 +83,7 @@ class Servico(_message.Message):
     CODIGO_FIELD_NUMBER: _ClassVar[int]
     DIAS_VALIDADE_FIELD_NUMBER: _ClassVar[int]
     DIAS_GARANTIA_FIELD_NUMBER: _ClassVar[int]
+    RECOMPRA_DIAS_FIELD_NUMBER: _ClassVar[int]
     UN_FIELD_NUMBER: _ClassVar[int]
     VALOR_UNITARIO_FIELD_NUMBER: _ClassVar[int]
     PROMOCAO_FIELD_NUMBER: _ClassVar[int]
@@ -106,6 +107,7 @@ class Servico(_message.Message):
     codigo: str
     dias_validade: int
     dias_garantia: int
+    recompra_dias: int
     un: str
     valor_unitario: float
     promocao: str
@@ -120,7 +122,7 @@ class Servico(_message.Message):
     categoria_nome: str
     especialidade_id: str
     especialidade_nome: str
-    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., nome: _Optional[str] = ..., codigo: _Optional[str] = ..., dias_validade: _Optional[int] = ..., dias_garantia: _Optional[int] = ..., un: _Optional[str] = ..., valor_unitario: _Optional[float] = ..., promocao: _Optional[str] = ..., ecommerce: _Optional[_Union[Servico.Ecommerce, _Mapping]] = ..., module: _Optional[_Union[Module, _Mapping]] = ..., tributacao: _Optional[_Union[Servico.Tributacao, _Mapping]] = ..., composicao: _Optional[_Iterable[_Union[Composicao, _Mapping]]] = ..., composto: _Optional[bool] = ..., situacao: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., categoria_id: _Optional[str] = ..., categoria_nome: _Optional[str] = ..., especialidade_id: _Optional[str] = ..., especialidade_nome: _Optional[str] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., nome: _Optional[str] = ..., codigo: _Optional[str] = ..., dias_validade: _Optional[int] = ..., dias_garantia: _Optional[int] = ..., recompra_dias: _Optional[int] = ..., un: _Optional[str] = ..., valor_unitario: _Optional[float] = ..., promocao: _Optional[str] = ..., ecommerce: _Optional[_Union[Servico.Ecommerce, _Mapping]] = ..., module: _Optional[_Union[Module, _Mapping]] = ..., tributacao: _Optional[_Union[Servico.Tributacao, _Mapping]] = ..., composicao: _Optional[_Iterable[_Union[Composicao, _Mapping]]] = ..., composto: _Optional[bool] = ..., situacao: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., categoria_id: _Optional[str] = ..., categoria_nome: _Optional[str] = ..., especialidade_id: _Optional[str] = ..., especialidade_nome: _Optional[str] = ...) -> None: ...
 
 class Composicao(_message.Message):
     __slots__ = ("id", "item_id", "tipo", "nome", "quantidade", "un", "valor_unitario", "total", "codigo")

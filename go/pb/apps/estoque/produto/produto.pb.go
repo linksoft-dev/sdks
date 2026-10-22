@@ -822,6 +822,9 @@ type Produto struct {
 	// Comissão em reais por unidade vendida (por litro, no combustível). Quando preenchida, vale no
 	// lugar do percentual.
 	ComissaoValor float64 `protobuf:"fixed64,228,opt,name=comissao_valor,json=comissaoValor,proto3" json:"comissao_valor,omitempty"`
+	// Dias depois da venda em que o cliente é lembrado de comprar o produto de novo. Zero: sem
+	// lembrete.
+	RecompraDias int32 `protobuf:"varint,229,opt,name=recompra_dias,json=recompraDias,proto3" json:"recompra_dias,omitempty"`
 	// Impressora de produção do item (override). Quando vazio, herda o grupo de
 	// produção da categoria. Usado no roteamento da impressão para cozinha/bar.
 	ImpressoraId   string `protobuf:"bytes,215,opt,name=impressoraId,proto3" json:"impressoraId,omitempty"`
@@ -1528,6 +1531,13 @@ func (x *Produto) GetComissao() float64 {
 func (x *Produto) GetComissaoValor() float64 {
 	if x != nil {
 		return x.ComissaoValor
+	}
+	return 0
+}
+
+func (x *Produto) GetRecompraDias() int32 {
+	if x != nil {
+		return x.RecompraDias
 	}
 	return 0
 }
@@ -6304,7 +6314,7 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"ProdutoTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xa37\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xc97\n" +
 	"\aProduto\x123\n" +
 	"\x06fields\x18\x01 \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12B\n" +
@@ -6414,7 +6424,8 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"variations\x18\xd5\x01 \x03(\v2 .produto.Produto.VariationsEntryR\n" +
 	"variations\x12\x1b\n" +
 	"\bcomissao\x18\xd6\x01 \x01(\x01R\bcomissao\x12&\n" +
-	"\x0ecomissao_valor\x18\xe4\x01 \x01(\x01R\rcomissaoValor\x12#\n" +
+	"\x0ecomissao_valor\x18\xe4\x01 \x01(\x01R\rcomissaoValor\x12$\n" +
+	"\rrecompra_dias\x18\xe5\x01 \x01(\x05R\frecompraDias\x12#\n" +
 	"\fimpressoraId\x18\xd7\x01 \x01(\tR\fimpressoraId\x12'\n" +
 	"\x0eimpressoraNome\x18\xd8\x01 \x01(\tR\x0eimpressoraNome\x12%\n" +
 	"\rgrupoProducao\x18\xd9\x01 \x01(\tR\rgrupoProducao\x121\n" +

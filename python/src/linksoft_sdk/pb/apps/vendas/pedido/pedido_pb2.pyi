@@ -25,6 +25,16 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class RepurchaseStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    REPURCHASE_STATUS_UNSPECIFIED: _ClassVar[RepurchaseStatus]
+    REPURCHASE_STATUS_PENDING: _ClassVar[RepurchaseStatus]
+    REPURCHASE_STATUS_SENT: _ClassVar[RepurchaseStatus]
+    REPURCHASE_STATUS_TEAM_ONLY: _ClassVar[RepurchaseStatus]
+    REPURCHASE_STATUS_FAILED: _ClassVar[RepurchaseStatus]
+    REPURCHASE_STATUS_BOUGHT_AGAIN: _ClassVar[RepurchaseStatus]
+    REPURCHASE_STATUS_DISMISSED: _ClassVar[RepurchaseStatus]
+
 class RespostaCliente(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     RESPOSTA_CLIENTE_UNSPECIFIED: _ClassVar[RespostaCliente]
@@ -187,6 +197,13 @@ class BaseApuracao(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     BASE_APURACAO_DOCUMENTO: _ClassVar[BaseApuracao]
     BASE_APURACAO_PAGAMENTO: _ClassVar[BaseApuracao]
+REPURCHASE_STATUS_UNSPECIFIED: RepurchaseStatus
+REPURCHASE_STATUS_PENDING: RepurchaseStatus
+REPURCHASE_STATUS_SENT: RepurchaseStatus
+REPURCHASE_STATUS_TEAM_ONLY: RepurchaseStatus
+REPURCHASE_STATUS_FAILED: RepurchaseStatus
+REPURCHASE_STATUS_BOUGHT_AGAIN: RepurchaseStatus
+REPURCHASE_STATUS_DISMISSED: RepurchaseStatus
 RESPOSTA_CLIENTE_UNSPECIFIED: RespostaCliente
 RESPOSTA_CLIENTE_APROVADO: RespostaCliente
 RESPOSTA_CLIENTE_AJUSTE: RespostaCliente
@@ -587,6 +604,181 @@ class ClonePedidoResponse(_message.Message):
     PEDIDO_FIELD_NUMBER: _ClassVar[int]
     pedido: Pedido
     def __init__(self, pedido: _Optional[_Union[Pedido, _Mapping]] = ...) -> None: ...
+
+class ListRepurchasesRequest(_message.Message):
+    __slots__ = ("to", "statuses", "customer_id", "item_id")
+    FROM_FIELD_NUMBER: _ClassVar[int]
+    TO_FIELD_NUMBER: _ClassVar[int]
+    STATUSES_FIELD_NUMBER: _ClassVar[int]
+    CUSTOMER_ID_FIELD_NUMBER: _ClassVar[int]
+    ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    to: _timestamp_pb2.Timestamp
+    statuses: _containers.RepeatedScalarFieldContainer[RepurchaseStatus]
+    customer_id: str
+    item_id: str
+    def __init__(self, to: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., statuses: _Optional[_Iterable[_Union[RepurchaseStatus, str]]] = ..., customer_id: _Optional[str] = ..., item_id: _Optional[str] = ..., **kwargs) -> None: ...
+
+class ListRepurchasesResponse(_message.Message):
+    __slots__ = ("repurchases",)
+    REPURCHASES_FIELD_NUMBER: _ClassVar[int]
+    repurchases: _containers.RepeatedCompositeFieldContainer[Repurchase]
+    def __init__(self, repurchases: _Optional[_Iterable[_Union[Repurchase, _Mapping]]] = ...) -> None: ...
+
+class Repurchase(_message.Message):
+    __slots__ = ("order_id", "order_number", "order_type", "line_id", "item_id", "item_name", "service", "quantity", "total", "days", "purchased_at", "remind_at", "customer_id", "customer_name", "customer_phone", "customer_email", "status", "handled_at", "channel", "detail", "postponed_days", "new_order_id", "new_order_number", "history")
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    ORDER_NUMBER_FIELD_NUMBER: _ClassVar[int]
+    ORDER_TYPE_FIELD_NUMBER: _ClassVar[int]
+    LINE_ID_FIELD_NUMBER: _ClassVar[int]
+    ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    ITEM_NAME_FIELD_NUMBER: _ClassVar[int]
+    SERVICE_FIELD_NUMBER: _ClassVar[int]
+    QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_FIELD_NUMBER: _ClassVar[int]
+    DAYS_FIELD_NUMBER: _ClassVar[int]
+    PURCHASED_AT_FIELD_NUMBER: _ClassVar[int]
+    REMIND_AT_FIELD_NUMBER: _ClassVar[int]
+    CUSTOMER_ID_FIELD_NUMBER: _ClassVar[int]
+    CUSTOMER_NAME_FIELD_NUMBER: _ClassVar[int]
+    CUSTOMER_PHONE_FIELD_NUMBER: _ClassVar[int]
+    CUSTOMER_EMAIL_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    HANDLED_AT_FIELD_NUMBER: _ClassVar[int]
+    CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    DETAIL_FIELD_NUMBER: _ClassVar[int]
+    POSTPONED_DAYS_FIELD_NUMBER: _ClassVar[int]
+    NEW_ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    NEW_ORDER_NUMBER_FIELD_NUMBER: _ClassVar[int]
+    HISTORY_FIELD_NUMBER: _ClassVar[int]
+    order_id: str
+    order_number: int
+    order_type: str
+    line_id: str
+    item_id: str
+    item_name: str
+    service: bool
+    quantity: float
+    total: float
+    days: int
+    purchased_at: _timestamp_pb2.Timestamp
+    remind_at: _timestamp_pb2.Timestamp
+    customer_id: str
+    customer_name: str
+    customer_phone: str
+    customer_email: str
+    status: RepurchaseStatus
+    handled_at: _timestamp_pb2.Timestamp
+    channel: str
+    detail: str
+    postponed_days: int
+    new_order_id: str
+    new_order_number: int
+    history: _containers.RepeatedCompositeFieldContainer[RepurchaseEvent]
+    def __init__(self, order_id: _Optional[str] = ..., order_number: _Optional[int] = ..., order_type: _Optional[str] = ..., line_id: _Optional[str] = ..., item_id: _Optional[str] = ..., item_name: _Optional[str] = ..., service: _Optional[bool] = ..., quantity: _Optional[float] = ..., total: _Optional[float] = ..., days: _Optional[int] = ..., purchased_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., remind_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., customer_id: _Optional[str] = ..., customer_name: _Optional[str] = ..., customer_phone: _Optional[str] = ..., customer_email: _Optional[str] = ..., status: _Optional[_Union[RepurchaseStatus, str]] = ..., handled_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., channel: _Optional[str] = ..., detail: _Optional[str] = ..., postponed_days: _Optional[int] = ..., new_order_id: _Optional[str] = ..., new_order_number: _Optional[int] = ..., history: _Optional[_Iterable[_Union[RepurchaseEvent, _Mapping]]] = ...) -> None: ...
+
+class RepurchaseEvent(_message.Message):
+    __slots__ = ("at", "title", "detail")
+    AT_FIELD_NUMBER: _ClassVar[int]
+    TITLE_FIELD_NUMBER: _ClassVar[int]
+    DETAIL_FIELD_NUMBER: _ClassVar[int]
+    at: _timestamp_pb2.Timestamp
+    title: str
+    detail: str
+    def __init__(self, at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., title: _Optional[str] = ..., detail: _Optional[str] = ...) -> None: ...
+
+class SendRepurchaseReminderRequest(_message.Message):
+    __slots__ = ("order_id", "line_ids", "channel", "destination", "integration_id", "message_template_id", "local_app")
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    LINE_IDS_FIELD_NUMBER: _ClassVar[int]
+    CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    DESTINATION_FIELD_NUMBER: _ClassVar[int]
+    INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_TEMPLATE_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCAL_APP_FIELD_NUMBER: _ClassVar[int]
+    order_id: str
+    line_ids: _containers.RepeatedScalarFieldContainer[str]
+    channel: str
+    destination: str
+    integration_id: str
+    message_template_id: str
+    local_app: bool
+    def __init__(self, order_id: _Optional[str] = ..., line_ids: _Optional[_Iterable[str]] = ..., channel: _Optional[str] = ..., destination: _Optional[str] = ..., integration_id: _Optional[str] = ..., message_template_id: _Optional[str] = ..., local_app: _Optional[bool] = ...) -> None: ...
+
+class SendRepurchaseReminderResponse(_message.Message):
+    __slots__ = ("channel", "message_id", "local_app_message", "destination")
+    CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_ID_FIELD_NUMBER: _ClassVar[int]
+    LOCAL_APP_MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    DESTINATION_FIELD_NUMBER: _ClassVar[int]
+    channel: str
+    message_id: str
+    local_app_message: str
+    destination: str
+    def __init__(self, channel: _Optional[str] = ..., message_id: _Optional[str] = ..., local_app_message: _Optional[str] = ..., destination: _Optional[str] = ...) -> None: ...
+
+class DismissRepurchaseReminderRequest(_message.Message):
+    __slots__ = ("order_id", "line_ids", "reason")
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    LINE_IDS_FIELD_NUMBER: _ClassVar[int]
+    REASON_FIELD_NUMBER: _ClassVar[int]
+    order_id: str
+    line_ids: _containers.RepeatedScalarFieldContainer[str]
+    reason: str
+    def __init__(self, order_id: _Optional[str] = ..., line_ids: _Optional[_Iterable[str]] = ..., reason: _Optional[str] = ...) -> None: ...
+
+class DismissRepurchaseReminderResponse(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class PostponeRepurchaseReminderRequest(_message.Message):
+    __slots__ = ("order_id", "line_ids", "days")
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    LINE_IDS_FIELD_NUMBER: _ClassVar[int]
+    DAYS_FIELD_NUMBER: _ClassVar[int]
+    order_id: str
+    line_ids: _containers.RepeatedScalarFieldContainer[str]
+    days: int
+    def __init__(self, order_id: _Optional[str] = ..., line_ids: _Optional[_Iterable[str]] = ..., days: _Optional[int] = ...) -> None: ...
+
+class PostponeRepurchaseReminderResponse(_message.Message):
+    __slots__ = ("repurchases",)
+    REPURCHASES_FIELD_NUMBER: _ClassVar[int]
+    repurchases: _containers.RepeatedCompositeFieldContainer[Repurchase]
+    def __init__(self, repurchases: _Optional[_Iterable[_Union[Repurchase, _Mapping]]] = ...) -> None: ...
+
+class ReactivateRepurchaseReminderRequest(_message.Message):
+    __slots__ = ("order_id", "line_ids")
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    LINE_IDS_FIELD_NUMBER: _ClassVar[int]
+    order_id: str
+    line_ids: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, order_id: _Optional[str] = ..., line_ids: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class ReactivateRepurchaseReminderResponse(_message.Message):
+    __slots__ = ("repurchases",)
+    REPURCHASES_FIELD_NUMBER: _ClassVar[int]
+    repurchases: _containers.RepeatedCompositeFieldContainer[Repurchase]
+    def __init__(self, repurchases: _Optional[_Iterable[_Union[Repurchase, _Mapping]]] = ...) -> None: ...
+
+class PreviewRepurchaseReminderRequest(_message.Message):
+    __slots__ = ("order_id", "line_ids")
+    ORDER_ID_FIELD_NUMBER: _ClassVar[int]
+    LINE_IDS_FIELD_NUMBER: _ClassVar[int]
+    order_id: str
+    line_ids: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, order_id: _Optional[str] = ..., line_ids: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class PreviewRepurchaseReminderResponse(_message.Message):
+    __slots__ = ("channel", "destination", "subject", "content")
+    CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    DESTINATION_FIELD_NUMBER: _ClassVar[int]
+    SUBJECT_FIELD_NUMBER: _ClassVar[int]
+    CONTENT_FIELD_NUMBER: _ClassVar[int]
+    channel: str
+    destination: str
+    subject: str
+    content: str
+    def __init__(self, channel: _Optional[str] = ..., destination: _Optional[str] = ..., subject: _Optional[str] = ..., content: _Optional[str] = ...) -> None: ...
 
 class ConfirmOrderReceiptRequest(_message.Message):
     __slots__ = ("id",)
@@ -1131,7 +1323,7 @@ class SetAcompanhamentoResponse(_message.Message):
     def __init__(self, acompanhamento: _Optional[_Union[OrderAcompanhamento, _Mapping]] = ..., data_hora_entrega: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class Pedido(_message.Message):
-    __slots__ = ("createdAt", "updatedAt", "userId", "userName", "id", "account_id", "fields", "origem", "origemId", "tipo", "situacao", "tags", "tipoMoeda", "tipoMoedaCotacao", "tabelaPreco", "importadoEm", "pessoa", "vendedor", "numero", "dataHoraRegistro", "dataHoraFechamento", "previsaoEntrega", "previsaoEntregaDescricao", "dataHoraInicio", "dataHoraEntrega", "tempoDecorrido", "descontoValor", "acrescimoValor", "valorSubtotal", "valorTotalServico", "valorTotalProduto", "valorTotal", "valorTotalPago", "cashbackValor", "comissaoValor", "nfeNumero", "nfeUrlDanfe", "nfeChave", "nfeSerie", "nfeId", "nfeSituacao", "nfe_forma_emissao", "nfeDataHoraEmissao", "nfceNumero", "nfceUrlDanfe", "nfceUrlXml", "nfceSerie", "nfceChave", "nfceId", "nfceSituacao", "nfce_forma_emissao", "nfceDataHoraEmissao", "nfseUrlDanfe", "nfseChave", "nfseNumero", "nfseSituacao", "obs", "cancelamentoMotivo", "cancelamentoUsuarioId", "cancelamentoUsuarioNome", "cancelamentoDataHora", "produtos", "servicos", "pagamentos", "transactions_online", "mesclagemId", "pedidosVinculados", "descontoAplicado", "descontoAplicadosCaption", "cashbackAplicado", "cashbackAplicadosCaption", "licenciamento", "consiguinacao", "importado", "os", "otica", "partnership", "cuponsSorteios", "convertedBy", "rentCar", "contract", "files", "confirmation_receipt", "origin", "billing", "delivery", "checkout_payment_selection", "dfe", "consumption_control", "events", "diasGarantia", "dataFimGarantia", "warranty", "recorrencias", "devolucao_id", "devolucao_numero", "webhooks", "external_reference", "acompanhamento", "cupomAplicado", "org_id", "org_nome", "divida", "validade", "validadeDescricao", "qr_code_documento", "pedido_compra", "agenda_event_id", "lembrete_cliente", "resposta_cliente", "posto_veiculo_id", "posto_placa", "posto_km", "posto_motorista_nome", "custom_fields", "device_info", "local_id", "sync_status", "last_synced_at", "posto_sem_encerrante_nota")
+    __slots__ = ("createdAt", "updatedAt", "userId", "userName", "id", "account_id", "fields", "origem", "origemId", "tipo", "situacao", "tags", "tipoMoeda", "tipoMoedaCotacao", "tabelaPreco", "importadoEm", "pessoa", "vendedor", "numero", "dataHoraRegistro", "dataHoraFechamento", "previsaoEntrega", "previsaoEntregaDescricao", "dataHoraInicio", "dataHoraEntrega", "tempoDecorrido", "descontoValor", "acrescimoValor", "valorSubtotal", "valorTotalServico", "valorTotalProduto", "valorTotal", "valorTotalPago", "cashbackValor", "comissaoValor", "nfeNumero", "nfeUrlDanfe", "nfeChave", "nfeSerie", "nfeId", "nfeSituacao", "nfe_forma_emissao", "nfeDataHoraEmissao", "nfceNumero", "nfceUrlDanfe", "nfceUrlXml", "nfceSerie", "nfceChave", "nfceId", "nfceSituacao", "nfce_forma_emissao", "nfceDataHoraEmissao", "nfseUrlDanfe", "nfseChave", "nfseNumero", "nfseSituacao", "obs", "cancelamentoMotivo", "cancelamentoUsuarioId", "cancelamentoUsuarioNome", "cancelamentoDataHora", "produtos", "servicos", "pagamentos", "transactions_online", "mesclagemId", "pedidosVinculados", "descontoAplicado", "descontoAplicadosCaption", "cashbackAplicado", "cashbackAplicadosCaption", "licenciamento", "consiguinacao", "importado", "os", "otica", "partnership", "cuponsSorteios", "convertedBy", "rentCar", "contract", "files", "confirmation_receipt", "origin", "billing", "delivery", "checkout_payment_selection", "dfe", "consumption_control", "events", "diasGarantia", "dataFimGarantia", "warranty", "recompra_em", "recompra_ate", "recorrencias", "devolucao_id", "devolucao_numero", "webhooks", "external_reference", "acompanhamento", "cupomAplicado", "org_id", "org_nome", "divida", "validade", "validadeDescricao", "qr_code_documento", "pedido_compra", "agenda_event_id", "lembrete_cliente", "resposta_cliente", "posto_veiculo_id", "posto_placa", "posto_km", "posto_motorista_nome", "custom_fields", "device_info", "local_id", "sync_status", "last_synced_at", "posto_sem_encerrante_nota")
     class CustomFieldsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -1232,6 +1424,8 @@ class Pedido(_message.Message):
     DIASGARANTIA_FIELD_NUMBER: _ClassVar[int]
     DATAFIMGARANTIA_FIELD_NUMBER: _ClassVar[int]
     WARRANTY_FIELD_NUMBER: _ClassVar[int]
+    RECOMPRA_EM_FIELD_NUMBER: _ClassVar[int]
+    RECOMPRA_ATE_FIELD_NUMBER: _ClassVar[int]
     RECORRENCIAS_FIELD_NUMBER: _ClassVar[int]
     DEVOLUCAO_ID_FIELD_NUMBER: _ClassVar[int]
     DEVOLUCAO_NUMERO_FIELD_NUMBER: _ClassVar[int]
@@ -1352,6 +1546,8 @@ class Pedido(_message.Message):
     diasGarantia: float
     dataFimGarantia: _timestamp_pb2.Timestamp
     warranty: Warranty
+    recompra_em: _timestamp_pb2.Timestamp
+    recompra_ate: _timestamp_pb2.Timestamp
     recorrencias: _containers.RepeatedCompositeFieldContainer[Pedido]
     devolucao_id: str
     devolucao_numero: int
@@ -1379,7 +1575,7 @@ class Pedido(_message.Message):
     sync_status: SyncStatus
     last_synced_at: _timestamp_pb2.Timestamp
     posto_sem_encerrante_nota: bool
-    def __init__(self, createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., id: _Optional[str] = ..., account_id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., origem: _Optional[str] = ..., origemId: _Optional[str] = ..., tipo: _Optional[str] = ..., situacao: _Optional[str] = ..., tags: _Optional[_Iterable[_Union[OrderTag, _Mapping]]] = ..., tipoMoeda: _Optional[str] = ..., tipoMoedaCotacao: _Optional[float] = ..., tabelaPreco: _Optional[str] = ..., importadoEm: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., pessoa: _Optional[_Union[Pessoa, _Mapping]] = ..., vendedor: _Optional[_Union[Pessoa, _Mapping]] = ..., numero: _Optional[int] = ..., dataHoraRegistro: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dataHoraFechamento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., previsaoEntrega: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., previsaoEntregaDescricao: _Optional[str] = ..., dataHoraInicio: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dataHoraEntrega: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., tempoDecorrido: _Optional[str] = ..., descontoValor: _Optional[float] = ..., acrescimoValor: _Optional[float] = ..., valorSubtotal: _Optional[float] = ..., valorTotalServico: _Optional[float] = ..., valorTotalProduto: _Optional[float] = ..., valorTotal: _Optional[float] = ..., valorTotalPago: _Optional[float] = ..., cashbackValor: _Optional[float] = ..., comissaoValor: _Optional[float] = ..., nfeNumero: _Optional[int] = ..., nfeUrlDanfe: _Optional[str] = ..., nfeChave: _Optional[str] = ..., nfeSerie: _Optional[int] = ..., nfeId: _Optional[str] = ..., nfeSituacao: _Optional[str] = ..., nfe_forma_emissao: _Optional[str] = ..., nfeDataHoraEmissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., nfceNumero: _Optional[int] = ..., nfceUrlDanfe: _Optional[str] = ..., nfceUrlXml: _Optional[str] = ..., nfceSerie: _Optional[int] = ..., nfceChave: _Optional[str] = ..., nfceId: _Optional[str] = ..., nfceSituacao: _Optional[str] = ..., nfce_forma_emissao: _Optional[str] = ..., nfceDataHoraEmissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., nfseUrlDanfe: _Optional[str] = ..., nfseChave: _Optional[str] = ..., nfseNumero: _Optional[str] = ..., nfseSituacao: _Optional[str] = ..., obs: _Optional[str] = ..., cancelamentoMotivo: _Optional[str] = ..., cancelamentoUsuarioId: _Optional[str] = ..., cancelamentoUsuarioNome: _Optional[str] = ..., cancelamentoDataHora: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., produtos: _Optional[_Iterable[_Union[Produto, _Mapping]]] = ..., servicos: _Optional[_Iterable[_Union[Servico, _Mapping]]] = ..., pagamentos: _Optional[_Iterable[_Union[Pagamento, _Mapping]]] = ..., transactions_online: _Optional[_Union[TransactionsOnline, _Mapping]] = ..., mesclagemId: _Optional[str] = ..., pedidosVinculados: _Optional[_Iterable[_Union[PedidoVinculado, _Mapping]]] = ..., descontoAplicado: _Optional[_Union[DescontoAplicadosModel, _Mapping]] = ..., descontoAplicadosCaption: _Optional[str] = ..., cashbackAplicado: _Optional[_Union[CashbackAplicadosModel, _Mapping]] = ..., cashbackAplicadosCaption: _Optional[str] = ..., licenciamento: _Optional[_Union[LicenciamentoModel, _Mapping]] = ..., consiguinacao: _Optional[bool] = ..., importado: _Optional[bool] = ..., os: _Optional[_Union[OrdemServico, _Mapping]] = ..., otica: _Optional[_Union[_pedido_otica_pb2.Otica, _Mapping]] = ..., partnership: _Optional[_Union[Partnership, _Mapping]] = ..., cuponsSorteios: _Optional[_Iterable[_Union[CuponsSorteio, _Mapping]]] = ..., convertedBy: _Optional[str] = ..., rentCar: _Optional[_Union[_rentcar_model_pb2.Reservation, _Mapping]] = ..., contract: _Optional[_Union[Contract, _Mapping]] = ..., files: _Optional[_Iterable[_Union[_filemanager_pb2.File, _Mapping]]] = ..., confirmation_receipt: _Optional[_Union[ConfirmationOrderReceipt, _Mapping]] = ..., origin: _Optional[_Union[OriginInfo, _Mapping]] = ..., billing: _Optional[_Union[Billing, _Mapping]] = ..., delivery: _Optional[_Union[DeliveryInfo, _Mapping]] = ..., checkout_payment_selection: _Optional[_Union[CheckoutPaymentSelection, _Mapping]] = ..., dfe: _Optional[_Union[Dfe, _Mapping]] = ..., consumption_control: _Optional[_Union[_pedido_mesa_pb2.ConsumptionControl, _Mapping]] = ..., events: _Optional[_Iterable[_Union[_pedido_mesa_pb2.PedidoEvent, _Mapping]]] = ..., diasGarantia: _Optional[float] = ..., dataFimGarantia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., warranty: _Optional[_Union[Warranty, _Mapping]] = ..., recorrencias: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., devolucao_id: _Optional[str] = ..., devolucao_numero: _Optional[int] = ..., webhooks: _Optional[_Iterable[_Union[PedidoWebhook, _Mapping]]] = ..., external_reference: _Optional[str] = ..., acompanhamento: _Optional[_Union[OrderAcompanhamento, _Mapping]] = ..., cupomAplicado: _Optional[_Union[CupomAplicadoModel, _Mapping]] = ..., org_id: _Optional[str] = ..., org_nome: _Optional[str] = ..., divida: _Optional[float] = ..., validade: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., validadeDescricao: _Optional[str] = ..., qr_code_documento: _Optional[_Union[QrCodeDocumento, _Mapping]] = ..., pedido_compra: _Optional[str] = ..., agenda_event_id: _Optional[str] = ..., lembrete_cliente: _Optional[bool] = ..., resposta_cliente: _Optional[_Union[RespostaCliente, str]] = ..., posto_veiculo_id: _Optional[str] = ..., posto_placa: _Optional[str] = ..., posto_km: _Optional[float] = ..., posto_motorista_nome: _Optional[str] = ..., custom_fields: _Optional[_Mapping[str, str]] = ..., device_info: _Optional[_Union[DeviceInfo, _Mapping]] = ..., local_id: _Optional[str] = ..., sync_status: _Optional[_Union[SyncStatus, str]] = ..., last_synced_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., posto_sem_encerrante_nota: _Optional[bool] = ...) -> None: ...
+    def __init__(self, createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., id: _Optional[str] = ..., account_id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., origem: _Optional[str] = ..., origemId: _Optional[str] = ..., tipo: _Optional[str] = ..., situacao: _Optional[str] = ..., tags: _Optional[_Iterable[_Union[OrderTag, _Mapping]]] = ..., tipoMoeda: _Optional[str] = ..., tipoMoedaCotacao: _Optional[float] = ..., tabelaPreco: _Optional[str] = ..., importadoEm: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., pessoa: _Optional[_Union[Pessoa, _Mapping]] = ..., vendedor: _Optional[_Union[Pessoa, _Mapping]] = ..., numero: _Optional[int] = ..., dataHoraRegistro: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dataHoraFechamento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., previsaoEntrega: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., previsaoEntregaDescricao: _Optional[str] = ..., dataHoraInicio: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dataHoraEntrega: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., tempoDecorrido: _Optional[str] = ..., descontoValor: _Optional[float] = ..., acrescimoValor: _Optional[float] = ..., valorSubtotal: _Optional[float] = ..., valorTotalServico: _Optional[float] = ..., valorTotalProduto: _Optional[float] = ..., valorTotal: _Optional[float] = ..., valorTotalPago: _Optional[float] = ..., cashbackValor: _Optional[float] = ..., comissaoValor: _Optional[float] = ..., nfeNumero: _Optional[int] = ..., nfeUrlDanfe: _Optional[str] = ..., nfeChave: _Optional[str] = ..., nfeSerie: _Optional[int] = ..., nfeId: _Optional[str] = ..., nfeSituacao: _Optional[str] = ..., nfe_forma_emissao: _Optional[str] = ..., nfeDataHoraEmissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., nfceNumero: _Optional[int] = ..., nfceUrlDanfe: _Optional[str] = ..., nfceUrlXml: _Optional[str] = ..., nfceSerie: _Optional[int] = ..., nfceChave: _Optional[str] = ..., nfceId: _Optional[str] = ..., nfceSituacao: _Optional[str] = ..., nfce_forma_emissao: _Optional[str] = ..., nfceDataHoraEmissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., nfseUrlDanfe: _Optional[str] = ..., nfseChave: _Optional[str] = ..., nfseNumero: _Optional[str] = ..., nfseSituacao: _Optional[str] = ..., obs: _Optional[str] = ..., cancelamentoMotivo: _Optional[str] = ..., cancelamentoUsuarioId: _Optional[str] = ..., cancelamentoUsuarioNome: _Optional[str] = ..., cancelamentoDataHora: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., produtos: _Optional[_Iterable[_Union[Produto, _Mapping]]] = ..., servicos: _Optional[_Iterable[_Union[Servico, _Mapping]]] = ..., pagamentos: _Optional[_Iterable[_Union[Pagamento, _Mapping]]] = ..., transactions_online: _Optional[_Union[TransactionsOnline, _Mapping]] = ..., mesclagemId: _Optional[str] = ..., pedidosVinculados: _Optional[_Iterable[_Union[PedidoVinculado, _Mapping]]] = ..., descontoAplicado: _Optional[_Union[DescontoAplicadosModel, _Mapping]] = ..., descontoAplicadosCaption: _Optional[str] = ..., cashbackAplicado: _Optional[_Union[CashbackAplicadosModel, _Mapping]] = ..., cashbackAplicadosCaption: _Optional[str] = ..., licenciamento: _Optional[_Union[LicenciamentoModel, _Mapping]] = ..., consiguinacao: _Optional[bool] = ..., importado: _Optional[bool] = ..., os: _Optional[_Union[OrdemServico, _Mapping]] = ..., otica: _Optional[_Union[_pedido_otica_pb2.Otica, _Mapping]] = ..., partnership: _Optional[_Union[Partnership, _Mapping]] = ..., cuponsSorteios: _Optional[_Iterable[_Union[CuponsSorteio, _Mapping]]] = ..., convertedBy: _Optional[str] = ..., rentCar: _Optional[_Union[_rentcar_model_pb2.Reservation, _Mapping]] = ..., contract: _Optional[_Union[Contract, _Mapping]] = ..., files: _Optional[_Iterable[_Union[_filemanager_pb2.File, _Mapping]]] = ..., confirmation_receipt: _Optional[_Union[ConfirmationOrderReceipt, _Mapping]] = ..., origin: _Optional[_Union[OriginInfo, _Mapping]] = ..., billing: _Optional[_Union[Billing, _Mapping]] = ..., delivery: _Optional[_Union[DeliveryInfo, _Mapping]] = ..., checkout_payment_selection: _Optional[_Union[CheckoutPaymentSelection, _Mapping]] = ..., dfe: _Optional[_Union[Dfe, _Mapping]] = ..., consumption_control: _Optional[_Union[_pedido_mesa_pb2.ConsumptionControl, _Mapping]] = ..., events: _Optional[_Iterable[_Union[_pedido_mesa_pb2.PedidoEvent, _Mapping]]] = ..., diasGarantia: _Optional[float] = ..., dataFimGarantia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., warranty: _Optional[_Union[Warranty, _Mapping]] = ..., recompra_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., recompra_ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., recorrencias: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., devolucao_id: _Optional[str] = ..., devolucao_numero: _Optional[int] = ..., webhooks: _Optional[_Iterable[_Union[PedidoWebhook, _Mapping]]] = ..., external_reference: _Optional[str] = ..., acompanhamento: _Optional[_Union[OrderAcompanhamento, _Mapping]] = ..., cupomAplicado: _Optional[_Union[CupomAplicadoModel, _Mapping]] = ..., org_id: _Optional[str] = ..., org_nome: _Optional[str] = ..., divida: _Optional[float] = ..., validade: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., validadeDescricao: _Optional[str] = ..., qr_code_documento: _Optional[_Union[QrCodeDocumento, _Mapping]] = ..., pedido_compra: _Optional[str] = ..., agenda_event_id: _Optional[str] = ..., lembrete_cliente: _Optional[bool] = ..., resposta_cliente: _Optional[_Union[RespostaCliente, str]] = ..., posto_veiculo_id: _Optional[str] = ..., posto_placa: _Optional[str] = ..., posto_km: _Optional[float] = ..., posto_motorista_nome: _Optional[str] = ..., custom_fields: _Optional[_Mapping[str, str]] = ..., device_info: _Optional[_Union[DeviceInfo, _Mapping]] = ..., local_id: _Optional[str] = ..., sync_status: _Optional[_Union[SyncStatus, str]] = ..., last_synced_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., posto_sem_encerrante_nota: _Optional[bool] = ...) -> None: ...
 
 class QrCodeDocumento(_message.Message):
     __slots__ = ("ativo", "dias_validade")
@@ -1693,7 +1889,7 @@ class SerialInfo(_message.Message):
     def __init__(self, ids: _Optional[_Iterable[str]] = ..., serial_numbers: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Produto(_message.Message):
-    __slots__ = ("id", "createdAt", "updatedAt", "userId", "userName", "tipo", "nome", "descricao", "produtoId", "pedidoId", "pedidoProdutoId", "codigo", "un", "codigoAnp", "codigoAnpDescricao", "postoNumBico", "postoNumBomba", "postoNumTanque", "postoEncerranteInicial", "postoEncerranteFinal", "postoAbastecimentoIds", "postoFrentistaId", "postoFrentistaNome", "ncm", "obs", "vendedorId", "vendedorNome", "comissaoValor", "comissaoPercentual", "comprimento", "largura", "medida", "profundidade", "quantidade", "tabelaPreco", "valorUnitario", "diferencaValorVenda", "valorUnitarioOriginal", "custoUnitario", "lucroBrutoUnitario", "lucroLiquidoUnitario", "descontoValor", "descontoAplicado", "acrescimoValor", "valorSubtotal", "valorTotal", "ValorCompra", "descontoRateado", "pesoUnitario", "composto", "compostoString", "composicao", "color", "size", "referencia", "batch", "review_date", "variation_product_id", "serial", "diasGarantia", "dataFimGarantia", "comissao_manual", "comissao_por_unidade", "tipoGarantia", "comodato", "valor_reposicao", "stock_decrease_applied", "skip_stock_decrease", "producao", "imagemUrl", "precoPromocionalAplicado", "numero_item", "observacao", "pedido_compra_item", "locacao")
+    __slots__ = ("id", "createdAt", "updatedAt", "userId", "userName", "tipo", "nome", "descricao", "produtoId", "pedidoId", "pedidoProdutoId", "codigo", "un", "codigoAnp", "codigoAnpDescricao", "postoNumBico", "postoNumBomba", "postoNumTanque", "postoEncerranteInicial", "postoEncerranteFinal", "postoAbastecimentoIds", "postoFrentistaId", "postoFrentistaNome", "ncm", "obs", "vendedorId", "vendedorNome", "comissaoValor", "comissaoPercentual", "comprimento", "largura", "medida", "profundidade", "quantidade", "tabelaPreco", "valorUnitario", "diferencaValorVenda", "valorUnitarioOriginal", "custoUnitario", "lucroBrutoUnitario", "lucroLiquidoUnitario", "descontoValor", "descontoAplicado", "acrescimoValor", "valorSubtotal", "valorTotal", "ValorCompra", "descontoRateado", "pesoUnitario", "composto", "compostoString", "composicao", "color", "size", "referencia", "batch", "review_date", "variation_product_id", "serial", "diasGarantia", "dataFimGarantia", "comissao_manual", "comissao_por_unidade", "recompra_dias", "recompra_em", "tipoGarantia", "comodato", "valor_reposicao", "stock_decrease_applied", "skip_stock_decrease", "producao", "imagemUrl", "precoPromocionalAplicado", "numero_item", "observacao", "pedido_compra_item", "locacao")
     ID_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
     UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
@@ -1757,6 +1953,8 @@ class Produto(_message.Message):
     DATAFIMGARANTIA_FIELD_NUMBER: _ClassVar[int]
     COMISSAO_MANUAL_FIELD_NUMBER: _ClassVar[int]
     COMISSAO_POR_UNIDADE_FIELD_NUMBER: _ClassVar[int]
+    RECOMPRA_DIAS_FIELD_NUMBER: _ClassVar[int]
+    RECOMPRA_EM_FIELD_NUMBER: _ClassVar[int]
     TIPOGARANTIA_FIELD_NUMBER: _ClassVar[int]
     COMODATO_FIELD_NUMBER: _ClassVar[int]
     VALOR_REPOSICAO_FIELD_NUMBER: _ClassVar[int]
@@ -1832,6 +2030,8 @@ class Produto(_message.Message):
     dataFimGarantia: _timestamp_pb2.Timestamp
     comissao_manual: bool
     comissao_por_unidade: float
+    recompra_dias: int
+    recompra_em: _timestamp_pb2.Timestamp
     tipoGarantia: TipoGarantia
     comodato: bool
     valor_reposicao: float
@@ -1844,7 +2044,7 @@ class Produto(_message.Message):
     observacao: str
     pedido_compra_item: int
     locacao: bool
-    def __init__(self, id: _Optional[str] = ..., createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., tipo: _Optional[str] = ..., nome: _Optional[str] = ..., descricao: _Optional[str] = ..., produtoId: _Optional[str] = ..., pedidoId: _Optional[str] = ..., pedidoProdutoId: _Optional[str] = ..., codigo: _Optional[str] = ..., un: _Optional[str] = ..., codigoAnp: _Optional[str] = ..., codigoAnpDescricao: _Optional[str] = ..., postoNumBico: _Optional[str] = ..., postoNumBomba: _Optional[str] = ..., postoNumTanque: _Optional[str] = ..., postoEncerranteInicial: _Optional[float] = ..., postoEncerranteFinal: _Optional[float] = ..., postoAbastecimentoIds: _Optional[_Iterable[str]] = ..., postoFrentistaId: _Optional[str] = ..., postoFrentistaNome: _Optional[str] = ..., ncm: _Optional[str] = ..., obs: _Optional[str] = ..., vendedorId: _Optional[str] = ..., vendedorNome: _Optional[str] = ..., comissaoValor: _Optional[float] = ..., comissaoPercentual: _Optional[float] = ..., comprimento: _Optional[float] = ..., largura: _Optional[float] = ..., medida: _Optional[float] = ..., profundidade: _Optional[float] = ..., quantidade: _Optional[float] = ..., tabelaPreco: _Optional[str] = ..., valorUnitario: _Optional[float] = ..., diferencaValorVenda: _Optional[float] = ..., valorUnitarioOriginal: _Optional[float] = ..., custoUnitario: _Optional[float] = ..., lucroBrutoUnitario: _Optional[float] = ..., lucroLiquidoUnitario: _Optional[float] = ..., descontoValor: _Optional[float] = ..., descontoAplicado: _Optional[_Union[DescontoAplicadosModel, _Mapping]] = ..., acrescimoValor: _Optional[float] = ..., valorSubtotal: _Optional[float] = ..., valorTotal: _Optional[float] = ..., ValorCompra: _Optional[float] = ..., descontoRateado: _Optional[float] = ..., pesoUnitario: _Optional[float] = ..., composto: _Optional[bool] = ..., compostoString: _Optional[str] = ..., composicao: _Optional[_Iterable[_Union[Produto, _Mapping]]] = ..., color: _Optional[str] = ..., size: _Optional[str] = ..., referencia: _Optional[str] = ..., batch: _Optional[_Union[BatchInfo, _Mapping]] = ..., review_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., variation_product_id: _Optional[str] = ..., serial: _Optional[_Union[SerialInfo, _Mapping]] = ..., diasGarantia: _Optional[float] = ..., dataFimGarantia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., comissao_manual: _Optional[bool] = ..., comissao_por_unidade: _Optional[float] = ..., tipoGarantia: _Optional[_Union[TipoGarantia, str]] = ..., comodato: _Optional[bool] = ..., valor_reposicao: _Optional[float] = ..., stock_decrease_applied: _Optional[bool] = ..., skip_stock_decrease: _Optional[bool] = ..., producao: _Optional[_Union[ItemProducao, _Mapping]] = ..., imagemUrl: _Optional[str] = ..., precoPromocionalAplicado: _Optional[bool] = ..., numero_item: _Optional[int] = ..., observacao: _Optional[str] = ..., pedido_compra_item: _Optional[int] = ..., locacao: _Optional[bool] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., tipo: _Optional[str] = ..., nome: _Optional[str] = ..., descricao: _Optional[str] = ..., produtoId: _Optional[str] = ..., pedidoId: _Optional[str] = ..., pedidoProdutoId: _Optional[str] = ..., codigo: _Optional[str] = ..., un: _Optional[str] = ..., codigoAnp: _Optional[str] = ..., codigoAnpDescricao: _Optional[str] = ..., postoNumBico: _Optional[str] = ..., postoNumBomba: _Optional[str] = ..., postoNumTanque: _Optional[str] = ..., postoEncerranteInicial: _Optional[float] = ..., postoEncerranteFinal: _Optional[float] = ..., postoAbastecimentoIds: _Optional[_Iterable[str]] = ..., postoFrentistaId: _Optional[str] = ..., postoFrentistaNome: _Optional[str] = ..., ncm: _Optional[str] = ..., obs: _Optional[str] = ..., vendedorId: _Optional[str] = ..., vendedorNome: _Optional[str] = ..., comissaoValor: _Optional[float] = ..., comissaoPercentual: _Optional[float] = ..., comprimento: _Optional[float] = ..., largura: _Optional[float] = ..., medida: _Optional[float] = ..., profundidade: _Optional[float] = ..., quantidade: _Optional[float] = ..., tabelaPreco: _Optional[str] = ..., valorUnitario: _Optional[float] = ..., diferencaValorVenda: _Optional[float] = ..., valorUnitarioOriginal: _Optional[float] = ..., custoUnitario: _Optional[float] = ..., lucroBrutoUnitario: _Optional[float] = ..., lucroLiquidoUnitario: _Optional[float] = ..., descontoValor: _Optional[float] = ..., descontoAplicado: _Optional[_Union[DescontoAplicadosModel, _Mapping]] = ..., acrescimoValor: _Optional[float] = ..., valorSubtotal: _Optional[float] = ..., valorTotal: _Optional[float] = ..., ValorCompra: _Optional[float] = ..., descontoRateado: _Optional[float] = ..., pesoUnitario: _Optional[float] = ..., composto: _Optional[bool] = ..., compostoString: _Optional[str] = ..., composicao: _Optional[_Iterable[_Union[Produto, _Mapping]]] = ..., color: _Optional[str] = ..., size: _Optional[str] = ..., referencia: _Optional[str] = ..., batch: _Optional[_Union[BatchInfo, _Mapping]] = ..., review_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., variation_product_id: _Optional[str] = ..., serial: _Optional[_Union[SerialInfo, _Mapping]] = ..., diasGarantia: _Optional[float] = ..., dataFimGarantia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., comissao_manual: _Optional[bool] = ..., comissao_por_unidade: _Optional[float] = ..., recompra_dias: _Optional[int] = ..., recompra_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., tipoGarantia: _Optional[_Union[TipoGarantia, str]] = ..., comodato: _Optional[bool] = ..., valor_reposicao: _Optional[float] = ..., stock_decrease_applied: _Optional[bool] = ..., skip_stock_decrease: _Optional[bool] = ..., producao: _Optional[_Union[ItemProducao, _Mapping]] = ..., imagemUrl: _Optional[str] = ..., precoPromocionalAplicado: _Optional[bool] = ..., numero_item: _Optional[int] = ..., observacao: _Optional[str] = ..., pedido_compra_item: _Optional[int] = ..., locacao: _Optional[bool] = ...) -> None: ...
 
 class ItemProducao(_message.Message):
     __slots__ = ("enviado", "dataHoraEnvio", "impressoraId", "impressoraNome", "impresso", "dataHoraImpressao", "erroImpressao", "entregue", "dataHoraEntrega")
@@ -1869,7 +2069,7 @@ class ItemProducao(_message.Message):
     def __init__(self, enviado: _Optional[bool] = ..., dataHoraEnvio: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., impressoraId: _Optional[str] = ..., impressoraNome: _Optional[str] = ..., impresso: _Optional[bool] = ..., dataHoraImpressao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., erroImpressao: _Optional[str] = ..., entregue: _Optional[bool] = ..., dataHoraEntrega: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class Servico(_message.Message):
-    __slots__ = ("id", "createdAt", "updatedAt", "userId", "userName", "pedidoId", "servicoId", "servicoNome", "codigo", "un", "obs", "tecnicoId", "tecnicoNome", "comissaoValor", "comissaoPercentual", "repasseValor", "quantidade", "valorUnitario", "custo", "lucroBruto", "lucroLiquido", "descontoValor", "descontoAplicado", "descontoRateado", "acrescimoValor", "subtotal", "total", "compostoId", "is_recurring", "composto", "composicao", "diasGarantia", "dataFimGarantia", "comissao_manual", "categoria", "hora_inicio", "hora_fim", "numero_item", "observacao")
+    __slots__ = ("id", "createdAt", "updatedAt", "userId", "userName", "pedidoId", "servicoId", "servicoNome", "codigo", "un", "obs", "tecnicoId", "tecnicoNome", "comissaoValor", "comissaoPercentual", "repasseValor", "quantidade", "valorUnitario", "custo", "lucroBruto", "lucroLiquido", "descontoValor", "descontoAplicado", "descontoRateado", "acrescimoValor", "subtotal", "total", "compostoId", "is_recurring", "composto", "composicao", "diasGarantia", "dataFimGarantia", "comissao_manual", "categoria", "hora_inicio", "hora_fim", "numero_item", "observacao", "recompra_dias", "recompra_em")
     ID_FIELD_NUMBER: _ClassVar[int]
     CREATEDAT_FIELD_NUMBER: _ClassVar[int]
     UPDATEDAT_FIELD_NUMBER: _ClassVar[int]
@@ -1909,6 +2109,8 @@ class Servico(_message.Message):
     HORA_FIM_FIELD_NUMBER: _ClassVar[int]
     NUMERO_ITEM_FIELD_NUMBER: _ClassVar[int]
     OBSERVACAO_FIELD_NUMBER: _ClassVar[int]
+    RECOMPRA_DIAS_FIELD_NUMBER: _ClassVar[int]
+    RECOMPRA_EM_FIELD_NUMBER: _ClassVar[int]
     id: str
     createdAt: _timestamp_pb2.Timestamp
     updatedAt: _timestamp_pb2.Timestamp
@@ -1948,7 +2150,9 @@ class Servico(_message.Message):
     hora_fim: _timestamp_pb2.Timestamp
     numero_item: int
     observacao: str
-    def __init__(self, id: _Optional[str] = ..., createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., pedidoId: _Optional[str] = ..., servicoId: _Optional[str] = ..., servicoNome: _Optional[str] = ..., codigo: _Optional[str] = ..., un: _Optional[str] = ..., obs: _Optional[str] = ..., tecnicoId: _Optional[str] = ..., tecnicoNome: _Optional[str] = ..., comissaoValor: _Optional[float] = ..., comissaoPercentual: _Optional[float] = ..., repasseValor: _Optional[float] = ..., quantidade: _Optional[float] = ..., valorUnitario: _Optional[float] = ..., custo: _Optional[float] = ..., lucroBruto: _Optional[float] = ..., lucroLiquido: _Optional[float] = ..., descontoValor: _Optional[float] = ..., descontoAplicado: _Optional[_Union[DescontoAplicadosModel, _Mapping]] = ..., descontoRateado: _Optional[float] = ..., acrescimoValor: _Optional[float] = ..., subtotal: _Optional[float] = ..., total: _Optional[float] = ..., compostoId: _Optional[str] = ..., is_recurring: _Optional[bool] = ..., composto: _Optional[bool] = ..., composicao: _Optional[_Iterable[_Union[ComposicaoServico, _Mapping]]] = ..., diasGarantia: _Optional[float] = ..., dataFimGarantia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., comissao_manual: _Optional[bool] = ..., categoria: _Optional[_Union[ServicoCategoria, str]] = ..., hora_inicio: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., hora_fim: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., numero_item: _Optional[int] = ..., observacao: _Optional[str] = ...) -> None: ...
+    recompra_dias: int
+    recompra_em: _timestamp_pb2.Timestamp
+    def __init__(self, id: _Optional[str] = ..., createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., pedidoId: _Optional[str] = ..., servicoId: _Optional[str] = ..., servicoNome: _Optional[str] = ..., codigo: _Optional[str] = ..., un: _Optional[str] = ..., obs: _Optional[str] = ..., tecnicoId: _Optional[str] = ..., tecnicoNome: _Optional[str] = ..., comissaoValor: _Optional[float] = ..., comissaoPercentual: _Optional[float] = ..., repasseValor: _Optional[float] = ..., quantidade: _Optional[float] = ..., valorUnitario: _Optional[float] = ..., custo: _Optional[float] = ..., lucroBruto: _Optional[float] = ..., lucroLiquido: _Optional[float] = ..., descontoValor: _Optional[float] = ..., descontoAplicado: _Optional[_Union[DescontoAplicadosModel, _Mapping]] = ..., descontoRateado: _Optional[float] = ..., acrescimoValor: _Optional[float] = ..., subtotal: _Optional[float] = ..., total: _Optional[float] = ..., compostoId: _Optional[str] = ..., is_recurring: _Optional[bool] = ..., composto: _Optional[bool] = ..., composicao: _Optional[_Iterable[_Union[ComposicaoServico, _Mapping]]] = ..., diasGarantia: _Optional[float] = ..., dataFimGarantia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., comissao_manual: _Optional[bool] = ..., categoria: _Optional[_Union[ServicoCategoria, str]] = ..., hora_inicio: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., hora_fim: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., numero_item: _Optional[int] = ..., observacao: _Optional[str] = ..., recompra_dias: _Optional[int] = ..., recompra_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class ComposicaoServico(_message.Message):
     __slots__ = ("id", "item_id", "tipo", "nome", "quantidade", "un", "valor_unitario", "total", "codigo")

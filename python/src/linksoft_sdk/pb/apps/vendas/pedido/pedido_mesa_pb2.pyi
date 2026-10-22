@@ -33,6 +33,7 @@ class PedidoEventType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     PEDIDO_EVENT_TYPE_REMINDER_SENT: _ClassVar[PedidoEventType]
     PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE: _ClassVar[PedidoEventType]
     PEDIDO_EVENT_TYPE_RECEITA_ALTERADA: _ClassVar[PedidoEventType]
+    PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER: _ClassVar[PedidoEventType]
 CONSUMPTION_STATUS_UNSPECIFIED: ConsumptionStatus
 CONSUMPTION_STATUS_FREE: ConsumptionStatus
 CONSUMPTION_STATUS_OCCUPIED: ConsumptionStatus
@@ -52,6 +53,7 @@ PEDIDO_EVENT_TYPE_CUSTOMER_VIEWED: PedidoEventType
 PEDIDO_EVENT_TYPE_REMINDER_SENT: PedidoEventType
 PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE: PedidoEventType
 PEDIDO_EVENT_TYPE_RECEITA_ALTERADA: PedidoEventType
+PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER: PedidoEventType
 
 class ConsumptionControl(_message.Message):
     __slots__ = ("type", "number", "sector", "sector_name", "display_name", "opened_at", "elapsed_time", "status", "reservation_id", "guests_count", "closing_requested", "nfc_uid", "released_at")

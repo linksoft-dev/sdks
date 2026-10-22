@@ -80,6 +80,36 @@ class PedidoServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoResponse.FromString,
                 _registered_method=True)
+        self.ListRepurchases = channel.unary_unary(
+                '/pedido.PedidoService/ListRepurchases',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ListRepurchasesRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ListRepurchasesResponse.FromString,
+                _registered_method=True)
+        self.SendRepurchaseReminder = channel.unary_unary(
+                '/pedido.PedidoService/SendRepurchaseReminder',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendRepurchaseReminderRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendRepurchaseReminderResponse.FromString,
+                _registered_method=True)
+        self.DismissRepurchaseReminder = channel.unary_unary(
+                '/pedido.PedidoService/DismissRepurchaseReminder',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DismissRepurchaseReminderRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DismissRepurchaseReminderResponse.FromString,
+                _registered_method=True)
+        self.PostponeRepurchaseReminder = channel.unary_unary(
+                '/pedido.PedidoService/PostponeRepurchaseReminder',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PostponeRepurchaseReminderRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PostponeRepurchaseReminderResponse.FromString,
+                _registered_method=True)
+        self.ReactivateRepurchaseReminder = channel.unary_unary(
+                '/pedido.PedidoService/ReactivateRepurchaseReminder',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ReactivateRepurchaseReminderRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ReactivateRepurchaseReminderResponse.FromString,
+                _registered_method=True)
+        self.PreviewRepurchaseReminder = channel.unary_unary(
+                '/pedido.PedidoService/PreviewRepurchaseReminder',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderResponse.FromString,
+                _registered_method=True)
         self.AddProduct = channel.unary_unary(
                 '/pedido.PedidoService/AddProduct',
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.AddProductRequest.SerializeToString,
@@ -347,6 +377,51 @@ class PedidoServiceServicer:
 
     def Clone(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListRepurchases(self, request, context):
+        """Itens vendidos com lembrete de recompra no período, um por linha, com o que já aconteceu
+        com cada lembrete.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SendRepurchaseReminder(self, request, context):
+        """Envia agora ao cliente o lembrete de recompra dos itens, pelo WhatsApp ou, sem celular, pelo
+        e-mail, sem esperar a data.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DismissRepurchaseReminder(self, request, context):
+        """Dispensa o lembrete de recompra dos itens: nada é enviado e o motivo fica no histórico da venda.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PostponeRepurchaseReminder(self, request, context):
+        """Adia o lembrete de recompra dos itens alguns dias. O item cujo envio não saiu volta para a fila
+        na nova data.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ReactivateRepurchaseReminder(self, request, context):
+        """Volta para a fila o lembrete de recompra dispensado.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PreviewRepurchaseReminder(self, request, context):
+        """Mostra a mensagem que o cliente recebe pelo lembrete de recompra dos itens, sem enviar.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -667,6 +742,36 @@ def add_PedidoServiceServicer_to_server(servicer, server):
                     servicer.Clone,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoResponse.SerializeToString,
+            ),
+            'ListRepurchases': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListRepurchases,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ListRepurchasesRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ListRepurchasesResponse.SerializeToString,
+            ),
+            'SendRepurchaseReminder': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendRepurchaseReminder,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendRepurchaseReminderRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendRepurchaseReminderResponse.SerializeToString,
+            ),
+            'DismissRepurchaseReminder': grpc.unary_unary_rpc_method_handler(
+                    servicer.DismissRepurchaseReminder,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DismissRepurchaseReminderRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DismissRepurchaseReminderResponse.SerializeToString,
+            ),
+            'PostponeRepurchaseReminder': grpc.unary_unary_rpc_method_handler(
+                    servicer.PostponeRepurchaseReminder,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PostponeRepurchaseReminderRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PostponeRepurchaseReminderResponse.SerializeToString,
+            ),
+            'ReactivateRepurchaseReminder': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReactivateRepurchaseReminder,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ReactivateRepurchaseReminderRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.ReactivateRepurchaseReminderResponse.SerializeToString,
+            ),
+            'PreviewRepurchaseReminder': grpc.unary_unary_rpc_method_handler(
+                    servicer.PreviewRepurchaseReminder,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderResponse.SerializeToString,
             ),
             'AddProduct': grpc.unary_unary_rpc_method_handler(
                     servicer.AddProduct,
@@ -1206,6 +1311,168 @@ class PedidoService:
             '/pedido.PedidoService/Clone',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.ClonePedidoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListRepurchases(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/ListRepurchases',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.ListRepurchasesRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.ListRepurchasesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SendRepurchaseReminder(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/SendRepurchaseReminder',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendRepurchaseReminderRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.SendRepurchaseReminderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DismissRepurchaseReminder(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/DismissRepurchaseReminder',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.DismissRepurchaseReminderRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.DismissRepurchaseReminderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PostponeRepurchaseReminder(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/PostponeRepurchaseReminder',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.PostponeRepurchaseReminderRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.PostponeRepurchaseReminderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ReactivateRepurchaseReminder(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/ReactivateRepurchaseReminder',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.ReactivateRepurchaseReminderRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.ReactivateRepurchaseReminderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PreviewRepurchaseReminder(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/PreviewRepurchaseReminder',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderResponse.FromString,
             options,
             channel_credentials,
             insecure,

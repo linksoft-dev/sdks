@@ -19,56 +19,62 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PedidoService_Create_FullMethodName                     = "/pedido.PedidoService/Create"
-	PedidoService_CreateValidated_FullMethodName            = "/pedido.PedidoService/CreateValidated"
-	PedidoService_Update_FullMethodName                     = "/pedido.PedidoService/Update"
-	PedidoService_SetAcompanhamento_FullMethodName          = "/pedido.PedidoService/SetAcompanhamento"
-	PedidoService_ReorderItems_FullMethodName               = "/pedido.PedidoService/ReorderItems"
-	PedidoService_Delete_FullMethodName                     = "/pedido.PedidoService/Delete"
-	PedidoService_Get_FullMethodName                        = "/pedido.PedidoService/Get"
-	PedidoService_List_FullMethodName                       = "/pedido.PedidoService/List"
-	PedidoService_Report_FullMethodName                     = "/pedido.PedidoService/Report"
-	PedidoService_Print_FullMethodName                      = "/pedido.PedidoService/Print"
-	PedidoService_GenerateFromOrcamento_FullMethodName      = "/pedido.PedidoService/GenerateFromOrcamento"
-	PedidoService_Cancel_FullMethodName                     = "/pedido.PedidoService/Cancel"
-	PedidoService_Clone_FullMethodName                      = "/pedido.PedidoService/Clone"
-	PedidoService_AddProduct_FullMethodName                 = "/pedido.PedidoService/AddProduct"
-	PedidoService_UpdateProduct_FullMethodName              = "/pedido.PedidoService/UpdateProduct"
-	PedidoService_DeleteProduct_FullMethodName              = "/pedido.PedidoService/DeleteProduct"
-	PedidoService_AddService_FullMethodName                 = "/pedido.PedidoService/AddService"
-	PedidoService_UpdateService_FullMethodName              = "/pedido.PedidoService/UpdateService"
-	PedidoService_DeleteService_FullMethodName              = "/pedido.PedidoService/DeleteService"
-	PedidoService_AddPayment_FullMethodName                 = "/pedido.PedidoService/AddPayment"
-	PedidoService_DeletePayment_FullMethodName              = "/pedido.PedidoService/DeletePayment"
-	PedidoService_CancelPayment_FullMethodName              = "/pedido.PedidoService/CancelPayment"
-	PedidoService_EffectuatePayments_FullMethodName         = "/pedido.PedidoService/EffectuatePayments"
-	PedidoService_SendByEmail_FullMethodName                = "/pedido.PedidoService/SendByEmail"
-	PedidoService_AplicaTabelaPreco_FullMethodName          = "/pedido.PedidoService/AplicaTabelaPreco"
-	PedidoService_DfeDanfe_FullMethodName                   = "/pedido.PedidoService/DfeDanfe"
-	PedidoService_Import_FullMethodName                     = "/pedido.PedidoService/Import"
-	PedidoService_MesclaPedidos_FullMethodName              = "/pedido.PedidoService/MesclaPedidos"
-	PedidoService_AddPedidoVinculado_FullMethodName         = "/pedido.PedidoService/AddPedidoVinculado"
-	PedidoService_DeletePedidoVinculado_FullMethodName      = "/pedido.PedidoService/DeletePedidoVinculado"
-	PedidoService_EnviaNFe_FullMethodName                   = "/pedido.PedidoService/EnviaNFe"
-	PedidoService_SincronizaNFe_FullMethodName              = "/pedido.PedidoService/SincronizaNFe"
-	PedidoService_SincronizaPessoa_FullMethodName           = "/pedido.PedidoService/SincronizaPessoa"
-	PedidoService_VinculaNFManual_FullMethodName            = "/pedido.PedidoService/VinculaNFManual"
-	PedidoService_SendPaymentLink_FullMethodName            = "/pedido.PedidoService/SendPaymentLink"
-	PedidoService_SimulaCobranca_FullMethodName             = "/pedido.PedidoService/SimulaCobranca"
-	PedidoService_CorrecaoMovimentacao_FullMethodName       = "/pedido.PedidoService/CorrecaoMovimentacao"
-	PedidoService_ConfirmOrderReceipt_FullMethodName        = "/pedido.PedidoService/ConfirmOrderReceipt"
-	PedidoService_AddFiles_FullMethodName                   = "/pedido.PedidoService/AddFiles"
-	PedidoService_RemoveFiles_FullMethodName                = "/pedido.PedidoService/RemoveFiles"
-	PedidoService_SetFileApproval_FullMethodName            = "/pedido.PedidoService/SetFileApproval"
-	PedidoService_Export_FullMethodName                     = "/pedido.PedidoService/Export"
-	PedidoService_SendReviewEmail_FullMethodName            = "/pedido.PedidoService/SendReviewEmail"
-	PedidoService_RecalcularComissao_FullMethodName         = "/pedido.PedidoService/RecalcularComissao"
-	PedidoService_Renumber_FullMethodName                   = "/pedido.PedidoService/Renumber"
-	PedidoService_EnviarProducao_FullMethodName             = "/pedido.PedidoService/EnviarProducao"
-	PedidoService_ConfirmarImpressaoProducao_FullMethodName = "/pedido.PedidoService/ConfirmarImpressaoProducao"
-	PedidoService_MarcarItemEntregue_FullMethodName         = "/pedido.PedidoService/MarcarItemEntregue"
-	PedidoService_GetQuickProdutos_FullMethodName           = "/pedido.PedidoService/GetQuickProdutos"
-	PedidoService_ResumoVendasPorVendedor_FullMethodName    = "/pedido.PedidoService/ResumoVendasPorVendedor"
+	PedidoService_Create_FullMethodName                       = "/pedido.PedidoService/Create"
+	PedidoService_CreateValidated_FullMethodName              = "/pedido.PedidoService/CreateValidated"
+	PedidoService_Update_FullMethodName                       = "/pedido.PedidoService/Update"
+	PedidoService_SetAcompanhamento_FullMethodName            = "/pedido.PedidoService/SetAcompanhamento"
+	PedidoService_ReorderItems_FullMethodName                 = "/pedido.PedidoService/ReorderItems"
+	PedidoService_Delete_FullMethodName                       = "/pedido.PedidoService/Delete"
+	PedidoService_Get_FullMethodName                          = "/pedido.PedidoService/Get"
+	PedidoService_List_FullMethodName                         = "/pedido.PedidoService/List"
+	PedidoService_Report_FullMethodName                       = "/pedido.PedidoService/Report"
+	PedidoService_Print_FullMethodName                        = "/pedido.PedidoService/Print"
+	PedidoService_GenerateFromOrcamento_FullMethodName        = "/pedido.PedidoService/GenerateFromOrcamento"
+	PedidoService_Cancel_FullMethodName                       = "/pedido.PedidoService/Cancel"
+	PedidoService_Clone_FullMethodName                        = "/pedido.PedidoService/Clone"
+	PedidoService_ListRepurchases_FullMethodName              = "/pedido.PedidoService/ListRepurchases"
+	PedidoService_SendRepurchaseReminder_FullMethodName       = "/pedido.PedidoService/SendRepurchaseReminder"
+	PedidoService_DismissRepurchaseReminder_FullMethodName    = "/pedido.PedidoService/DismissRepurchaseReminder"
+	PedidoService_PostponeRepurchaseReminder_FullMethodName   = "/pedido.PedidoService/PostponeRepurchaseReminder"
+	PedidoService_ReactivateRepurchaseReminder_FullMethodName = "/pedido.PedidoService/ReactivateRepurchaseReminder"
+	PedidoService_PreviewRepurchaseReminder_FullMethodName    = "/pedido.PedidoService/PreviewRepurchaseReminder"
+	PedidoService_AddProduct_FullMethodName                   = "/pedido.PedidoService/AddProduct"
+	PedidoService_UpdateProduct_FullMethodName                = "/pedido.PedidoService/UpdateProduct"
+	PedidoService_DeleteProduct_FullMethodName                = "/pedido.PedidoService/DeleteProduct"
+	PedidoService_AddService_FullMethodName                   = "/pedido.PedidoService/AddService"
+	PedidoService_UpdateService_FullMethodName                = "/pedido.PedidoService/UpdateService"
+	PedidoService_DeleteService_FullMethodName                = "/pedido.PedidoService/DeleteService"
+	PedidoService_AddPayment_FullMethodName                   = "/pedido.PedidoService/AddPayment"
+	PedidoService_DeletePayment_FullMethodName                = "/pedido.PedidoService/DeletePayment"
+	PedidoService_CancelPayment_FullMethodName                = "/pedido.PedidoService/CancelPayment"
+	PedidoService_EffectuatePayments_FullMethodName           = "/pedido.PedidoService/EffectuatePayments"
+	PedidoService_SendByEmail_FullMethodName                  = "/pedido.PedidoService/SendByEmail"
+	PedidoService_AplicaTabelaPreco_FullMethodName            = "/pedido.PedidoService/AplicaTabelaPreco"
+	PedidoService_DfeDanfe_FullMethodName                     = "/pedido.PedidoService/DfeDanfe"
+	PedidoService_Import_FullMethodName                       = "/pedido.PedidoService/Import"
+	PedidoService_MesclaPedidos_FullMethodName                = "/pedido.PedidoService/MesclaPedidos"
+	PedidoService_AddPedidoVinculado_FullMethodName           = "/pedido.PedidoService/AddPedidoVinculado"
+	PedidoService_DeletePedidoVinculado_FullMethodName        = "/pedido.PedidoService/DeletePedidoVinculado"
+	PedidoService_EnviaNFe_FullMethodName                     = "/pedido.PedidoService/EnviaNFe"
+	PedidoService_SincronizaNFe_FullMethodName                = "/pedido.PedidoService/SincronizaNFe"
+	PedidoService_SincronizaPessoa_FullMethodName             = "/pedido.PedidoService/SincronizaPessoa"
+	PedidoService_VinculaNFManual_FullMethodName              = "/pedido.PedidoService/VinculaNFManual"
+	PedidoService_SendPaymentLink_FullMethodName              = "/pedido.PedidoService/SendPaymentLink"
+	PedidoService_SimulaCobranca_FullMethodName               = "/pedido.PedidoService/SimulaCobranca"
+	PedidoService_CorrecaoMovimentacao_FullMethodName         = "/pedido.PedidoService/CorrecaoMovimentacao"
+	PedidoService_ConfirmOrderReceipt_FullMethodName          = "/pedido.PedidoService/ConfirmOrderReceipt"
+	PedidoService_AddFiles_FullMethodName                     = "/pedido.PedidoService/AddFiles"
+	PedidoService_RemoveFiles_FullMethodName                  = "/pedido.PedidoService/RemoveFiles"
+	PedidoService_SetFileApproval_FullMethodName              = "/pedido.PedidoService/SetFileApproval"
+	PedidoService_Export_FullMethodName                       = "/pedido.PedidoService/Export"
+	PedidoService_SendReviewEmail_FullMethodName              = "/pedido.PedidoService/SendReviewEmail"
+	PedidoService_RecalcularComissao_FullMethodName           = "/pedido.PedidoService/RecalcularComissao"
+	PedidoService_Renumber_FullMethodName                     = "/pedido.PedidoService/Renumber"
+	PedidoService_EnviarProducao_FullMethodName               = "/pedido.PedidoService/EnviarProducao"
+	PedidoService_ConfirmarImpressaoProducao_FullMethodName   = "/pedido.PedidoService/ConfirmarImpressaoProducao"
+	PedidoService_MarcarItemEntregue_FullMethodName           = "/pedido.PedidoService/MarcarItemEntregue"
+	PedidoService_GetQuickProdutos_FullMethodName             = "/pedido.PedidoService/GetQuickProdutos"
+	PedidoService_ResumoVendasPorVendedor_FullMethodName      = "/pedido.PedidoService/ResumoVendasPorVendedor"
 )
 
 // PedidoServiceClient is the client API for PedidoService service.
@@ -92,6 +98,21 @@ type PedidoServiceClient interface {
 	GenerateFromOrcamento(ctx context.Context, in *GenerateFromOrcamentoRequest, opts ...grpc.CallOption) (*GenerateFromOrcamentoResponse, error)
 	Cancel(ctx context.Context, in *CancelPedidoRequest, opts ...grpc.CallOption) (*CancelPedidoResponse, error)
 	Clone(ctx context.Context, in *ClonePedidoRequest, opts ...grpc.CallOption) (*ClonePedidoResponse, error)
+	// Itens vendidos com lembrete de recompra no período, um por linha, com o que já aconteceu
+	// com cada lembrete.
+	ListRepurchases(ctx context.Context, in *ListRepurchasesRequest, opts ...grpc.CallOption) (*ListRepurchasesResponse, error)
+	// Envia agora ao cliente o lembrete de recompra dos itens, pelo WhatsApp ou, sem celular, pelo
+	// e-mail, sem esperar a data.
+	SendRepurchaseReminder(ctx context.Context, in *SendRepurchaseReminderRequest, opts ...grpc.CallOption) (*SendRepurchaseReminderResponse, error)
+	// Dispensa o lembrete de recompra dos itens: nada é enviado e o motivo fica no histórico da venda.
+	DismissRepurchaseReminder(ctx context.Context, in *DismissRepurchaseReminderRequest, opts ...grpc.CallOption) (*DismissRepurchaseReminderResponse, error)
+	// Adia o lembrete de recompra dos itens alguns dias. O item cujo envio não saiu volta para a fila
+	// na nova data.
+	PostponeRepurchaseReminder(ctx context.Context, in *PostponeRepurchaseReminderRequest, opts ...grpc.CallOption) (*PostponeRepurchaseReminderResponse, error)
+	// Volta para a fila o lembrete de recompra dispensado.
+	ReactivateRepurchaseReminder(ctx context.Context, in *ReactivateRepurchaseReminderRequest, opts ...grpc.CallOption) (*ReactivateRepurchaseReminderResponse, error)
+	// Mostra a mensagem que o cliente recebe pelo lembrete de recompra dos itens, sem enviar.
+	PreviewRepurchaseReminder(ctx context.Context, in *PreviewRepurchaseReminderRequest, opts ...grpc.CallOption) (*PreviewRepurchaseReminderResponse, error)
 	AddProduct(ctx context.Context, in *AddProductRequest, opts ...grpc.CallOption) (*AddProductResponse, error)
 	UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*UpdateProductResponse, error)
 	DeleteProduct(ctx context.Context, in *DeleteProductRequest, opts ...grpc.CallOption) (*DeleteProductResponse, error)
@@ -290,6 +311,66 @@ func (c *pedidoServiceClient) Clone(ctx context.Context, in *ClonePedidoRequest,
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ClonePedidoResponse)
 	err := c.cc.Invoke(ctx, PedidoService_Clone_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidoServiceClient) ListRepurchases(ctx context.Context, in *ListRepurchasesRequest, opts ...grpc.CallOption) (*ListRepurchasesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListRepurchasesResponse)
+	err := c.cc.Invoke(ctx, PedidoService_ListRepurchases_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidoServiceClient) SendRepurchaseReminder(ctx context.Context, in *SendRepurchaseReminderRequest, opts ...grpc.CallOption) (*SendRepurchaseReminderResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendRepurchaseReminderResponse)
+	err := c.cc.Invoke(ctx, PedidoService_SendRepurchaseReminder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidoServiceClient) DismissRepurchaseReminder(ctx context.Context, in *DismissRepurchaseReminderRequest, opts ...grpc.CallOption) (*DismissRepurchaseReminderResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DismissRepurchaseReminderResponse)
+	err := c.cc.Invoke(ctx, PedidoService_DismissRepurchaseReminder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidoServiceClient) PostponeRepurchaseReminder(ctx context.Context, in *PostponeRepurchaseReminderRequest, opts ...grpc.CallOption) (*PostponeRepurchaseReminderResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PostponeRepurchaseReminderResponse)
+	err := c.cc.Invoke(ctx, PedidoService_PostponeRepurchaseReminder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidoServiceClient) ReactivateRepurchaseReminder(ctx context.Context, in *ReactivateRepurchaseReminderRequest, opts ...grpc.CallOption) (*ReactivateRepurchaseReminderResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ReactivateRepurchaseReminderResponse)
+	err := c.cc.Invoke(ctx, PedidoService_ReactivateRepurchaseReminder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidoServiceClient) PreviewRepurchaseReminder(ctx context.Context, in *PreviewRepurchaseReminderRequest, opts ...grpc.CallOption) (*PreviewRepurchaseReminderResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PreviewRepurchaseReminderResponse)
+	err := c.cc.Invoke(ctx, PedidoService_PreviewRepurchaseReminder_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -687,6 +768,21 @@ type PedidoServiceServer interface {
 	GenerateFromOrcamento(context.Context, *GenerateFromOrcamentoRequest) (*GenerateFromOrcamentoResponse, error)
 	Cancel(context.Context, *CancelPedidoRequest) (*CancelPedidoResponse, error)
 	Clone(context.Context, *ClonePedidoRequest) (*ClonePedidoResponse, error)
+	// Itens vendidos com lembrete de recompra no período, um por linha, com o que já aconteceu
+	// com cada lembrete.
+	ListRepurchases(context.Context, *ListRepurchasesRequest) (*ListRepurchasesResponse, error)
+	// Envia agora ao cliente o lembrete de recompra dos itens, pelo WhatsApp ou, sem celular, pelo
+	// e-mail, sem esperar a data.
+	SendRepurchaseReminder(context.Context, *SendRepurchaseReminderRequest) (*SendRepurchaseReminderResponse, error)
+	// Dispensa o lembrete de recompra dos itens: nada é enviado e o motivo fica no histórico da venda.
+	DismissRepurchaseReminder(context.Context, *DismissRepurchaseReminderRequest) (*DismissRepurchaseReminderResponse, error)
+	// Adia o lembrete de recompra dos itens alguns dias. O item cujo envio não saiu volta para a fila
+	// na nova data.
+	PostponeRepurchaseReminder(context.Context, *PostponeRepurchaseReminderRequest) (*PostponeRepurchaseReminderResponse, error)
+	// Volta para a fila o lembrete de recompra dispensado.
+	ReactivateRepurchaseReminder(context.Context, *ReactivateRepurchaseReminderRequest) (*ReactivateRepurchaseReminderResponse, error)
+	// Mostra a mensagem que o cliente recebe pelo lembrete de recompra dos itens, sem enviar.
+	PreviewRepurchaseReminder(context.Context, *PreviewRepurchaseReminderRequest) (*PreviewRepurchaseReminderResponse, error)
 	AddProduct(context.Context, *AddProductRequest) (*AddProductResponse, error)
 	UpdateProduct(context.Context, *UpdateProductRequest) (*UpdateProductResponse, error)
 	DeleteProduct(context.Context, *DeleteProductRequest) (*DeleteProductResponse, error)
@@ -799,6 +895,24 @@ func (UnimplementedPedidoServiceServer) Cancel(context.Context, *CancelPedidoReq
 }
 func (UnimplementedPedidoServiceServer) Clone(context.Context, *ClonePedidoRequest) (*ClonePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Clone not implemented")
+}
+func (UnimplementedPedidoServiceServer) ListRepurchases(context.Context, *ListRepurchasesRequest) (*ListRepurchasesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListRepurchases not implemented")
+}
+func (UnimplementedPedidoServiceServer) SendRepurchaseReminder(context.Context, *SendRepurchaseReminderRequest) (*SendRepurchaseReminderResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SendRepurchaseReminder not implemented")
+}
+func (UnimplementedPedidoServiceServer) DismissRepurchaseReminder(context.Context, *DismissRepurchaseReminderRequest) (*DismissRepurchaseReminderResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DismissRepurchaseReminder not implemented")
+}
+func (UnimplementedPedidoServiceServer) PostponeRepurchaseReminder(context.Context, *PostponeRepurchaseReminderRequest) (*PostponeRepurchaseReminderResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PostponeRepurchaseReminder not implemented")
+}
+func (UnimplementedPedidoServiceServer) ReactivateRepurchaseReminder(context.Context, *ReactivateRepurchaseReminderRequest) (*ReactivateRepurchaseReminderResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ReactivateRepurchaseReminder not implemented")
+}
+func (UnimplementedPedidoServiceServer) PreviewRepurchaseReminder(context.Context, *PreviewRepurchaseReminderRequest) (*PreviewRepurchaseReminderResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PreviewRepurchaseReminder not implemented")
 }
 func (UnimplementedPedidoServiceServer) AddProduct(context.Context, *AddProductRequest) (*AddProductResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddProduct not implemented")
@@ -1162,6 +1276,114 @@ func _PedidoService_Clone_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PedidoServiceServer).Clone(ctx, req.(*ClonePedidoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidoService_ListRepurchases_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRepurchasesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).ListRepurchases(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_ListRepurchases_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).ListRepurchases(ctx, req.(*ListRepurchasesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidoService_SendRepurchaseReminder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendRepurchaseReminderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).SendRepurchaseReminder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_SendRepurchaseReminder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).SendRepurchaseReminder(ctx, req.(*SendRepurchaseReminderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidoService_DismissRepurchaseReminder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DismissRepurchaseReminderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).DismissRepurchaseReminder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_DismissRepurchaseReminder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).DismissRepurchaseReminder(ctx, req.(*DismissRepurchaseReminderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidoService_PostponeRepurchaseReminder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostponeRepurchaseReminderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).PostponeRepurchaseReminder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_PostponeRepurchaseReminder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).PostponeRepurchaseReminder(ctx, req.(*PostponeRepurchaseReminderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidoService_ReactivateRepurchaseReminder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReactivateRepurchaseReminderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).ReactivateRepurchaseReminder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_ReactivateRepurchaseReminder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).ReactivateRepurchaseReminder(ctx, req.(*ReactivateRepurchaseReminderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidoService_PreviewRepurchaseReminder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PreviewRepurchaseReminderRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).PreviewRepurchaseReminder(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_PreviewRepurchaseReminder_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).PreviewRepurchaseReminder(ctx, req.(*PreviewRepurchaseReminderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1890,6 +2112,30 @@ var PedidoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Clone",
 			Handler:    _PedidoService_Clone_Handler,
+		},
+		{
+			MethodName: "ListRepurchases",
+			Handler:    _PedidoService_ListRepurchases_Handler,
+		},
+		{
+			MethodName: "SendRepurchaseReminder",
+			Handler:    _PedidoService_SendRepurchaseReminder_Handler,
+		},
+		{
+			MethodName: "DismissRepurchaseReminder",
+			Handler:    _PedidoService_DismissRepurchaseReminder_Handler,
+		},
+		{
+			MethodName: "PostponeRepurchaseReminder",
+			Handler:    _PedidoService_PostponeRepurchaseReminder_Handler,
+		},
+		{
+			MethodName: "ReactivateRepurchaseReminder",
+			Handler:    _PedidoService_ReactivateRepurchaseReminder_Handler,
+		},
+		{
+			MethodName: "PreviewRepurchaseReminder",
+			Handler:    _PedidoService_PreviewRepurchaseReminder_Handler,
 		},
 		{
 			MethodName: "AddProduct",
