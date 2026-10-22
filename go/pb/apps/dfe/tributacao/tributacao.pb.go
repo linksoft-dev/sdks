@@ -1019,10 +1019,13 @@ func (x *Tributacao) GetInformacoesComplementares() string {
 // ICMS de uma UF: alíquota interna e, quando o estado trata a situação de forma própria,
 // o CST e a redução de base.
 type IcmsPorUf struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Aliquota      float64                `protobuf:"fixed64,1,opt,name=aliquota,proto3" json:"aliquota,omitempty"`
-	Cst           string                 `protobuf:"bytes,2,opt,name=cst,proto3" json:"cst,omitempty"`
-	ReducaoBase   float64                `protobuf:"fixed64,3,opt,name=reducao_base,json=reducaoBase,proto3" json:"reducao_base,omitempty"`
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Aliquota    float64                `protobuf:"fixed64,1,opt,name=aliquota,proto3" json:"aliquota,omitempty"`
+	Cst         string                 `protobuf:"bytes,2,opt,name=cst,proto3" json:"cst,omitempty"`
+	ReducaoBase float64                `protobuf:"fixed64,3,opt,name=reducao_base,json=reducaoBase,proto3" json:"reducao_base,omitempty"`
+	// Alíquota do ICMS retido por substituição tributária: é a alíquota interna do estado,
+	// aplicada sobre a base da ST. Só entra no documento nas situações que destacam ST.
+	StAliquota    float64 `protobuf:"fixed64,4,opt,name=st_aliquota,json=stAliquota,proto3" json:"st_aliquota,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1074,6 +1077,13 @@ func (x *IcmsPorUf) GetCst() string {
 func (x *IcmsPorUf) GetReducaoBase() float64 {
 	if x != nil {
 		return x.ReducaoBase
+	}
+	return 0
+}
+
+func (x *IcmsPorUf) GetStAliquota() float64 {
+	if x != nil {
+		return x.StAliquota
 	}
 	return 0
 }
@@ -2138,11 +2148,13 @@ const file_apps_dfe_tributacao_tributacao_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\v2\x19.tributacao.IcmsPorRegimeR\x05value:\x028\x01\x1ae\n" +
 	"\x17PisCofinsPorRegimeEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x124\n" +
-	"\x05value\x18\x02 \x01(\v2\x1e.tributacao.PisCofinsPorRegimeR\x05value:\x028\x01:\x06\xc0>\x01\xd0>\x01\"\\\n" +
+	"\x05value\x18\x02 \x01(\v2\x1e.tributacao.PisCofinsPorRegimeR\x05value:\x028\x01:\x06\xc0>\x01\xd0>\x01\"}\n" +
 	"\tIcmsPorUf\x12\x1a\n" +
 	"\baliquota\x18\x01 \x01(\x01R\baliquota\x12\x10\n" +
 	"\x03cst\x18\x02 \x01(\tR\x03cst\x12!\n" +
-	"\freducao_base\x18\x03 \x01(\x01R\vreducaoBase\"!\n" +
+	"\freducao_base\x18\x03 \x01(\x01R\vreducaoBase\x12\x1f\n" +
+	"\vst_aliquota\x18\x04 \x01(\x01R\n" +
+	"stAliquota\"!\n" +
 	"\rIcmsPorRegime\x12\x10\n" +
 	"\x03cst\x18\x01 \x01(\tR\x03cst\"r\n" +
 	"\x12PisCofinsPorRegime\x12\x10\n" +
