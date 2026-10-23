@@ -45,6 +45,7 @@ const (
 	NfeService_UpdateVolume_FullMethodName             = "/nfe.NfeService/UpdateVolume"
 	NfeService_DeleteVolume_FullMethodName             = "/nfe.NfeService/DeleteVolume"
 	NfeService_Duplica_FullMethodName                  = "/nfe.NfeService/Duplica"
+	NfeService_AlteracaoConjuntaItens_FullMethodName   = "/nfe.NfeService/AlteracaoConjuntaItens"
 	NfeService_NfeImportaXml_FullMethodName            = "/nfe.NfeService/NfeImportaXml"
 	NfeService_NfeEnviaXml_FullMethodName              = "/nfe.NfeService/NfeEnviaXml"
 	NfeService_EnviaXmlsPeriodo_FullMethodName         = "/nfe.NfeService/EnviaXmlsPeriodo"
@@ -91,6 +92,8 @@ type NfeServiceClient interface {
 	UpdateVolume(ctx context.Context, in *UpdateVolumeRequest, opts ...grpc.CallOption) (*UpdateVolumeResponse, error)
 	DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*DeleteVolumeResponse, error)
 	Duplica(ctx context.Context, in *DuplicaRequest, opts ...grpc.CallOption) (*DuplicaResponse, error)
+	// Grava a mesma tributação em vários itens da nota de uma vez e recalcula a nota.
+	AlteracaoConjuntaItens(ctx context.Context, in *AlteracaoConjuntaItensRequest, opts ...grpc.CallOption) (*AlteracaoConjuntaItensResponse, error)
 	// importa XML das nfe, suporte para arquivo .xml, .zip, rar e .gz, estando ou nao em pastas e subpastas,
 	// o sistema da suporte a vários formatos
 	NfeImportaXml(ctx context.Context, in *NfeImportaXmlRequest, opts ...grpc.CallOption) (*NfeImportaXmlResponse, error)
@@ -377,6 +380,16 @@ func (c *nfeServiceClient) Duplica(ctx context.Context, in *DuplicaRequest, opts
 	return out, nil
 }
 
+func (c *nfeServiceClient) AlteracaoConjuntaItens(ctx context.Context, in *AlteracaoConjuntaItensRequest, opts ...grpc.CallOption) (*AlteracaoConjuntaItensResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AlteracaoConjuntaItensResponse)
+	err := c.cc.Invoke(ctx, NfeService_AlteracaoConjuntaItens_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *nfeServiceClient) NfeImportaXml(ctx context.Context, in *NfeImportaXmlRequest, opts ...grpc.CallOption) (*NfeImportaXmlResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(NfeImportaXmlResponse)
@@ -529,6 +542,8 @@ type NfeServiceServer interface {
 	UpdateVolume(context.Context, *UpdateVolumeRequest) (*UpdateVolumeResponse, error)
 	DeleteVolume(context.Context, *DeleteVolumeRequest) (*DeleteVolumeResponse, error)
 	Duplica(context.Context, *DuplicaRequest) (*DuplicaResponse, error)
+	// Grava a mesma tributação em vários itens da nota de uma vez e recalcula a nota.
+	AlteracaoConjuntaItens(context.Context, *AlteracaoConjuntaItensRequest) (*AlteracaoConjuntaItensResponse, error)
 	// importa XML das nfe, suporte para arquivo .xml, .zip, rar e .gz, estando ou nao em pastas e subpastas,
 	// o sistema da suporte a vários formatos
 	NfeImportaXml(context.Context, *NfeImportaXmlRequest) (*NfeImportaXmlResponse, error)
@@ -632,6 +647,9 @@ func (UnimplementedNfeServiceServer) DeleteVolume(context.Context, *DeleteVolume
 }
 func (UnimplementedNfeServiceServer) Duplica(context.Context, *DuplicaRequest) (*DuplicaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Duplica not implemented")
+}
+func (UnimplementedNfeServiceServer) AlteracaoConjuntaItens(context.Context, *AlteracaoConjuntaItensRequest) (*AlteracaoConjuntaItensResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AlteracaoConjuntaItens not implemented")
 }
 func (UnimplementedNfeServiceServer) NfeImportaXml(context.Context, *NfeImportaXmlRequest) (*NfeImportaXmlResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method NfeImportaXml not implemented")
@@ -1158,6 +1176,24 @@ func _NfeService_Duplica_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NfeService_AlteracaoConjuntaItens_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AlteracaoConjuntaItensRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NfeServiceServer).AlteracaoConjuntaItens(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NfeService_AlteracaoConjuntaItens_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NfeServiceServer).AlteracaoConjuntaItens(ctx, req.(*AlteracaoConjuntaItensRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NfeService_NfeImportaXml_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NfeImportaXmlRequest)
 	if err := dec(in); err != nil {
@@ -1486,6 +1522,10 @@ var NfeService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NfeService_Duplica_Handler,
 		},
 		{
+			MethodName: "AlteracaoConjuntaItens",
+			Handler:    _NfeService_AlteracaoConjuntaItens_Handler,
+		},
+		{
 			MethodName: "NfeImportaXml",
 			Handler:    _NfeService_NfeImportaXml_Handler,
 		},
@@ -1565,6 +1605,7 @@ const (
 	NfceService_UpdateVolume_FullMethodName             = "/nfe.NfceService/UpdateVolume"
 	NfceService_DeleteVolume_FullMethodName             = "/nfe.NfceService/DeleteVolume"
 	NfceService_Duplica_FullMethodName                  = "/nfe.NfceService/Duplica"
+	NfceService_AlteracaoConjuntaItens_FullMethodName   = "/nfe.NfceService/AlteracaoConjuntaItens"
 	NfceService_NfeImportaXml_FullMethodName            = "/nfe.NfceService/NfeImportaXml"
 	NfceService_NfeEnviaXml_FullMethodName              = "/nfe.NfceService/NfeEnviaXml"
 	NfceService_EnviaXmlsPeriodo_FullMethodName         = "/nfe.NfceService/EnviaXmlsPeriodo"
@@ -1611,6 +1652,8 @@ type NfceServiceClient interface {
 	UpdateVolume(ctx context.Context, in *UpdateVolumeRequest, opts ...grpc.CallOption) (*UpdateVolumeResponse, error)
 	DeleteVolume(ctx context.Context, in *DeleteVolumeRequest, opts ...grpc.CallOption) (*DeleteVolumeResponse, error)
 	Duplica(ctx context.Context, in *DuplicaRequest, opts ...grpc.CallOption) (*DuplicaResponse, error)
+	// Grava a mesma tributação em vários itens da nota de uma vez e recalcula a nota.
+	AlteracaoConjuntaItens(ctx context.Context, in *AlteracaoConjuntaItensRequest, opts ...grpc.CallOption) (*AlteracaoConjuntaItensResponse, error)
 	// importa XML das nfe, suporte para arquivo .xml, .zip, rar e .gz, estando ou nao em pastas e subpastas,
 	// o sistema da suporte a vários formatos
 	NfeImportaXml(ctx context.Context, in *NfeImportaXmlRequest, opts ...grpc.CallOption) (*NfeImportaXmlResponse, error)
@@ -1897,6 +1940,16 @@ func (c *nfceServiceClient) Duplica(ctx context.Context, in *DuplicaRequest, opt
 	return out, nil
 }
 
+func (c *nfceServiceClient) AlteracaoConjuntaItens(ctx context.Context, in *AlteracaoConjuntaItensRequest, opts ...grpc.CallOption) (*AlteracaoConjuntaItensResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AlteracaoConjuntaItensResponse)
+	err := c.cc.Invoke(ctx, NfceService_AlteracaoConjuntaItens_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *nfceServiceClient) NfeImportaXml(ctx context.Context, in *NfeImportaXmlRequest, opts ...grpc.CallOption) (*NfeImportaXmlResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(NfeImportaXmlResponse)
@@ -2049,6 +2102,8 @@ type NfceServiceServer interface {
 	UpdateVolume(context.Context, *UpdateVolumeRequest) (*UpdateVolumeResponse, error)
 	DeleteVolume(context.Context, *DeleteVolumeRequest) (*DeleteVolumeResponse, error)
 	Duplica(context.Context, *DuplicaRequest) (*DuplicaResponse, error)
+	// Grava a mesma tributação em vários itens da nota de uma vez e recalcula a nota.
+	AlteracaoConjuntaItens(context.Context, *AlteracaoConjuntaItensRequest) (*AlteracaoConjuntaItensResponse, error)
 	// importa XML das nfe, suporte para arquivo .xml, .zip, rar e .gz, estando ou nao em pastas e subpastas,
 	// o sistema da suporte a vários formatos
 	NfeImportaXml(context.Context, *NfeImportaXmlRequest) (*NfeImportaXmlResponse, error)
@@ -2152,6 +2207,9 @@ func (UnimplementedNfceServiceServer) DeleteVolume(context.Context, *DeleteVolum
 }
 func (UnimplementedNfceServiceServer) Duplica(context.Context, *DuplicaRequest) (*DuplicaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Duplica not implemented")
+}
+func (UnimplementedNfceServiceServer) AlteracaoConjuntaItens(context.Context, *AlteracaoConjuntaItensRequest) (*AlteracaoConjuntaItensResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AlteracaoConjuntaItens not implemented")
 }
 func (UnimplementedNfceServiceServer) NfeImportaXml(context.Context, *NfeImportaXmlRequest) (*NfeImportaXmlResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method NfeImportaXml not implemented")
@@ -2678,6 +2736,24 @@ func _NfceService_Duplica_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NfceService_AlteracaoConjuntaItens_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AlteracaoConjuntaItensRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NfceServiceServer).AlteracaoConjuntaItens(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: NfceService_AlteracaoConjuntaItens_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NfceServiceServer).AlteracaoConjuntaItens(ctx, req.(*AlteracaoConjuntaItensRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NfceService_NfeImportaXml_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(NfeImportaXmlRequest)
 	if err := dec(in); err != nil {
@@ -3004,6 +3080,10 @@ var NfceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Duplica",
 			Handler:    _NfceService_Duplica_Handler,
+		},
+		{
+			MethodName: "AlteracaoConjuntaItens",
+			Handler:    _NfceService_AlteracaoConjuntaItens_Handler,
 		},
 		{
 			MethodName: "NfeImportaXml",

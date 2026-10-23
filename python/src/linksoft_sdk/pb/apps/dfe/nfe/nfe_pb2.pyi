@@ -1231,18 +1231,20 @@ class CancelarNfeResponse(_message.Message):
     def __init__(self, nfe: _Optional[_Union[Nfe, _Mapping]] = ...) -> None: ...
 
 class GerarDevolucaoNfeRequest(_message.Message):
-    __slots__ = ("ids", "itens_a_devolver", "force", "destinatario_id", "devolucao_id")
+    __slots__ = ("ids", "itens_a_devolver", "force", "destinatario_id", "devolucao_id", "tributacao_itens")
     IDS_FIELD_NUMBER: _ClassVar[int]
     ITENS_A_DEVOLVER_FIELD_NUMBER: _ClassVar[int]
     FORCE_FIELD_NUMBER: _ClassVar[int]
     DESTINATARIO_ID_FIELD_NUMBER: _ClassVar[int]
     DEVOLUCAO_ID_FIELD_NUMBER: _ClassVar[int]
+    TRIBUTACAO_ITENS_FIELD_NUMBER: _ClassVar[int]
     ids: _containers.RepeatedScalarFieldContainer[str]
     itens_a_devolver: _containers.RepeatedCompositeFieldContainer[ItemDevolucao]
     force: bool
     destinatario_id: str
     devolucao_id: str
-    def __init__(self, ids: _Optional[_Iterable[str]] = ..., itens_a_devolver: _Optional[_Iterable[_Union[ItemDevolucao, _Mapping]]] = ..., force: _Optional[bool] = ..., destinatario_id: _Optional[str] = ..., devolucao_id: _Optional[str] = ...) -> None: ...
+    tributacao_itens: TributacaoItens
+    def __init__(self, ids: _Optional[_Iterable[str]] = ..., itens_a_devolver: _Optional[_Iterable[_Union[ItemDevolucao, _Mapping]]] = ..., force: _Optional[bool] = ..., destinatario_id: _Optional[str] = ..., devolucao_id: _Optional[str] = ..., tributacao_itens: _Optional[_Union[TributacaoItens, _Mapping]] = ...) -> None: ...
 
 class GerarDevolucaoNfeResponse(_message.Message):
     __slots__ = ("nfe",)
@@ -1279,6 +1281,32 @@ class AddProdutoResponse(_message.Message):
     nfe: Nfe
     produto: ItemModel
     def __init__(self, nfe: _Optional[_Union[Nfe, _Mapping]] = ..., produto: _Optional[_Union[ItemModel, _Mapping]] = ...) -> None: ...
+
+class TributacaoItens(_message.Message):
+    __slots__ = ("cfop", "icms_cst", "icms_aliquota")
+    CFOP_FIELD_NUMBER: _ClassVar[int]
+    ICMS_CST_FIELD_NUMBER: _ClassVar[int]
+    ICMS_ALIQUOTA_FIELD_NUMBER: _ClassVar[int]
+    cfop: str
+    icms_cst: str
+    icms_aliquota: float
+    def __init__(self, cfop: _Optional[str] = ..., icms_cst: _Optional[str] = ..., icms_aliquota: _Optional[float] = ...) -> None: ...
+
+class AlteracaoConjuntaItensRequest(_message.Message):
+    __slots__ = ("nfe_id", "item_ids", "tributacao")
+    NFE_ID_FIELD_NUMBER: _ClassVar[int]
+    ITEM_IDS_FIELD_NUMBER: _ClassVar[int]
+    TRIBUTACAO_FIELD_NUMBER: _ClassVar[int]
+    nfe_id: str
+    item_ids: _containers.RepeatedScalarFieldContainer[str]
+    tributacao: TributacaoItens
+    def __init__(self, nfe_id: _Optional[str] = ..., item_ids: _Optional[_Iterable[str]] = ..., tributacao: _Optional[_Union[TributacaoItens, _Mapping]] = ...) -> None: ...
+
+class AlteracaoConjuntaItensResponse(_message.Message):
+    __slots__ = ("itens_alterados",)
+    ITENS_ALTERADOS_FIELD_NUMBER: _ClassVar[int]
+    itens_alterados: int
+    def __init__(self, itens_alterados: _Optional[int] = ...) -> None: ...
 
 class UpdateProdutoRequest(_message.Message):
     __slots__ = ("nfeId", "id", "produto")

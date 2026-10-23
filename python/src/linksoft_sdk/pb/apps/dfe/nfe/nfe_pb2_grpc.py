@@ -145,6 +145,11 @@ class NfeServiceStub:
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaRequest.SerializeToString,
                 response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaResponse.FromString,
                 _registered_method=True)
+        self.AlteracaoConjuntaItens = channel.unary_unary(
+                '/nfe.NfeService/AlteracaoConjuntaItens',
+                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensRequest.SerializeToString,
+                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensResponse.FromString,
+                _registered_method=True)
         self.NfeImportaXml = channel.unary_unary(
                 '/nfe.NfeService/NfeImportaXml',
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportaXmlRequest.SerializeToString,
@@ -367,6 +372,13 @@ class NfeServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def AlteracaoConjuntaItens(self, request, context):
+        """Grava a mesma tributação em vários itens da nota de uma vez e recalcula a nota.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def NfeImportaXml(self, request, context):
         """importa XML das nfe, suporte para arquivo .xml, .zip, rar e .gz, estando ou nao em pastas e subpastas,
         o sistema da suporte a vários formatos
@@ -575,6 +587,11 @@ def add_NfeServiceServicer_to_server(servicer, server):
                     servicer.Duplica,
                     request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaRequest.FromString,
                     response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaResponse.SerializeToString,
+            ),
+            'AlteracaoConjuntaItens': grpc.unary_unary_rpc_method_handler(
+                    servicer.AlteracaoConjuntaItens,
+                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensRequest.FromString,
+                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensResponse.SerializeToString,
             ),
             'NfeImportaXml': grpc.unary_unary_rpc_method_handler(
                     servicer.NfeImportaXml,
@@ -1351,6 +1368,33 @@ class NfeService:
             _registered_method=True)
 
     @staticmethod
+    def AlteracaoConjuntaItens(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/nfe.NfeService/AlteracaoConjuntaItens',
+            apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensRequest.SerializeToString,
+            apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def NfeImportaXml(request,
             target,
             options=(),
@@ -1815,6 +1859,11 @@ class NfceServiceStub:
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaRequest.SerializeToString,
                 response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaResponse.FromString,
                 _registered_method=True)
+        self.AlteracaoConjuntaItens = channel.unary_unary(
+                '/nfe.NfceService/AlteracaoConjuntaItens',
+                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensRequest.SerializeToString,
+                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensResponse.FromString,
+                _registered_method=True)
         self.NfeImportaXml = channel.unary_unary(
                 '/nfe.NfceService/NfeImportaXml',
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportaXmlRequest.SerializeToString,
@@ -2037,6 +2086,13 @@ class NfceServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def AlteracaoConjuntaItens(self, request, context):
+        """Grava a mesma tributação em vários itens da nota de uma vez e recalcula a nota.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def NfeImportaXml(self, request, context):
         """importa XML das nfe, suporte para arquivo .xml, .zip, rar e .gz, estando ou nao em pastas e subpastas,
         o sistema da suporte a vários formatos
@@ -2245,6 +2301,11 @@ def add_NfceServiceServicer_to_server(servicer, server):
                     servicer.Duplica,
                     request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaRequest.FromString,
                     response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaResponse.SerializeToString,
+            ),
+            'AlteracaoConjuntaItens': grpc.unary_unary_rpc_method_handler(
+                    servicer.AlteracaoConjuntaItens,
+                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensRequest.FromString,
+                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensResponse.SerializeToString,
             ),
             'NfeImportaXml': grpc.unary_unary_rpc_method_handler(
                     servicer.NfeImportaXml,
@@ -3010,6 +3071,33 @@ class NfceService:
             '/nfe.NfceService/Duplica',
             apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaRequest.SerializeToString,
             apps_dot_dfe_dot_nfe_dot_nfe__pb2.DuplicaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AlteracaoConjuntaItens(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/nfe.NfceService/AlteracaoConjuntaItens',
+            apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensRequest.SerializeToString,
+            apps_dot_dfe_dot_nfe_dot_nfe__pb2.AlteracaoConjuntaItensResponse.FromString,
             options,
             channel_credentials,
             insecure,
