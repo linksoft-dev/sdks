@@ -30,6 +30,8 @@ type LoginRequest struct {
 	Username string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	Password string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	DeviceId string                 `protobuf:"bytes,3,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"` // identificador do dispositivo (UUID gerado pelo cliente)
+	// Token do Cloudflare Turnstile. Exigido quando o servidor responde CAPTCHA_REQUIRED.
+	CaptchaToken string `protobuf:"bytes,30,opt,name=captcha_token,json=captchaToken,proto3" json:"captcha_token,omitempty"`
 	// Quando informado, o login fica restrito a esta organização: a resposta traz
 	// apenas ela e usuários sem acesso a ela são recusados.
 	OrgId string `protobuf:"bytes,4,opt,name=org_id,json=orgId,proto3" json:"org_id,omitempty"`
@@ -90,6 +92,13 @@ func (x *LoginRequest) GetPassword() string {
 func (x *LoginRequest) GetDeviceId() string {
 	if x != nil {
 		return x.DeviceId
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetCaptchaToken() string {
+	if x != nil {
+		return x.CaptchaToken
 	}
 	return ""
 }
@@ -392,11 +401,12 @@ var File_apps_auth_v1_auth_proto protoreflect.FileDescriptor
 
 const file_apps_auth_v1_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x17apps/auth/v1/auth.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x12apps/org/org.proto\x1a\x14apps/user/user.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xc2\x01\n" +
+	"\x17apps/auth/v1/auth.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x12apps/org/org.proto\x1a\x14apps/user/user.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xe7\x01\n" +
 	"\fLoginRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1b\n" +
-	"\tdevice_id\x18\x03 \x01(\tR\bdeviceId\x12\x15\n" +
+	"\tdevice_id\x18\x03 \x01(\tR\bdeviceId\x12#\n" +
+	"\rcaptcha_token\x18\x1e \x01(\tR\fcaptchaToken\x12\x15\n" +
 	"\x06org_id\x18\x04 \x01(\tR\x05orgId\x12\x1d\n" +
 	"\n" +
 	"machine_id\x18\x05 \x01(\tR\tmachineId\x12'\n" +

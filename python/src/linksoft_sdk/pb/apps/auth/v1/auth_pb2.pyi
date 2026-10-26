@@ -14,20 +14,22 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class LoginRequest(_message.Message):
-    __slots__ = ("username", "password", "device_id", "org_id", "machine_id", "without_session")
+    __slots__ = ("username", "password", "device_id", "captcha_token", "org_id", "machine_id", "without_session")
     USERNAME_FIELD_NUMBER: _ClassVar[int]
     PASSWORD_FIELD_NUMBER: _ClassVar[int]
     DEVICE_ID_FIELD_NUMBER: _ClassVar[int]
+    CAPTCHA_TOKEN_FIELD_NUMBER: _ClassVar[int]
     ORG_ID_FIELD_NUMBER: _ClassVar[int]
     MACHINE_ID_FIELD_NUMBER: _ClassVar[int]
     WITHOUT_SESSION_FIELD_NUMBER: _ClassVar[int]
     username: str
     password: str
     device_id: str
+    captcha_token: str
     org_id: str
     machine_id: str
     without_session: bool
-    def __init__(self, username: _Optional[str] = ..., password: _Optional[str] = ..., device_id: _Optional[str] = ..., org_id: _Optional[str] = ..., machine_id: _Optional[str] = ..., without_session: _Optional[bool] = ...) -> None: ...
+    def __init__(self, username: _Optional[str] = ..., password: _Optional[str] = ..., device_id: _Optional[str] = ..., captcha_token: _Optional[str] = ..., org_id: _Optional[str] = ..., machine_id: _Optional[str] = ..., without_session: _Optional[bool] = ...) -> None: ...
 
 class LoginResponse(_message.Message):
     __slots__ = ("user_id", "name", "email", "current_org", "token", "orgs", "avatar_link", "settings")
