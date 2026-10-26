@@ -1,6 +1,7 @@
 import datetime
 
 from google.api import annotations_pb2 as _annotations_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from linksoft_sdk.pb.plugins.validate import validate_pb2 as _validate_pb2
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
@@ -131,7 +132,7 @@ class Shipment(_message.Message):
     def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., status: _Optional[_Union[Status, str]] = ..., driver_id: _Optional[str] = ..., driver_name: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., number: _Optional[int] = ..., destination: _Optional[str] = ..., total: _Optional[float] = ..., orders: _Optional[_Iterable[_Union[ShipmentOrder, _Mapping]]] = ..., items: _Optional[_Iterable[_Union[ShipmentItem, _Mapping]]] = ..., notes: _Optional[str] = ..., gross_weight: _Optional[float] = ..., type: _Optional[_Union[ShipmentType, str]] = ..., dispatch_status: _Optional[_Union[DispatchStatus, str]] = ..., carrier_person_id: _Optional[str] = ..., carrier_name: _Optional[str] = ..., vehicle_plate: _Optional[str] = ..., vehicle_id: _Optional[str] = ..., vehicle_nickname: _Optional[str] = ..., expected_delivery: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dispatched_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., external_shipment_code: _Optional[str] = ..., tracking_code: _Optional[str] = ..., route: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class ShipmentOrder(_message.Message):
-    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "order_id", "order_number", "order_status", "order_products_total", "order_total", "items_count", "delivery_status", "dispatched_at", "delivered_at", "recipient_name", "recipient_document", "proof_photo_url", "signature_url", "delivery_location", "delivery_notes", "order_tracking_code", "attempts", "items")
+    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "order_id", "order_number", "order_status", "order_products_total", "order_total", "items_count", "delivery_status", "dispatched_at", "delivered_at", "recipient_name", "recipient_document", "proof_photo_url", "signature_url", "delivery_location", "delivery_notes", "order_tracking_code", "attempts", "items", "customer_name", "customer_phone", "delivery_address")
     ID_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
@@ -155,6 +156,9 @@ class ShipmentOrder(_message.Message):
     ORDER_TRACKING_CODE_FIELD_NUMBER: _ClassVar[int]
     ATTEMPTS_FIELD_NUMBER: _ClassVar[int]
     ITEMS_FIELD_NUMBER: _ClassVar[int]
+    CUSTOMER_NAME_FIELD_NUMBER: _ClassVar[int]
+    CUSTOMER_PHONE_FIELD_NUMBER: _ClassVar[int]
+    DELIVERY_ADDRESS_FIELD_NUMBER: _ClassVar[int]
     id: str
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
@@ -178,7 +182,10 @@ class ShipmentOrder(_message.Message):
     order_tracking_code: str
     attempts: _containers.RepeatedCompositeFieldContainer[DeliveryAttempt]
     items: _containers.RepeatedCompositeFieldContainer[ShipmentOrderItem]
-    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., order_id: _Optional[str] = ..., order_number: _Optional[int] = ..., order_status: _Optional[str] = ..., order_products_total: _Optional[float] = ..., order_total: _Optional[float] = ..., items_count: _Optional[int] = ..., delivery_status: _Optional[_Union[OrderDeliveryStatus, str]] = ..., dispatched_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., delivered_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., recipient_name: _Optional[str] = ..., recipient_document: _Optional[str] = ..., proof_photo_url: _Optional[str] = ..., signature_url: _Optional[str] = ..., delivery_location: _Optional[_Union[GeoLocation, _Mapping]] = ..., delivery_notes: _Optional[str] = ..., order_tracking_code: _Optional[str] = ..., attempts: _Optional[_Iterable[_Union[DeliveryAttempt, _Mapping]]] = ..., items: _Optional[_Iterable[_Union[ShipmentOrderItem, _Mapping]]] = ...) -> None: ...
+    customer_name: str
+    customer_phone: str
+    delivery_address: str
+    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., order_id: _Optional[str] = ..., order_number: _Optional[int] = ..., order_status: _Optional[str] = ..., order_products_total: _Optional[float] = ..., order_total: _Optional[float] = ..., items_count: _Optional[int] = ..., delivery_status: _Optional[_Union[OrderDeliveryStatus, str]] = ..., dispatched_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., delivered_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., recipient_name: _Optional[str] = ..., recipient_document: _Optional[str] = ..., proof_photo_url: _Optional[str] = ..., signature_url: _Optional[str] = ..., delivery_location: _Optional[_Union[GeoLocation, _Mapping]] = ..., delivery_notes: _Optional[str] = ..., order_tracking_code: _Optional[str] = ..., attempts: _Optional[_Iterable[_Union[DeliveryAttempt, _Mapping]]] = ..., items: _Optional[_Iterable[_Union[ShipmentOrderItem, _Mapping]]] = ..., customer_name: _Optional[str] = ..., customer_phone: _Optional[str] = ..., delivery_address: _Optional[str] = ...) -> None: ...
 
 class ShipmentOrderItem(_message.Message):
     __slots__ = ("id", "order_item_id", "product_id", "product_name", "product_unit", "code", "quantity", "unit_price", "total", "batches")

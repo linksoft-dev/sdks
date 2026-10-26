@@ -548,9 +548,13 @@ type ShipmentOrder struct {
 	Attempts          []*DeliveryAttempt     `protobuf:"bytes,23,rep,name=attempts,proto3" json:"attempts,omitempty"`
 	// Itens e quantidades do pedido expedidos NESTE shipment. O saldo a expedir
 	// de um item é a quantidade no pedido menos a soma em shipments não cancelados.
-	Items         []*ShipmentOrderItem `protobuf:"bytes,24,rep,name=items,proto3" json:"items,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Items []*ShipmentOrderItem `protobuf:"bytes,24,rep,name=items,proto3" json:"items,omitempty"`
+	// Cliente do pedido e onde entregar, copiados do pedido
+	CustomerName    string `protobuf:"bytes,25,opt,name=customer_name,json=customerName,proto3" json:"customer_name,omitempty"`
+	CustomerPhone   string `protobuf:"bytes,26,opt,name=customer_phone,json=customerPhone,proto3" json:"customer_phone,omitempty"`
+	DeliveryAddress string `protobuf:"bytes,27,opt,name=delivery_address,json=deliveryAddress,proto3" json:"delivery_address,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *ShipmentOrder) Reset() {
@@ -742,6 +746,27 @@ func (x *ShipmentOrder) GetItems() []*ShipmentOrderItem {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ShipmentOrder) GetCustomerName() string {
+	if x != nil {
+		return x.CustomerName
+	}
+	return ""
+}
+
+func (x *ShipmentOrder) GetCustomerPhone() string {
+	if x != nil {
+		return x.CustomerPhone
+	}
+	return ""
+}
+
+func (x *ShipmentOrder) GetDeliveryAddress() string {
+	if x != nil {
+		return x.DeliveryAddress
+	}
+	return ""
 }
 
 // ShipmentOrderItem - Item de um pedido com a quantidade expedida neste shipment
@@ -3336,7 +3361,7 @@ var File_apps_vendas_shipment_shipment_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_shipment_shipment_proto_rawDesc = "" +
 	"\n" +
-	"#apps/vendas/shipment/shipment.proto\x12\bshipment\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xc9\t\n" +
+	"#apps/vendas/shipment/shipment.proto\x12\bshipment\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\"\xc9\t\n" +
 	"\bShipment\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -3371,7 +3396,7 @@ const file_apps_vendas_shipment_shipment_proto_rawDesc = "" +
 	"\fcompleted_at\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampR\vcompletedAt\x124\n" +
 	"\x16external_shipment_code\x18\x19 \x01(\tR\x14externalShipmentCode\x12#\n" +
 	"\rtracking_code\x18\x1a \x01(\tR\ftrackingCode\x12\x14\n" +
-	"\x05route\x18\x1b \x03(\tR\x05route:\x03\xc0>\x01\"\x90\b\n" +
+	"\x05route\x18\x1b \x03(\tR\x05route:\x03\xc0>\x01\"\x99\t\n" +
 	"\rShipmentOrder\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -3400,7 +3425,10 @@ const file_apps_vendas_shipment_shipment_proto_rawDesc = "" +
 	"\x0edelivery_notes\x18\x15 \x01(\tR\rdeliveryNotes\x12.\n" +
 	"\x13order_tracking_code\x18\x16 \x01(\tR\x11orderTrackingCode\x125\n" +
 	"\battempts\x18\x17 \x03(\v2\x19.shipment.DeliveryAttemptR\battempts\x121\n" +
-	"\x05items\x18\x18 \x03(\v2\x1b.shipment.ShipmentOrderItemR\x05items\"\xcd\x02\n" +
+	"\x05items\x18\x18 \x03(\v2\x1b.shipment.ShipmentOrderItemR\x05items\x12)\n" +
+	"\rcustomer_name\x18\x19 \x01(\tB\x04\xe2A\x01\x03R\fcustomerName\x12+\n" +
+	"\x0ecustomer_phone\x18\x1a \x01(\tB\x04\xe2A\x01\x03R\rcustomerPhone\x12/\n" +
+	"\x10delivery_address\x18\x1b \x01(\tB\x04\xe2A\x01\x03R\x0fdeliveryAddress\"\xcd\x02\n" +
 	"\x11ShipmentOrderItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\"\n" +
 	"\rorder_item_id\x18\x02 \x01(\tR\vorderItemId\x12\x1d\n" +
