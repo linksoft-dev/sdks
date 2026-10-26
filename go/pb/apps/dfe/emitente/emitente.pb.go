@@ -949,7 +949,7 @@ var File_apps_dfe_emitente_emitente_proto protoreflect.FileDescriptor
 
 const file_apps_dfe_emitente_emitente_proto_rawDesc = "" +
 	"\n" +
-	" apps/dfe/emitente/emitente.proto\x12\x03dfe\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x13filter/filter.proto\x1a\x18apps/config/config.proto\":\n" +
+	" apps/dfe/emitente/emitente.proto\x12\x03dfe\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x13filter/filter.proto\x1a\x18apps/config/config.proto\x1a\x1fgoogle/api/field_behavior.proto\":\n" +
 	"\rCreateRequest\x12)\n" +
 	"\bemitente\x18\x01 \x01(\v2\r.dfe.EmitenteR\bemitente\";\n" +
 	"\x0eCreateResponse\x12)\n" +

@@ -245,12 +245,14 @@ func (x *Contador) GetCrc() string {
 }
 
 type CertificadoModel struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	ArquivoNome    string                 `protobuf:"bytes,1,opt,name=arquivo_nome,json=arquivoNome,proto3" json:"arquivo_nome,omitempty"`
-	Validade       *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=validade,proto3" json:"validade,omitempty"`
-	Senha          string                 `protobuf:"bytes,3,opt,name=senha,proto3" json:"senha,omitempty"`
-	ConteudoUpload string                 `protobuf:"bytes,4,opt,name=conteudo_upload,json=conteudoUpload,proto3" json:"conteudo_upload,omitempty"`
-	DownloadLink   string                 `protobuf:"bytes,5,opt,name=download_link,json=downloadLink,proto3" json:"download_link,omitempty"`
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	ArquivoNome string                 `protobuf:"bytes,1,opt,name=arquivo_nome,json=arquivoNome,proto3" json:"arquivo_nome,omitempty"`
+	Validade    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=validade,proto3" json:"validade,omitempty"`
+	// Senha do arquivo PFX: informada no envio, não volta nas respostas
+	Senha string `protobuf:"bytes,3,opt,name=senha,proto3" json:"senha,omitempty"`
+	// Arquivo PFX em base64, só no envio
+	ConteudoUpload string `protobuf:"bytes,4,opt,name=conteudo_upload,json=conteudoUpload,proto3" json:"conteudo_upload,omitempty"`
+	DownloadLink   string `protobuf:"bytes,5,opt,name=download_link,json=downloadLink,proto3" json:"download_link,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -832,13 +834,13 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\btelefone\x18\x0e \x01(\tR\btelefone\x12\x14\n" +
 	"\x05email\x18\x0f \x01(\tR\x05email\x12/\n" +
 	"\x14enviar_nfe_por_email\x18\x10 \x01(\bR\x11enviarNfePorEmail\x12\x10\n" +
-	"\x03crc\x18\x11 \x01(\tR\x03crc\"\xd1\x01\n" +
+	"\x03crc\x18\x11 \x01(\tR\x03crc\"\xe3\x01\n" +
 	"\x10CertificadoModel\x12!\n" +
 	"\farquivo_nome\x18\x01 \x01(\tR\varquivoNome\x126\n" +
-	"\bvalidade\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\bvalidade\x12\x14\n" +
-	"\x05senha\x18\x03 \x01(\tR\x05senha\x12'\n" +
-	"\x0fconteudo_upload\x18\x04 \x01(\tR\x0econteudoUpload\x12#\n" +
-	"\rdownload_link\x18\x05 \x01(\tR\fdownloadLink\"\xfd\x03\n" +
+	"\bvalidade\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\bvalidade\x12\x1a\n" +
+	"\x05senha\x18\x03 \x01(\tB\x04\xe2A\x01\x04R\x05senha\x12-\n" +
+	"\x0fconteudo_upload\x18\x04 \x01(\tB\x04\xe2A\x01\x04R\x0econteudoUpload\x12)\n" +
+	"\rdownload_link\x18\x05 \x01(\tB\x04\xe2A\x01\x04R\fdownloadLink\"\xfd\x03\n" +
 	"\tConfigNfe\x12'\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\tR\x0eambientePadrao\x12!\n" +
 	"\fserie_padrao\x18\x02 \x01(\x05R\vseriePadrao\x12D\n" +
@@ -849,7 +851,7 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\x18entrada_busca_automatica\x18\x06 \x01(\bR\x16entradaBuscaAutomatica\x12.\n" +
 	"\x13auto_atualiza_preco\x18\a \x01(\bR\x11autoAtualizaPreco\x127\n" +
 	"\x18entrada_vincula_itens_ia\x18\b \x01(\bR\x15entradaVinculaItensIa\x129\n" +
-	"\x19entrada_politica_preco_ia\x18\t \x01(\tR\x16entradaPoliticaPrecoIa\"\xb2\x03\n" +
+	"\x19entrada_politica_preco_ia\x18\t \x01(\tR\x16entradaPoliticaPrecoIa\"\xb8\x03\n" +
 	"\n" +
 	"ConfigNfce\x12'\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\tR\x0eambientePadrao\x12!\n" +
@@ -859,8 +861,8 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\ventrada_nsu\x18\x05 \x01(\x05R\n" +
 	"entradaNsu\x128\n" +
 	"\x18entrada_busca_automatica\x18\x06 \x01(\bR\x16entradaBuscaAutomatica\x12.\n" +
-	"\x13auto_atualiza_preco\x18\a \x01(\bR\x11autoAtualizaPreco\x12\x10\n" +
-	"\x03csc\x18\b \x01(\tR\x03csc\x12\x14\n" +
+	"\x13auto_atualiza_preco\x18\a \x01(\bR\x11autoAtualizaPreco\x12\x16\n" +
+	"\x03csc\x18\b \x01(\tB\x04\xe2A\x01\x04R\x03csc\x12\x14\n" +
 	"\x05token\x18\t \x01(\x05R\x05token\"X\n" +
 	"\n" +
 	"ConfigMdfe\x12'\n" +
@@ -869,7 +871,7 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\tConfigCte\x12?\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\x0e2\x16.config.AmbientePadraoR\x0eambientePadrao\x12!\n" +
 	"\fserie_padrao\x18\x02 \x01(\x05R\vseriePadrao\x12\x14\n" +
-	"\x05serie\x18\x03 \x01(\x05R\x05serie\"\xdf\x02\n" +
+	"\x05serie\x18\x03 \x01(\x05R\x05serie\"\xe5\x02\n" +
 	"\n" +
 	"ConfigNfse\x12?\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\x0e2\x16.config.AmbientePadraoR\x0eambientePadrao\x12\x10\n" +
@@ -878,8 +880,8 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\x0fnfse_auto_emite\x18\x04 \x01(\bR\rnfseAutoEmite\x12!\n" +
 	"\fserie_padrao\x18\x05 \x01(\tR\vseriePadrao\x124\n" +
 	"\x16envia_email_automatico\x18\x06 \x01(\bR\x14enviaEmailAutomatico\x12-\n" +
-	"\x12webservice_usuario\x18\a \x01(\tR\x11webserviceUsuario\x12)\n" +
-	"\x10webservice_senha\x18\b \x01(\tR\x0fwebserviceSenha\"2\n" +
+	"\x12webservice_usuario\x18\a \x01(\tR\x11webserviceUsuario\x12/\n" +
+	"\x10webservice_senha\x18\b \x01(\tB\x04\xe2A\x01\x04R\x0fwebserviceSenha\"2\n" +
 	"\x04Cnae\x12\x12\n" +
 	"\x04nome\x18\x01 \x01(\tR\x04nome\x12\x16\n" +
 	"\x06codigo\x18\x02 \x01(\tR\x06codigo*p\n" +
