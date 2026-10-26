@@ -16,8 +16,6 @@ YES: Boolean
 NO: Boolean
 CRUD_FIELD_NUMBER: _ClassVar[int]
 crud: _descriptor.FieldDescriptor
-TABLENAME_FIELD_NUMBER: _ClassVar[int]
-tableName: _descriptor.FieldDescriptor
 PROTOJSONMARSHALING_FIELD_NUMBER: _ClassVar[int]
 protojsonMarshaling: _descriptor.FieldDescriptor
 FIELD_FIELD_NUMBER: _ClassVar[int]

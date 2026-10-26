@@ -1,11 +1,8 @@
 import datetime
 
-from google.api import annotations_pb2 as _annotations_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
-from linksoft_sdk.pb.plugins.validate import validate_pb2 as _validate_pb2
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as _metadata_pb2
-from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
 from linksoft_sdk.pb.apps.config import config_pb2 as _config_pb2
 from google.api import field_behavior_pb2 as _field_behavior_pb2
 from google.protobuf.internal import containers as _containers
@@ -15,84 +12,6 @@ from collections.abc import Iterable as _Iterable, Mapping as _Mapping
 from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
-
-class CreateRequest(_message.Message):
-    __slots__ = ("emitente",)
-    EMITENTE_FIELD_NUMBER: _ClassVar[int]
-    emitente: Emitente
-    def __init__(self, emitente: _Optional[_Union[Emitente, _Mapping]] = ...) -> None: ...
-
-class CreateResponse(_message.Message):
-    __slots__ = ("emitente",)
-    EMITENTE_FIELD_NUMBER: _ClassVar[int]
-    emitente: Emitente
-    def __init__(self, emitente: _Optional[_Union[Emitente, _Mapping]] = ...) -> None: ...
-
-class UpdateRequest(_message.Message):
-    __slots__ = ("id", "emitente", "update_mask")
-    ID_FIELD_NUMBER: _ClassVar[int]
-    EMITENTE_FIELD_NUMBER: _ClassVar[int]
-    UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    emitente: Emitente
-    update_mask: _metadata_pb2.FieldMask
-    def __init__(self, id: _Optional[str] = ..., emitente: _Optional[_Union[Emitente, _Mapping]] = ..., update_mask: _Optional[_Union[_metadata_pb2.FieldMask, _Mapping]] = ...) -> None: ...
-
-class UpdateResponse(_message.Message):
-    __slots__ = ("emitente",)
-    EMITENTE_FIELD_NUMBER: _ClassVar[int]
-    emitente: Emitente
-    def __init__(self, emitente: _Optional[_Union[Emitente, _Mapping]] = ...) -> None: ...
-
-class DeleteRequest(_message.Message):
-    __slots__ = ("id", "hard")
-    ID_FIELD_NUMBER: _ClassVar[int]
-    HARD_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    hard: bool
-    def __init__(self, id: _Optional[str] = ..., hard: _Optional[bool] = ...) -> None: ...
-
-class DeleteResponse(_message.Message):
-    __slots__ = ("id",)
-    ID_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    def __init__(self, id: _Optional[str] = ...) -> None: ...
-
-class GetRequest(_message.Message):
-    __slots__ = ("id",)
-    ID_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    def __init__(self, id: _Optional[str] = ...) -> None: ...
-
-class GetResponse(_message.Message):
-    __slots__ = ("emitente",)
-    EMITENTE_FIELD_NUMBER: _ClassVar[int]
-    emitente: Emitente
-    def __init__(self, emitente: _Optional[_Union[Emitente, _Mapping]] = ...) -> None: ...
-
-class ListRequest(_message.Message):
-    __slots__ = ("ids", "cnpjs", "ufs", "filter", "page_size", "page_token")
-    IDS_FIELD_NUMBER: _ClassVar[int]
-    CNPJS_FIELD_NUMBER: _ClassVar[int]
-    UFS_FIELD_NUMBER: _ClassVar[int]
-    FILTER_FIELD_NUMBER: _ClassVar[int]
-    PAGE_SIZE_FIELD_NUMBER: _ClassVar[int]
-    PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
-    ids: _containers.RepeatedScalarFieldContainer[str]
-    cnpjs: _containers.RepeatedScalarFieldContainer[str]
-    ufs: _containers.RepeatedScalarFieldContainer[str]
-    filter: _filter_pb2.Filter
-    page_size: int
-    page_token: str
-    def __init__(self, ids: _Optional[_Iterable[str]] = ..., cnpjs: _Optional[_Iterable[str]] = ..., ufs: _Optional[_Iterable[str]] = ..., filter: _Optional[_Union[_filter_pb2.Filter, _Mapping]] = ..., page_size: _Optional[int] = ..., page_token: _Optional[str] = ...) -> None: ...
-
-class ListResponse(_message.Message):
-    __slots__ = ("emitenteList", "next_page_token")
-    EMITENTELIST_FIELD_NUMBER: _ClassVar[int]
-    NEXT_PAGE_TOKEN_FIELD_NUMBER: _ClassVar[int]
-    emitenteList: _containers.RepeatedCompositeFieldContainer[Emitente]
-    next_page_token: str
-    def __init__(self, emitenteList: _Optional[_Iterable[_Union[Emitente, _Mapping]]] = ..., next_page_token: _Optional[str] = ...) -> None: ...
 
 class Emitente(_message.Message):
     __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "razao_social", "nome_fantasia", "cnpj", "inscricao_estadual", "inscricao_municipal", "regime_tributario", "cep", "logradouro", "numero", "complemento", "bairro", "cidade", "codigo_municipio", "uf", "pais", "codigo_pais", "telefone", "email", "nfe_habilitado", "nfce_habilitado", "nfse_habilitado", "mdfe_habilitado", "cte_habilitado", "logo_base64", "ie", "contador", "cfop", "tributacao_nome", "tributacao_id", "aliq_icms_calc_dif", "obs", "certificado", "nfe_config", "nfce_config", "mdfe_config", "nfse_config", "cnae_principal", "cnae_secundarios", "cte_config", "fields")

@@ -9,9 +9,7 @@ package emitente
 import (
 	config "github.com/linksoft-dev/sdks/go/pb/apps/config"
 	metadata "github.com/linksoft-dev/sdks/go/pb/common/metadata"
-	filter "github.com/linksoft-dev/sdks/go/pb/filter"
 	_ "github.com/linksoft-dev/sdks/go/pb/plugins/service"
-	_ "github.com/linksoft-dev/sdks/go/pb/plugins/validate"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -27,523 +25,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// Request e Response para criação de Emitente
-type CreateRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Emitente      *Emitente              `protobuf:"bytes,1,opt,name=emitente,proto3" json:"emitente,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateRequest) Reset() {
-	*x = CreateRequest{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateRequest) ProtoMessage() {}
-
-func (x *CreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
-func (*CreateRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateRequest) GetEmitente() *Emitente {
-	if x != nil {
-		return x.Emitente
-	}
-	return nil
-}
-
-type CreateResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Emitente      *Emitente              `protobuf:"bytes,1,opt,name=emitente,proto3" json:"emitente,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateResponse) Reset() {
-	*x = CreateResponse{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateResponse) ProtoMessage() {}
-
-func (x *CreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
-func (*CreateResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateResponse) GetEmitente() *Emitente {
-	if x != nil {
-		return x.Emitente
-	}
-	return nil
-}
-
-// Request e Response para atualização de Emitente
-type UpdateRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Emitente      *Emitente              `protobuf:"bytes,2,opt,name=emitente,proto3" json:"emitente,omitempty"`
-	UpdateMask    *metadata.FieldMask    `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateRequest) Reset() {
-	*x = UpdateRequest{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateRequest) ProtoMessage() {}
-
-func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
-func (*UpdateRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *UpdateRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *UpdateRequest) GetEmitente() *Emitente {
-	if x != nil {
-		return x.Emitente
-	}
-	return nil
-}
-
-func (x *UpdateRequest) GetUpdateMask() *metadata.FieldMask {
-	if x != nil {
-		return x.UpdateMask
-	}
-	return nil
-}
-
-type UpdateResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Emitente      *Emitente              `protobuf:"bytes,1,opt,name=emitente,proto3" json:"emitente,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateResponse) Reset() {
-	*x = UpdateResponse{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateResponse) ProtoMessage() {}
-
-func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
-func (*UpdateResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *UpdateResponse) GetEmitente() *Emitente {
-	if x != nil {
-		return x.Emitente
-	}
-	return nil
-}
-
-// Request e Response para exclusão de Emitente
-type DeleteRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Hard          bool                   `protobuf:"varint,2,opt,name=hard,proto3" json:"hard,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteRequest) Reset() {
-	*x = DeleteRequest{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteRequest) ProtoMessage() {}
-
-func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
-func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *DeleteRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *DeleteRequest) GetHard() bool {
-	if x != nil {
-		return x.Hard
-	}
-	return false
-}
-
-type DeleteResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteResponse) Reset() {
-	*x = DeleteResponse{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteResponse) ProtoMessage() {}
-
-func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
-func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *DeleteResponse) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-// Request e Response para obter um Emitente por ID
-type GetRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetRequest) Reset() {
-	*x = GetRequest{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetRequest) ProtoMessage() {}
-
-func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
-func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *GetRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type GetResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Emitente      *Emitente              `protobuf:"bytes,1,opt,name=emitente,proto3" json:"emitente,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetResponse) Reset() {
-	*x = GetResponse{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetResponse) ProtoMessage() {}
-
-func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
-func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *GetResponse) GetEmitente() *Emitente {
-	if x != nil {
-		return x.Emitente
-	}
-	return nil
-}
-
-// Request e Response para listagem de Emitentes
-type ListRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ids           []string               `protobuf:"bytes,1,rep,name=ids,proto3" json:"ids,omitempty"`
-	Cnpjs         []string               `protobuf:"bytes,2,rep,name=cnpjs,proto3" json:"cnpjs,omitempty"`
-	Ufs           []string               `protobuf:"bytes,3,rep,name=ufs,proto3" json:"ufs,omitempty"`
-	Filter        *filter.Filter         `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      uint32                 `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListRequest) Reset() {
-	*x = ListRequest{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListRequest) ProtoMessage() {}
-
-func (x *ListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
-func (*ListRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *ListRequest) GetIds() []string {
-	if x != nil {
-		return x.Ids
-	}
-	return nil
-}
-
-func (x *ListRequest) GetCnpjs() []string {
-	if x != nil {
-		return x.Cnpjs
-	}
-	return nil
-}
-
-func (x *ListRequest) GetUfs() []string {
-	if x != nil {
-		return x.Ufs
-	}
-	return nil
-}
-
-func (x *ListRequest) GetFilter() *filter.Filter {
-	if x != nil {
-		return x.Filter
-	}
-	return nil
-}
-
-func (x *ListRequest) GetPageSize() uint32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-type ListResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EmitenteList  []*Emitente            `protobuf:"bytes,1,rep,name=emitenteList,proto3" json:"emitenteList,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListResponse) Reset() {
-	*x = ListResponse{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListResponse) ProtoMessage() {}
-
-func (x *ListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
-func (*ListResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *ListResponse) GetEmitenteList() []*Emitente {
-	if x != nil {
-		return x.EmitenteList
-	}
-	return nil
-}
-
-func (x *ListResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
 
 type Emitente struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
@@ -602,7 +83,7 @@ type Emitente struct {
 
 func (x *Emitente) Reset() {
 	*x = Emitente{}
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[10]
+	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -614,7 +95,7 @@ func (x *Emitente) String() string {
 func (*Emitente) ProtoMessage() {}
 
 func (x *Emitente) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[10]
+	mi := &file_apps_dfe_emitente_emitente_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -627,7 +108,7 @@ func (x *Emitente) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Emitente.ProtoReflect.Descriptor instead.
 func (*Emitente) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{10}
+	return file_apps_dfe_emitente_emitente_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Emitente) GetCreatedAt() *timestamppb.Timestamp {
@@ -949,39 +430,7 @@ var File_apps_dfe_emitente_emitente_proto protoreflect.FileDescriptor
 
 const file_apps_dfe_emitente_emitente_proto_rawDesc = "" +
 	"\n" +
-	" apps/dfe/emitente/emitente.proto\x12\x03dfe\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x13filter/filter.proto\x1a\x18apps/config/config.proto\x1a\x1fgoogle/api/field_behavior.proto\":\n" +
-	"\rCreateRequest\x12)\n" +
-	"\bemitente\x18\x01 \x01(\v2\r.dfe.EmitenteR\bemitente\";\n" +
-	"\x0eCreateResponse\x12)\n" +
-	"\bemitente\x18\x01 \x01(\v2\r.dfe.EmitenteR\bemitente\"\x80\x01\n" +
-	"\rUpdateRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12)\n" +
-	"\bemitente\x18\x02 \x01(\v2\r.dfe.EmitenteR\bemitente\x124\n" +
-	"\vupdate_mask\x18\x03 \x01(\v2\x13.metadata.FieldMaskR\n" +
-	"updateMask\";\n" +
-	"\x0eUpdateResponse\x12)\n" +
-	"\bemitente\x18\x01 \x01(\v2\r.dfe.EmitenteR\bemitente\"3\n" +
-	"\rDeleteRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04hard\x18\x02 \x01(\bR\x04hard\" \n" +
-	"\x0eDeleteResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x1c\n" +
-	"\n" +
-	"GetRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
-	"\vGetResponse\x12)\n" +
-	"\bemitente\x18\x01 \x01(\v2\r.dfe.EmitenteR\bemitente\"\xa4\x01\n" +
-	"\vListRequest\x12\x10\n" +
-	"\x03ids\x18\x01 \x03(\tR\x03ids\x12\x14\n" +
-	"\x05cnpjs\x18\x02 \x03(\tR\x05cnpjs\x12\x10\n" +
-	"\x03ufs\x18\x03 \x03(\tR\x03ufs\x12\x1f\n" +
-	"\x06filter\x18\x04 \x01(\v2\a.FilterR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x05 \x01(\rR\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x06 \x01(\tR\tpageToken\"i\n" +
-	"\fListResponse\x121\n" +
-	"\femitenteList\x18\x01 \x03(\v2\r.dfe.EmitenteR\femitenteList\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xb5\r\n" +
+	" apps/dfe/emitente/emitente.proto\x12\x03dfe\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x18apps/config/config.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xb5\r\n" +
 	"\bEmitente\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1039,13 +488,7 @@ const file_apps_dfe_emitente_emitente_proto_rawDesc = "" +
 	"\x10cnae_secundarios\x18+ \x03(\v2\f.config.CnaeR\x0fcnaeSecundarios\x120\n" +
 	"\n" +
 	"cte_config\x18, \x01(\v2\x11.config.ConfigCteR\tcteConfig\x12-\n" +
-	"\x06fields\x18- \x01(\v2\x15.metadata.BasicFieldsR\x06fields:\x06\xc0>\x01\xd0>\x012\xa5\x03\n" +
-	"\x0fEmitenteService\x12P\n" +
-	"\x06Create\x12\x12.dfe.CreateRequest\x1a\x13.dfe.CreateResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/dfe/emitentes\x12P\n" +
-	"\x06Update\x12\x12.dfe.UpdateRequest\x1a\x13.dfe.UpdateResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\x1a\x12/api/dfe/emitentes\x12R\n" +
-	"\x06Delete\x12\x12.dfe.DeleteRequest\x1a\x13.dfe.DeleteResponse\"\x1f\x82\xd3\xe4\x93\x02\x19*\x17/api/dfe/emitentes/{id}\x12I\n" +
-	"\x03Get\x12\x0f.dfe.GetRequest\x1a\x10.dfe.GetResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/api/dfe/emitentes/{id}\x12O\n" +
-	"\x04List\x12\x10.dfe.ListRequest\x1a\x11.dfe.ListResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/api/dfe/emitentes/listBz\n" +
+	"\x06fields\x18- \x01(\v2\x15.metadata.BasicFieldsR\x06fields:\x06\xc0>\x01\xd0>\x01Bz\n" +
 	"\acom.dfeB\rEmitenteProtoP\x01Z4github.com/linksoft-dev/sdks/go/pb/apps/dfe/emitente\xa2\x02\x03DXX\xaa\x02\x03Dfe\xca\x02\x03Dfe\xe2\x02\x0fDfe\\GPBMetadata\xea\x02\x03Dfeb\x06proto3"
 
 var (
@@ -1060,68 +503,38 @@ func file_apps_dfe_emitente_emitente_proto_rawDescGZIP() []byte {
 	return file_apps_dfe_emitente_emitente_proto_rawDescData
 }
 
-var file_apps_dfe_emitente_emitente_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_apps_dfe_emitente_emitente_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_apps_dfe_emitente_emitente_proto_goTypes = []any{
-	(*CreateRequest)(nil),           // 0: dfe.CreateRequest
-	(*CreateResponse)(nil),          // 1: dfe.CreateResponse
-	(*UpdateRequest)(nil),           // 2: dfe.UpdateRequest
-	(*UpdateResponse)(nil),          // 3: dfe.UpdateResponse
-	(*DeleteRequest)(nil),           // 4: dfe.DeleteRequest
-	(*DeleteResponse)(nil),          // 5: dfe.DeleteResponse
-	(*GetRequest)(nil),              // 6: dfe.GetRequest
-	(*GetResponse)(nil),             // 7: dfe.GetResponse
-	(*ListRequest)(nil),             // 8: dfe.ListRequest
-	(*ListResponse)(nil),            // 9: dfe.ListResponse
-	(*Emitente)(nil),                // 10: dfe.Emitente
-	(*metadata.FieldMask)(nil),      // 11: metadata.FieldMask
-	(*filter.Filter)(nil),           // 12: Filter
-	(*timestamppb.Timestamp)(nil),   // 13: google.protobuf.Timestamp
-	(*config.Contador)(nil),         // 14: config.Contador
-	(*config.CertificadoModel)(nil), // 15: config.CertificadoModel
-	(*config.ConfigNfe)(nil),        // 16: config.ConfigNfe
-	(*config.ConfigNfce)(nil),       // 17: config.ConfigNfce
-	(*config.ConfigMdfe)(nil),       // 18: config.ConfigMdfe
-	(*config.ConfigNfse)(nil),       // 19: config.ConfigNfse
-	(*config.Cnae)(nil),             // 20: config.Cnae
-	(*config.ConfigCte)(nil),        // 21: config.ConfigCte
-	(*metadata.BasicFields)(nil),    // 22: metadata.BasicFields
+	(*Emitente)(nil),                // 0: dfe.Emitente
+	(*timestamppb.Timestamp)(nil),   // 1: google.protobuf.Timestamp
+	(*config.Contador)(nil),         // 2: config.Contador
+	(*config.CertificadoModel)(nil), // 3: config.CertificadoModel
+	(*config.ConfigNfe)(nil),        // 4: config.ConfigNfe
+	(*config.ConfigNfce)(nil),       // 5: config.ConfigNfce
+	(*config.ConfigMdfe)(nil),       // 6: config.ConfigMdfe
+	(*config.ConfigNfse)(nil),       // 7: config.ConfigNfse
+	(*config.Cnae)(nil),             // 8: config.Cnae
+	(*config.ConfigCte)(nil),        // 9: config.ConfigCte
+	(*metadata.BasicFields)(nil),    // 10: metadata.BasicFields
 }
 var file_apps_dfe_emitente_emitente_proto_depIdxs = []int32{
-	10, // 0: dfe.CreateRequest.emitente:type_name -> dfe.Emitente
-	10, // 1: dfe.CreateResponse.emitente:type_name -> dfe.Emitente
-	10, // 2: dfe.UpdateRequest.emitente:type_name -> dfe.Emitente
-	11, // 3: dfe.UpdateRequest.update_mask:type_name -> metadata.FieldMask
-	10, // 4: dfe.UpdateResponse.emitente:type_name -> dfe.Emitente
-	10, // 5: dfe.GetResponse.emitente:type_name -> dfe.Emitente
-	12, // 6: dfe.ListRequest.filter:type_name -> Filter
-	10, // 7: dfe.ListResponse.emitenteList:type_name -> dfe.Emitente
-	13, // 8: dfe.Emitente.created_at:type_name -> google.protobuf.Timestamp
-	13, // 9: dfe.Emitente.updated_at:type_name -> google.protobuf.Timestamp
-	14, // 10: dfe.Emitente.contador:type_name -> config.Contador
-	15, // 11: dfe.Emitente.certificado:type_name -> config.CertificadoModel
-	16, // 12: dfe.Emitente.nfe_config:type_name -> config.ConfigNfe
-	17, // 13: dfe.Emitente.nfce_config:type_name -> config.ConfigNfce
-	18, // 14: dfe.Emitente.mdfe_config:type_name -> config.ConfigMdfe
-	19, // 15: dfe.Emitente.nfse_config:type_name -> config.ConfigNfse
-	20, // 16: dfe.Emitente.cnae_principal:type_name -> config.Cnae
-	20, // 17: dfe.Emitente.cnae_secundarios:type_name -> config.Cnae
-	21, // 18: dfe.Emitente.cte_config:type_name -> config.ConfigCte
-	22, // 19: dfe.Emitente.fields:type_name -> metadata.BasicFields
-	0,  // 20: dfe.EmitenteService.Create:input_type -> dfe.CreateRequest
-	2,  // 21: dfe.EmitenteService.Update:input_type -> dfe.UpdateRequest
-	4,  // 22: dfe.EmitenteService.Delete:input_type -> dfe.DeleteRequest
-	6,  // 23: dfe.EmitenteService.Get:input_type -> dfe.GetRequest
-	8,  // 24: dfe.EmitenteService.List:input_type -> dfe.ListRequest
-	1,  // 25: dfe.EmitenteService.Create:output_type -> dfe.CreateResponse
-	3,  // 26: dfe.EmitenteService.Update:output_type -> dfe.UpdateResponse
-	5,  // 27: dfe.EmitenteService.Delete:output_type -> dfe.DeleteResponse
-	7,  // 28: dfe.EmitenteService.Get:output_type -> dfe.GetResponse
-	9,  // 29: dfe.EmitenteService.List:output_type -> dfe.ListResponse
-	25, // [25:30] is the sub-list for method output_type
-	20, // [20:25] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	1,  // 0: dfe.Emitente.created_at:type_name -> google.protobuf.Timestamp
+	1,  // 1: dfe.Emitente.updated_at:type_name -> google.protobuf.Timestamp
+	2,  // 2: dfe.Emitente.contador:type_name -> config.Contador
+	3,  // 3: dfe.Emitente.certificado:type_name -> config.CertificadoModel
+	4,  // 4: dfe.Emitente.nfe_config:type_name -> config.ConfigNfe
+	5,  // 5: dfe.Emitente.nfce_config:type_name -> config.ConfigNfce
+	6,  // 6: dfe.Emitente.mdfe_config:type_name -> config.ConfigMdfe
+	7,  // 7: dfe.Emitente.nfse_config:type_name -> config.ConfigNfse
+	8,  // 8: dfe.Emitente.cnae_principal:type_name -> config.Cnae
+	8,  // 9: dfe.Emitente.cnae_secundarios:type_name -> config.Cnae
+	9,  // 10: dfe.Emitente.cte_config:type_name -> config.ConfigCte
+	10, // 11: dfe.Emitente.fields:type_name -> metadata.BasicFields
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_apps_dfe_emitente_emitente_proto_init() }
@@ -1135,9 +548,9 @@ func file_apps_dfe_emitente_emitente_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_dfe_emitente_emitente_proto_rawDesc), len(file_apps_dfe_emitente_emitente_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   1,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   0,
 		},
 		GoTypes:           file_apps_dfe_emitente_emitente_proto_goTypes,
 		DependencyIndexes: file_apps_dfe_emitente_emitente_proto_depIdxs,

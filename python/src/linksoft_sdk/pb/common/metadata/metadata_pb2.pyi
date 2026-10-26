@@ -54,11 +54,3 @@ class ActionModel(_message.Message):
     type: str
     description: str
     def __init__(self, id: _Optional[str] = ..., createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., type: _Optional[str] = ..., description: _Optional[str] = ...) -> None: ...
-
-class CustomField(_message.Message):
-    __slots__ = ("value", "id")
-    VALUE_FIELD_NUMBER: _ClassVar[int]
-    ID_FIELD_NUMBER: _ClassVar[int]
-    value: str
-    id: str
-    def __init__(self, value: _Optional[str] = ..., id: _Optional[str] = ...) -> None: ...

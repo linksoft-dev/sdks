@@ -276,58 +276,6 @@ func (x *ActionModel) GetDescription() string {
 	return ""
 }
 
-type CustomField struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Value         string                 `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
-	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CustomField) Reset() {
-	*x = CustomField{}
-	mi := &file_common_metadata_metadata_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CustomField) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CustomField) ProtoMessage() {}
-
-func (x *CustomField) ProtoReflect() protoreflect.Message {
-	mi := &file_common_metadata_metadata_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CustomField.ProtoReflect.Descriptor instead.
-func (*CustomField) Descriptor() ([]byte, []int) {
-	return file_common_metadata_metadata_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *CustomField) GetValue() string {
-	if x != nil {
-		return x.Value
-	}
-	return ""
-}
-
-func (x *CustomField) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
 var File_common_metadata_metadata_proto protoreflect.FileDescriptor
 
 const file_common_metadata_metadata_proto_rawDesc = "" +
@@ -347,10 +295,7 @@ const file_common_metadata_metadata_proto_rawDesc = "" +
 	"\x06userId\x18\x03 \x01(\tR\x06userId\x12\x1a\n" +
 	"\buserName\x18\x04 \x01(\tR\buserName\x12\x12\n" +
 	"\x04type\x18\x05 \x01(\tR\x04type\x12 \n" +
-	"\vdescription\x18\x06 \x01(\tR\vdescription\"3\n" +
-	"\vCustomField\x12\x14\n" +
-	"\x05value\x18\x01 \x01(\tR\x05value\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\tR\x02id*+\n" +
+	"\vdescription\x18\x06 \x01(\tR\vdescription*+\n" +
 	"\aBoolean\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\a\n" +
 	"\x03YES\x10\x01\x12\x06\n" +
@@ -370,21 +315,20 @@ func file_common_metadata_metadata_proto_rawDescGZIP() []byte {
 }
 
 var file_common_metadata_metadata_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_common_metadata_metadata_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_common_metadata_metadata_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_common_metadata_metadata_proto_goTypes = []any{
 	(Boolean)(0),                  // 0: metadata.Boolean
 	(*FieldMask)(nil),             // 1: metadata.FieldMask
 	(*BasicFields)(nil),           // 2: metadata.BasicFields
 	(*ActionModel)(nil),           // 3: metadata.ActionModel
-	(*CustomField)(nil),           // 4: metadata.CustomField
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
 }
 var file_common_metadata_metadata_proto_depIdxs = []int32{
-	5, // 0: metadata.BasicFields.createdAt:type_name -> google.protobuf.Timestamp
-	5, // 1: metadata.BasicFields.updatedAt:type_name -> google.protobuf.Timestamp
-	5, // 2: metadata.BasicFields.deletedAt:type_name -> google.protobuf.Timestamp
+	4, // 0: metadata.BasicFields.createdAt:type_name -> google.protobuf.Timestamp
+	4, // 1: metadata.BasicFields.updatedAt:type_name -> google.protobuf.Timestamp
+	4, // 2: metadata.BasicFields.deletedAt:type_name -> google.protobuf.Timestamp
 	3, // 3: metadata.BasicFields.actions:type_name -> metadata.ActionModel
-	5, // 4: metadata.ActionModel.createdAt:type_name -> google.protobuf.Timestamp
+	4, // 4: metadata.ActionModel.createdAt:type_name -> google.protobuf.Timestamp
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
@@ -403,7 +347,7 @@ func file_common_metadata_metadata_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_common_metadata_metadata_proto_rawDesc), len(file_common_metadata_metadata_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

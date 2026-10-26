@@ -166,14 +166,6 @@ var file_plugins_service_service_proto_extTypes = []protoimpl.ExtensionInfo{
 	},
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
-		ExtensionType: (*string)(nil),
-		Field:         1001,
-		Name:          "service.tableName",
-		Tag:           "bytes,1001,opt,name=tableName",
-		Filename:      "plugins/service/service.proto",
-	},
-	{
-		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
 		ExtensionType: (*bool)(nil),
 		Field:         1002,
 		Name:          "service.protojsonMarshaling",
@@ -194,18 +186,14 @@ var file_plugins_service_service_proto_extTypes = []protoimpl.ExtensionInfo{
 var (
 	// optional bool crud = 1000;
 	E_Crud = &file_plugins_service_service_proto_extTypes[0]
-	// this field is used to generate the table name
-	//
-	// optional string tableName = 1001;
-	E_TableName = &file_plugins_service_service_proto_extTypes[1]
 	// optional bool protojsonMarshaling = 1002;
-	E_ProtojsonMarshaling = &file_plugins_service_service_proto_extTypes[2]
+	E_ProtojsonMarshaling = &file_plugins_service_service_proto_extTypes[1]
 )
 
 // Extension fields to descriptorpb.FieldOptions.
 var (
 	// optional service.Field field = 1001;
-	E_Field = &file_plugins_service_service_proto_extTypes[3]
+	E_Field = &file_plugins_service_service_proto_extTypes[2]
 )
 
 var File_plugins_service_service_proto protoreflect.FileDescriptor
@@ -226,8 +214,7 @@ const file_plugins_service_service_proto_rawDesc = "" +
 	"\vUNSPECIFIED\x10\x00\x12\a\n" +
 	"\x03YES\x10\x01\x12\x06\n" +
 	"\x02NO\x10\x02:4\n" +
-	"\x04crud\x12\x1f.google.protobuf.MessageOptions\x18\xe8\a \x01(\bR\x04crud:>\n" +
-	"\ttableName\x12\x1f.google.protobuf.MessageOptions\x18\xe9\a \x01(\tR\ttableName:R\n" +
+	"\x04crud\x12\x1f.google.protobuf.MessageOptions\x18\xe8\a \x01(\bR\x04crud:R\n" +
 	"\x13protojsonMarshaling\x12\x1f.google.protobuf.MessageOptions\x18\xea\a \x01(\bR\x13protojsonMarshaling:D\n" +
 	"\x05field\x12\x1d.google.protobuf.FieldOptions\x18\xe9\a \x01(\v2\x0e.service.FieldR\x05fieldB\x8b\x01\n" +
 	"\vcom.serviceB\fServiceProtoP\x01Z2github.com/linksoft-dev/sdks/go/pb/plugins/service\xa2\x02\x03SXX\xaa\x02\aService\xca\x02\aService\xe2\x02\x13Service\\GPBMetadata\xea\x02\aServiceb\x06proto3"
@@ -260,14 +247,13 @@ var file_plugins_service_service_proto_depIdxs = []int32{
 	0,  // 4: service.Field.onlyNumber:type_name -> service.Boolean
 	0,  // 5: service.Field.ignoreVersion:type_name -> service.Boolean
 	2,  // 6: service.crud:extendee -> google.protobuf.MessageOptions
-	2,  // 7: service.tableName:extendee -> google.protobuf.MessageOptions
-	2,  // 8: service.protojsonMarshaling:extendee -> google.protobuf.MessageOptions
-	3,  // 9: service.field:extendee -> google.protobuf.FieldOptions
-	1,  // 10: service.field:type_name -> service.Field
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	10, // [10:11] is the sub-list for extension type_name
-	6,  // [6:10] is the sub-list for extension extendee
+	2,  // 7: service.protojsonMarshaling:extendee -> google.protobuf.MessageOptions
+	3,  // 8: service.field:extendee -> google.protobuf.FieldOptions
+	1,  // 9: service.field:type_name -> service.Field
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	9,  // [9:10] is the sub-list for extension type_name
+	6,  // [6:9] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
 }
 
@@ -283,7 +269,7 @@ func file_plugins_service_service_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_plugins_service_service_proto_rawDesc), len(file_plugins_service_service_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   1,
-			NumExtensions: 4,
+			NumExtensions: 3,
 			NumServices:   0,
 		},
 		GoTypes:           file_plugins_service_service_proto_goTypes,
