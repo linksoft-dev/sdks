@@ -2599,6 +2599,30 @@ class DfeDanfeResponse(_message.Message):
     response: _report_pb2.Response
     def __init__(self, response: _Optional[_Union[_report_pb2.Response, _Mapping]] = ...) -> None: ...
 
+class LeDocumentoIaRequest(_message.Message):
+    __slots__ = ("imagem", "mime_type", "texto", "planilha", "nome_arquivo", "ai_integration_id")
+    IMAGEM_FIELD_NUMBER: _ClassVar[int]
+    MIME_TYPE_FIELD_NUMBER: _ClassVar[int]
+    TEXTO_FIELD_NUMBER: _ClassVar[int]
+    PLANILHA_FIELD_NUMBER: _ClassVar[int]
+    NOME_ARQUIVO_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    imagem: bytes
+    mime_type: str
+    texto: str
+    planilha: bytes
+    nome_arquivo: str
+    ai_integration_id: str
+    def __init__(self, imagem: _Optional[bytes] = ..., mime_type: _Optional[str] = ..., texto: _Optional[str] = ..., planilha: _Optional[bytes] = ..., nome_arquivo: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
+
+class LeDocumentoIaResponse(_message.Message):
+    __slots__ = ("pedido", "avisos")
+    PEDIDO_FIELD_NUMBER: _ClassVar[int]
+    AVISOS_FIELD_NUMBER: _ClassVar[int]
+    pedido: Pedido
+    avisos: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, pedido: _Optional[_Union[Pedido, _Mapping]] = ..., avisos: _Optional[_Iterable[str]] = ...) -> None: ...
+
 class ImportRequest(_message.Message):
     __slots__ = ("data", "file_name", "orders", "validate_only", "import_pedido", "update_if_exists", "import_cliente", "import_vendedor", "import_produto", "import_servico", "import_formas_pagamento", "import_conta", "mapping_id", "overwrite_existing_fields")
     DATA_FIELD_NUMBER: _ClassVar[int]

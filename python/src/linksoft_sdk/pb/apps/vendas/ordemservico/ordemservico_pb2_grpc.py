@@ -20,6 +20,16 @@ class OrdemServicoServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoResponse.FromString,
                 _registered_method=True)
+        self.CreateValidated = channel.unary_unary(
+                '/ordemservico.OrdemServicoService/CreateValidated',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoResponse.FromString,
+                _registered_method=True)
+        self.LeDocumentoIa = channel.unary_unary(
+                '/ordemservico.OrdemServicoService/LeDocumentoIa',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.LeDocumentoIaRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.LeDocumentoIaResponse.FromString,
+                _registered_method=True)
         self.Update = channel.unary_unary(
                 '/ordemservico.OrdemServicoService/Update',
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.UpdatePedidoRequest.SerializeToString,
@@ -192,6 +202,20 @@ class OrdemServicoServiceServicer:
 
     def Create(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateValidated(self, request, context):
+        """Cria a OS com os itens numa chamada só, calculados como na inclusão pela tela.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def LeDocumentoIa(self, request, context):
+        """Lê com IA a foto, o PDF, o texto ou a planilha de uma ordem de serviço e devolve o documento preenchido para conferir. Não grava.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -410,6 +434,16 @@ def add_OrdemServicoServiceServicer_to_server(servicer, server):
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoResponse.SerializeToString,
             ),
+            'CreateValidated': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateValidated,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoResponse.SerializeToString,
+            ),
+            'LeDocumentoIa': grpc.unary_unary_rpc_method_handler(
+                    servicer.LeDocumentoIa,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.LeDocumentoIaRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.LeDocumentoIaResponse.SerializeToString,
+            ),
             'Update': grpc.unary_unary_rpc_method_handler(
                     servicer.Update,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.UpdatePedidoRequest.FromString,
@@ -603,6 +637,60 @@ class OrdemServicoService:
             '/ordemservico.OrdemServicoService/Create',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateValidated(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ordemservico.OrdemServicoService/CreateValidated',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.CreatePedidoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def LeDocumentoIa(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/ordemservico.OrdemServicoService/LeDocumentoIa',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.LeDocumentoIaRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.LeDocumentoIaResponse.FromString,
             options,
             channel_credentials,
             insecure,

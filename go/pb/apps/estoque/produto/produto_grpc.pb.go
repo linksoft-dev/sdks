@@ -41,6 +41,8 @@ const (
 	ProdutoService_GetEstoqueGrupo_FullMethodName             = "/produto.ProdutoService/GetEstoqueGrupo"
 	ProdutoService_GenerateSeoMeta_FullMethodName             = "/produto.ProdutoService/GenerateSeoMeta"
 	ProdutoService_SugereFiscalIa_FullMethodName              = "/produto.ProdutoService/SugereFiscalIa"
+	ProdutoService_LeFotoIa_FullMethodName                    = "/produto.ProdutoService/LeFotoIa"
+	ProdutoService_ConsultaDadosPublicos_FullMethodName       = "/produto.ProdutoService/ConsultaDadosPublicos"
 )
 
 // ProdutoServiceClient is the client API for ProdutoService service.
@@ -75,6 +77,10 @@ type ProdutoServiceClient interface {
 	// Sugere com IA o NCM, o CEST e a tributação dos produtos, conferidos na tabela oficial de NCM e no
 	// cadastro de tributações. Não grava: quem aplica é quem chamou, depois de conferir.
 	SugereFiscalIa(ctx context.Context, in *SugereFiscalIaRequest, opts ...grpc.CallOption) (*SugereFiscalIaResponse, error)
+	// Lê com IA a foto da embalagem ou do rótulo e devolve o produto preenchido para conferir. Não grava.
+	LeFotoIa(ctx context.Context, in *LeFotoIaRequest, opts ...grpc.CallOption) (*LeFotoIaResponse, error)
+	// Busca em bases públicas de produtos os dados pelo código de barras ou, sem ele, pelo nome. Não grava.
+	ConsultaDadosPublicos(ctx context.Context, in *ConsultaDadosPublicosRequest, opts ...grpc.CallOption) (*ConsultaDadosPublicosResponse, error)
 }
 
 type produtoServiceClient struct {
@@ -305,6 +311,26 @@ func (c *produtoServiceClient) SugereFiscalIa(ctx context.Context, in *SugereFis
 	return out, nil
 }
 
+func (c *produtoServiceClient) LeFotoIa(ctx context.Context, in *LeFotoIaRequest, opts ...grpc.CallOption) (*LeFotoIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LeFotoIaResponse)
+	err := c.cc.Invoke(ctx, ProdutoService_LeFotoIa_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *produtoServiceClient) ConsultaDadosPublicos(ctx context.Context, in *ConsultaDadosPublicosRequest, opts ...grpc.CallOption) (*ConsultaDadosPublicosResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ConsultaDadosPublicosResponse)
+	err := c.cc.Invoke(ctx, ProdutoService_ConsultaDadosPublicos_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProdutoServiceServer is the server API for ProdutoService service.
 // All implementations must embed UnimplementedProdutoServiceServer
 // for forward compatibility.
@@ -337,6 +363,10 @@ type ProdutoServiceServer interface {
 	// Sugere com IA o NCM, o CEST e a tributação dos produtos, conferidos na tabela oficial de NCM e no
 	// cadastro de tributações. Não grava: quem aplica é quem chamou, depois de conferir.
 	SugereFiscalIa(context.Context, *SugereFiscalIaRequest) (*SugereFiscalIaResponse, error)
+	// Lê com IA a foto da embalagem ou do rótulo e devolve o produto preenchido para conferir. Não grava.
+	LeFotoIa(context.Context, *LeFotoIaRequest) (*LeFotoIaResponse, error)
+	// Busca em bases públicas de produtos os dados pelo código de barras ou, sem ele, pelo nome. Não grava.
+	ConsultaDadosPublicos(context.Context, *ConsultaDadosPublicosRequest) (*ConsultaDadosPublicosResponse, error)
 	mustEmbedUnimplementedProdutoServiceServer()
 }
 
@@ -412,6 +442,12 @@ func (UnimplementedProdutoServiceServer) GenerateSeoMeta(context.Context, *Gener
 }
 func (UnimplementedProdutoServiceServer) SugereFiscalIa(context.Context, *SugereFiscalIaRequest) (*SugereFiscalIaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SugereFiscalIa not implemented")
+}
+func (UnimplementedProdutoServiceServer) LeFotoIa(context.Context, *LeFotoIaRequest) (*LeFotoIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LeFotoIa not implemented")
+}
+func (UnimplementedProdutoServiceServer) ConsultaDadosPublicos(context.Context, *ConsultaDadosPublicosRequest) (*ConsultaDadosPublicosResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ConsultaDadosPublicos not implemented")
 }
 func (UnimplementedProdutoServiceServer) mustEmbedUnimplementedProdutoServiceServer() {}
 func (UnimplementedProdutoServiceServer) testEmbeddedByValue()                        {}
@@ -830,6 +866,42 @@ func _ProdutoService_SugereFiscalIa_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProdutoService_LeFotoIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeFotoIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProdutoServiceServer).LeFotoIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProdutoService_LeFotoIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProdutoServiceServer).LeFotoIa(ctx, req.(*LeFotoIaRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProdutoService_ConsultaDadosPublicos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConsultaDadosPublicosRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProdutoServiceServer).ConsultaDadosPublicos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProdutoService_ConsultaDadosPublicos_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProdutoServiceServer).ConsultaDadosPublicos(ctx, req.(*ConsultaDadosPublicosRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProdutoService_ServiceDesc is the grpc.ServiceDesc for ProdutoService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -924,6 +996,14 @@ var ProdutoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SugereFiscalIa",
 			Handler:    _ProdutoService_SugereFiscalIa_Handler,
+		},
+		{
+			MethodName: "LeFotoIa",
+			Handler:    _ProdutoService_LeFotoIa_Handler,
+		},
+		{
+			MethodName: "ConsultaDadosPublicos",
+			Handler:    _ProdutoService_ConsultaDadosPublicos_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

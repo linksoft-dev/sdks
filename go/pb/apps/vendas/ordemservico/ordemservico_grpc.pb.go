@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	OrdemServicoService_Create_FullMethodName                    = "/ordemservico.OrdemServicoService/Create"
+	OrdemServicoService_CreateValidated_FullMethodName           = "/ordemservico.OrdemServicoService/CreateValidated"
+	OrdemServicoService_LeDocumentoIa_FullMethodName             = "/ordemservico.OrdemServicoService/LeDocumentoIa"
 	OrdemServicoService_Update_FullMethodName                    = "/ordemservico.OrdemServicoService/Update"
 	OrdemServicoService_ReorderItems_FullMethodName              = "/ordemservico.OrdemServicoService/ReorderItems"
 	OrdemServicoService_SetAcompanhamento_FullMethodName         = "/ordemservico.OrdemServicoService/SetAcompanhamento"
@@ -61,6 +63,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrdemServicoServiceClient interface {
 	Create(ctx context.Context, in *pedido.CreatePedidoRequest, opts ...grpc.CallOption) (*pedido.CreatePedidoResponse, error)
+	// Cria a OS com os itens numa chamada só, calculados como na inclusão pela tela.
+	CreateValidated(ctx context.Context, in *pedido.CreatePedidoRequest, opts ...grpc.CallOption) (*pedido.CreatePedidoResponse, error)
+	// Lê com IA a foto, o PDF, o texto ou a planilha de uma ordem de serviço e devolve o documento preenchido para conferir. Não grava.
+	LeDocumentoIa(ctx context.Context, in *pedido.LeDocumentoIaRequest, opts ...grpc.CallOption) (*pedido.LeDocumentoIaResponse, error)
 	Update(ctx context.Context, in *pedido.UpdatePedidoRequest, opts ...grpc.CallOption) (*pedido.UpdatePedidoResponse, error)
 	ReorderItems(ctx context.Context, in *pedido.ReorderItemsRequest, opts ...grpc.CallOption) (*pedido.ReorderItemsResponse, error)
 	SetAcompanhamento(ctx context.Context, in *pedido.SetAcompanhamentoRequest, opts ...grpc.CallOption) (*pedido.SetAcompanhamentoResponse, error)
@@ -116,6 +122,26 @@ func (c *ordemServicoServiceClient) Create(ctx context.Context, in *pedido.Creat
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(pedido.CreatePedidoResponse)
 	err := c.cc.Invoke(ctx, OrdemServicoService_Create_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ordemServicoServiceClient) CreateValidated(ctx context.Context, in *pedido.CreatePedidoRequest, opts ...grpc.CallOption) (*pedido.CreatePedidoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(pedido.CreatePedidoResponse)
+	err := c.cc.Invoke(ctx, OrdemServicoService_CreateValidated_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ordemServicoServiceClient) LeDocumentoIa(ctx context.Context, in *pedido.LeDocumentoIaRequest, opts ...grpc.CallOption) (*pedido.LeDocumentoIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(pedido.LeDocumentoIaResponse)
+	err := c.cc.Invoke(ctx, OrdemServicoService_LeDocumentoIa_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -457,6 +483,10 @@ func (c *ordemServicoServiceClient) HistoricoEquipamento(ctx context.Context, in
 // for forward compatibility.
 type OrdemServicoServiceServer interface {
 	Create(context.Context, *pedido.CreatePedidoRequest) (*pedido.CreatePedidoResponse, error)
+	// Cria a OS com os itens numa chamada só, calculados como na inclusão pela tela.
+	CreateValidated(context.Context, *pedido.CreatePedidoRequest) (*pedido.CreatePedidoResponse, error)
+	// Lê com IA a foto, o PDF, o texto ou a planilha de uma ordem de serviço e devolve o documento preenchido para conferir. Não grava.
+	LeDocumentoIa(context.Context, *pedido.LeDocumentoIaRequest) (*pedido.LeDocumentoIaResponse, error)
 	Update(context.Context, *pedido.UpdatePedidoRequest) (*pedido.UpdatePedidoResponse, error)
 	ReorderItems(context.Context, *pedido.ReorderItemsRequest) (*pedido.ReorderItemsResponse, error)
 	SetAcompanhamento(context.Context, *pedido.SetAcompanhamentoRequest) (*pedido.SetAcompanhamentoResponse, error)
@@ -510,6 +540,12 @@ type UnimplementedOrdemServicoServiceServer struct{}
 
 func (UnimplementedOrdemServicoServiceServer) Create(context.Context, *pedido.CreatePedidoRequest) (*pedido.CreatePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedOrdemServicoServiceServer) CreateValidated(context.Context, *pedido.CreatePedidoRequest) (*pedido.CreatePedidoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateValidated not implemented")
+}
+func (UnimplementedOrdemServicoServiceServer) LeDocumentoIa(context.Context, *pedido.LeDocumentoIaRequest) (*pedido.LeDocumentoIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LeDocumentoIa not implemented")
 }
 func (UnimplementedOrdemServicoServiceServer) Update(context.Context, *pedido.UpdatePedidoRequest) (*pedido.UpdatePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Update not implemented")
@@ -645,6 +681,42 @@ func _OrdemServicoService_Create_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrdemServicoServiceServer).Create(ctx, req.(*pedido.CreatePedidoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrdemServicoService_CreateValidated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(pedido.CreatePedidoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrdemServicoServiceServer).CreateValidated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrdemServicoService_CreateValidated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrdemServicoServiceServer).CreateValidated(ctx, req.(*pedido.CreatePedidoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrdemServicoService_LeDocumentoIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(pedido.LeDocumentoIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrdemServicoServiceServer).LeDocumentoIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrdemServicoService_LeDocumentoIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrdemServicoServiceServer).LeDocumentoIa(ctx, req.(*pedido.LeDocumentoIaRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1253,6 +1325,14 @@ var OrdemServicoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Create",
 			Handler:    _OrdemServicoService_Create_Handler,
+		},
+		{
+			MethodName: "CreateValidated",
+			Handler:    _OrdemServicoService_CreateValidated_Handler,
+		},
+		{
+			MethodName: "LeDocumentoIa",
+			Handler:    _OrdemServicoService_LeDocumentoIa_Handler,
 		},
 		{
 			MethodName: "Update",

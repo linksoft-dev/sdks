@@ -355,9 +355,11 @@ const file_apps_vendas_ordemservico_ordemservico_proto_rawDesc = "" +
 	" \x03(\tR\bprodutos\x12\x1a\n" +
 	"\bservicos\x18\v \x03(\tR\bservicos\"\\\n" +
 	"\x1cHistoricoEquipamentoResponse\x12<\n" +
-	"\x05itens\x18\x01 \x03(\v2&.ordemservico.HistoricoEquipamentoItemR\x05itens2\xfc!\n" +
+	"\x05itens\x18\x01 \x03(\v2&.ordemservico.HistoricoEquipamentoItemR\x05itens2\xf7#\n" +
 	"\x13OrdemServicoService\x12b\n" +
-	"\x06Create\x12\x1b.pedido.CreatePedidoRequest\x1a\x1c.pedido.CreatePedidoResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/ordem-servico\x12g\n" +
+	"\x06Create\x12\x1b.pedido.CreatePedidoRequest\x1a\x1c.pedido.CreatePedidoResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/ordem-servico\x12|\n" +
+	"\x0fCreateValidated\x12\x1b.pedido.CreatePedidoRequest\x1a\x1c.pedido.CreatePedidoResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/ordem-servico/create-validated\x12{\n" +
+	"\rLeDocumentoIa\x12\x1c.pedido.LeDocumentoIaRequest\x1a\x1d.pedido.LeDocumentoIaResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/ordem-servico/ai/le-documento\x12g\n" +
 	"\x06Update\x12\x1b.pedido.UpdatePedidoRequest\x1a\x1c.pedido.UpdatePedidoResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\x1a\x17/api/ordem-servico/{id}\x12y\n" +
 	"\fReorderItems\x12\x1b.pedido.ReorderItemsRequest\x1a\x1c.pedido.ReorderItemsResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/api/ordem-servico/{id}/itens/ordem\x12\x8b\x01\n" +
 	"\x11SetAcompanhamento\x12 .pedido.SetAcompanhamentoRequest\x1a!.pedido.SetAcompanhamentoResponse\"1\x82\xd3\xe4\x93\x02+:\x01*\"&/api/ordem-servico/{id}/acompanhamento\x12d\n" +
@@ -418,69 +420,71 @@ var file_apps_vendas_ordemservico_ordemservico_proto_goTypes = []any{
 	(*pedido.Pedido)(nil),                        // 5: pedido.Pedido
 	(*timestamppb.Timestamp)(nil),                // 6: google.protobuf.Timestamp
 	(*pedido.CreatePedidoRequest)(nil),           // 7: pedido.CreatePedidoRequest
-	(*pedido.UpdatePedidoRequest)(nil),           // 8: pedido.UpdatePedidoRequest
-	(*pedido.ReorderItemsRequest)(nil),           // 9: pedido.ReorderItemsRequest
-	(*pedido.SetAcompanhamentoRequest)(nil),      // 10: pedido.SetAcompanhamentoRequest
-	(*pedido.DeletePedidoRequest)(nil),           // 11: pedido.DeletePedidoRequest
-	(*pedido.GetPedidoRequest)(nil),              // 12: pedido.GetPedidoRequest
-	(*pedido.ListPedidoRequest)(nil),             // 13: pedido.ListPedidoRequest
-	(*pedido.PrintPedidoRequest)(nil),            // 14: pedido.PrintPedidoRequest
-	(*pedido.CancelPedidoRequest)(nil),           // 15: pedido.CancelPedidoRequest
-	(*pedido.ClonePedidoRequest)(nil),            // 16: pedido.ClonePedidoRequest
-	(*pedido.RenumberRequest)(nil),               // 17: pedido.RenumberRequest
-	(*pedido.AddProductRequest)(nil),             // 18: pedido.AddProductRequest
-	(*pedido.UpdateProductRequest)(nil),          // 19: pedido.UpdateProductRequest
-	(*pedido.DeleteProductRequest)(nil),          // 20: pedido.DeleteProductRequest
-	(*pedido.AddServiceRequest)(nil),             // 21: pedido.AddServiceRequest
-	(*pedido.UpdateServiceRequest)(nil),          // 22: pedido.UpdateServiceRequest
-	(*pedido.DeleteServiceRequest)(nil),          // 23: pedido.DeleteServiceRequest
-	(*pedido.AddPaymentRequest)(nil),             // 24: pedido.AddPaymentRequest
-	(*pedido.DeletePaymentRequest)(nil),          // 25: pedido.DeletePaymentRequest
-	(*pedido.CancelPaymentRequest)(nil),          // 26: pedido.CancelPaymentRequest
-	(*pedido.SendByEmailRequest)(nil),            // 27: pedido.SendByEmailRequest
-	(*pedido.ReportRequest)(nil),                 // 28: pedido.ReportRequest
-	(*pedido.AplicaTabelaPrecoRequest)(nil),      // 29: pedido.AplicaTabelaPrecoRequest
-	(*pedido.DfeDanfeRequest)(nil),               // 30: pedido.DfeDanfeRequest
-	(*pedido.MesclaPedidosRequest)(nil),          // 31: pedido.MesclaPedidosRequest
-	(*pedido.AddPedidoVinculadoRequest)(nil),     // 32: pedido.AddPedidoVinculadoRequest
-	(*pedido.DeletePedidoVinculadoRequest)(nil),  // 33: pedido.DeletePedidoVinculadoRequest
-	(*pedido.EnviaNFeRequest)(nil),               // 34: pedido.EnviaNFeRequest
-	(*pedido.SincronizaNFeRequest)(nil),          // 35: pedido.SincronizaNFeRequest
-	(*pedido.SincronizaPessoaRequest)(nil),       // 36: pedido.SincronizaPessoaRequest
-	(*pedido.VinculoNfManualRequest)(nil),        // 37: pedido.VinculoNfManualRequest
-	(*pedido.SendPaymentLinkRequest)(nil),        // 38: pedido.SendPaymentLinkRequest
-	(*pedido.CreatePedidoResponse)(nil),          // 39: pedido.CreatePedidoResponse
-	(*pedido.UpdatePedidoResponse)(nil),          // 40: pedido.UpdatePedidoResponse
-	(*pedido.ReorderItemsResponse)(nil),          // 41: pedido.ReorderItemsResponse
-	(*pedido.SetAcompanhamentoResponse)(nil),     // 42: pedido.SetAcompanhamentoResponse
-	(*pedido.DeletePedidoResponse)(nil),          // 43: pedido.DeletePedidoResponse
-	(*pedido.GetPedidoResponse)(nil),             // 44: pedido.GetPedidoResponse
-	(*pedido.ListPedidoResponse)(nil),            // 45: pedido.ListPedidoResponse
-	(*pedido.PrintPedidoResponse)(nil),           // 46: pedido.PrintPedidoResponse
-	(*pedido.CancelPedidoResponse)(nil),          // 47: pedido.CancelPedidoResponse
-	(*pedido.ClonePedidoResponse)(nil),           // 48: pedido.ClonePedidoResponse
-	(*pedido.RenumberResponse)(nil),              // 49: pedido.RenumberResponse
-	(*pedido.AddProductResponse)(nil),            // 50: pedido.AddProductResponse
-	(*pedido.UpdateProductResponse)(nil),         // 51: pedido.UpdateProductResponse
-	(*pedido.DeleteProductResponse)(nil),         // 52: pedido.DeleteProductResponse
-	(*pedido.AddServiceResponse)(nil),            // 53: pedido.AddServiceResponse
-	(*pedido.UpdateServiceResponse)(nil),         // 54: pedido.UpdateServiceResponse
-	(*pedido.DeleteServiceResponse)(nil),         // 55: pedido.DeleteServiceResponse
-	(*pedido.AddPaymentResponse)(nil),            // 56: pedido.AddPaymentResponse
-	(*pedido.DeletePaymentResponse)(nil),         // 57: pedido.DeletePaymentResponse
-	(*pedido.CancelPaymentResponse)(nil),         // 58: pedido.CancelPaymentResponse
-	(*pedido.SendByEmailResponse)(nil),           // 59: pedido.SendByEmailResponse
-	(*pedido.ReportResponse)(nil),                // 60: pedido.ReportResponse
-	(*pedido.AplicaTabelaPrecoResponse)(nil),     // 61: pedido.AplicaTabelaPrecoResponse
-	(*pedido.DfeDanfeResponse)(nil),              // 62: pedido.DfeDanfeResponse
-	(*pedido.MesclaPedidosResponse)(nil),         // 63: pedido.MesclaPedidosResponse
-	(*pedido.AddPedidoVinculadoResponse)(nil),    // 64: pedido.AddPedidoVinculadoResponse
-	(*pedido.DeletePedidoVinculadoResponse)(nil), // 65: pedido.DeletePedidoVinculadoResponse
-	(*pedido.EnviaNFeResponse)(nil),              // 66: pedido.EnviaNFeResponse
-	(*pedido.SincronizaNFeResponse)(nil),         // 67: pedido.SincronizaNFeResponse
-	(*pedido.SincronizaPessoaResponse)(nil),      // 68: pedido.SincronizaPessoaResponse
-	(*pedido.VinculoNfManualResponse)(nil),       // 69: pedido.VinculoNfManualResponse
-	(*pedido.SendPaymentLinkResponse)(nil),       // 70: pedido.SendPaymentLinkResponse
+	(*pedido.LeDocumentoIaRequest)(nil),          // 8: pedido.LeDocumentoIaRequest
+	(*pedido.UpdatePedidoRequest)(nil),           // 9: pedido.UpdatePedidoRequest
+	(*pedido.ReorderItemsRequest)(nil),           // 10: pedido.ReorderItemsRequest
+	(*pedido.SetAcompanhamentoRequest)(nil),      // 11: pedido.SetAcompanhamentoRequest
+	(*pedido.DeletePedidoRequest)(nil),           // 12: pedido.DeletePedidoRequest
+	(*pedido.GetPedidoRequest)(nil),              // 13: pedido.GetPedidoRequest
+	(*pedido.ListPedidoRequest)(nil),             // 14: pedido.ListPedidoRequest
+	(*pedido.PrintPedidoRequest)(nil),            // 15: pedido.PrintPedidoRequest
+	(*pedido.CancelPedidoRequest)(nil),           // 16: pedido.CancelPedidoRequest
+	(*pedido.ClonePedidoRequest)(nil),            // 17: pedido.ClonePedidoRequest
+	(*pedido.RenumberRequest)(nil),               // 18: pedido.RenumberRequest
+	(*pedido.AddProductRequest)(nil),             // 19: pedido.AddProductRequest
+	(*pedido.UpdateProductRequest)(nil),          // 20: pedido.UpdateProductRequest
+	(*pedido.DeleteProductRequest)(nil),          // 21: pedido.DeleteProductRequest
+	(*pedido.AddServiceRequest)(nil),             // 22: pedido.AddServiceRequest
+	(*pedido.UpdateServiceRequest)(nil),          // 23: pedido.UpdateServiceRequest
+	(*pedido.DeleteServiceRequest)(nil),          // 24: pedido.DeleteServiceRequest
+	(*pedido.AddPaymentRequest)(nil),             // 25: pedido.AddPaymentRequest
+	(*pedido.DeletePaymentRequest)(nil),          // 26: pedido.DeletePaymentRequest
+	(*pedido.CancelPaymentRequest)(nil),          // 27: pedido.CancelPaymentRequest
+	(*pedido.SendByEmailRequest)(nil),            // 28: pedido.SendByEmailRequest
+	(*pedido.ReportRequest)(nil),                 // 29: pedido.ReportRequest
+	(*pedido.AplicaTabelaPrecoRequest)(nil),      // 30: pedido.AplicaTabelaPrecoRequest
+	(*pedido.DfeDanfeRequest)(nil),               // 31: pedido.DfeDanfeRequest
+	(*pedido.MesclaPedidosRequest)(nil),          // 32: pedido.MesclaPedidosRequest
+	(*pedido.AddPedidoVinculadoRequest)(nil),     // 33: pedido.AddPedidoVinculadoRequest
+	(*pedido.DeletePedidoVinculadoRequest)(nil),  // 34: pedido.DeletePedidoVinculadoRequest
+	(*pedido.EnviaNFeRequest)(nil),               // 35: pedido.EnviaNFeRequest
+	(*pedido.SincronizaNFeRequest)(nil),          // 36: pedido.SincronizaNFeRequest
+	(*pedido.SincronizaPessoaRequest)(nil),       // 37: pedido.SincronizaPessoaRequest
+	(*pedido.VinculoNfManualRequest)(nil),        // 38: pedido.VinculoNfManualRequest
+	(*pedido.SendPaymentLinkRequest)(nil),        // 39: pedido.SendPaymentLinkRequest
+	(*pedido.CreatePedidoResponse)(nil),          // 40: pedido.CreatePedidoResponse
+	(*pedido.LeDocumentoIaResponse)(nil),         // 41: pedido.LeDocumentoIaResponse
+	(*pedido.UpdatePedidoResponse)(nil),          // 42: pedido.UpdatePedidoResponse
+	(*pedido.ReorderItemsResponse)(nil),          // 43: pedido.ReorderItemsResponse
+	(*pedido.SetAcompanhamentoResponse)(nil),     // 44: pedido.SetAcompanhamentoResponse
+	(*pedido.DeletePedidoResponse)(nil),          // 45: pedido.DeletePedidoResponse
+	(*pedido.GetPedidoResponse)(nil),             // 46: pedido.GetPedidoResponse
+	(*pedido.ListPedidoResponse)(nil),            // 47: pedido.ListPedidoResponse
+	(*pedido.PrintPedidoResponse)(nil),           // 48: pedido.PrintPedidoResponse
+	(*pedido.CancelPedidoResponse)(nil),          // 49: pedido.CancelPedidoResponse
+	(*pedido.ClonePedidoResponse)(nil),           // 50: pedido.ClonePedidoResponse
+	(*pedido.RenumberResponse)(nil),              // 51: pedido.RenumberResponse
+	(*pedido.AddProductResponse)(nil),            // 52: pedido.AddProductResponse
+	(*pedido.UpdateProductResponse)(nil),         // 53: pedido.UpdateProductResponse
+	(*pedido.DeleteProductResponse)(nil),         // 54: pedido.DeleteProductResponse
+	(*pedido.AddServiceResponse)(nil),            // 55: pedido.AddServiceResponse
+	(*pedido.UpdateServiceResponse)(nil),         // 56: pedido.UpdateServiceResponse
+	(*pedido.DeleteServiceResponse)(nil),         // 57: pedido.DeleteServiceResponse
+	(*pedido.AddPaymentResponse)(nil),            // 58: pedido.AddPaymentResponse
+	(*pedido.DeletePaymentResponse)(nil),         // 59: pedido.DeletePaymentResponse
+	(*pedido.CancelPaymentResponse)(nil),         // 60: pedido.CancelPaymentResponse
+	(*pedido.SendByEmailResponse)(nil),           // 61: pedido.SendByEmailResponse
+	(*pedido.ReportResponse)(nil),                // 62: pedido.ReportResponse
+	(*pedido.AplicaTabelaPrecoResponse)(nil),     // 63: pedido.AplicaTabelaPrecoResponse
+	(*pedido.DfeDanfeResponse)(nil),              // 64: pedido.DfeDanfeResponse
+	(*pedido.MesclaPedidosResponse)(nil),         // 65: pedido.MesclaPedidosResponse
+	(*pedido.AddPedidoVinculadoResponse)(nil),    // 66: pedido.AddPedidoVinculadoResponse
+	(*pedido.DeletePedidoVinculadoResponse)(nil), // 67: pedido.DeletePedidoVinculadoResponse
+	(*pedido.EnviaNFeResponse)(nil),              // 68: pedido.EnviaNFeResponse
+	(*pedido.SincronizaNFeResponse)(nil),         // 69: pedido.SincronizaNFeResponse
+	(*pedido.SincronizaPessoaResponse)(nil),      // 70: pedido.SincronizaPessoaResponse
+	(*pedido.VinculoNfManualResponse)(nil),       // 71: pedido.VinculoNfManualResponse
+	(*pedido.SendPaymentLinkResponse)(nil),       // 72: pedido.SendPaymentLinkResponse
 }
 var file_apps_vendas_ordemservico_ordemservico_proto_depIdxs = []int32{
 	5,  // 0: ordemservico.GetUltimaOsPorNumeroSerieResponse.pedido:type_name -> pedido.Pedido
@@ -488,75 +492,79 @@ var file_apps_vendas_ordemservico_ordemservico_proto_depIdxs = []int32{
 	6,  // 2: ordemservico.HistoricoEquipamentoItem.dataHoraFechamento:type_name -> google.protobuf.Timestamp
 	3,  // 3: ordemservico.HistoricoEquipamentoResponse.itens:type_name -> ordemservico.HistoricoEquipamentoItem
 	7,  // 4: ordemservico.OrdemServicoService.Create:input_type -> pedido.CreatePedidoRequest
-	8,  // 5: ordemservico.OrdemServicoService.Update:input_type -> pedido.UpdatePedidoRequest
-	9,  // 6: ordemservico.OrdemServicoService.ReorderItems:input_type -> pedido.ReorderItemsRequest
-	10, // 7: ordemservico.OrdemServicoService.SetAcompanhamento:input_type -> pedido.SetAcompanhamentoRequest
-	11, // 8: ordemservico.OrdemServicoService.Delete:input_type -> pedido.DeletePedidoRequest
-	12, // 9: ordemservico.OrdemServicoService.Get:input_type -> pedido.GetPedidoRequest
-	13, // 10: ordemservico.OrdemServicoService.List:input_type -> pedido.ListPedidoRequest
-	14, // 11: ordemservico.OrdemServicoService.Print:input_type -> pedido.PrintPedidoRequest
-	15, // 12: ordemservico.OrdemServicoService.Cancel:input_type -> pedido.CancelPedidoRequest
-	16, // 13: ordemservico.OrdemServicoService.Clone:input_type -> pedido.ClonePedidoRequest
-	17, // 14: ordemservico.OrdemServicoService.Renumber:input_type -> pedido.RenumberRequest
-	18, // 15: ordemservico.OrdemServicoService.AddProduct:input_type -> pedido.AddProductRequest
-	19, // 16: ordemservico.OrdemServicoService.UpdateProduct:input_type -> pedido.UpdateProductRequest
-	20, // 17: ordemservico.OrdemServicoService.DeleteProduct:input_type -> pedido.DeleteProductRequest
-	21, // 18: ordemservico.OrdemServicoService.AddService:input_type -> pedido.AddServiceRequest
-	22, // 19: ordemservico.OrdemServicoService.UpdateService:input_type -> pedido.UpdateServiceRequest
-	23, // 20: ordemservico.OrdemServicoService.DeleteService:input_type -> pedido.DeleteServiceRequest
-	24, // 21: ordemservico.OrdemServicoService.AddPayment:input_type -> pedido.AddPaymentRequest
-	25, // 22: ordemservico.OrdemServicoService.DeletePayment:input_type -> pedido.DeletePaymentRequest
-	26, // 23: ordemservico.OrdemServicoService.CancelPayment:input_type -> pedido.CancelPaymentRequest
-	27, // 24: ordemservico.OrdemServicoService.SendByEmail:input_type -> pedido.SendByEmailRequest
-	28, // 25: ordemservico.OrdemServicoService.Report:input_type -> pedido.ReportRequest
-	29, // 26: ordemservico.OrdemServicoService.AplicaTabelaPreco:input_type -> pedido.AplicaTabelaPrecoRequest
-	30, // 27: ordemservico.OrdemServicoService.DfeDanfe:input_type -> pedido.DfeDanfeRequest
-	31, // 28: ordemservico.OrdemServicoService.MesclaPedidos:input_type -> pedido.MesclaPedidosRequest
-	32, // 29: ordemservico.OrdemServicoService.AddPedidoVinculado:input_type -> pedido.AddPedidoVinculadoRequest
-	33, // 30: ordemservico.OrdemServicoService.DeletePedidoVinculado:input_type -> pedido.DeletePedidoVinculadoRequest
-	34, // 31: ordemservico.OrdemServicoService.EnviaNFe:input_type -> pedido.EnviaNFeRequest
-	35, // 32: ordemservico.OrdemServicoService.SincronizaNFe:input_type -> pedido.SincronizaNFeRequest
-	36, // 33: ordemservico.OrdemServicoService.SincronizaPessoa:input_type -> pedido.SincronizaPessoaRequest
-	37, // 34: ordemservico.OrdemServicoService.VinculaNFManual:input_type -> pedido.VinculoNfManualRequest
-	38, // 35: ordemservico.OrdemServicoService.SendPaymentLink:input_type -> pedido.SendPaymentLinkRequest
-	0,  // 36: ordemservico.OrdemServicoService.GetUltimaOsPorNumeroSerie:input_type -> ordemservico.GetUltimaOsPorNumeroSerieRequest
-	2,  // 37: ordemservico.OrdemServicoService.HistoricoEquipamento:input_type -> ordemservico.HistoricoEquipamentoRequest
-	39, // 38: ordemservico.OrdemServicoService.Create:output_type -> pedido.CreatePedidoResponse
-	40, // 39: ordemservico.OrdemServicoService.Update:output_type -> pedido.UpdatePedidoResponse
-	41, // 40: ordemservico.OrdemServicoService.ReorderItems:output_type -> pedido.ReorderItemsResponse
-	42, // 41: ordemservico.OrdemServicoService.SetAcompanhamento:output_type -> pedido.SetAcompanhamentoResponse
-	43, // 42: ordemservico.OrdemServicoService.Delete:output_type -> pedido.DeletePedidoResponse
-	44, // 43: ordemservico.OrdemServicoService.Get:output_type -> pedido.GetPedidoResponse
-	45, // 44: ordemservico.OrdemServicoService.List:output_type -> pedido.ListPedidoResponse
-	46, // 45: ordemservico.OrdemServicoService.Print:output_type -> pedido.PrintPedidoResponse
-	47, // 46: ordemservico.OrdemServicoService.Cancel:output_type -> pedido.CancelPedidoResponse
-	48, // 47: ordemservico.OrdemServicoService.Clone:output_type -> pedido.ClonePedidoResponse
-	49, // 48: ordemservico.OrdemServicoService.Renumber:output_type -> pedido.RenumberResponse
-	50, // 49: ordemservico.OrdemServicoService.AddProduct:output_type -> pedido.AddProductResponse
-	51, // 50: ordemservico.OrdemServicoService.UpdateProduct:output_type -> pedido.UpdateProductResponse
-	52, // 51: ordemservico.OrdemServicoService.DeleteProduct:output_type -> pedido.DeleteProductResponse
-	53, // 52: ordemservico.OrdemServicoService.AddService:output_type -> pedido.AddServiceResponse
-	54, // 53: ordemservico.OrdemServicoService.UpdateService:output_type -> pedido.UpdateServiceResponse
-	55, // 54: ordemservico.OrdemServicoService.DeleteService:output_type -> pedido.DeleteServiceResponse
-	56, // 55: ordemservico.OrdemServicoService.AddPayment:output_type -> pedido.AddPaymentResponse
-	57, // 56: ordemservico.OrdemServicoService.DeletePayment:output_type -> pedido.DeletePaymentResponse
-	58, // 57: ordemservico.OrdemServicoService.CancelPayment:output_type -> pedido.CancelPaymentResponse
-	59, // 58: ordemservico.OrdemServicoService.SendByEmail:output_type -> pedido.SendByEmailResponse
-	60, // 59: ordemservico.OrdemServicoService.Report:output_type -> pedido.ReportResponse
-	61, // 60: ordemservico.OrdemServicoService.AplicaTabelaPreco:output_type -> pedido.AplicaTabelaPrecoResponse
-	62, // 61: ordemservico.OrdemServicoService.DfeDanfe:output_type -> pedido.DfeDanfeResponse
-	63, // 62: ordemservico.OrdemServicoService.MesclaPedidos:output_type -> pedido.MesclaPedidosResponse
-	64, // 63: ordemservico.OrdemServicoService.AddPedidoVinculado:output_type -> pedido.AddPedidoVinculadoResponse
-	65, // 64: ordemservico.OrdemServicoService.DeletePedidoVinculado:output_type -> pedido.DeletePedidoVinculadoResponse
-	66, // 65: ordemservico.OrdemServicoService.EnviaNFe:output_type -> pedido.EnviaNFeResponse
-	67, // 66: ordemservico.OrdemServicoService.SincronizaNFe:output_type -> pedido.SincronizaNFeResponse
-	68, // 67: ordemservico.OrdemServicoService.SincronizaPessoa:output_type -> pedido.SincronizaPessoaResponse
-	69, // 68: ordemservico.OrdemServicoService.VinculaNFManual:output_type -> pedido.VinculoNfManualResponse
-	70, // 69: ordemservico.OrdemServicoService.SendPaymentLink:output_type -> pedido.SendPaymentLinkResponse
-	1,  // 70: ordemservico.OrdemServicoService.GetUltimaOsPorNumeroSerie:output_type -> ordemservico.GetUltimaOsPorNumeroSerieResponse
-	4,  // 71: ordemservico.OrdemServicoService.HistoricoEquipamento:output_type -> ordemservico.HistoricoEquipamentoResponse
-	38, // [38:72] is the sub-list for method output_type
-	4,  // [4:38] is the sub-list for method input_type
+	7,  // 5: ordemservico.OrdemServicoService.CreateValidated:input_type -> pedido.CreatePedidoRequest
+	8,  // 6: ordemservico.OrdemServicoService.LeDocumentoIa:input_type -> pedido.LeDocumentoIaRequest
+	9,  // 7: ordemservico.OrdemServicoService.Update:input_type -> pedido.UpdatePedidoRequest
+	10, // 8: ordemservico.OrdemServicoService.ReorderItems:input_type -> pedido.ReorderItemsRequest
+	11, // 9: ordemservico.OrdemServicoService.SetAcompanhamento:input_type -> pedido.SetAcompanhamentoRequest
+	12, // 10: ordemservico.OrdemServicoService.Delete:input_type -> pedido.DeletePedidoRequest
+	13, // 11: ordemservico.OrdemServicoService.Get:input_type -> pedido.GetPedidoRequest
+	14, // 12: ordemservico.OrdemServicoService.List:input_type -> pedido.ListPedidoRequest
+	15, // 13: ordemservico.OrdemServicoService.Print:input_type -> pedido.PrintPedidoRequest
+	16, // 14: ordemservico.OrdemServicoService.Cancel:input_type -> pedido.CancelPedidoRequest
+	17, // 15: ordemservico.OrdemServicoService.Clone:input_type -> pedido.ClonePedidoRequest
+	18, // 16: ordemservico.OrdemServicoService.Renumber:input_type -> pedido.RenumberRequest
+	19, // 17: ordemservico.OrdemServicoService.AddProduct:input_type -> pedido.AddProductRequest
+	20, // 18: ordemservico.OrdemServicoService.UpdateProduct:input_type -> pedido.UpdateProductRequest
+	21, // 19: ordemservico.OrdemServicoService.DeleteProduct:input_type -> pedido.DeleteProductRequest
+	22, // 20: ordemservico.OrdemServicoService.AddService:input_type -> pedido.AddServiceRequest
+	23, // 21: ordemservico.OrdemServicoService.UpdateService:input_type -> pedido.UpdateServiceRequest
+	24, // 22: ordemservico.OrdemServicoService.DeleteService:input_type -> pedido.DeleteServiceRequest
+	25, // 23: ordemservico.OrdemServicoService.AddPayment:input_type -> pedido.AddPaymentRequest
+	26, // 24: ordemservico.OrdemServicoService.DeletePayment:input_type -> pedido.DeletePaymentRequest
+	27, // 25: ordemservico.OrdemServicoService.CancelPayment:input_type -> pedido.CancelPaymentRequest
+	28, // 26: ordemservico.OrdemServicoService.SendByEmail:input_type -> pedido.SendByEmailRequest
+	29, // 27: ordemservico.OrdemServicoService.Report:input_type -> pedido.ReportRequest
+	30, // 28: ordemservico.OrdemServicoService.AplicaTabelaPreco:input_type -> pedido.AplicaTabelaPrecoRequest
+	31, // 29: ordemservico.OrdemServicoService.DfeDanfe:input_type -> pedido.DfeDanfeRequest
+	32, // 30: ordemservico.OrdemServicoService.MesclaPedidos:input_type -> pedido.MesclaPedidosRequest
+	33, // 31: ordemservico.OrdemServicoService.AddPedidoVinculado:input_type -> pedido.AddPedidoVinculadoRequest
+	34, // 32: ordemservico.OrdemServicoService.DeletePedidoVinculado:input_type -> pedido.DeletePedidoVinculadoRequest
+	35, // 33: ordemservico.OrdemServicoService.EnviaNFe:input_type -> pedido.EnviaNFeRequest
+	36, // 34: ordemservico.OrdemServicoService.SincronizaNFe:input_type -> pedido.SincronizaNFeRequest
+	37, // 35: ordemservico.OrdemServicoService.SincronizaPessoa:input_type -> pedido.SincronizaPessoaRequest
+	38, // 36: ordemservico.OrdemServicoService.VinculaNFManual:input_type -> pedido.VinculoNfManualRequest
+	39, // 37: ordemservico.OrdemServicoService.SendPaymentLink:input_type -> pedido.SendPaymentLinkRequest
+	0,  // 38: ordemservico.OrdemServicoService.GetUltimaOsPorNumeroSerie:input_type -> ordemservico.GetUltimaOsPorNumeroSerieRequest
+	2,  // 39: ordemservico.OrdemServicoService.HistoricoEquipamento:input_type -> ordemservico.HistoricoEquipamentoRequest
+	40, // 40: ordemservico.OrdemServicoService.Create:output_type -> pedido.CreatePedidoResponse
+	40, // 41: ordemservico.OrdemServicoService.CreateValidated:output_type -> pedido.CreatePedidoResponse
+	41, // 42: ordemservico.OrdemServicoService.LeDocumentoIa:output_type -> pedido.LeDocumentoIaResponse
+	42, // 43: ordemservico.OrdemServicoService.Update:output_type -> pedido.UpdatePedidoResponse
+	43, // 44: ordemservico.OrdemServicoService.ReorderItems:output_type -> pedido.ReorderItemsResponse
+	44, // 45: ordemservico.OrdemServicoService.SetAcompanhamento:output_type -> pedido.SetAcompanhamentoResponse
+	45, // 46: ordemservico.OrdemServicoService.Delete:output_type -> pedido.DeletePedidoResponse
+	46, // 47: ordemservico.OrdemServicoService.Get:output_type -> pedido.GetPedidoResponse
+	47, // 48: ordemservico.OrdemServicoService.List:output_type -> pedido.ListPedidoResponse
+	48, // 49: ordemservico.OrdemServicoService.Print:output_type -> pedido.PrintPedidoResponse
+	49, // 50: ordemservico.OrdemServicoService.Cancel:output_type -> pedido.CancelPedidoResponse
+	50, // 51: ordemservico.OrdemServicoService.Clone:output_type -> pedido.ClonePedidoResponse
+	51, // 52: ordemservico.OrdemServicoService.Renumber:output_type -> pedido.RenumberResponse
+	52, // 53: ordemservico.OrdemServicoService.AddProduct:output_type -> pedido.AddProductResponse
+	53, // 54: ordemservico.OrdemServicoService.UpdateProduct:output_type -> pedido.UpdateProductResponse
+	54, // 55: ordemservico.OrdemServicoService.DeleteProduct:output_type -> pedido.DeleteProductResponse
+	55, // 56: ordemservico.OrdemServicoService.AddService:output_type -> pedido.AddServiceResponse
+	56, // 57: ordemservico.OrdemServicoService.UpdateService:output_type -> pedido.UpdateServiceResponse
+	57, // 58: ordemservico.OrdemServicoService.DeleteService:output_type -> pedido.DeleteServiceResponse
+	58, // 59: ordemservico.OrdemServicoService.AddPayment:output_type -> pedido.AddPaymentResponse
+	59, // 60: ordemservico.OrdemServicoService.DeletePayment:output_type -> pedido.DeletePaymentResponse
+	60, // 61: ordemservico.OrdemServicoService.CancelPayment:output_type -> pedido.CancelPaymentResponse
+	61, // 62: ordemservico.OrdemServicoService.SendByEmail:output_type -> pedido.SendByEmailResponse
+	62, // 63: ordemservico.OrdemServicoService.Report:output_type -> pedido.ReportResponse
+	63, // 64: ordemservico.OrdemServicoService.AplicaTabelaPreco:output_type -> pedido.AplicaTabelaPrecoResponse
+	64, // 65: ordemservico.OrdemServicoService.DfeDanfe:output_type -> pedido.DfeDanfeResponse
+	65, // 66: ordemservico.OrdemServicoService.MesclaPedidos:output_type -> pedido.MesclaPedidosResponse
+	66, // 67: ordemservico.OrdemServicoService.AddPedidoVinculado:output_type -> pedido.AddPedidoVinculadoResponse
+	67, // 68: ordemservico.OrdemServicoService.DeletePedidoVinculado:output_type -> pedido.DeletePedidoVinculadoResponse
+	68, // 69: ordemservico.OrdemServicoService.EnviaNFe:output_type -> pedido.EnviaNFeResponse
+	69, // 70: ordemservico.OrdemServicoService.SincronizaNFe:output_type -> pedido.SincronizaNFeResponse
+	70, // 71: ordemservico.OrdemServicoService.SincronizaPessoa:output_type -> pedido.SincronizaPessoaResponse
+	71, // 72: ordemservico.OrdemServicoService.VinculaNFManual:output_type -> pedido.VinculoNfManualResponse
+	72, // 73: ordemservico.OrdemServicoService.SendPaymentLink:output_type -> pedido.SendPaymentLinkResponse
+	1,  // 74: ordemservico.OrdemServicoService.GetUltimaOsPorNumeroSerie:output_type -> ordemservico.GetUltimaOsPorNumeroSerieResponse
+	4,  // 75: ordemservico.OrdemServicoService.HistoricoEquipamento:output_type -> ordemservico.HistoricoEquipamentoResponse
+	40, // [40:76] is the sub-list for method output_type
+	4,  // [4:40] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
 	4,  // [4:4] is the sub-list for extension extendee
 	0,  // [0:4] is the sub-list for field type_name

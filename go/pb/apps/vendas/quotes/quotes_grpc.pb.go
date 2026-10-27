@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	QuotesService_Create_FullMethodName                = "/quotes.QuotesService/Create"
+	QuotesService_CreateValidated_FullMethodName       = "/quotes.QuotesService/CreateValidated"
+	QuotesService_LeDocumentoIa_FullMethodName         = "/quotes.QuotesService/LeDocumentoIa"
 	QuotesService_Update_FullMethodName                = "/quotes.QuotesService/Update"
 	QuotesService_SetAcompanhamento_FullMethodName     = "/quotes.QuotesService/SetAcompanhamento"
 	QuotesService_ReorderItems_FullMethodName          = "/quotes.QuotesService/ReorderItems"
@@ -52,6 +54,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type QuotesServiceClient interface {
 	Create(ctx context.Context, in *pedido.CreatePedidoRequest, opts ...grpc.CallOption) (*pedido.CreatePedidoResponse, error)
+	// Cria o orçamento com os itens numa chamada só, calculados como na inclusão pela tela.
+	CreateValidated(ctx context.Context, in *pedido.CreatePedidoRequest, opts ...grpc.CallOption) (*pedido.CreatePedidoResponse, error)
+	// Lê com IA a foto, o PDF, o texto ou a planilha de um orçamento e devolve o documento preenchido para conferir. Não grava.
+	LeDocumentoIa(ctx context.Context, in *pedido.LeDocumentoIaRequest, opts ...grpc.CallOption) (*pedido.LeDocumentoIaResponse, error)
 	Update(ctx context.Context, in *pedido.UpdatePedidoRequest, opts ...grpc.CallOption) (*pedido.UpdatePedidoResponse, error)
 	SetAcompanhamento(ctx context.Context, in *pedido.SetAcompanhamentoRequest, opts ...grpc.CallOption) (*pedido.SetAcompanhamentoResponse, error)
 	ReorderItems(ctx context.Context, in *pedido.ReorderItemsRequest, opts ...grpc.CallOption) (*pedido.ReorderItemsResponse, error)
@@ -90,6 +96,26 @@ func (c *quotesServiceClient) Create(ctx context.Context, in *pedido.CreatePedid
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(pedido.CreatePedidoResponse)
 	err := c.cc.Invoke(ctx, QuotesService_Create_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *quotesServiceClient) CreateValidated(ctx context.Context, in *pedido.CreatePedidoRequest, opts ...grpc.CallOption) (*pedido.CreatePedidoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(pedido.CreatePedidoResponse)
+	err := c.cc.Invoke(ctx, QuotesService_CreateValidated_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *quotesServiceClient) LeDocumentoIa(ctx context.Context, in *pedido.LeDocumentoIaRequest, opts ...grpc.CallOption) (*pedido.LeDocumentoIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(pedido.LeDocumentoIaResponse)
+	err := c.cc.Invoke(ctx, QuotesService_LeDocumentoIa_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -341,6 +367,10 @@ func (c *quotesServiceClient) SincronizaPessoa(ctx context.Context, in *pedido.S
 // for forward compatibility.
 type QuotesServiceServer interface {
 	Create(context.Context, *pedido.CreatePedidoRequest) (*pedido.CreatePedidoResponse, error)
+	// Cria o orçamento com os itens numa chamada só, calculados como na inclusão pela tela.
+	CreateValidated(context.Context, *pedido.CreatePedidoRequest) (*pedido.CreatePedidoResponse, error)
+	// Lê com IA a foto, o PDF, o texto ou a planilha de um orçamento e devolve o documento preenchido para conferir. Não grava.
+	LeDocumentoIa(context.Context, *pedido.LeDocumentoIaRequest) (*pedido.LeDocumentoIaResponse, error)
 	Update(context.Context, *pedido.UpdatePedidoRequest) (*pedido.UpdatePedidoResponse, error)
 	SetAcompanhamento(context.Context, *pedido.SetAcompanhamentoRequest) (*pedido.SetAcompanhamentoResponse, error)
 	ReorderItems(context.Context, *pedido.ReorderItemsRequest) (*pedido.ReorderItemsResponse, error)
@@ -377,6 +407,12 @@ type UnimplementedQuotesServiceServer struct{}
 
 func (UnimplementedQuotesServiceServer) Create(context.Context, *pedido.CreatePedidoRequest) (*pedido.CreatePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedQuotesServiceServer) CreateValidated(context.Context, *pedido.CreatePedidoRequest) (*pedido.CreatePedidoResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateValidated not implemented")
+}
+func (UnimplementedQuotesServiceServer) LeDocumentoIa(context.Context, *pedido.LeDocumentoIaRequest) (*pedido.LeDocumentoIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LeDocumentoIa not implemented")
 }
 func (UnimplementedQuotesServiceServer) Update(context.Context, *pedido.UpdatePedidoRequest) (*pedido.UpdatePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Update not implemented")
@@ -485,6 +521,42 @@ func _QuotesService_Create_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QuotesServiceServer).Create(ctx, req.(*pedido.CreatePedidoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _QuotesService_CreateValidated_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(pedido.CreatePedidoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuotesServiceServer).CreateValidated(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QuotesService_CreateValidated_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuotesServiceServer).CreateValidated(ctx, req.(*pedido.CreatePedidoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _QuotesService_LeDocumentoIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(pedido.LeDocumentoIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuotesServiceServer).LeDocumentoIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QuotesService_LeDocumentoIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuotesServiceServer).LeDocumentoIa(ctx, req.(*pedido.LeDocumentoIaRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -931,6 +1003,14 @@ var QuotesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Create",
 			Handler:    _QuotesService_Create_Handler,
+		},
+		{
+			MethodName: "CreateValidated",
+			Handler:    _QuotesService_CreateValidated_Handler,
+		},
+		{
+			MethodName: "LeDocumentoIa",
+			Handler:    _QuotesService_LeDocumentoIa_Handler,
 		},
 		{
 			MethodName: "Update",

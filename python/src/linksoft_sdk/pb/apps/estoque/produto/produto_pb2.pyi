@@ -81,6 +81,58 @@ STOCK_MOVEMENT_HAS_NF_ENTRADA: StockMovement
 STOCK_MOVEMENT_NEGATIVE: StockMovement
 STOCK_MOVEMENT_NOT_ZERO: StockMovement
 
+class LeFotoIaRequest(_message.Message):
+    __slots__ = ("imagem", "mime_type", "ai_integration_id")
+    IMAGEM_FIELD_NUMBER: _ClassVar[int]
+    MIME_TYPE_FIELD_NUMBER: _ClassVar[int]
+    AI_INTEGRATION_ID_FIELD_NUMBER: _ClassVar[int]
+    imagem: bytes
+    mime_type: str
+    ai_integration_id: str
+    def __init__(self, imagem: _Optional[bytes] = ..., mime_type: _Optional[str] = ..., ai_integration_id: _Optional[str] = ...) -> None: ...
+
+class LeFotoIaResponse(_message.Message):
+    __slots__ = ("produto", "avisos")
+    PRODUTO_FIELD_NUMBER: _ClassVar[int]
+    AVISOS_FIELD_NUMBER: _ClassVar[int]
+    produto: Produto
+    avisos: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, produto: _Optional[_Union[Produto, _Mapping]] = ..., avisos: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class ConsultaDadosPublicosRequest(_message.Message):
+    __slots__ = ("codigo_barra", "nome")
+    CODIGO_BARRA_FIELD_NUMBER: _ClassVar[int]
+    NOME_FIELD_NUMBER: _ClassVar[int]
+    codigo_barra: str
+    nome: str
+    def __init__(self, codigo_barra: _Optional[str] = ..., nome: _Optional[str] = ...) -> None: ...
+
+class ProdutoPublico(_message.Message):
+    __slots__ = ("codigo_barra", "nome", "marca", "quantidade", "peso_liquido", "categoria", "foto_url", "fonte")
+    CODIGO_BARRA_FIELD_NUMBER: _ClassVar[int]
+    NOME_FIELD_NUMBER: _ClassVar[int]
+    MARCA_FIELD_NUMBER: _ClassVar[int]
+    QUANTIDADE_FIELD_NUMBER: _ClassVar[int]
+    PESO_LIQUIDO_FIELD_NUMBER: _ClassVar[int]
+    CATEGORIA_FIELD_NUMBER: _ClassVar[int]
+    FOTO_URL_FIELD_NUMBER: _ClassVar[int]
+    FONTE_FIELD_NUMBER: _ClassVar[int]
+    codigo_barra: str
+    nome: str
+    marca: str
+    quantidade: str
+    peso_liquido: float
+    categoria: str
+    foto_url: str
+    fonte: str
+    def __init__(self, codigo_barra: _Optional[str] = ..., nome: _Optional[str] = ..., marca: _Optional[str] = ..., quantidade: _Optional[str] = ..., peso_liquido: _Optional[float] = ..., categoria: _Optional[str] = ..., foto_url: _Optional[str] = ..., fonte: _Optional[str] = ...) -> None: ...
+
+class ConsultaDadosPublicosResponse(_message.Message):
+    __slots__ = ("produtos",)
+    PRODUTOS_FIELD_NUMBER: _ClassVar[int]
+    produtos: _containers.RepeatedCompositeFieldContainer[ProdutoPublico]
+    def __init__(self, produtos: _Optional[_Iterable[_Union[ProdutoPublico, _Mapping]]] = ...) -> None: ...
+
 class SugereFiscalIaRequest(_message.Message):
     __slots__ = ("ids", "produto", "ai_integration_id")
     IDS_FIELD_NUMBER: _ClassVar[int]

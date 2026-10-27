@@ -125,6 +125,16 @@ class ProdutoServiceStub:
                 request_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaRequest.SerializeToString,
                 response_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaResponse.FromString,
                 _registered_method=True)
+        self.LeFotoIa = channel.unary_unary(
+                '/produto.ProdutoService/LeFotoIa',
+                request_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.LeFotoIaRequest.SerializeToString,
+                response_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.LeFotoIaResponse.FromString,
+                _registered_method=True)
+        self.ConsultaDadosPublicos = channel.unary_unary(
+                '/produto.ProdutoService/ConsultaDadosPublicos',
+                request_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.ConsultaDadosPublicosRequest.SerializeToString,
+                response_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.ConsultaDadosPublicosResponse.FromString,
+                _registered_method=True)
 
 
 class ProdutoServiceServicer:
@@ -267,6 +277,20 @@ class ProdutoServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def LeFotoIa(self, request, context):
+        """Lê com IA a foto da embalagem ou do rótulo e devolve o produto preenchido para conferir. Não grava.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ConsultaDadosPublicos(self, request, context):
+        """Busca em bases públicas de produtos os dados pelo código de barras ou, sem ele, pelo nome. Não grava.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ProdutoServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -379,6 +403,16 @@ def add_ProdutoServiceServicer_to_server(servicer, server):
                     servicer.SugereFiscalIa,
                     request_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaRequest.FromString,
                     response_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaResponse.SerializeToString,
+            ),
+            'LeFotoIa': grpc.unary_unary_rpc_method_handler(
+                    servicer.LeFotoIa,
+                    request_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.LeFotoIaRequest.FromString,
+                    response_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.LeFotoIaResponse.SerializeToString,
+            ),
+            'ConsultaDadosPublicos': grpc.unary_unary_rpc_method_handler(
+                    servicer.ConsultaDadosPublicos,
+                    request_deserializer=apps_dot_estoque_dot_produto_dot_produto__pb2.ConsultaDadosPublicosRequest.FromString,
+                    response_serializer=apps_dot_estoque_dot_produto_dot_produto__pb2.ConsultaDadosPublicosResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -976,6 +1010,60 @@ class ProdutoService:
             '/produto.ProdutoService/SugereFiscalIa',
             apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaRequest.SerializeToString,
             apps_dot_estoque_dot_produto_dot_produto__pb2.SugereFiscalIaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def LeFotoIa(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/produto.ProdutoService/LeFotoIa',
+            apps_dot_estoque_dot_produto_dot_produto__pb2.LeFotoIaRequest.SerializeToString,
+            apps_dot_estoque_dot_produto_dot_produto__pb2.LeFotoIaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ConsultaDadosPublicos(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/produto.ProdutoService/ConsultaDadosPublicos',
+            apps_dot_estoque_dot_produto_dot_produto__pb2.ConsultaDadosPublicosRequest.SerializeToString,
+            apps_dot_estoque_dot_produto_dot_produto__pb2.ConsultaDadosPublicosResponse.FromString,
             options,
             channel_credentials,
             insecure,

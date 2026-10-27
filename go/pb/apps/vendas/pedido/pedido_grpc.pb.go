@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	PedidoService_Create_FullMethodName                       = "/pedido.PedidoService/Create"
 	PedidoService_CreateValidated_FullMethodName              = "/pedido.PedidoService/CreateValidated"
+	PedidoService_LeDocumentoIa_FullMethodName                = "/pedido.PedidoService/LeDocumentoIa"
 	PedidoService_Update_FullMethodName                       = "/pedido.PedidoService/Update"
 	PedidoService_SetAcompanhamento_FullMethodName            = "/pedido.PedidoService/SetAcompanhamento"
 	PedidoService_ReorderItems_FullMethodName                 = "/pedido.PedidoService/ReorderItems"
@@ -85,6 +86,9 @@ const (
 type PedidoServiceClient interface {
 	Create(ctx context.Context, in *CreatePedidoRequest, opts ...grpc.CallOption) (*CreatePedidoResponse, error)
 	CreateValidated(ctx context.Context, in *CreatePedidoRequest, opts ...grpc.CallOption) (*CreatePedidoResponse, error)
+	// Lê com IA a foto, o PDF, o texto ou a planilha de um pedido e devolve o documento preenchido, com o
+	// cliente e os itens achados no cadastro, para conferir. Não grava.
+	LeDocumentoIa(ctx context.Context, in *LeDocumentoIaRequest, opts ...grpc.CallOption) (*LeDocumentoIaResponse, error)
 	Update(ctx context.Context, in *UpdatePedidoRequest, opts ...grpc.CallOption) (*UpdatePedidoResponse, error)
 	SetAcompanhamento(ctx context.Context, in *SetAcompanhamentoRequest, opts ...grpc.CallOption) (*SetAcompanhamentoResponse, error)
 	// Reordena os itens do documento: os ids vêm na ordem final e precisam ser exatamente
@@ -201,6 +205,16 @@ func (c *pedidoServiceClient) CreateValidated(ctx context.Context, in *CreatePed
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreatePedidoResponse)
 	err := c.cc.Invoke(ctx, PedidoService_CreateValidated_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidoServiceClient) LeDocumentoIa(ctx context.Context, in *LeDocumentoIaRequest, opts ...grpc.CallOption) (*LeDocumentoIaResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LeDocumentoIaResponse)
+	err := c.cc.Invoke(ctx, PedidoService_LeDocumentoIa_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -755,6 +769,9 @@ func (c *pedidoServiceClient) ResumoVendasPorVendedor(ctx context.Context, in *R
 type PedidoServiceServer interface {
 	Create(context.Context, *CreatePedidoRequest) (*CreatePedidoResponse, error)
 	CreateValidated(context.Context, *CreatePedidoRequest) (*CreatePedidoResponse, error)
+	// Lê com IA a foto, o PDF, o texto ou a planilha de um pedido e devolve o documento preenchido, com o
+	// cliente e os itens achados no cadastro, para conferir. Não grava.
+	LeDocumentoIa(context.Context, *LeDocumentoIaRequest) (*LeDocumentoIaResponse, error)
 	Update(context.Context, *UpdatePedidoRequest) (*UpdatePedidoResponse, error)
 	SetAcompanhamento(context.Context, *SetAcompanhamentoRequest) (*SetAcompanhamentoResponse, error)
 	// Reordena os itens do documento: os ids vêm na ordem final e precisam ser exatamente
@@ -862,6 +879,9 @@ func (UnimplementedPedidoServiceServer) Create(context.Context, *CreatePedidoReq
 }
 func (UnimplementedPedidoServiceServer) CreateValidated(context.Context, *CreatePedidoRequest) (*CreatePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateValidated not implemented")
+}
+func (UnimplementedPedidoServiceServer) LeDocumentoIa(context.Context, *LeDocumentoIaRequest) (*LeDocumentoIaResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LeDocumentoIa not implemented")
 }
 func (UnimplementedPedidoServiceServer) Update(context.Context, *UpdatePedidoRequest) (*UpdatePedidoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Update not implemented")
@@ -1078,6 +1098,24 @@ func _PedidoService_CreateValidated_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PedidoServiceServer).CreateValidated(ctx, req.(*CreatePedidoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidoService_LeDocumentoIa_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeDocumentoIaRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).LeDocumentoIa(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_LeDocumentoIa_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).LeDocumentoIa(ctx, req.(*LeDocumentoIaRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2068,6 +2106,10 @@ var PedidoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateValidated",
 			Handler:    _PedidoService_CreateValidated_Handler,
+		},
+		{
+			MethodName: "LeDocumentoIa",
+			Handler:    _PedidoService_LeDocumentoIa_Handler,
 		},
 		{
 			MethodName: "Update",
