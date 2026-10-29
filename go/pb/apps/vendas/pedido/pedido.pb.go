@@ -9364,8 +9364,11 @@ type ContractReadjustment struct {
 	NoticeSentFor   *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=notice_sent_for,json=noticeSentFor,proto3" json:"notice_sent_for,omitempty"`       // data do reajuste do qual o cliente já foi avisado
 	ReminderSentFor *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=reminder_sent_for,json=reminderSentFor,proto3" json:"reminder_sent_for,omitempty"` // data do reajuste da qual o cliente já recebeu o lembrete
 	LastDate        *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=last_date,json=lastDate,proto3" json:"last_date,omitempty"`                       // data do último reajuste aplicado
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Índice econômico acumulado informado ao cliente no aviso do reajuste da data avisada. O
+	// reajuste dessa data usa este índice.
+	NoticeIndex   *float64 `protobuf:"fixed64,11,opt,name=notice_index,json=noticeIndex,proto3,oneof" json:"notice_index,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ContractReadjustment) Reset() {
@@ -9466,6 +9469,13 @@ func (x *ContractReadjustment) GetLastDate() *timestamppb.Timestamp {
 		return x.LastDate
 	}
 	return nil
+}
+
+func (x *ContractReadjustment) GetNoticeIndex() float64 {
+	if x != nil && x.NoticeIndex != nil {
+		return *x.NoticeIndex
+	}
+	return 0
 }
 
 // Alteração dos serviços ou da periodicidade de um contrato com a parcela já paga. Na mesma
@@ -16431,7 +16441,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\n" +
 	"LastAccess\x127\n" +
 	"\tlast_date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\blastDate\x12\x1b\n" +
-	"\tuser_name\x18\x02 \x01(\tR\buserName\"\xf6\x03\n" +
+	"\tuser_name\x18\x02 \x01(\tR\buserName\"\xb5\x04\n" +
 	"\x14ContractReadjustment\x12\x17\n" +
 	"\aplan_id\x18\x01 \x01(\tR\x06planId\x12!\n" +
 	"\tplan_name\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\bplanName\x122\n" +
@@ -16444,7 +16454,9 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x0fnotice_sent_for\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\rnoticeSentFor\x12L\n" +
 	"\x11reminder_sent_for\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x0freminderSentFor\x12=\n" +
 	"\tlast_date\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\blastDate\"\xb8\x03\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\blastDate\x12,\n" +
+	"\fnotice_index\x18\v \x01(\x01B\x04\xe2A\x01\x03H\x00R\vnoticeIndex\x88\x01\x01B\x0f\n" +
+	"\r_notice_index\"\xb8\x03\n" +
 	"\x16ContractServicesChange\x12+\n" +
 	"\bservicos\x18\x01 \x03(\v2\x0f.pedido.ServicoR\bservicos\x12=\n" +
 	"\feffective_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\veffectiveAt\x12%\n" +
@@ -17887,6 +17899,7 @@ func file_apps_vendas_pedido_pedido_proto_init() {
 	}
 	file_apps_vendas_pedido_pedido_otica_proto_init()
 	file_apps_vendas_pedido_pedido_mesa_proto_init()
+	file_apps_vendas_pedido_pedido_proto_msgTypes[106].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

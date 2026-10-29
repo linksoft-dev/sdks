@@ -1807,7 +1807,7 @@ class Contract(_message.Message):
     def __init__(self, number: _Optional[str] = ..., type: _Optional[_Union[ContractType, str]] = ..., recurrence_type: _Optional[_Union[RecurrenceType, str]] = ..., recurrence_increment: _Optional[int] = ..., recurrence_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., status: _Optional[_Union[ContractStatus, str]] = ..., block_reason: _Optional[str] = ..., last_access: _Optional[_Union[Contract.LastAccess, _Mapping]] = ..., recurrence_created_id: _Optional[str] = ..., recurrence_created_number: _Optional[str] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., courtesy: _Optional[bool] = ..., renewal_number: _Optional[int] = ..., grace_period_days: _Optional[int] = ..., auto_renew_disabled: _Optional[bool] = ..., status_reason: _Optional[str] = ..., released_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_days: _Optional[int] = ..., previous_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., released_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trial_ends_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., full_period_total: _Optional[float] = ..., readjustment: _Optional[_Union[ContractReadjustment, _Mapping]] = ..., readjustment_applied: _Optional[_Union[ContractReadjustmentApplied, _Mapping]] = ..., due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., juros_mes_percentual: _Optional[float] = ..., multa_percentual: _Optional[float] = ..., services_change: _Optional[_Union[ContractServicesChange, _Mapping]] = ...) -> None: ...
 
 class ContractReadjustment(_message.Message):
-    __slots__ = ("plan_id", "plan_name", "type", "value", "interval_months", "notice_days", "next_date", "notice_sent_for", "reminder_sent_for", "last_date")
+    __slots__ = ("plan_id", "plan_name", "type", "value", "interval_months", "notice_days", "next_date", "notice_sent_for", "reminder_sent_for", "last_date", "notice_index")
     PLAN_ID_FIELD_NUMBER: _ClassVar[int]
     PLAN_NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -1818,6 +1818,7 @@ class ContractReadjustment(_message.Message):
     NOTICE_SENT_FOR_FIELD_NUMBER: _ClassVar[int]
     REMINDER_SENT_FOR_FIELD_NUMBER: _ClassVar[int]
     LAST_DATE_FIELD_NUMBER: _ClassVar[int]
+    NOTICE_INDEX_FIELD_NUMBER: _ClassVar[int]
     plan_id: str
     plan_name: str
     type: _readjustmentplan_pb2.TipoReajuste
@@ -1828,7 +1829,8 @@ class ContractReadjustment(_message.Message):
     notice_sent_for: _timestamp_pb2.Timestamp
     reminder_sent_for: _timestamp_pb2.Timestamp
     last_date: _timestamp_pb2.Timestamp
-    def __init__(self, plan_id: _Optional[str] = ..., plan_name: _Optional[str] = ..., type: _Optional[_Union[_readjustmentplan_pb2.TipoReajuste, str]] = ..., value: _Optional[float] = ..., interval_months: _Optional[int] = ..., notice_days: _Optional[int] = ..., next_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., notice_sent_for: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., reminder_sent_for: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    notice_index: float
+    def __init__(self, plan_id: _Optional[str] = ..., plan_name: _Optional[str] = ..., type: _Optional[_Union[_readjustmentplan_pb2.TipoReajuste, str]] = ..., value: _Optional[float] = ..., interval_months: _Optional[int] = ..., notice_days: _Optional[int] = ..., next_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., notice_sent_for: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., reminder_sent_for: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., notice_index: _Optional[float] = ...) -> None: ...
 
 class ContractServicesChange(_message.Message):
     __slots__ = ("servicos", "effective_at", "previous_total", "new_total", "proportional", "changed_at", "user_name", "recurrence_type", "recurrence_increment")
