@@ -39,6 +39,7 @@ const (
 	PedidoService_PostponeRepurchaseReminder_FullMethodName   = "/pedido.PedidoService/PostponeRepurchaseReminder"
 	PedidoService_ReactivateRepurchaseReminder_FullMethodName = "/pedido.PedidoService/ReactivateRepurchaseReminder"
 	PedidoService_PreviewRepurchaseReminder_FullMethodName    = "/pedido.PedidoService/PreviewRepurchaseReminder"
+	PedidoService_SuggestRepurchaseDays_FullMethodName        = "/pedido.PedidoService/SuggestRepurchaseDays"
 	PedidoService_AddProduct_FullMethodName                   = "/pedido.PedidoService/AddProduct"
 	PedidoService_UpdateProduct_FullMethodName                = "/pedido.PedidoService/UpdateProduct"
 	PedidoService_DeleteProduct_FullMethodName                = "/pedido.PedidoService/DeleteProduct"
@@ -117,6 +118,10 @@ type PedidoServiceClient interface {
 	ReactivateRepurchaseReminder(ctx context.Context, in *ReactivateRepurchaseReminderRequest, opts ...grpc.CallOption) (*ReactivateRepurchaseReminderResponse, error)
 	// Mostra a mensagem que o cliente recebe pelo lembrete de recompra dos itens, sem enviar.
 	PreviewRepurchaseReminder(ctx context.Context, in *PreviewRepurchaseReminderRequest, opts ...grpc.CallOption) (*PreviewRepurchaseReminderResponse, error)
+	// Dias de recompra que o item recebe ao entrar na venda do cliente: os da última compra do item
+	// por ele ou, sem ela, os do cadastro, vezes a quantidade quando o cadastro conta os dias por
+	// unidade.
+	SuggestRepurchaseDays(ctx context.Context, in *SuggestRepurchaseDaysRequest, opts ...grpc.CallOption) (*SuggestRepurchaseDaysResponse, error)
 	AddProduct(ctx context.Context, in *AddProductRequest, opts ...grpc.CallOption) (*AddProductResponse, error)
 	UpdateProduct(ctx context.Context, in *UpdateProductRequest, opts ...grpc.CallOption) (*UpdateProductResponse, error)
 	DeleteProduct(ctx context.Context, in *DeleteProductRequest, opts ...grpc.CallOption) (*DeleteProductResponse, error)
@@ -385,6 +390,16 @@ func (c *pedidoServiceClient) PreviewRepurchaseReminder(ctx context.Context, in 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(PreviewRepurchaseReminderResponse)
 	err := c.cc.Invoke(ctx, PedidoService_PreviewRepurchaseReminder_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pedidoServiceClient) SuggestRepurchaseDays(ctx context.Context, in *SuggestRepurchaseDaysRequest, opts ...grpc.CallOption) (*SuggestRepurchaseDaysResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SuggestRepurchaseDaysResponse)
+	err := c.cc.Invoke(ctx, PedidoService_SuggestRepurchaseDays_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -800,6 +815,10 @@ type PedidoServiceServer interface {
 	ReactivateRepurchaseReminder(context.Context, *ReactivateRepurchaseReminderRequest) (*ReactivateRepurchaseReminderResponse, error)
 	// Mostra a mensagem que o cliente recebe pelo lembrete de recompra dos itens, sem enviar.
 	PreviewRepurchaseReminder(context.Context, *PreviewRepurchaseReminderRequest) (*PreviewRepurchaseReminderResponse, error)
+	// Dias de recompra que o item recebe ao entrar na venda do cliente: os da última compra do item
+	// por ele ou, sem ela, os do cadastro, vezes a quantidade quando o cadastro conta os dias por
+	// unidade.
+	SuggestRepurchaseDays(context.Context, *SuggestRepurchaseDaysRequest) (*SuggestRepurchaseDaysResponse, error)
 	AddProduct(context.Context, *AddProductRequest) (*AddProductResponse, error)
 	UpdateProduct(context.Context, *UpdateProductRequest) (*UpdateProductResponse, error)
 	DeleteProduct(context.Context, *DeleteProductRequest) (*DeleteProductResponse, error)
@@ -933,6 +952,9 @@ func (UnimplementedPedidoServiceServer) ReactivateRepurchaseReminder(context.Con
 }
 func (UnimplementedPedidoServiceServer) PreviewRepurchaseReminder(context.Context, *PreviewRepurchaseReminderRequest) (*PreviewRepurchaseReminderResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method PreviewRepurchaseReminder not implemented")
+}
+func (UnimplementedPedidoServiceServer) SuggestRepurchaseDays(context.Context, *SuggestRepurchaseDaysRequest) (*SuggestRepurchaseDaysResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SuggestRepurchaseDays not implemented")
 }
 func (UnimplementedPedidoServiceServer) AddProduct(context.Context, *AddProductRequest) (*AddProductResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AddProduct not implemented")
@@ -1422,6 +1444,24 @@ func _PedidoService_PreviewRepurchaseReminder_Handler(srv interface{}, ctx conte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PedidoServiceServer).PreviewRepurchaseReminder(ctx, req.(*PreviewRepurchaseReminderRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PedidoService_SuggestRepurchaseDays_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SuggestRepurchaseDaysRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).SuggestRepurchaseDays(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_SuggestRepurchaseDays_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).SuggestRepurchaseDays(ctx, req.(*SuggestRepurchaseDaysRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2178,6 +2218,10 @@ var PedidoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PreviewRepurchaseReminder",
 			Handler:    _PedidoService_PreviewRepurchaseReminder_Handler,
+		},
+		{
+			MethodName: "SuggestRepurchaseDays",
+			Handler:    _PedidoService_SuggestRepurchaseDays_Handler,
 		},
 		{
 			MethodName: "AddProduct",

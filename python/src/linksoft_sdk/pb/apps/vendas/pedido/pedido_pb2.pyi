@@ -760,6 +760,28 @@ class ReactivateRepurchaseReminderResponse(_message.Message):
     repurchases: _containers.RepeatedCompositeFieldContainer[Repurchase]
     def __init__(self, repurchases: _Optional[_Iterable[_Union[Repurchase, _Mapping]]] = ...) -> None: ...
 
+class SuggestRepurchaseDaysRequest(_message.Message):
+    __slots__ = ("customer_id", "item_id", "service", "quantity")
+    CUSTOMER_ID_FIELD_NUMBER: _ClassVar[int]
+    ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    SERVICE_FIELD_NUMBER: _ClassVar[int]
+    QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    customer_id: str
+    item_id: str
+    service: bool
+    quantity: float
+    def __init__(self, customer_id: _Optional[str] = ..., item_id: _Optional[str] = ..., service: _Optional[bool] = ..., quantity: _Optional[float] = ...) -> None: ...
+
+class SuggestRepurchaseDaysResponse(_message.Message):
+    __slots__ = ("days", "per_quantity", "days_per_unit")
+    DAYS_FIELD_NUMBER: _ClassVar[int]
+    PER_QUANTITY_FIELD_NUMBER: _ClassVar[int]
+    DAYS_PER_UNIT_FIELD_NUMBER: _ClassVar[int]
+    days: int
+    per_quantity: bool
+    days_per_unit: float
+    def __init__(self, days: _Optional[int] = ..., per_quantity: _Optional[bool] = ..., days_per_unit: _Optional[float] = ...) -> None: ...
+
 class PreviewRepurchaseReminderRequest(_message.Message):
     __slots__ = ("order_id", "line_ids")
     ORDER_ID_FIELD_NUMBER: _ClassVar[int]

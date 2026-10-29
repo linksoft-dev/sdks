@@ -115,6 +115,11 @@ class PedidoServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderResponse.FromString,
                 _registered_method=True)
+        self.SuggestRepurchaseDays = channel.unary_unary(
+                '/pedido.PedidoService/SuggestRepurchaseDays',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SuggestRepurchaseDaysRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SuggestRepurchaseDaysResponse.FromString,
+                _registered_method=True)
         self.AddProduct = channel.unary_unary(
                 '/pedido.PedidoService/AddProduct',
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.AddProductRequest.SerializeToString,
@@ -434,6 +439,15 @@ class PedidoServiceServicer:
 
     def PreviewRepurchaseReminder(self, request, context):
         """Mostra a mensagem que o cliente recebe pelo lembrete de recompra dos itens, sem enviar.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SuggestRepurchaseDays(self, request, context):
+        """Dias de recompra que o item recebe ao entrar na venda do cliente: os da última compra do item
+        por ele ou, sem ela, os do cadastro, vezes a quantidade quando o cadastro conta os dias por
+        unidade.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -790,6 +804,11 @@ def add_PedidoServiceServicer_to_server(servicer, server):
                     servicer.PreviewRepurchaseReminder,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderResponse.SerializeToString,
+            ),
+            'SuggestRepurchaseDays': grpc.unary_unary_rpc_method_handler(
+                    servicer.SuggestRepurchaseDays,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SuggestRepurchaseDaysRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SuggestRepurchaseDaysResponse.SerializeToString,
             ),
             'AddProduct': grpc.unary_unary_rpc_method_handler(
                     servicer.AddProduct,
@@ -1518,6 +1537,33 @@ class PedidoService:
             '/pedido.PedidoService/PreviewRepurchaseReminder',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.PreviewRepurchaseReminderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SuggestRepurchaseDays(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/SuggestRepurchaseDays',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.SuggestRepurchaseDaysRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.SuggestRepurchaseDaysResponse.FromString,
             options,
             channel_credentials,
             insecure,

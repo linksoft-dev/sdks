@@ -1134,6 +1134,9 @@ type Produto struct {
 	// Dias depois da venda em que o cliente é lembrado de comprar o produto de novo. Zero: sem
 	// lembrete.
 	RecompraDias int32 `protobuf:"varint,229,opt,name=recompra_dias,json=recompraDias,proto3" json:"recompra_dias,omitempty"`
+	// Os dias de recompra são de cada unidade: o item vendido lembra em recompra_dias vezes a
+	// quantidade (10 unidades de 2 dias lembram em 20). Desligado, o prazo não muda com a quantidade.
+	RecompraPorQuantidade bool `protobuf:"varint,230,opt,name=recompra_por_quantidade,json=recompraPorQuantidade,proto3" json:"recompra_por_quantidade,omitempty"`
 	// Impressora de produção do item (override). Quando vazio, herda o grupo de
 	// produção da categoria. Usado no roteamento da impressão para cozinha/bar.
 	ImpressoraId   string `protobuf:"bytes,215,opt,name=impressoraId,proto3" json:"impressoraId,omitempty"`
@@ -1849,6 +1852,13 @@ func (x *Produto) GetRecompraDias() int32 {
 		return x.RecompraDias
 	}
 	return 0
+}
+
+func (x *Produto) GetRecompraPorQuantidade() bool {
+	if x != nil {
+		return x.RecompraPorQuantidade
+	}
+	return false
 }
 
 func (x *Produto) GetImpressoraId() string {
@@ -6646,7 +6656,7 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"ProdutoTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xc97\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\x828\n" +
 	"\aProduto\x123\n" +
 	"\x06fields\x18\x01 \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12B\n" +
@@ -6757,7 +6767,8 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"variations\x12\x1b\n" +
 	"\bcomissao\x18\xd6\x01 \x01(\x01R\bcomissao\x12&\n" +
 	"\x0ecomissao_valor\x18\xe4\x01 \x01(\x01R\rcomissaoValor\x12$\n" +
-	"\rrecompra_dias\x18\xe5\x01 \x01(\x05R\frecompraDias\x12#\n" +
+	"\rrecompra_dias\x18\xe5\x01 \x01(\x05R\frecompraDias\x127\n" +
+	"\x17recompra_por_quantidade\x18\xe6\x01 \x01(\bR\x15recompraPorQuantidade\x12#\n" +
 	"\fimpressoraId\x18\xd7\x01 \x01(\tR\fimpressoraId\x12'\n" +
 	"\x0eimpressoraNome\x18\xd8\x01 \x01(\tR\x0eimpressoraNome\x12%\n" +
 	"\rgrupoProducao\x18\xd9\x01 \x01(\tR\rgrupoProducao\x121\n" +
