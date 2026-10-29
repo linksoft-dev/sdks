@@ -2546,7 +2546,7 @@ class CashbackAplicadosModel(_message.Message):
     def __init__(self, id: _Optional[str] = ..., createdAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updatedAt: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., userId: _Optional[str] = ..., userName: _Optional[str] = ..., cashbackId: _Optional[str] = ..., cashbackNome: _Optional[str] = ..., valor: _Optional[float] = ...) -> None: ...
 
 class Partnership(_message.Message):
-    __slots__ = ("partnership_id", "partnership_name", "titular_id", "titular_name", "dependent_id", "dependent_name", "professional_id", "professional_name")
+    __slots__ = ("partnership_id", "partnership_name", "titular_id", "titular_name", "dependent_id", "dependent_name", "professional_id", "professional_name", "requesting_professional_id", "requesting_professional_name")
     PARTNERSHIP_ID_FIELD_NUMBER: _ClassVar[int]
     PARTNERSHIP_NAME_FIELD_NUMBER: _ClassVar[int]
     TITULAR_ID_FIELD_NUMBER: _ClassVar[int]
@@ -2555,6 +2555,8 @@ class Partnership(_message.Message):
     DEPENDENT_NAME_FIELD_NUMBER: _ClassVar[int]
     PROFESSIONAL_ID_FIELD_NUMBER: _ClassVar[int]
     PROFESSIONAL_NAME_FIELD_NUMBER: _ClassVar[int]
+    REQUESTING_PROFESSIONAL_ID_FIELD_NUMBER: _ClassVar[int]
+    REQUESTING_PROFESSIONAL_NAME_FIELD_NUMBER: _ClassVar[int]
     partnership_id: str
     partnership_name: str
     titular_id: str
@@ -2563,7 +2565,9 @@ class Partnership(_message.Message):
     dependent_name: str
     professional_id: str
     professional_name: str
-    def __init__(self, partnership_id: _Optional[str] = ..., partnership_name: _Optional[str] = ..., titular_id: _Optional[str] = ..., titular_name: _Optional[str] = ..., dependent_id: _Optional[str] = ..., dependent_name: _Optional[str] = ..., professional_id: _Optional[str] = ..., professional_name: _Optional[str] = ...) -> None: ...
+    requesting_professional_id: str
+    requesting_professional_name: str
+    def __init__(self, partnership_id: _Optional[str] = ..., partnership_name: _Optional[str] = ..., titular_id: _Optional[str] = ..., titular_name: _Optional[str] = ..., dependent_id: _Optional[str] = ..., dependent_name: _Optional[str] = ..., professional_id: _Optional[str] = ..., professional_name: _Optional[str] = ..., requesting_professional_id: _Optional[str] = ..., requesting_professional_name: _Optional[str] = ...) -> None: ...
 
 class ConfirmationOrderReceipt(_message.Message):
     __slots__ = ("date_time", "user_id", "user_name", "url")

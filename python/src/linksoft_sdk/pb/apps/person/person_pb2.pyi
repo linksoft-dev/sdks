@@ -75,7 +75,7 @@ class PersonTag(_message.Message):
     def __init__(self, value: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
 
 class Person(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "resale", "status", "tags", "name", "name2", "cpf_cnpj", "codigo", "pai", "mae", "nascimento", "ident", "ident_free", "obs", "address", "ies", "contacts", "dependents", "cliente", "vendedor", "grupo_id", "grupo_nome", "usuario_id", "usuario_nome", "driver", "lead", "carrier", "specialty", "registration_number", "require_valid_carteirinha", "fields", "photo_url", "show_in_portal", "authorization_payment_minutes", "authorization_requires_schedule", "custom_fields", "specialties", "portal_benefits", "contract_service_id", "contract_service_name", "saldo_atualizado_em")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "resale", "status", "tags", "name", "name2", "cpf_cnpj", "codigo", "pai", "mae", "nascimento", "ident", "ident_free", "obs", "address", "ies", "contacts", "dependents", "cliente", "vendedor", "grupo_id", "grupo_nome", "usuario_id", "usuario_nome", "driver", "lead", "carrier", "specialty", "registration_number", "require_valid_carteirinha", "fields", "photo_url", "show_in_portal", "authorization_payment_minutes", "authorization_requires_schedule", "custom_fields", "specialties", "portal_benefits", "contract_service_id", "contract_service_name", "performed_services", "saldo_atualizado_em")
     class IesEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -134,6 +134,7 @@ class Person(_message.Message):
     PORTAL_BENEFITS_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_SERVICE_ID_FIELD_NUMBER: _ClassVar[int]
     CONTRACT_SERVICE_NAME_FIELD_NUMBER: _ClassVar[int]
+    PERFORMED_SERVICES_FIELD_NUMBER: _ClassVar[int]
     SALDO_ATUALIZADO_EM_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
@@ -179,10 +180,19 @@ class Person(_message.Message):
     portal_benefits: str
     contract_service_id: str
     contract_service_name: str
+    performed_services: _containers.RepeatedCompositeFieldContainer[PerformedService]
     saldo_atualizado_em: _timestamp_pb2.Timestamp
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., resale: _Optional[bool] = ..., status: _Optional[_Union[PersonStatus, str]] = ..., tags: _Optional[_Iterable[_Union[PersonTag, _Mapping]]] = ..., name: _Optional[str] = ..., name2: _Optional[str] = ..., cpf_cnpj: _Optional[str] = ..., codigo: _Optional[str] = ..., pai: _Optional[str] = ..., mae: _Optional[str] = ..., nascimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., ident: _Optional[str] = ..., ident_free: _Optional[bool] = ..., obs: _Optional[str] = ..., address: _Optional[_Iterable[_Union[Address, _Mapping]]] = ..., ies: _Optional[_Mapping[str, str]] = ..., contacts: _Optional[_Iterable[_Union[Contact, _Mapping]]] = ..., dependents: _Optional[_Iterable[_Union[Dependent, _Mapping]]] = ..., cliente: _Optional[_Union[Cliente, _Mapping]] = ..., vendedor: _Optional[_Union[Vendedor, _Mapping]] = ..., grupo_id: _Optional[str] = ..., grupo_nome: _Optional[str] = ..., usuario_id: _Optional[str] = ..., usuario_nome: _Optional[str] = ..., driver: _Optional[_Union[Driver, _Mapping]] = ..., lead: _Optional[_Union[Lead, _Mapping]] = ..., carrier: _Optional[_Union[Carrier, _Mapping]] = ..., specialty: _Optional[str] = ..., registration_number: _Optional[str] = ..., require_valid_carteirinha: _Optional[bool] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., photo_url: _Optional[str] = ..., show_in_portal: _Optional[bool] = ..., authorization_payment_minutes: _Optional[int] = ..., authorization_requires_schedule: _Optional[bool] = ..., custom_fields: _Optional[_Mapping[str, str]] = ..., specialties: _Optional[_Iterable[_Union[Specialty, _Mapping]]] = ..., portal_benefits: _Optional[str] = ..., contract_service_id: _Optional[str] = ..., contract_service_name: _Optional[str] = ..., saldo_atualizado_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., resale: _Optional[bool] = ..., status: _Optional[_Union[PersonStatus, str]] = ..., tags: _Optional[_Iterable[_Union[PersonTag, _Mapping]]] = ..., name: _Optional[str] = ..., name2: _Optional[str] = ..., cpf_cnpj: _Optional[str] = ..., codigo: _Optional[str] = ..., pai: _Optional[str] = ..., mae: _Optional[str] = ..., nascimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., ident: _Optional[str] = ..., ident_free: _Optional[bool] = ..., obs: _Optional[str] = ..., address: _Optional[_Iterable[_Union[Address, _Mapping]]] = ..., ies: _Optional[_Mapping[str, str]] = ..., contacts: _Optional[_Iterable[_Union[Contact, _Mapping]]] = ..., dependents: _Optional[_Iterable[_Union[Dependent, _Mapping]]] = ..., cliente: _Optional[_Union[Cliente, _Mapping]] = ..., vendedor: _Optional[_Union[Vendedor, _Mapping]] = ..., grupo_id: _Optional[str] = ..., grupo_nome: _Optional[str] = ..., usuario_id: _Optional[str] = ..., usuario_nome: _Optional[str] = ..., driver: _Optional[_Union[Driver, _Mapping]] = ..., lead: _Optional[_Union[Lead, _Mapping]] = ..., carrier: _Optional[_Union[Carrier, _Mapping]] = ..., specialty: _Optional[str] = ..., registration_number: _Optional[str] = ..., require_valid_carteirinha: _Optional[bool] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., photo_url: _Optional[str] = ..., show_in_portal: _Optional[bool] = ..., authorization_payment_minutes: _Optional[int] = ..., authorization_requires_schedule: _Optional[bool] = ..., custom_fields: _Optional[_Mapping[str, str]] = ..., specialties: _Optional[_Iterable[_Union[Specialty, _Mapping]]] = ..., portal_benefits: _Optional[str] = ..., contract_service_id: _Optional[str] = ..., contract_service_name: _Optional[str] = ..., performed_services: _Optional[_Iterable[_Union[PerformedService, _Mapping]]] = ..., saldo_atualizado_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class Specialty(_message.Message):
+    __slots__ = ("id", "name")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    name: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ...) -> None: ...
+
+class PerformedService(_message.Message):
     __slots__ = ("id", "name")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]

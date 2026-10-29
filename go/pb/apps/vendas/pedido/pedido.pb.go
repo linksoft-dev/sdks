@@ -12780,8 +12780,11 @@ type Partnership struct {
 	// Profissional credenciado do convênio que atende.
 	ProfessionalId   string `protobuf:"bytes,7,opt,name=professional_id,json=professionalId,proto3" json:"professional_id,omitempty"`
 	ProfessionalName string `protobuf:"bytes,8,opt,name=professional_name,json=professionalName,proto3" json:"professional_name,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Profissional que pediu o atendimento.
+	RequestingProfessionalId   string `protobuf:"bytes,9,opt,name=requesting_professional_id,json=requestingProfessionalId,proto3" json:"requesting_professional_id,omitempty"`
+	RequestingProfessionalName string `protobuf:"bytes,10,opt,name=requesting_professional_name,json=requestingProfessionalName,proto3" json:"requesting_professional_name,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
 }
 
 func (x *Partnership) Reset() {
@@ -12866,6 +12869,20 @@ func (x *Partnership) GetProfessionalId() string {
 func (x *Partnership) GetProfessionalName() string {
 	if x != nil {
 		return x.ProfessionalName
+	}
+	return ""
+}
+
+func (x *Partnership) GetRequestingProfessionalId() string {
+	if x != nil {
+		return x.RequestingProfessionalId
+	}
+	return ""
+}
+
+func (x *Partnership) GetRequestingProfessionalName() string {
+	if x != nil {
+		return x.RequestingProfessionalName
 	}
 	return ""
 }
@@ -16845,7 +16862,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"cashbackId\x18\x06 \x01(\tR\n" +
 	"cashbackId\x12\"\n" +
 	"\fcashbackNome\x18\a \x01(\tR\fcashbackNome\x12\x14\n" +
-	"\x05valor\x18\b \x01(\x01R\x05valor\"\xc1\x02\n" +
+	"\x05valor\x18\b \x01(\x01R\x05valor\"\xc1\x03\n" +
 	"\vPartnership\x12%\n" +
 	"\x0epartnership_id\x18\x01 \x01(\tR\rpartnershipId\x12)\n" +
 	"\x10partnership_name\x18\x02 \x01(\tR\x0fpartnershipName\x12\x1d\n" +
@@ -16855,7 +16872,10 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\fdependent_id\x18\x05 \x01(\tR\vdependentId\x12%\n" +
 	"\x0edependent_name\x18\x06 \x01(\tR\rdependentName\x12'\n" +
 	"\x0fprofessional_id\x18\a \x01(\tR\x0eprofessionalId\x12+\n" +
-	"\x11professional_name\x18\b \x01(\tR\x10professionalName\"\x9b\x01\n" +
+	"\x11professional_name\x18\b \x01(\tR\x10professionalName\x12<\n" +
+	"\x1arequesting_professional_id\x18\t \x01(\tR\x18requestingProfessionalId\x12@\n" +
+	"\x1crequesting_professional_name\x18\n" +
+	" \x01(\tR\x1arequestingProfessionalName\"\x9b\x01\n" +
 	"\x18ConfirmationOrderReceipt\x127\n" +
 	"\tdate_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\bdateTime\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1b\n" +
