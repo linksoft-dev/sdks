@@ -7286,8 +7286,10 @@ type SetAcompanhamentoResponse struct {
 	Acompanhamento *OrderAcompanhamento   `protobuf:"bytes,1,opt,name=acompanhamento,proto3" json:"acompanhamento,omitempty"`
 	// Data e hora da entrega do documento; preenchida ao ir para a etapa de entregue.
 	DataHoraEntrega *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=data_hora_entrega,json=dataHoraEntrega,proto3" json:"data_hora_entrega,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Situação do documento depois da troca. O orçamento fica RECUSADO enquanto estiver na etapa de recusa.
+	Situacao      string `protobuf:"bytes,3,opt,name=situacao,proto3" json:"situacao,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SetAcompanhamentoResponse) Reset() {
@@ -7332,6 +7334,13 @@ func (x *SetAcompanhamentoResponse) GetDataHoraEntrega() *timestamppb.Timestamp 
 		return x.DataHoraEntrega
 	}
 	return nil
+}
+
+func (x *SetAcompanhamentoResponse) GetSituacao() string {
+	if x != nil {
+		return x.Situacao
+	}
+	return ""
 }
 
 type Pedido struct {
@@ -16334,10 +16343,11 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x18SetAcompanhamentoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12+\n" +
 	"\x11acompanhamento_id\x18\x02 \x01(\tR\x10acompanhamentoId\x12\x12\n" +
-	"\x04code\x18\x03 \x01(\tR\x04code\"\xa8\x01\n" +
+	"\x04code\x18\x03 \x01(\tR\x04code\"\xc4\x01\n" +
 	"\x19SetAcompanhamentoResponse\x12C\n" +
 	"\x0eacompanhamento\x18\x01 \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\x12F\n" +
-	"\x11data_hora_entrega\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\"\xb9/\n" +
+	"\x11data_hora_entrega\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\x12\x1a\n" +
+	"\bsituacao\x18\x03 \x01(\tR\bsituacao\"\xb9/\n" +
 	"\x06Pedido\x12>\n" +
 	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12>\n" +
 	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1c\n" +

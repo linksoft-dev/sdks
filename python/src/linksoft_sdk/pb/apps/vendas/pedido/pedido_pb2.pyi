@@ -1337,12 +1337,14 @@ class SetAcompanhamentoRequest(_message.Message):
     def __init__(self, id: _Optional[str] = ..., acompanhamento_id: _Optional[str] = ..., code: _Optional[str] = ...) -> None: ...
 
 class SetAcompanhamentoResponse(_message.Message):
-    __slots__ = ("acompanhamento", "data_hora_entrega")
+    __slots__ = ("acompanhamento", "data_hora_entrega", "situacao")
     ACOMPANHAMENTO_FIELD_NUMBER: _ClassVar[int]
     DATA_HORA_ENTREGA_FIELD_NUMBER: _ClassVar[int]
+    SITUACAO_FIELD_NUMBER: _ClassVar[int]
     acompanhamento: OrderAcompanhamento
     data_hora_entrega: _timestamp_pb2.Timestamp
-    def __init__(self, acompanhamento: _Optional[_Union[OrderAcompanhamento, _Mapping]] = ..., data_hora_entrega: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    situacao: str
+    def __init__(self, acompanhamento: _Optional[_Union[OrderAcompanhamento, _Mapping]] = ..., data_hora_entrega: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., situacao: _Optional[str] = ...) -> None: ...
 
 class Pedido(_message.Message):
     __slots__ = ("createdAt", "updatedAt", "userId", "userName", "id", "account_id", "fields", "origem", "origemId", "tipo", "situacao", "tags", "tipoMoeda", "tipoMoedaCotacao", "tabelaPreco", "importadoEm", "pessoa", "vendedor", "numero", "dataHoraRegistro", "dataHoraFechamento", "previsaoEntrega", "previsaoEntregaDescricao", "dataHoraInicio", "dataHoraEntrega", "tempoDecorrido", "descontoValor", "acrescimoValor", "valorSubtotal", "valorTotalServico", "valorTotalProduto", "valorTotal", "valorTotalPago", "cashbackValor", "comissaoValor", "nfeNumero", "nfeUrlDanfe", "nfeChave", "nfeSerie", "nfeId", "nfeSituacao", "nfe_forma_emissao", "nfeDataHoraEmissao", "nfceNumero", "nfceUrlDanfe", "nfceUrlXml", "nfceSerie", "nfceChave", "nfceId", "nfceSituacao", "nfce_forma_emissao", "nfceDataHoraEmissao", "nfseUrlDanfe", "nfseChave", "nfseNumero", "nfseSituacao", "obs", "cancelamentoMotivo", "cancelamentoUsuarioId", "cancelamentoUsuarioNome", "cancelamentoDataHora", "produtos", "servicos", "pagamentos", "transactions_online", "mesclagemId", "pedidosVinculados", "descontoAplicado", "descontoAplicadosCaption", "cashbackAplicado", "cashbackAplicadosCaption", "licenciamento", "consiguinacao", "importado", "os", "otica", "partnership", "cuponsSorteios", "convertedBy", "rentCar", "contract", "files", "confirmation_receipt", "origin", "billing", "delivery", "checkout_payment_selection", "dfe", "consumption_control", "events", "diasGarantia", "dataFimGarantia", "warranty", "recompra_em", "recompra_ate", "recorrencias", "devolucao_id", "devolucao_numero", "webhooks", "external_reference", "acompanhamento", "cupomAplicado", "org_id", "org_nome", "divida", "validade", "validadeDescricao", "qr_code_documento", "pedido_compra", "agenda_event_id", "lembrete_cliente", "resposta_cliente", "posto_veiculo_id", "posto_placa", "posto_km", "posto_motorista_nome", "custom_fields", "device_info", "local_id", "sync_status", "last_synced_at", "posto_sem_encerrante_nota")
