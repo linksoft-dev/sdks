@@ -133,7 +133,7 @@ class ConfigCte(_message.Message):
     def __init__(self, ambiente_padrao: _Optional[_Union[AmbientePadrao, str]] = ..., serie_padrao: _Optional[int] = ..., serie: _Optional[int] = ...) -> None: ...
 
 class ConfigNfse(_message.Message):
-    __slots__ = ("ambiente_padrao", "iss", "reg_ap_trib_sn", "nfse_auto_emite", "serie_padrao", "envia_email_automatico", "webservice_usuario", "webservice_senha")
+    __slots__ = ("ambiente_padrao", "iss", "reg_ap_trib_sn", "nfse_auto_emite", "serie_padrao", "envia_email_automatico", "webservice_usuario", "webservice_senha", "aliquota_simples_nacional")
     AMBIENTE_PADRAO_FIELD_NUMBER: _ClassVar[int]
     ISS_FIELD_NUMBER: _ClassVar[int]
     REG_AP_TRIB_SN_FIELD_NUMBER: _ClassVar[int]
@@ -142,6 +142,7 @@ class ConfigNfse(_message.Message):
     ENVIA_EMAIL_AUTOMATICO_FIELD_NUMBER: _ClassVar[int]
     WEBSERVICE_USUARIO_FIELD_NUMBER: _ClassVar[int]
     WEBSERVICE_SENHA_FIELD_NUMBER: _ClassVar[int]
+    ALIQUOTA_SIMPLES_NACIONAL_FIELD_NUMBER: _ClassVar[int]
     ambiente_padrao: AmbientePadrao
     iss: float
     reg_ap_trib_sn: int
@@ -150,7 +151,8 @@ class ConfigNfse(_message.Message):
     envia_email_automatico: bool
     webservice_usuario: str
     webservice_senha: str
-    def __init__(self, ambiente_padrao: _Optional[_Union[AmbientePadrao, str]] = ..., iss: _Optional[float] = ..., reg_ap_trib_sn: _Optional[int] = ..., nfse_auto_emite: _Optional[bool] = ..., serie_padrao: _Optional[str] = ..., envia_email_automatico: _Optional[bool] = ..., webservice_usuario: _Optional[str] = ..., webservice_senha: _Optional[str] = ...) -> None: ...
+    aliquota_simples_nacional: float
+    def __init__(self, ambiente_padrao: _Optional[_Union[AmbientePadrao, str]] = ..., iss: _Optional[float] = ..., reg_ap_trib_sn: _Optional[int] = ..., nfse_auto_emite: _Optional[bool] = ..., serie_padrao: _Optional[str] = ..., envia_email_automatico: _Optional[bool] = ..., webservice_usuario: _Optional[str] = ..., webservice_senha: _Optional[str] = ..., aliquota_simples_nacional: _Optional[float] = ...) -> None: ...
 
 class Cnae(_message.Message):
     __slots__ = ("nome", "codigo")

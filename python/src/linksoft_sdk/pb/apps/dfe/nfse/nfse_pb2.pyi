@@ -42,6 +42,7 @@ class NaturezaDaOperacao(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     TRIBUTACAO_IMUNE: _ClassVar[NaturezaDaOperacao]
     TRIBUTACAO_EXIGI_SUSPENSA_DECISAO_JUDICIAL: _ClassVar[NaturezaDaOperacao]
     TRIBUTACAO_EXIGI_SUSPENSA_ADMINISTRATIVO: _ClassVar[NaturezaDaOperacao]
+    TRIBUTACAO_NAO_INCIDENCIA: _ClassVar[NaturezaDaOperacao]
 
 class RegimeEspecial(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -52,6 +53,9 @@ class RegimeEspecial(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     REGIME_ESPECIAL_COOPERATIVA: _ClassVar[RegimeEspecial]
     REGIME_ESPECIAL_MEI: _ClassVar[RegimeEspecial]
     REGIME_ESPECIAL_EPP: _ClassVar[RegimeEspecial]
+    REGIME_ESPECIAL_NOTARIO: _ClassVar[RegimeEspecial]
+    REGIME_ESPECIAL_PROFISSIONAL_AUTONOMO: _ClassVar[RegimeEspecial]
+    REGIME_ESPECIAL_OUTROS: _ClassVar[RegimeEspecial]
 
 class CodigoCancelamento(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -149,6 +153,7 @@ TRIBUTACAO_ISENCAO: NaturezaDaOperacao
 TRIBUTACAO_IMUNE: NaturezaDaOperacao
 TRIBUTACAO_EXIGI_SUSPENSA_DECISAO_JUDICIAL: NaturezaDaOperacao
 TRIBUTACAO_EXIGI_SUSPENSA_ADMINISTRATIVO: NaturezaDaOperacao
+TRIBUTACAO_NAO_INCIDENCIA: NaturezaDaOperacao
 REGIME_ESPECIAL_NENHUM: RegimeEspecial
 REGIME_ESPECIAL_EMPRESA_MUNICIPAL: RegimeEspecial
 REGIME_ESPECIAL_ESTIMATIVA: RegimeEspecial
@@ -156,6 +161,9 @@ REGIME_ESPECIAL_SOCIEDADE_PROFISSIONAIS: RegimeEspecial
 REGIME_ESPECIAL_COOPERATIVA: RegimeEspecial
 REGIME_ESPECIAL_MEI: RegimeEspecial
 REGIME_ESPECIAL_EPP: RegimeEspecial
+REGIME_ESPECIAL_NOTARIO: RegimeEspecial
+REGIME_ESPECIAL_PROFISSIONAL_AUTONOMO: RegimeEspecial
+REGIME_ESPECIAL_OUTROS: RegimeEspecial
 CODIGO_CANCELAMENTO_NAO_ESPECIFICADO: CodigoCancelamento
 CODIGO_CANCELAMENTO_ERRO_EMISSAO: CodigoCancelamento
 CODIGO_CANCELAMENTO_SERVICO_NAO_PRESTADO: CodigoCancelamento
@@ -254,7 +262,7 @@ class GetCidadesSuportadasResponse(_message.Message):
     def __init__(self, cidades: _Optional[_Iterable[_Union[CidadeSuportada, _Mapping]]] = ...) -> None: ...
 
 class Tomador(_message.Message):
-    __slots__ = ("id", "cpf_cnpj", "nome", "im", "email", "fone", "endereco", "nif", "codigo_pais", "endereco_exterior")
+    __slots__ = ("id", "cpf_cnpj", "nome", "im", "email", "fone", "endereco", "nif", "codigo_pais", "endereco_exterior", "c_nao_nif", "caepf")
     class Endereco(_message.Message):
         __slots__ = ("logradouro", "numero", "bairro", "codigo_municipio", "municipio", "uf", "cep", "complemento")
         LOGRADOURO_FIELD_NUMBER: _ClassVar[int]
@@ -275,12 +283,26 @@ class Tomador(_message.Message):
         complemento: str
         def __init__(self, logradouro: _Optional[str] = ..., numero: _Optional[str] = ..., bairro: _Optional[str] = ..., codigo_municipio: _Optional[str] = ..., municipio: _Optional[str] = ..., uf: _Optional[str] = ..., cep: _Optional[str] = ..., complemento: _Optional[str] = ...) -> None: ...
     class EnderecoExterior(_message.Message):
-        __slots__ = ("codigo_pais", "endereco_completo")
+        __slots__ = ("codigo_pais", "endereco_completo", "codigo_postal", "cidade", "estado_provincia", "logradouro", "numero", "complemento", "bairro")
         CODIGO_PAIS_FIELD_NUMBER: _ClassVar[int]
         ENDERECO_COMPLETO_FIELD_NUMBER: _ClassVar[int]
+        CODIGO_POSTAL_FIELD_NUMBER: _ClassVar[int]
+        CIDADE_FIELD_NUMBER: _ClassVar[int]
+        ESTADO_PROVINCIA_FIELD_NUMBER: _ClassVar[int]
+        LOGRADOURO_FIELD_NUMBER: _ClassVar[int]
+        NUMERO_FIELD_NUMBER: _ClassVar[int]
+        COMPLEMENTO_FIELD_NUMBER: _ClassVar[int]
+        BAIRRO_FIELD_NUMBER: _ClassVar[int]
         codigo_pais: str
         endereco_completo: str
-        def __init__(self, codigo_pais: _Optional[str] = ..., endereco_completo: _Optional[str] = ...) -> None: ...
+        codigo_postal: str
+        cidade: str
+        estado_provincia: str
+        logradouro: str
+        numero: str
+        complemento: str
+        bairro: str
+        def __init__(self, codigo_pais: _Optional[str] = ..., endereco_completo: _Optional[str] = ..., codigo_postal: _Optional[str] = ..., cidade: _Optional[str] = ..., estado_provincia: _Optional[str] = ..., logradouro: _Optional[str] = ..., numero: _Optional[str] = ..., complemento: _Optional[str] = ..., bairro: _Optional[str] = ...) -> None: ...
     ID_FIELD_NUMBER: _ClassVar[int]
     CPF_CNPJ_FIELD_NUMBER: _ClassVar[int]
     NOME_FIELD_NUMBER: _ClassVar[int]
@@ -291,6 +313,8 @@ class Tomador(_message.Message):
     NIF_FIELD_NUMBER: _ClassVar[int]
     CODIGO_PAIS_FIELD_NUMBER: _ClassVar[int]
     ENDERECO_EXTERIOR_FIELD_NUMBER: _ClassVar[int]
+    C_NAO_NIF_FIELD_NUMBER: _ClassVar[int]
+    CAEPF_FIELD_NUMBER: _ClassVar[int]
     id: str
     cpf_cnpj: str
     nome: str
@@ -301,21 +325,55 @@ class Tomador(_message.Message):
     nif: str
     codigo_pais: str
     endereco_exterior: Tomador.EnderecoExterior
-    def __init__(self, id: _Optional[str] = ..., cpf_cnpj: _Optional[str] = ..., nome: _Optional[str] = ..., im: _Optional[str] = ..., email: _Optional[str] = ..., fone: _Optional[str] = ..., endereco: _Optional[_Union[Tomador.Endereco, _Mapping]] = ..., nif: _Optional[str] = ..., codigo_pais: _Optional[str] = ..., endereco_exterior: _Optional[_Union[Tomador.EnderecoExterior, _Mapping]] = ...) -> None: ...
+    c_nao_nif: int
+    caepf: str
+    def __init__(self, id: _Optional[str] = ..., cpf_cnpj: _Optional[str] = ..., nome: _Optional[str] = ..., im: _Optional[str] = ..., email: _Optional[str] = ..., fone: _Optional[str] = ..., endereco: _Optional[_Union[Tomador.Endereco, _Mapping]] = ..., nif: _Optional[str] = ..., codigo_pais: _Optional[str] = ..., endereco_exterior: _Optional[_Union[Tomador.EnderecoExterior, _Mapping]] = ..., c_nao_nif: _Optional[int] = ..., caepf: _Optional[str] = ...) -> None: ...
 
 class Intermediario(_message.Message):
-    __slots__ = ("cpf_cnpj", "inscricao_municipal", "razao_social", "localizacao_uf", "localizacao_cidade")
+    __slots__ = ("cpf_cnpj", "inscricao_municipal", "razao_social", "localizacao_uf", "localizacao_cidade", "email", "fone", "endereco", "nif", "c_nao_nif", "endereco_exterior")
     CPF_CNPJ_FIELD_NUMBER: _ClassVar[int]
     INSCRICAO_MUNICIPAL_FIELD_NUMBER: _ClassVar[int]
     RAZAO_SOCIAL_FIELD_NUMBER: _ClassVar[int]
     LOCALIZACAO_UF_FIELD_NUMBER: _ClassVar[int]
     LOCALIZACAO_CIDADE_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    FONE_FIELD_NUMBER: _ClassVar[int]
+    ENDERECO_FIELD_NUMBER: _ClassVar[int]
+    NIF_FIELD_NUMBER: _ClassVar[int]
+    C_NAO_NIF_FIELD_NUMBER: _ClassVar[int]
+    ENDERECO_EXTERIOR_FIELD_NUMBER: _ClassVar[int]
     cpf_cnpj: str
     inscricao_municipal: str
     razao_social: str
     localizacao_uf: str
     localizacao_cidade: str
-    def __init__(self, cpf_cnpj: _Optional[str] = ..., inscricao_municipal: _Optional[str] = ..., razao_social: _Optional[str] = ..., localizacao_uf: _Optional[str] = ..., localizacao_cidade: _Optional[str] = ...) -> None: ...
+    email: str
+    fone: str
+    endereco: Tomador.Endereco
+    nif: str
+    c_nao_nif: int
+    endereco_exterior: Tomador.EnderecoExterior
+    def __init__(self, cpf_cnpj: _Optional[str] = ..., inscricao_municipal: _Optional[str] = ..., razao_social: _Optional[str] = ..., localizacao_uf: _Optional[str] = ..., localizacao_cidade: _Optional[str] = ..., email: _Optional[str] = ..., fone: _Optional[str] = ..., endereco: _Optional[_Union[Tomador.Endereco, _Mapping]] = ..., nif: _Optional[str] = ..., c_nao_nif: _Optional[int] = ..., endereco_exterior: _Optional[_Union[Tomador.EnderecoExterior, _Mapping]] = ...) -> None: ...
+
+class EnderecoSimples(_message.Message):
+    __slots__ = ("cep", "codigo_postal", "cidade", "estado_provincia", "logradouro", "numero", "complemento", "bairro")
+    CEP_FIELD_NUMBER: _ClassVar[int]
+    CODIGO_POSTAL_FIELD_NUMBER: _ClassVar[int]
+    CIDADE_FIELD_NUMBER: _ClassVar[int]
+    ESTADO_PROVINCIA_FIELD_NUMBER: _ClassVar[int]
+    LOGRADOURO_FIELD_NUMBER: _ClassVar[int]
+    NUMERO_FIELD_NUMBER: _ClassVar[int]
+    COMPLEMENTO_FIELD_NUMBER: _ClassVar[int]
+    BAIRRO_FIELD_NUMBER: _ClassVar[int]
+    cep: str
+    codigo_postal: str
+    cidade: str
+    estado_provincia: str
+    logradouro: str
+    numero: str
+    complemento: str
+    bairro: str
+    def __init__(self, cep: _Optional[str] = ..., codigo_postal: _Optional[str] = ..., cidade: _Optional[str] = ..., estado_provincia: _Optional[str] = ..., logradouro: _Optional[str] = ..., numero: _Optional[str] = ..., complemento: _Optional[str] = ..., bairro: _Optional[str] = ...) -> None: ...
 
 class NotaSubstituta(_message.Message):
     __slots__ = ("e_substituidora", "chave_nota_substituida", "motivo_substituicao", "nfse_id_substituida", "numero_nfse_substituida")
@@ -354,7 +412,7 @@ class MunicipioIncidencia(_message.Message):
     def __init__(self, uf: _Optional[str] = ..., codigo_municipio: _Optional[str] = ..., nome_municipio: _Optional[str] = ...) -> None: ...
 
 class Servico(_message.Message):
-    __slots__ = ("id", "codigo_servico", "codigo_tributacao_nacional", "codigo_nbs", "descricao_servico", "cnae", "servico_nome", "servico_id", "un", "valor_unitario", "quantidade", "total", "impostos", "desconto_condicional", "desconto_incondicional", "valor_liquido_nfse", "codigo_tributacao_municipal")
+    __slots__ = ("id", "codigo_servico", "codigo_tributacao_nacional", "codigo_nbs", "descricao_servico", "cnae", "servico_nome", "servico_id", "un", "valor_unitario", "quantidade", "total", "impostos", "desconto_condicional", "desconto_incondicional", "valor_liquido_nfse", "codigo_tributacao_municipal", "codigo_interno")
     class Impostos(_message.Message):
         __slots__ = ("aliquota_iss", "valor_iss", "valor_csll", "valor_inss", "valor_pis", "valor_cofins", "valor_deducoes", "valor_ir", "iss_retido", "valor_iss_retido", "outras_retencoes", "base_calculo", "valor_cbs", "aliquota_cbs", "valor_ibs", "aliquota_ibs", "exigibilidade_iss", "numero_processo_suspensao")
         ALIQUOTA_ISS_FIELD_NUMBER: _ClassVar[int]
@@ -411,6 +469,7 @@ class Servico(_message.Message):
     DESCONTO_INCONDICIONAL_FIELD_NUMBER: _ClassVar[int]
     VALOR_LIQUIDO_NFSE_FIELD_NUMBER: _ClassVar[int]
     CODIGO_TRIBUTACAO_MUNICIPAL_FIELD_NUMBER: _ClassVar[int]
+    CODIGO_INTERNO_FIELD_NUMBER: _ClassVar[int]
     id: str
     codigo_servico: str
     codigo_tributacao_nacional: str
@@ -428,7 +487,8 @@ class Servico(_message.Message):
     desconto_incondicional: float
     valor_liquido_nfse: float
     codigo_tributacao_municipal: str
-    def __init__(self, id: _Optional[str] = ..., codigo_servico: _Optional[str] = ..., codigo_tributacao_nacional: _Optional[str] = ..., codigo_nbs: _Optional[str] = ..., descricao_servico: _Optional[str] = ..., cnae: _Optional[str] = ..., servico_nome: _Optional[str] = ..., servico_id: _Optional[str] = ..., un: _Optional[str] = ..., valor_unitario: _Optional[float] = ..., quantidade: _Optional[float] = ..., total: _Optional[float] = ..., impostos: _Optional[_Union[Servico.Impostos, _Mapping]] = ..., desconto_condicional: _Optional[float] = ..., desconto_incondicional: _Optional[float] = ..., valor_liquido_nfse: _Optional[float] = ..., codigo_tributacao_municipal: _Optional[str] = ...) -> None: ...
+    codigo_interno: str
+    def __init__(self, id: _Optional[str] = ..., codigo_servico: _Optional[str] = ..., codigo_tributacao_nacional: _Optional[str] = ..., codigo_nbs: _Optional[str] = ..., descricao_servico: _Optional[str] = ..., cnae: _Optional[str] = ..., servico_nome: _Optional[str] = ..., servico_id: _Optional[str] = ..., un: _Optional[str] = ..., valor_unitario: _Optional[float] = ..., quantidade: _Optional[float] = ..., total: _Optional[float] = ..., impostos: _Optional[_Union[Servico.Impostos, _Mapping]] = ..., desconto_condicional: _Optional[float] = ..., desconto_incondicional: _Optional[float] = ..., valor_liquido_nfse: _Optional[float] = ..., codigo_tributacao_municipal: _Optional[str] = ..., codigo_interno: _Optional[str] = ...) -> None: ...
 
 class EventoNfse(_message.Message):
     __slots__ = ("id", "created_at", "user_id", "user_name", "tipo", "codigo", "descricao", "mensagem")
@@ -451,7 +511,7 @@ class EventoNfse(_message.Message):
     def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., tipo: _Optional[_Union[TipoEventoNfse, str]] = ..., codigo: _Optional[str] = ..., descricao: _Optional[str] = ..., mensagem: _Optional[str] = ...) -> None: ...
 
 class Nfse(_message.Message):
-    __slots__ = ("id", "numero", "situacao", "fields", "ambiente", "data_hora_emissao", "data_competencia", "natureza_operacao", "emitente", "tomador", "local_prestacao", "incentivo_cultural", "numero_nota_substituta", "optante_simples_nacional", "regime_especial", "reg_ap_trib_sn", "impostos", "desconto_incondicional", "subtotal", "total", "servicos", "construcao_civil", "obs", "xml_lote_envio", "xml_autorizacao", "chave_acesso", "rps", "codigo_verificacao", "url_provedor", "url_pdf", "cancelamento", "rejeicoes", "data_hora_autorizacao", "sem_tomador", "intermediario", "subempreitada", "comprovacao_material", "nota_substituta", "nota_substituida", "municipio_incidencia", "ibs_cbs_habilitado", "serie", "importado_em", "ibscbs", "eventos")
+    __slots__ = ("id", "numero", "situacao", "fields", "ambiente", "data_hora_emissao", "data_competencia", "natureza_operacao", "emitente", "tomador", "local_prestacao", "incentivo_cultural", "numero_nota_substituta", "optante_simples_nacional", "regime_especial", "reg_ap_trib_sn", "aliquota_simples_nacional", "desconto_condicional", "tributacao_municipal", "pis_cofins", "deducoes", "total_tributos", "info_complementar", "comercio_exterior", "atividade_evento", "exploracao_rodoviaria", "impostos", "desconto_incondicional", "subtotal", "total", "servicos", "construcao_civil", "obs", "xml_lote_envio", "xml_autorizacao", "chave_acesso", "rps", "codigo_verificacao", "url_provedor", "url_pdf", "cancelamento", "rejeicoes", "data_hora_autorizacao", "sem_tomador", "intermediario", "subempreitada", "comprovacao_material", "nota_substituta", "nota_substituida", "municipio_incidencia", "ibs_cbs_habilitado", "serie", "importado_em", "ibscbs", "eventos")
     class LocalDePrestacao(_message.Message):
         __slots__ = ("exterior", "uf", "cidade", "cidade_codigo", "codigo_pais")
         EXTERIOR_FIELD_NUMBER: _ClassVar[int]
@@ -465,6 +525,162 @@ class Nfse(_message.Message):
         cidade_codigo: str
         codigo_pais: str
         def __init__(self, exterior: _Optional[bool] = ..., uf: _Optional[str] = ..., cidade: _Optional[str] = ..., cidade_codigo: _Optional[str] = ..., codigo_pais: _Optional[str] = ...) -> None: ...
+    class TributacaoMunicipal(_message.Message):
+        __slots__ = ("tipo_imunidade", "numero_processo", "beneficio_municipal", "pais_resultado", "iss_retido_pelo_intermediario")
+        class BeneficioMunicipal(_message.Message):
+            __slots__ = ("numero", "valor_reducao", "percentual_reducao")
+            NUMERO_FIELD_NUMBER: _ClassVar[int]
+            VALOR_REDUCAO_FIELD_NUMBER: _ClassVar[int]
+            PERCENTUAL_REDUCAO_FIELD_NUMBER: _ClassVar[int]
+            numero: str
+            valor_reducao: float
+            percentual_reducao: float
+            def __init__(self, numero: _Optional[str] = ..., valor_reducao: _Optional[float] = ..., percentual_reducao: _Optional[float] = ...) -> None: ...
+        TIPO_IMUNIDADE_FIELD_NUMBER: _ClassVar[int]
+        NUMERO_PROCESSO_FIELD_NUMBER: _ClassVar[int]
+        BENEFICIO_MUNICIPAL_FIELD_NUMBER: _ClassVar[int]
+        PAIS_RESULTADO_FIELD_NUMBER: _ClassVar[int]
+        ISS_RETIDO_PELO_INTERMEDIARIO_FIELD_NUMBER: _ClassVar[int]
+        tipo_imunidade: int
+        numero_processo: str
+        beneficio_municipal: Nfse.TributacaoMunicipal.BeneficioMunicipal
+        pais_resultado: str
+        iss_retido_pelo_intermediario: bool
+        def __init__(self, tipo_imunidade: _Optional[int] = ..., numero_processo: _Optional[str] = ..., beneficio_municipal: _Optional[_Union[Nfse.TributacaoMunicipal.BeneficioMunicipal, _Mapping]] = ..., pais_resultado: _Optional[str] = ..., iss_retido_pelo_intermediario: _Optional[bool] = ...) -> None: ...
+    class PisCofins(_message.Message):
+        __slots__ = ("cst", "base_calculo", "aliquota_pis", "aliquota_cofins", "tipo_retencao")
+        CST_FIELD_NUMBER: _ClassVar[int]
+        BASE_CALCULO_FIELD_NUMBER: _ClassVar[int]
+        ALIQUOTA_PIS_FIELD_NUMBER: _ClassVar[int]
+        ALIQUOTA_COFINS_FIELD_NUMBER: _ClassVar[int]
+        TIPO_RETENCAO_FIELD_NUMBER: _ClassVar[int]
+        cst: str
+        base_calculo: float
+        aliquota_pis: float
+        aliquota_cofins: float
+        tipo_retencao: str
+        def __init__(self, cst: _Optional[str] = ..., base_calculo: _Optional[float] = ..., aliquota_pis: _Optional[float] = ..., aliquota_cofins: _Optional[float] = ..., tipo_retencao: _Optional[str] = ...) -> None: ...
+    class Deducoes(_message.Message):
+        __slots__ = ("percentual", "valor", "documentos")
+        class Documento(_message.Message):
+            __slots__ = ("tipo", "descricao_outro", "data_emissao", "data_competencia", "valor_documento", "valor_deducao", "chave_nfse", "chave_nfe", "codigo_municipio_doc_fiscal", "numero_doc_fiscal", "descricao_doc_fiscal", "numero_doc", "descricao_doc", "fornecedor_cpf_cnpj", "fornecedor_nome")
+            TIPO_FIELD_NUMBER: _ClassVar[int]
+            DESCRICAO_OUTRO_FIELD_NUMBER: _ClassVar[int]
+            DATA_EMISSAO_FIELD_NUMBER: _ClassVar[int]
+            DATA_COMPETENCIA_FIELD_NUMBER: _ClassVar[int]
+            VALOR_DOCUMENTO_FIELD_NUMBER: _ClassVar[int]
+            VALOR_DEDUCAO_FIELD_NUMBER: _ClassVar[int]
+            CHAVE_NFSE_FIELD_NUMBER: _ClassVar[int]
+            CHAVE_NFE_FIELD_NUMBER: _ClassVar[int]
+            CODIGO_MUNICIPIO_DOC_FISCAL_FIELD_NUMBER: _ClassVar[int]
+            NUMERO_DOC_FISCAL_FIELD_NUMBER: _ClassVar[int]
+            DESCRICAO_DOC_FISCAL_FIELD_NUMBER: _ClassVar[int]
+            NUMERO_DOC_FIELD_NUMBER: _ClassVar[int]
+            DESCRICAO_DOC_FIELD_NUMBER: _ClassVar[int]
+            FORNECEDOR_CPF_CNPJ_FIELD_NUMBER: _ClassVar[int]
+            FORNECEDOR_NOME_FIELD_NUMBER: _ClassVar[int]
+            tipo: int
+            descricao_outro: str
+            data_emissao: str
+            data_competencia: str
+            valor_documento: float
+            valor_deducao: float
+            chave_nfse: str
+            chave_nfe: str
+            codigo_municipio_doc_fiscal: str
+            numero_doc_fiscal: str
+            descricao_doc_fiscal: str
+            numero_doc: str
+            descricao_doc: str
+            fornecedor_cpf_cnpj: str
+            fornecedor_nome: str
+            def __init__(self, tipo: _Optional[int] = ..., descricao_outro: _Optional[str] = ..., data_emissao: _Optional[str] = ..., data_competencia: _Optional[str] = ..., valor_documento: _Optional[float] = ..., valor_deducao: _Optional[float] = ..., chave_nfse: _Optional[str] = ..., chave_nfe: _Optional[str] = ..., codigo_municipio_doc_fiscal: _Optional[str] = ..., numero_doc_fiscal: _Optional[str] = ..., descricao_doc_fiscal: _Optional[str] = ..., numero_doc: _Optional[str] = ..., descricao_doc: _Optional[str] = ..., fornecedor_cpf_cnpj: _Optional[str] = ..., fornecedor_nome: _Optional[str] = ...) -> None: ...
+        PERCENTUAL_FIELD_NUMBER: _ClassVar[int]
+        VALOR_FIELD_NUMBER: _ClassVar[int]
+        DOCUMENTOS_FIELD_NUMBER: _ClassVar[int]
+        percentual: float
+        valor: float
+        documentos: _containers.RepeatedCompositeFieldContainer[Nfse.Deducoes.Documento]
+        def __init__(self, percentual: _Optional[float] = ..., valor: _Optional[float] = ..., documentos: _Optional[_Iterable[_Union[Nfse.Deducoes.Documento, _Mapping]]] = ...) -> None: ...
+    class TotalTributos(_message.Message):
+        __slots__ = ("valor_federal", "valor_estadual", "valor_municipal", "percentual_federal", "percentual_estadual", "percentual_municipal")
+        VALOR_FEDERAL_FIELD_NUMBER: _ClassVar[int]
+        VALOR_ESTADUAL_FIELD_NUMBER: _ClassVar[int]
+        VALOR_MUNICIPAL_FIELD_NUMBER: _ClassVar[int]
+        PERCENTUAL_FEDERAL_FIELD_NUMBER: _ClassVar[int]
+        PERCENTUAL_ESTADUAL_FIELD_NUMBER: _ClassVar[int]
+        PERCENTUAL_MUNICIPAL_FIELD_NUMBER: _ClassVar[int]
+        valor_federal: float
+        valor_estadual: float
+        valor_municipal: float
+        percentual_federal: float
+        percentual_estadual: float
+        percentual_municipal: float
+        def __init__(self, valor_federal: _Optional[float] = ..., valor_estadual: _Optional[float] = ..., valor_municipal: _Optional[float] = ..., percentual_federal: _Optional[float] = ..., percentual_estadual: _Optional[float] = ..., percentual_municipal: _Optional[float] = ...) -> None: ...
+    class InformacoesComplementares(_message.Message):
+        __slots__ = ("documento_responsabilidade_tecnica", "documento_referencia", "numero_pedido", "itens_pedido")
+        DOCUMENTO_RESPONSABILIDADE_TECNICA_FIELD_NUMBER: _ClassVar[int]
+        DOCUMENTO_REFERENCIA_FIELD_NUMBER: _ClassVar[int]
+        NUMERO_PEDIDO_FIELD_NUMBER: _ClassVar[int]
+        ITENS_PEDIDO_FIELD_NUMBER: _ClassVar[int]
+        documento_responsabilidade_tecnica: str
+        documento_referencia: str
+        numero_pedido: str
+        itens_pedido: _containers.RepeatedScalarFieldContainer[str]
+        def __init__(self, documento_responsabilidade_tecnica: _Optional[str] = ..., documento_referencia: _Optional[str] = ..., numero_pedido: _Optional[str] = ..., itens_pedido: _Optional[_Iterable[str]] = ...) -> None: ...
+    class ComercioExterior(_message.Message):
+        __slots__ = ("modo_prestacao", "vinculo_prestacao", "moeda", "valor_moeda", "mecanismo_apoio_prestador", "mecanismo_apoio_tomador", "movimentacao_temporaria_bens", "numero_di", "numero_re", "envia_mdic")
+        MODO_PRESTACAO_FIELD_NUMBER: _ClassVar[int]
+        VINCULO_PRESTACAO_FIELD_NUMBER: _ClassVar[int]
+        MOEDA_FIELD_NUMBER: _ClassVar[int]
+        VALOR_MOEDA_FIELD_NUMBER: _ClassVar[int]
+        MECANISMO_APOIO_PRESTADOR_FIELD_NUMBER: _ClassVar[int]
+        MECANISMO_APOIO_TOMADOR_FIELD_NUMBER: _ClassVar[int]
+        MOVIMENTACAO_TEMPORARIA_BENS_FIELD_NUMBER: _ClassVar[int]
+        NUMERO_DI_FIELD_NUMBER: _ClassVar[int]
+        NUMERO_RE_FIELD_NUMBER: _ClassVar[int]
+        ENVIA_MDIC_FIELD_NUMBER: _ClassVar[int]
+        modo_prestacao: int
+        vinculo_prestacao: int
+        moeda: str
+        valor_moeda: float
+        mecanismo_apoio_prestador: str
+        mecanismo_apoio_tomador: str
+        movimentacao_temporaria_bens: int
+        numero_di: str
+        numero_re: str
+        envia_mdic: bool
+        def __init__(self, modo_prestacao: _Optional[int] = ..., vinculo_prestacao: _Optional[int] = ..., moeda: _Optional[str] = ..., valor_moeda: _Optional[float] = ..., mecanismo_apoio_prestador: _Optional[str] = ..., mecanismo_apoio_tomador: _Optional[str] = ..., movimentacao_temporaria_bens: _Optional[int] = ..., numero_di: _Optional[str] = ..., numero_re: _Optional[str] = ..., envia_mdic: _Optional[bool] = ...) -> None: ...
+    class AtividadeEvento(_message.Message):
+        __slots__ = ("nome", "data_inicio", "data_fim", "id_evento", "endereco")
+        NOME_FIELD_NUMBER: _ClassVar[int]
+        DATA_INICIO_FIELD_NUMBER: _ClassVar[int]
+        DATA_FIM_FIELD_NUMBER: _ClassVar[int]
+        ID_EVENTO_FIELD_NUMBER: _ClassVar[int]
+        ENDERECO_FIELD_NUMBER: _ClassVar[int]
+        nome: str
+        data_inicio: str
+        data_fim: str
+        id_evento: str
+        endereco: EnderecoSimples
+        def __init__(self, nome: _Optional[str] = ..., data_inicio: _Optional[str] = ..., data_fim: _Optional[str] = ..., id_evento: _Optional[str] = ..., endereco: _Optional[_Union[EnderecoSimples, _Mapping]] = ...) -> None: ...
+    class ExploracaoRodoviaria(_message.Message):
+        __slots__ = ("categoria_veiculo", "numero_eixos", "rodagem", "sentido", "placa", "codigo_acesso_pedagio", "codigo_contrato")
+        CATEGORIA_VEICULO_FIELD_NUMBER: _ClassVar[int]
+        NUMERO_EIXOS_FIELD_NUMBER: _ClassVar[int]
+        RODAGEM_FIELD_NUMBER: _ClassVar[int]
+        SENTIDO_FIELD_NUMBER: _ClassVar[int]
+        PLACA_FIELD_NUMBER: _ClassVar[int]
+        CODIGO_ACESSO_PEDAGIO_FIELD_NUMBER: _ClassVar[int]
+        CODIGO_CONTRATO_FIELD_NUMBER: _ClassVar[int]
+        categoria_veiculo: str
+        numero_eixos: str
+        rodagem: int
+        sentido: str
+        placa: str
+        codigo_acesso_pedagio: str
+        codigo_contrato: str
+        def __init__(self, categoria_veiculo: _Optional[str] = ..., numero_eixos: _Optional[str] = ..., rodagem: _Optional[int] = ..., sentido: _Optional[str] = ..., placa: _Optional[str] = ..., codigo_acesso_pedagio: _Optional[str] = ..., codigo_contrato: _Optional[str] = ...) -> None: ...
     class Impostos(_message.Message):
         __slots__ = ("base_calculo", "iss_percentual", "iss_valor", "iss_reter", "inss", "cofins", "irrf", "pis_pasep", "csll", "outras_retencoes", "deducoes", "credito", "irpj", "valor_cbs", "aliquota_cbs", "valor_ibs", "aliquota_ibs", "valor_iss_retido")
         BASE_CALCULO_FIELD_NUMBER: _ClassVar[int]
@@ -505,12 +721,18 @@ class Nfse(_message.Message):
         valor_iss_retido: float
         def __init__(self, base_calculo: _Optional[float] = ..., iss_percentual: _Optional[float] = ..., iss_valor: _Optional[float] = ..., iss_reter: _Optional[bool] = ..., inss: _Optional[float] = ..., cofins: _Optional[float] = ..., irrf: _Optional[float] = ..., pis_pasep: _Optional[float] = ..., csll: _Optional[float] = ..., outras_retencoes: _Optional[float] = ..., deducoes: _Optional[float] = ..., credito: _Optional[float] = ..., irpj: _Optional[float] = ..., valor_cbs: _Optional[float] = ..., aliquota_cbs: _Optional[float] = ..., valor_ibs: _Optional[float] = ..., aliquota_ibs: _Optional[float] = ..., valor_iss_retido: _Optional[float] = ...) -> None: ...
     class ConstrucaoCivil(_message.Message):
-        __slots__ = ("codigo_obra", "codigo_art")
+        __slots__ = ("codigo_obra", "codigo_art", "inscricao_imobiliaria", "cib", "endereco")
         CODIGO_OBRA_FIELD_NUMBER: _ClassVar[int]
         CODIGO_ART_FIELD_NUMBER: _ClassVar[int]
+        INSCRICAO_IMOBILIARIA_FIELD_NUMBER: _ClassVar[int]
+        CIB_FIELD_NUMBER: _ClassVar[int]
+        ENDERECO_FIELD_NUMBER: _ClassVar[int]
         codigo_obra: str
         codigo_art: str
-        def __init__(self, codigo_obra: _Optional[str] = ..., codigo_art: _Optional[str] = ...) -> None: ...
+        inscricao_imobiliaria: str
+        cib: str
+        endereco: EnderecoSimples
+        def __init__(self, codigo_obra: _Optional[str] = ..., codigo_art: _Optional[str] = ..., inscricao_imobiliaria: _Optional[str] = ..., cib: _Optional[str] = ..., endereco: _Optional[_Union[EnderecoSimples, _Mapping]] = ...) -> None: ...
     class LoteRps(_message.Message):
         __slots__ = ("protocolo", "data_hora_envio", "data_hora_processamento", "numero_lote", "numero_rps", "serie")
         PROTOCOLO_FIELD_NUMBER: _ClassVar[int]
@@ -551,7 +773,7 @@ class Nfse(_message.Message):
         operacao: TipoOperacaoRejeicao
         def __init__(self, id: _Optional[str] = ..., data_hora: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., codigo: _Optional[str] = ..., mensagem: _Optional[str] = ..., correcao: _Optional[str] = ..., operacao: _Optional[_Union[TipoOperacaoRejeicao, str]] = ...) -> None: ...
     class IBSCBS(_message.Message):
-        __slots__ = ("fin_nfse", "ind_final", "c_ind_op", "tp_oper", "ref_nfse", "tp_ente_gov", "x_tp_ente_gov", "ind_dest", "dest", "adq", "imovel", "valores")
+        __slots__ = ("fin_nfse", "ind_final", "c_ind_op", "tp_oper", "ref_nfse", "tp_ente_gov", "x_tp_ente_gov", "ind_dest", "dest", "adq", "imovel", "bens_moveis", "valores")
         class Destinatario(_message.Message):
             __slots__ = ("cnpj", "cpf", "inscricao_municipal", "nif", "c_nao_nif", "nome", "endereco", "fone", "email")
             CNPJ_FIELD_NUMBER: _ClassVar[int]
@@ -593,14 +815,62 @@ class Nfse(_message.Message):
             email: str
             def __init__(self, cnpj: _Optional[str] = ..., cpf: _Optional[str] = ..., nif: _Optional[str] = ..., c_nao_nif: _Optional[int] = ..., nome: _Optional[str] = ..., endereco: _Optional[_Union[Tomador.Endereco, _Mapping]] = ..., fone: _Optional[str] = ..., email: _Optional[str] = ...) -> None: ...
         class Imovel(_message.Message):
-            __slots__ = ("insc_imob_fisc", "c_cib", "endereco")
+            __slots__ = ("insc_imob_fisc", "c_cib", "endereco", "codigo_municipio", "locacao", "unidades")
+            class Locacao(_message.Message):
+                __slots__ = ("percentual_copropriedade", "valor_total_operacao", "desconto_incondicional_total", "desconto_condicional_total", "data_vencimento_original")
+                PERCENTUAL_COPROPRIEDADE_FIELD_NUMBER: _ClassVar[int]
+                VALOR_TOTAL_OPERACAO_FIELD_NUMBER: _ClassVar[int]
+                DESCONTO_INCONDICIONAL_TOTAL_FIELD_NUMBER: _ClassVar[int]
+                DESCONTO_CONDICIONAL_TOTAL_FIELD_NUMBER: _ClassVar[int]
+                DATA_VENCIMENTO_ORIGINAL_FIELD_NUMBER: _ClassVar[int]
+                percentual_copropriedade: float
+                valor_total_operacao: float
+                desconto_incondicional_total: float
+                desconto_condicional_total: float
+                data_vencimento_original: str
+                def __init__(self, percentual_copropriedade: _Optional[float] = ..., valor_total_operacao: _Optional[float] = ..., desconto_incondicional_total: _Optional[float] = ..., desconto_condicional_total: _Optional[float] = ..., data_vencimento_original: _Optional[str] = ...) -> None: ...
+            class Unidade(_message.Message):
+                __slots__ = ("insc_imob_fisc", "c_cib", "endereco", "ajustes_bc")
+                class AjusteBC(_message.Message):
+                    __slots__ = ("tipo", "descricao", "valor")
+                    TIPO_FIELD_NUMBER: _ClassVar[int]
+                    DESCRICAO_FIELD_NUMBER: _ClassVar[int]
+                    VALOR_FIELD_NUMBER: _ClassVar[int]
+                    tipo: str
+                    descricao: str
+                    valor: float
+                    def __init__(self, tipo: _Optional[str] = ..., descricao: _Optional[str] = ..., valor: _Optional[float] = ...) -> None: ...
+                INSC_IMOB_FISC_FIELD_NUMBER: _ClassVar[int]
+                C_CIB_FIELD_NUMBER: _ClassVar[int]
+                ENDERECO_FIELD_NUMBER: _ClassVar[int]
+                AJUSTES_BC_FIELD_NUMBER: _ClassVar[int]
+                insc_imob_fisc: str
+                c_cib: str
+                endereco: EnderecoSimples
+                ajustes_bc: _containers.RepeatedCompositeFieldContainer[Nfse.IBSCBS.Imovel.Unidade.AjusteBC]
+                def __init__(self, insc_imob_fisc: _Optional[str] = ..., c_cib: _Optional[str] = ..., endereco: _Optional[_Union[EnderecoSimples, _Mapping]] = ..., ajustes_bc: _Optional[_Iterable[_Union[Nfse.IBSCBS.Imovel.Unidade.AjusteBC, _Mapping]]] = ...) -> None: ...
             INSC_IMOB_FISC_FIELD_NUMBER: _ClassVar[int]
             C_CIB_FIELD_NUMBER: _ClassVar[int]
             ENDERECO_FIELD_NUMBER: _ClassVar[int]
+            CODIGO_MUNICIPIO_FIELD_NUMBER: _ClassVar[int]
+            LOCACAO_FIELD_NUMBER: _ClassVar[int]
+            UNIDADES_FIELD_NUMBER: _ClassVar[int]
             insc_imob_fisc: str
             c_cib: str
             endereco: Tomador.Endereco
-            def __init__(self, insc_imob_fisc: _Optional[str] = ..., c_cib: _Optional[str] = ..., endereco: _Optional[_Union[Tomador.Endereco, _Mapping]] = ...) -> None: ...
+            codigo_municipio: str
+            locacao: Nfse.IBSCBS.Imovel.Locacao
+            unidades: _containers.RepeatedCompositeFieldContainer[Nfse.IBSCBS.Imovel.Unidade]
+            def __init__(self, insc_imob_fisc: _Optional[str] = ..., c_cib: _Optional[str] = ..., endereco: _Optional[_Union[Tomador.Endereco, _Mapping]] = ..., codigo_municipio: _Optional[str] = ..., locacao: _Optional[_Union[Nfse.IBSCBS.Imovel.Locacao, _Mapping]] = ..., unidades: _Optional[_Iterable[_Union[Nfse.IBSCBS.Imovel.Unidade, _Mapping]]] = ...) -> None: ...
+        class BemMovel(_message.Message):
+            __slots__ = ("ncm", "descricao", "quantidade")
+            NCM_FIELD_NUMBER: _ClassVar[int]
+            DESCRICAO_FIELD_NUMBER: _ClassVar[int]
+            QUANTIDADE_FIELD_NUMBER: _ClassVar[int]
+            ncm: str
+            descricao: str
+            quantidade: int
+            def __init__(self, ncm: _Optional[str] = ..., descricao: _Optional[str] = ..., quantidade: _Optional[int] = ...) -> None: ...
         class ValoresIBSCBS(_message.Message):
             __slots__ = ("g_ree_rep_res", "trib")
             class ReeRepRes(_message.Message):
@@ -688,6 +958,7 @@ class Nfse(_message.Message):
         DEST_FIELD_NUMBER: _ClassVar[int]
         ADQ_FIELD_NUMBER: _ClassVar[int]
         IMOVEL_FIELD_NUMBER: _ClassVar[int]
+        BENS_MOVEIS_FIELD_NUMBER: _ClassVar[int]
         VALORES_FIELD_NUMBER: _ClassVar[int]
         fin_nfse: int
         ind_final: int
@@ -700,8 +971,9 @@ class Nfse(_message.Message):
         dest: Nfse.IBSCBS.Destinatario
         adq: Nfse.IBSCBS.Adquirente
         imovel: Nfse.IBSCBS.Imovel
+        bens_moveis: _containers.RepeatedCompositeFieldContainer[Nfse.IBSCBS.BemMovel]
         valores: Nfse.IBSCBS.ValoresIBSCBS
-        def __init__(self, fin_nfse: _Optional[int] = ..., ind_final: _Optional[int] = ..., c_ind_op: _Optional[str] = ..., tp_oper: _Optional[int] = ..., ref_nfse: _Optional[_Iterable[str]] = ..., tp_ente_gov: _Optional[int] = ..., x_tp_ente_gov: _Optional[str] = ..., ind_dest: _Optional[int] = ..., dest: _Optional[_Union[Nfse.IBSCBS.Destinatario, _Mapping]] = ..., adq: _Optional[_Union[Nfse.IBSCBS.Adquirente, _Mapping]] = ..., imovel: _Optional[_Union[Nfse.IBSCBS.Imovel, _Mapping]] = ..., valores: _Optional[_Union[Nfse.IBSCBS.ValoresIBSCBS, _Mapping]] = ...) -> None: ...
+        def __init__(self, fin_nfse: _Optional[int] = ..., ind_final: _Optional[int] = ..., c_ind_op: _Optional[str] = ..., tp_oper: _Optional[int] = ..., ref_nfse: _Optional[_Iterable[str]] = ..., tp_ente_gov: _Optional[int] = ..., x_tp_ente_gov: _Optional[str] = ..., ind_dest: _Optional[int] = ..., dest: _Optional[_Union[Nfse.IBSCBS.Destinatario, _Mapping]] = ..., adq: _Optional[_Union[Nfse.IBSCBS.Adquirente, _Mapping]] = ..., imovel: _Optional[_Union[Nfse.IBSCBS.Imovel, _Mapping]] = ..., bens_moveis: _Optional[_Iterable[_Union[Nfse.IBSCBS.BemMovel, _Mapping]]] = ..., valores: _Optional[_Union[Nfse.IBSCBS.ValoresIBSCBS, _Mapping]] = ...) -> None: ...
     ID_FIELD_NUMBER: _ClassVar[int]
     NUMERO_FIELD_NUMBER: _ClassVar[int]
     SITUACAO_FIELD_NUMBER: _ClassVar[int]
@@ -718,6 +990,16 @@ class Nfse(_message.Message):
     OPTANTE_SIMPLES_NACIONAL_FIELD_NUMBER: _ClassVar[int]
     REGIME_ESPECIAL_FIELD_NUMBER: _ClassVar[int]
     REG_AP_TRIB_SN_FIELD_NUMBER: _ClassVar[int]
+    ALIQUOTA_SIMPLES_NACIONAL_FIELD_NUMBER: _ClassVar[int]
+    DESCONTO_CONDICIONAL_FIELD_NUMBER: _ClassVar[int]
+    TRIBUTACAO_MUNICIPAL_FIELD_NUMBER: _ClassVar[int]
+    PIS_COFINS_FIELD_NUMBER: _ClassVar[int]
+    DEDUCOES_FIELD_NUMBER: _ClassVar[int]
+    TOTAL_TRIBUTOS_FIELD_NUMBER: _ClassVar[int]
+    INFO_COMPLEMENTAR_FIELD_NUMBER: _ClassVar[int]
+    COMERCIO_EXTERIOR_FIELD_NUMBER: _ClassVar[int]
+    ATIVIDADE_EVENTO_FIELD_NUMBER: _ClassVar[int]
+    EXPLORACAO_RODOVIARIA_FIELD_NUMBER: _ClassVar[int]
     IMPOSTOS_FIELD_NUMBER: _ClassVar[int]
     DESCONTO_INCONDICIONAL_FIELD_NUMBER: _ClassVar[int]
     SUBTOTAL_FIELD_NUMBER: _ClassVar[int]
@@ -763,6 +1045,16 @@ class Nfse(_message.Message):
     optante_simples_nacional: bool
     regime_especial: RegimeEspecial
     reg_ap_trib_sn: RegimeApuracaoSN
+    aliquota_simples_nacional: float
+    desconto_condicional: float
+    tributacao_municipal: Nfse.TributacaoMunicipal
+    pis_cofins: Nfse.PisCofins
+    deducoes: Nfse.Deducoes
+    total_tributos: Nfse.TotalTributos
+    info_complementar: Nfse.InformacoesComplementares
+    comercio_exterior: Nfse.ComercioExterior
+    atividade_evento: Nfse.AtividadeEvento
+    exploracao_rodoviaria: Nfse.ExploracaoRodoviaria
     impostos: Nfse.Impostos
     desconto_incondicional: float
     subtotal: float
@@ -792,7 +1084,7 @@ class Nfse(_message.Message):
     importado_em: _timestamp_pb2.Timestamp
     ibscbs: Nfse.IBSCBS
     eventos: _containers.RepeatedCompositeFieldContainer[EventoNfse]
-    def __init__(self, id: _Optional[str] = ..., numero: _Optional[str] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., ambiente: _Optional[_Union[Ambiente, str]] = ..., data_hora_emissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_competencia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., natureza_operacao: _Optional[_Union[NaturezaDaOperacao, str]] = ..., emitente: _Optional[_Union[_emitente_pb2.Emitente, _Mapping]] = ..., tomador: _Optional[_Union[Tomador, _Mapping]] = ..., local_prestacao: _Optional[_Union[Nfse.LocalDePrestacao, _Mapping]] = ..., incentivo_cultural: _Optional[bool] = ..., numero_nota_substituta: _Optional[bool] = ..., optante_simples_nacional: _Optional[bool] = ..., regime_especial: _Optional[_Union[RegimeEspecial, str]] = ..., reg_ap_trib_sn: _Optional[_Union[RegimeApuracaoSN, str]] = ..., impostos: _Optional[_Union[Nfse.Impostos, _Mapping]] = ..., desconto_incondicional: _Optional[float] = ..., subtotal: _Optional[float] = ..., total: _Optional[float] = ..., servicos: _Optional[_Iterable[_Union[Servico, _Mapping]]] = ..., construcao_civil: _Optional[_Union[Nfse.ConstrucaoCivil, _Mapping]] = ..., obs: _Optional[str] = ..., xml_lote_envio: _Optional[str] = ..., xml_autorizacao: _Optional[str] = ..., chave_acesso: _Optional[str] = ..., rps: _Optional[_Union[Nfse.LoteRps, _Mapping]] = ..., codigo_verificacao: _Optional[str] = ..., url_provedor: _Optional[str] = ..., url_pdf: _Optional[str] = ..., cancelamento: _Optional[_Union[Nfse.Cancelamento, _Mapping]] = ..., rejeicoes: _Optional[_Iterable[_Union[Nfse.Rejeicao, _Mapping]]] = ..., data_hora_autorizacao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., sem_tomador: _Optional[bool] = ..., intermediario: _Optional[_Union[Intermediario, _Mapping]] = ..., subempreitada: _Optional[bool] = ..., comprovacao_material: _Optional[bool] = ..., nota_substituta: _Optional[_Union[NotaSubstituta, _Mapping]] = ..., nota_substituida: _Optional[_Union[NotaSubstituida, _Mapping]] = ..., municipio_incidencia: _Optional[_Union[MunicipioIncidencia, _Mapping]] = ..., ibs_cbs_habilitado: _Optional[bool] = ..., serie: _Optional[str] = ..., importado_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., ibscbs: _Optional[_Union[Nfse.IBSCBS, _Mapping]] = ..., eventos: _Optional[_Iterable[_Union[EventoNfse, _Mapping]]] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., numero: _Optional[str] = ..., situacao: _Optional[_Union[Situacao, str]] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., ambiente: _Optional[_Union[Ambiente, str]] = ..., data_hora_emissao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., data_competencia: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., natureza_operacao: _Optional[_Union[NaturezaDaOperacao, str]] = ..., emitente: _Optional[_Union[_emitente_pb2.Emitente, _Mapping]] = ..., tomador: _Optional[_Union[Tomador, _Mapping]] = ..., local_prestacao: _Optional[_Union[Nfse.LocalDePrestacao, _Mapping]] = ..., incentivo_cultural: _Optional[bool] = ..., numero_nota_substituta: _Optional[bool] = ..., optante_simples_nacional: _Optional[bool] = ..., regime_especial: _Optional[_Union[RegimeEspecial, str]] = ..., reg_ap_trib_sn: _Optional[_Union[RegimeApuracaoSN, str]] = ..., aliquota_simples_nacional: _Optional[float] = ..., desconto_condicional: _Optional[float] = ..., tributacao_municipal: _Optional[_Union[Nfse.TributacaoMunicipal, _Mapping]] = ..., pis_cofins: _Optional[_Union[Nfse.PisCofins, _Mapping]] = ..., deducoes: _Optional[_Union[Nfse.Deducoes, _Mapping]] = ..., total_tributos: _Optional[_Union[Nfse.TotalTributos, _Mapping]] = ..., info_complementar: _Optional[_Union[Nfse.InformacoesComplementares, _Mapping]] = ..., comercio_exterior: _Optional[_Union[Nfse.ComercioExterior, _Mapping]] = ..., atividade_evento: _Optional[_Union[Nfse.AtividadeEvento, _Mapping]] = ..., exploracao_rodoviaria: _Optional[_Union[Nfse.ExploracaoRodoviaria, _Mapping]] = ..., impostos: _Optional[_Union[Nfse.Impostos, _Mapping]] = ..., desconto_incondicional: _Optional[float] = ..., subtotal: _Optional[float] = ..., total: _Optional[float] = ..., servicos: _Optional[_Iterable[_Union[Servico, _Mapping]]] = ..., construcao_civil: _Optional[_Union[Nfse.ConstrucaoCivil, _Mapping]] = ..., obs: _Optional[str] = ..., xml_lote_envio: _Optional[str] = ..., xml_autorizacao: _Optional[str] = ..., chave_acesso: _Optional[str] = ..., rps: _Optional[_Union[Nfse.LoteRps, _Mapping]] = ..., codigo_verificacao: _Optional[str] = ..., url_provedor: _Optional[str] = ..., url_pdf: _Optional[str] = ..., cancelamento: _Optional[_Union[Nfse.Cancelamento, _Mapping]] = ..., rejeicoes: _Optional[_Iterable[_Union[Nfse.Rejeicao, _Mapping]]] = ..., data_hora_autorizacao: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., sem_tomador: _Optional[bool] = ..., intermediario: _Optional[_Union[Intermediario, _Mapping]] = ..., subempreitada: _Optional[bool] = ..., comprovacao_material: _Optional[bool] = ..., nota_substituta: _Optional[_Union[NotaSubstituta, _Mapping]] = ..., nota_substituida: _Optional[_Union[NotaSubstituida, _Mapping]] = ..., municipio_incidencia: _Optional[_Union[MunicipioIncidencia, _Mapping]] = ..., ibs_cbs_habilitado: _Optional[bool] = ..., serie: _Optional[str] = ..., importado_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., ibscbs: _Optional[_Union[Nfse.IBSCBS, _Mapping]] = ..., eventos: _Optional[_Iterable[_Union[EventoNfse, _Mapping]]] = ...) -> None: ...
 
 class EmitirNfseRequest(_message.Message):
     __slots__ = ("nfse",)

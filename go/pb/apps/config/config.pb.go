@@ -666,8 +666,10 @@ type ConfigNfse struct {
 	EnviaEmailAutomatico bool   `protobuf:"varint,6,opt,name=envia_email_automatico,json=enviaEmailAutomatico,proto3" json:"envia_email_automatico,omitempty"` // Enviar email automaticamente após autorização da NFSe (default: true)
 	WebserviceUsuario    string `protobuf:"bytes,7,opt,name=webservice_usuario,json=webserviceUsuario,proto3" json:"webservice_usuario,omitempty"`             // Usuário de acesso ao webservice de NFSe do município (quando o provedor exige login)
 	WebserviceSenha      string `protobuf:"bytes,8,opt,name=webservice_senha,json=webserviceSenha,proto3" json:"webservice_senha,omitempty"`                   // Senha de acesso ao webservice de NFSe do município (quando o provedor exige login)
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	// Alíquota do Simples Nacional (%) informada na NFS-e como valor aproximado dos tributos (ME/EPP)
+	AliquotaSimplesNacional float64 `protobuf:"fixed64,9,opt,name=aliquota_simples_nacional,json=aliquotaSimplesNacional,proto3" json:"aliquota_simples_nacional,omitempty"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *ConfigNfse) Reset() {
@@ -754,6 +756,13 @@ func (x *ConfigNfse) GetWebserviceSenha() string {
 		return x.WebserviceSenha
 	}
 	return ""
+}
+
+func (x *ConfigNfse) GetAliquotaSimplesNacional() float64 {
+	if x != nil {
+		return x.AliquotaSimplesNacional
+	}
+	return 0
 }
 
 type Cnae struct {
@@ -871,7 +880,7 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\tConfigCte\x12?\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\x0e2\x16.config.AmbientePadraoR\x0eambientePadrao\x12!\n" +
 	"\fserie_padrao\x18\x02 \x01(\x05R\vseriePadrao\x12\x14\n" +
-	"\x05serie\x18\x03 \x01(\x05R\x05serie\"\xe5\x02\n" +
+	"\x05serie\x18\x03 \x01(\x05R\x05serie\"\xa1\x03\n" +
 	"\n" +
 	"ConfigNfse\x12?\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\x0e2\x16.config.AmbientePadraoR\x0eambientePadrao\x12\x10\n" +
@@ -881,7 +890,8 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\fserie_padrao\x18\x05 \x01(\tR\vseriePadrao\x124\n" +
 	"\x16envia_email_automatico\x18\x06 \x01(\bR\x14enviaEmailAutomatico\x12-\n" +
 	"\x12webservice_usuario\x18\a \x01(\tR\x11webserviceUsuario\x12/\n" +
-	"\x10webservice_senha\x18\b \x01(\tB\x04\xe2A\x01\x04R\x0fwebserviceSenha\"2\n" +
+	"\x10webservice_senha\x18\b \x01(\tB\x04\xe2A\x01\x04R\x0fwebserviceSenha\x12:\n" +
+	"\x19aliquota_simples_nacional\x18\t \x01(\x01R\x17aliquotaSimplesNacional\"2\n" +
 	"\x04Cnae\x12\x12\n" +
 	"\x04nome\x18\x01 \x01(\tR\x04nome\x12\x16\n" +
 	"\x06codigo\x18\x02 \x01(\tR\x06codigo*p\n" +
