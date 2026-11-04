@@ -7517,8 +7517,10 @@ type Pedido struct {
 	LiberacaoPendente bool `protobuf:"varint,134,opt,name=liberacao_pendente,json=liberacaoPendente,proto3" json:"liberacao_pendente,omitempty"`
 	// A última liberação do desconto do pedido foi recusada e ainda não foi pedida de novo.
 	LiberacaoRecusada bool `protobuf:"varint,135,opt,name=liberacao_recusada,json=liberacaoRecusada,proto3" json:"liberacao_recusada,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// O pedido tem desconto ou preço fora do limite que nenhuma liberação concedida cobre.
+	LiberacaoNecessaria bool `protobuf:"varint,136,opt,name=liberacao_necessaria,json=liberacaoNecessaria,proto3" json:"liberacao_necessaria,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Pedido) Reset() {
@@ -8415,6 +8417,13 @@ func (x *Pedido) GetLiberacaoPendente() bool {
 func (x *Pedido) GetLiberacaoRecusada() bool {
 	if x != nil {
 		return x.LiberacaoRecusada
+	}
+	return false
+}
+
+func (x *Pedido) GetLiberacaoNecessaria() bool {
+	if x != nil {
+		return x.LiberacaoNecessaria
 	}
 	return false
 }
@@ -16366,7 +16375,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x19SetAcompanhamentoResponse\x12C\n" +
 	"\x0eacompanhamento\x18\x01 \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\x12F\n" +
 	"\x11data_hora_entrega\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\x12\x1a\n" +
-	"\bsituacao\x18\x03 \x01(\tR\bsituacao\"\xa50\n" +
+	"\bsituacao\x18\x03 \x01(\tR\bsituacao\"\xdf0\n" +
 	"\x06Pedido\x12>\n" +
 	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12>\n" +
 	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1c\n" +
@@ -16507,7 +16516,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x0elast_synced_at\x18\x82\x01 \x01(\v2\x1a.google.protobuf.TimestampR\flastSyncedAt\x12:\n" +
 	"\x19posto_sem_encerrante_nota\x18\x83\x01 \x01(\bR\x16postoSemEncerranteNota\x124\n" +
 	"\x12liberacao_pendente\x18\x86\x01 \x01(\bB\x04\xe2A\x01\x03R\x11liberacaoPendente\x124\n" +
-	"\x12liberacao_recusada\x18\x87\x01 \x01(\bB\x04\xe2A\x01\x03R\x11liberacaoRecusada\x1a?\n" +
+	"\x12liberacao_recusada\x18\x87\x01 \x01(\bB\x04\xe2A\x01\x03R\x11liberacaoRecusada\x128\n" +
+	"\x14liberacao_necessaria\x18\x88\x01 \x01(\bB\x04\xe2A\x01\x03R\x13liberacaoNecessaria\x1a?\n" +
 	"\x11CustomFieldsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x03\xc0>\x01J\x04\bi\x10jJ\x04\bj\x10kJ\x04\bk\x10l\"L\n" +
