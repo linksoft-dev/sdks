@@ -511,7 +511,7 @@ var File_apps_filemanager_filemanager_proto protoreflect.FileDescriptor
 
 const file_apps_filemanager_filemanager_proto_rawDesc = "" +
 	"\n" +
-	"\"apps/filemanager/filemanager.proto\x12\vfilemanager\x1a\x1dplugins/service/service.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbb\a\n" +
+	"\"apps/filemanager/filemanager.proto\x12\vfilemanager\x1a\x1dplugins/service/service.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xcd\a\n" +
 	"\x04File\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -535,11 +535,11 @@ const file_apps_filemanager_filemanager_proto_rawDesc = "" +
 	"\x0ebase64_content\x18\x10 \x01(\tR\rbase64Content\x122\n" +
 	"\ahistory\x18\x11 \x03(\v2\x18.filemanager.FileHistoryR\ahistory\x12\x1d\n" +
 	"\x04name\x18\x12 \x01(\tB\t\xfaB\x06r\x04\x10\x03\x18<R\x04name\x12\x12\n" +
-	"\x04link\x18\x13 \x01(\tR\x04link\x12\x1f\n" +
-	"\vbucket_name\x18\x14 \x01(\tR\n" +
-	"bucketName\x12\x1a\n" +
-	"\bprovider\x18\x15 \x01(\tR\bprovider\x12#\n" +
-	"\rprovider_link\x18\x16 \x01(\tR\fproviderLink\x121\n" +
+	"\x04link\x18\x13 \x01(\tR\x04link\x12%\n" +
+	"\vbucket_name\x18\x14 \x01(\tB\x04\xe2A\x01\x03R\n" +
+	"bucketName\x12 \n" +
+	"\bprovider\x18\x15 \x01(\tB\x04\xe2A\x01\x03R\bprovider\x12)\n" +
+	"\rprovider_link\x18\x16 \x01(\tB\x04\xe2A\x01\x03R\fproviderLink\x121\n" +
 	"\aactions\x18\x17 \x03(\v2\x17.filemanager.FileActionR\aactions\x12%\n" +
 	"\x0edownload_count\x18\x18 \x01(\x05R\rdownloadCount\x12\x1b\n" +
 	"\tis_public\x18\x19 \x01(\bR\bisPublic\x12H\n" +
