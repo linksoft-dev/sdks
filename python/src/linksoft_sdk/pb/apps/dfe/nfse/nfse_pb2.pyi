@@ -5,6 +5,7 @@ from linksoft_sdk.pb.apps.report import report_pb2 as _report_pb2
 from linksoft_sdk.pb.common.metadata import metadata_pb2 as _metadata_pb2
 from linksoft_sdk.pb.filter import filter_pb2 as _filter_pb2
 from google.api import annotations_pb2 as _annotations_pb2
+from google.api import field_behavior_pb2 as _field_behavior_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from linksoft_sdk.pb.plugins.service import service_pb2 as _service_pb2
 from linksoft_sdk.pb.plugins.validate import validate_pb2 as _validate_pb2
@@ -682,7 +683,7 @@ class Nfse(_message.Message):
         codigo_contrato: str
         def __init__(self, categoria_veiculo: _Optional[str] = ..., numero_eixos: _Optional[str] = ..., rodagem: _Optional[int] = ..., sentido: _Optional[str] = ..., placa: _Optional[str] = ..., codigo_acesso_pedagio: _Optional[str] = ..., codigo_contrato: _Optional[str] = ...) -> None: ...
     class Impostos(_message.Message):
-        __slots__ = ("base_calculo", "iss_percentual", "iss_valor", "iss_reter", "inss", "cofins", "irrf", "pis_pasep", "csll", "outras_retencoes", "deducoes", "credito", "irpj", "valor_cbs", "aliquota_cbs", "valor_ibs", "aliquota_ibs", "valor_iss_retido")
+        __slots__ = ("base_calculo", "iss_percentual", "iss_valor", "iss_reter", "inss", "cofins", "irrf", "pis_pasep", "csll", "outras_retencoes", "deducoes", "credito", "irpj", "valor_cbs", "aliquota_cbs", "valor_ibs", "aliquota_ibs", "valor_iss_retido", "percentual_aproximado", "valor_aproximado")
         BASE_CALCULO_FIELD_NUMBER: _ClassVar[int]
         ISS_PERCENTUAL_FIELD_NUMBER: _ClassVar[int]
         ISS_VALOR_FIELD_NUMBER: _ClassVar[int]
@@ -701,6 +702,8 @@ class Nfse(_message.Message):
         VALOR_IBS_FIELD_NUMBER: _ClassVar[int]
         ALIQUOTA_IBS_FIELD_NUMBER: _ClassVar[int]
         VALOR_ISS_RETIDO_FIELD_NUMBER: _ClassVar[int]
+        PERCENTUAL_APROXIMADO_FIELD_NUMBER: _ClassVar[int]
+        VALOR_APROXIMADO_FIELD_NUMBER: _ClassVar[int]
         base_calculo: float
         iss_percentual: float
         iss_valor: float
@@ -719,7 +722,9 @@ class Nfse(_message.Message):
         valor_ibs: float
         aliquota_ibs: float
         valor_iss_retido: float
-        def __init__(self, base_calculo: _Optional[float] = ..., iss_percentual: _Optional[float] = ..., iss_valor: _Optional[float] = ..., iss_reter: _Optional[bool] = ..., inss: _Optional[float] = ..., cofins: _Optional[float] = ..., irrf: _Optional[float] = ..., pis_pasep: _Optional[float] = ..., csll: _Optional[float] = ..., outras_retencoes: _Optional[float] = ..., deducoes: _Optional[float] = ..., credito: _Optional[float] = ..., irpj: _Optional[float] = ..., valor_cbs: _Optional[float] = ..., aliquota_cbs: _Optional[float] = ..., valor_ibs: _Optional[float] = ..., aliquota_ibs: _Optional[float] = ..., valor_iss_retido: _Optional[float] = ...) -> None: ...
+        percentual_aproximado: float
+        valor_aproximado: float
+        def __init__(self, base_calculo: _Optional[float] = ..., iss_percentual: _Optional[float] = ..., iss_valor: _Optional[float] = ..., iss_reter: _Optional[bool] = ..., inss: _Optional[float] = ..., cofins: _Optional[float] = ..., irrf: _Optional[float] = ..., pis_pasep: _Optional[float] = ..., csll: _Optional[float] = ..., outras_retencoes: _Optional[float] = ..., deducoes: _Optional[float] = ..., credito: _Optional[float] = ..., irpj: _Optional[float] = ..., valor_cbs: _Optional[float] = ..., aliquota_cbs: _Optional[float] = ..., valor_ibs: _Optional[float] = ..., aliquota_ibs: _Optional[float] = ..., valor_iss_retido: _Optional[float] = ..., percentual_aproximado: _Optional[float] = ..., valor_aproximado: _Optional[float] = ...) -> None: ...
     class ConstrucaoCivil(_message.Message):
         __slots__ = ("codigo_obra", "codigo_art", "inscricao_imobiliaria", "cib", "endereco")
         CODIGO_OBRA_FIELD_NUMBER: _ClassVar[int]

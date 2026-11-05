@@ -6353,8 +6353,12 @@ type Nfse_Impostos struct {
 	ValorIbs       float64 `protobuf:"fixed64,16,opt,name=valor_ibs,json=valorIbs,proto3" json:"valor_ibs,omitempty"`
 	AliquotaIbs    float64 `protobuf:"fixed64,17,opt,name=aliquota_ibs,json=aliquotaIbs,proto3" json:"aliquota_ibs,omitempty"`
 	ValorIssRetido float64 `protobuf:"fixed64,18,opt,name=valor_iss_retido,json=valorIssRetido,proto3" json:"valor_iss_retido,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Percentual do valor aproximado dos tributos municipais quando o ISS não é destacado
+	// (Simples Nacional ME/EPP com ISS apurado no Simples e sem retenção)
+	PercentualAproximado float64 `protobuf:"fixed64,19,opt,name=percentual_aproximado,json=percentualAproximado,proto3" json:"percentual_aproximado,omitempty"`
+	ValorAproximado      float64 `protobuf:"fixed64,20,opt,name=valor_aproximado,json=valorAproximado,proto3" json:"valor_aproximado,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *Nfse_Impostos) Reset() {
@@ -6509,6 +6513,20 @@ func (x *Nfse_Impostos) GetAliquotaIbs() float64 {
 func (x *Nfse_Impostos) GetValorIssRetido() float64 {
 	if x != nil {
 		return x.ValorIssRetido
+	}
+	return 0
+}
+
+func (x *Nfse_Impostos) GetPercentualAproximado() float64 {
+	if x != nil {
+		return x.PercentualAproximado
+	}
+	return 0
+}
+
+func (x *Nfse_Impostos) GetValorAproximado() float64 {
+	if x != nil {
+		return x.ValorAproximado
 	}
 	return 0
 }
@@ -8250,7 +8268,7 @@ var File_apps_dfe_nfse_nfse_proto protoreflect.FileDescriptor
 
 const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\n" +
-	"\x18apps/dfe/nfse/nfse.proto\x12\x04nfse\x1a apps/dfe/emitente/emitente.proto\x1a\x18apps/report/report.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x13filter/filter.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x1fplugins/validate/validate.proto\"U\n" +
+	"\x18apps/dfe/nfse/nfse.proto\x12\x04nfse\x1a apps/dfe/emitente/emitente.proto\x1a\x18apps/report/report.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x13filter/filter.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x1fplugins/validate/validate.proto\"U\n" +
 	"\x17ExplainRejectionRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12*\n" +
 	"\x11ai_integration_id\x18\x02 \x01(\tR\x0faiIntegrationId\"\xca\x01\n" +
@@ -8405,7 +8423,7 @@ const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\x04tipo\x18\x05 \x01(\x0e2\x14.nfse.TipoEventoNfseR\x04tipo\x12\x16\n" +
 	"\x06codigo\x18\x06 \x01(\tR\x06codigo\x12\x1c\n" +
 	"\tdescricao\x18\a \x01(\tR\tdescricao\x12\x1a\n" +
-	"\bmensagem\x18\b \x01(\tR\bmensagem\"\xd1Q\n" +
+	"\bmensagem\x18\b \x01(\tR\bmensagem\"\xb7R\n" +
 	"\x04Nfse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
 	"\x06numero\x18\x02 \x01(\tR\x06numero\x12*\n" +
@@ -8555,7 +8573,7 @@ const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\asentido\x18\x04 \x01(\tR\asentido\x12\x14\n" +
 	"\x05placa\x18\x05 \x01(\tR\x05placa\x122\n" +
 	"\x15codigo_acesso_pedagio\x18\x06 \x01(\tR\x13codigoAcessoPedagio\x12'\n" +
-	"\x0fcodigo_contrato\x18\a \x01(\tR\x0ecodigoContrato\x1a\x9e\x04\n" +
+	"\x0fcodigo_contrato\x18\a \x01(\tR\x0ecodigoContrato\x1a\x84\x05\n" +
 	"\bImpostos\x12!\n" +
 	"\fbase_calculo\x18\x01 \x01(\x01R\vbaseCalculo\x12%\n" +
 	"\x0eiss_percentual\x18\x02 \x01(\x01R\rissPercentual\x12\x1b\n" +
@@ -8575,7 +8593,9 @@ const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\faliquota_cbs\x18\x0f \x01(\x01R\valiquotaCbs\x12\x1b\n" +
 	"\tvalor_ibs\x18\x10 \x01(\x01R\bvalorIbs\x12!\n" +
 	"\faliquota_ibs\x18\x11 \x01(\x01R\valiquotaIbs\x12(\n" +
-	"\x10valor_iss_retido\x18\x12 \x01(\x01R\x0evalorIssRetido\x1a\xcb\x01\n" +
+	"\x10valor_iss_retido\x18\x12 \x01(\x01R\x0evalorIssRetido\x123\n" +
+	"\x15percentual_aproximado\x18\x13 \x01(\x01R\x14percentualAproximado\x12/\n" +
+	"\x10valor_aproximado\x18\x14 \x01(\x01B\x04\xe2A\x01\x03R\x0fvalorAproximado\x1a\xcb\x01\n" +
 	"\x0fConstrucaoCivil\x12\x1f\n" +
 	"\vcodigo_obra\x18\x01 \x01(\tR\n" +
 	"codigoObra\x12\x1d\n" +
