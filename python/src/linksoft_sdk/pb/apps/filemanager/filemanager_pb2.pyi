@@ -23,7 +23,7 @@ FILE_APPROVAL_STATUS_APPROVED: FileApprovalStatus
 FILE_APPROVAL_STATUS_REJECTED: FileApprovalStatus
 
 class File(_message.Message):
-    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "path", "file_id", "file_name", "file_extension", "file_size", "content_type", "temp", "file_hash", "file_type", "path_table", "base64_content", "history", "name", "link", "bucket_name", "provider", "provider_link", "actions", "download_count", "is_public", "approval_status", "approval_note")
+    __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "path", "file_id", "file_name", "file_extension", "file_size", "content_type", "temp", "file_hash", "file_type", "path_table", "base64_content", "history", "name", "link", "bucket_name", "provider", "provider_link", "actions", "download_count", "is_public", "approval_status", "approval_note", "restricted")
     ID_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
@@ -51,6 +51,7 @@ class File(_message.Message):
     IS_PUBLIC_FIELD_NUMBER: _ClassVar[int]
     APPROVAL_STATUS_FIELD_NUMBER: _ClassVar[int]
     APPROVAL_NOTE_FIELD_NUMBER: _ClassVar[int]
+    RESTRICTED_FIELD_NUMBER: _ClassVar[int]
     id: str
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
@@ -78,7 +79,8 @@ class File(_message.Message):
     is_public: bool
     approval_status: FileApprovalStatus
     approval_note: str
-    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., path: _Optional[str] = ..., file_id: _Optional[str] = ..., file_name: _Optional[str] = ..., file_extension: _Optional[str] = ..., file_size: _Optional[int] = ..., content_type: _Optional[str] = ..., temp: _Optional[bool] = ..., file_hash: _Optional[str] = ..., file_type: _Optional[str] = ..., path_table: _Optional[str] = ..., base64_content: _Optional[str] = ..., history: _Optional[_Iterable[_Union[FileHistory, _Mapping]]] = ..., name: _Optional[str] = ..., link: _Optional[str] = ..., bucket_name: _Optional[str] = ..., provider: _Optional[str] = ..., provider_link: _Optional[str] = ..., actions: _Optional[_Iterable[_Union[FileAction, _Mapping]]] = ..., download_count: _Optional[int] = ..., is_public: _Optional[bool] = ..., approval_status: _Optional[_Union[FileApprovalStatus, str]] = ..., approval_note: _Optional[str] = ...) -> None: ...
+    restricted: bool
+    def __init__(self, id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., path: _Optional[str] = ..., file_id: _Optional[str] = ..., file_name: _Optional[str] = ..., file_extension: _Optional[str] = ..., file_size: _Optional[int] = ..., content_type: _Optional[str] = ..., temp: _Optional[bool] = ..., file_hash: _Optional[str] = ..., file_type: _Optional[str] = ..., path_table: _Optional[str] = ..., base64_content: _Optional[str] = ..., history: _Optional[_Iterable[_Union[FileHistory, _Mapping]]] = ..., name: _Optional[str] = ..., link: _Optional[str] = ..., bucket_name: _Optional[str] = ..., provider: _Optional[str] = ..., provider_link: _Optional[str] = ..., actions: _Optional[_Iterable[_Union[FileAction, _Mapping]]] = ..., download_count: _Optional[int] = ..., is_public: _Optional[bool] = ..., approval_status: _Optional[_Union[FileApprovalStatus, str]] = ..., approval_note: _Optional[str] = ..., restricted: _Optional[bool] = ...) -> None: ...
 
 class FileAction(_message.Message):
     __slots__ = ("action_type", "timestamp", "origin", "user_id", "user_name", "metadata")

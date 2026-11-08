@@ -114,8 +114,11 @@ type File struct {
 	IsPublic       bool               `protobuf:"varint,25,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
 	ApprovalStatus FileApprovalStatus `protobuf:"varint,26,opt,name=approval_status,json=approvalStatus,proto3,enum=filemanager.FileApprovalStatus" json:"approval_status,omitempty"`
 	ApprovalNote   string             `protobuf:"bytes,27,opt,name=approval_note,json=approvalNote,proto3" json:"approval_note,omitempty"` // motivo da recusa, quando approval_status é REJECTED
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Arquivo de pasta restrita: não abre pelo link. O endereço para baixar vem de GetSignedUrl,
+	// com o cabeçalho que ele informa.
+	Restricted    bool `protobuf:"varint,28,opt,name=restricted,proto3" json:"restricted,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *File) Reset() {
@@ -337,6 +340,13 @@ func (x *File) GetApprovalNote() string {
 	return ""
 }
 
+func (x *File) GetRestricted() bool {
+	if x != nil {
+		return x.Restricted
+	}
+	return false
+}
+
 // Informações de ações realizadas no arquivo
 type FileAction struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -511,7 +521,7 @@ var File_apps_filemanager_filemanager_proto protoreflect.FileDescriptor
 
 const file_apps_filemanager_filemanager_proto_rawDesc = "" +
 	"\n" +
-	"\"apps/filemanager/filemanager.proto\x12\vfilemanager\x1a\x1dplugins/service/service.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xcd\a\n" +
+	"\"apps/filemanager/filemanager.proto\x12\vfilemanager\x1a\x1dplugins/service/service.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf3\a\n" +
 	"\x04File\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -544,7 +554,10 @@ const file_apps_filemanager_filemanager_proto_rawDesc = "" +
 	"\x0edownload_count\x18\x18 \x01(\x05R\rdownloadCount\x12\x1b\n" +
 	"\tis_public\x18\x19 \x01(\bR\bisPublic\x12H\n" +
 	"\x0fapproval_status\x18\x1a \x01(\x0e2\x1f.filemanager.FileApprovalStatusR\x0eapprovalStatus\x12#\n" +
-	"\rapproval_note\x18\x1b \x01(\tR\fapprovalNote:\x03\xc0>\x01\"\xb5\x02\n" +
+	"\rapproval_note\x18\x1b \x01(\tR\fapprovalNote\x12$\n" +
+	"\n" +
+	"restricted\x18\x1c \x01(\bB\x04\xe2A\x01\x03R\n" +
+	"restricted:\x03\xc0>\x01\"\xb5\x02\n" +
 	"\n" +
 	"FileAction\x12\x1f\n" +
 	"\vaction_type\x18\x01 \x01(\tR\n" +
