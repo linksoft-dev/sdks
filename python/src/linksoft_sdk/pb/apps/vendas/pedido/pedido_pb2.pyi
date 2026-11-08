@@ -1706,7 +1706,7 @@ class CheckoutPaymentSelection(_message.Message):
     def __init__(self, payment_method_id: _Optional[str] = ..., payment_method_name: _Optional[str] = ..., payment_type: _Optional[str] = ..., charge_mode: _Optional[_Union[CheckoutPaymentChargeMode, str]] = ..., context: _Optional[_Union[CheckoutPaymentContext, str]] = ..., selected_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., note: _Optional[str] = ...) -> None: ...
 
 class OrdemServico(_message.Message):
-    __slots__ = ("situacao", "numeroSerie", "chassi", "km", "tipoObjetoId", "tipoObjetoNome", "marcaId", "marcaNome", "modelo", "defeitoReclamado", "acessorios", "parecerTecnico", "responsavelTecnicoId", "responsavelTecnicoNome", "observacoes_internas", "garantidor_id", "garantidor_nome", "garantidor_senha", "nf_venda_numero", "certificado_garantia_numero", "data_compra", "revendedor", "nf_entrada_numero", "nf_entrada_valor", "nf_entrada_emissor_id", "nf_entrada_emissor_nome", "os_terceiros_numero", "os_fabricante_numero", "os_terceiros_emissor_id", "os_terceiros_emissor_nome")
+    __slots__ = ("situacao", "numeroSerie", "chassi", "km", "tipoObjetoId", "tipoObjetoNome", "marcaId", "marcaNome", "modelo", "defeitoReclamado", "acessorios", "parecerTecnico", "responsavelTecnicoId", "responsavelTecnicoNome", "observacoes_internas", "garantidor_id", "garantidor_nome", "garantidor_senha", "nf_venda_numero", "certificado_garantia_numero", "data_compra", "revendedor", "nf_entrada_numero", "nf_entrada_valor", "nf_entrada_emissor_id", "nf_entrada_emissor_nome", "os_terceiros_numero", "os_fabricante_numero", "os_terceiros_emissor_id", "os_terceiros_emissor_nome", "unidade", "setor_solicitante", "responsavel_local")
     SITUACAO_FIELD_NUMBER: _ClassVar[int]
     NUMEROSERIE_FIELD_NUMBER: _ClassVar[int]
     CHASSI_FIELD_NUMBER: _ClassVar[int]
@@ -1737,6 +1737,9 @@ class OrdemServico(_message.Message):
     OS_FABRICANTE_NUMERO_FIELD_NUMBER: _ClassVar[int]
     OS_TERCEIROS_EMISSOR_ID_FIELD_NUMBER: _ClassVar[int]
     OS_TERCEIROS_EMISSOR_NOME_FIELD_NUMBER: _ClassVar[int]
+    UNIDADE_FIELD_NUMBER: _ClassVar[int]
+    SETOR_SOLICITANTE_FIELD_NUMBER: _ClassVar[int]
+    RESPONSAVEL_LOCAL_FIELD_NUMBER: _ClassVar[int]
     situacao: str
     numeroSerie: str
     chassi: str
@@ -1767,7 +1770,10 @@ class OrdemServico(_message.Message):
     os_fabricante_numero: str
     os_terceiros_emissor_id: str
     os_terceiros_emissor_nome: str
-    def __init__(self, situacao: _Optional[str] = ..., numeroSerie: _Optional[str] = ..., chassi: _Optional[str] = ..., km: _Optional[str] = ..., tipoObjetoId: _Optional[str] = ..., tipoObjetoNome: _Optional[str] = ..., marcaId: _Optional[str] = ..., marcaNome: _Optional[str] = ..., modelo: _Optional[str] = ..., defeitoReclamado: _Optional[str] = ..., acessorios: _Optional[str] = ..., parecerTecnico: _Optional[str] = ..., responsavelTecnicoId: _Optional[str] = ..., responsavelTecnicoNome: _Optional[str] = ..., observacoes_internas: _Optional[str] = ..., garantidor_id: _Optional[str] = ..., garantidor_nome: _Optional[str] = ..., garantidor_senha: _Optional[str] = ..., nf_venda_numero: _Optional[str] = ..., certificado_garantia_numero: _Optional[str] = ..., data_compra: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revendedor: _Optional[str] = ..., nf_entrada_numero: _Optional[str] = ..., nf_entrada_valor: _Optional[float] = ..., nf_entrada_emissor_id: _Optional[str] = ..., nf_entrada_emissor_nome: _Optional[str] = ..., os_terceiros_numero: _Optional[str] = ..., os_fabricante_numero: _Optional[str] = ..., os_terceiros_emissor_id: _Optional[str] = ..., os_terceiros_emissor_nome: _Optional[str] = ...) -> None: ...
+    unidade: str
+    setor_solicitante: str
+    responsavel_local: str
+    def __init__(self, situacao: _Optional[str] = ..., numeroSerie: _Optional[str] = ..., chassi: _Optional[str] = ..., km: _Optional[str] = ..., tipoObjetoId: _Optional[str] = ..., tipoObjetoNome: _Optional[str] = ..., marcaId: _Optional[str] = ..., marcaNome: _Optional[str] = ..., modelo: _Optional[str] = ..., defeitoReclamado: _Optional[str] = ..., acessorios: _Optional[str] = ..., parecerTecnico: _Optional[str] = ..., responsavelTecnicoId: _Optional[str] = ..., responsavelTecnicoNome: _Optional[str] = ..., observacoes_internas: _Optional[str] = ..., garantidor_id: _Optional[str] = ..., garantidor_nome: _Optional[str] = ..., garantidor_senha: _Optional[str] = ..., nf_venda_numero: _Optional[str] = ..., certificado_garantia_numero: _Optional[str] = ..., data_compra: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revendedor: _Optional[str] = ..., nf_entrada_numero: _Optional[str] = ..., nf_entrada_valor: _Optional[float] = ..., nf_entrada_emissor_id: _Optional[str] = ..., nf_entrada_emissor_nome: _Optional[str] = ..., os_terceiros_numero: _Optional[str] = ..., os_fabricante_numero: _Optional[str] = ..., os_terceiros_emissor_id: _Optional[str] = ..., os_terceiros_emissor_nome: _Optional[str] = ..., unidade: _Optional[str] = ..., setor_solicitante: _Optional[str] = ..., responsavel_local: _Optional[str] = ...) -> None: ...
 
 class Contract(_message.Message):
     __slots__ = ("number", "type", "recurrence_type", "recurrence_increment", "recurrence_due_date", "status", "block_reason", "last_access", "recurrence_created_id", "recurrence_created_number", "start_date", "courtesy", "renewal_number", "grace_period_days", "auto_renew_disabled", "status_reason", "released_at", "trial_days", "previous_due_date", "released_until", "trial_ends_at", "full_period_total", "readjustment", "readjustment_applied", "due_date", "juros_mes_percentual", "multa_percentual", "services_change")

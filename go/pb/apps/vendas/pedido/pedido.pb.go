@@ -9009,8 +9009,13 @@ type OrdemServico struct {
 	OsFabricanteNumero     string `protobuf:"bytes,28,opt,name=os_fabricante_numero,json=osFabricanteNumero,proto3" json:"os_fabricante_numero,omitempty"`
 	OsTerceirosEmissorId   string `protobuf:"bytes,29,opt,name=os_terceiros_emissor_id,json=osTerceirosEmissorId,proto3" json:"os_terceiros_emissor_id,omitempty"`
 	OsTerceirosEmissorNome string `protobuf:"bytes,30,opt,name=os_terceiros_emissor_nome,json=osTerceirosEmissorNome,proto3" json:"os_terceiros_emissor_nome,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// Local de execução, quando a equipe trabalha no cliente: a unidade (planta, obra,
+	// filial), o setor que pediu o serviço e quem responde pelo local.
+	Unidade          string `protobuf:"bytes,31,opt,name=unidade,proto3" json:"unidade,omitempty"`
+	SetorSolicitante string `protobuf:"bytes,32,opt,name=setor_solicitante,json=setorSolicitante,proto3" json:"setor_solicitante,omitempty"`
+	ResponsavelLocal string `protobuf:"bytes,33,opt,name=responsavel_local,json=responsavelLocal,proto3" json:"responsavel_local,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *OrdemServico) Reset() {
@@ -9249,6 +9254,27 @@ func (x *OrdemServico) GetOsTerceirosEmissorId() string {
 func (x *OrdemServico) GetOsTerceirosEmissorNome() string {
 	if x != nil {
 		return x.OsTerceirosEmissorNome
+	}
+	return ""
+}
+
+func (x *OrdemServico) GetUnidade() string {
+	if x != nil {
+		return x.Unidade
+	}
+	return ""
+}
+
+func (x *OrdemServico) GetSetorSolicitante() string {
+	if x != nil {
+		return x.SetorSolicitante
+	}
+	return ""
+}
+
+func (x *OrdemServico) GetResponsavelLocal() string {
+	if x != nil {
+		return x.ResponsavelLocal
 	}
 	return ""
 }
@@ -16568,7 +16594,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\acontext\x18\x05 \x01(\x0e2\x1e.pedido.CheckoutPaymentContextR\acontext\x12;\n" +
 	"\vselected_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"selectedAt\x12\x12\n" +
-	"\x04note\x18\a \x01(\tR\x04note\"\xf5\t\n" +
+	"\x04note\x18\a \x01(\tR\x04note\"\xe9\n" +
+	"\n" +
 	"\fOrdemServico\x12\x1a\n" +
 	"\bsituacao\x18\x01 \x01(\tR\bsituacao\x12 \n" +
 	"\vnumeroSerie\x18\x02 \x01(\tR\vnumeroSerie\x12\x16\n" +
@@ -16605,7 +16632,10 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x13os_terceiros_numero\x18\x1b \x01(\tR\x11osTerceirosNumero\x120\n" +
 	"\x14os_fabricante_numero\x18\x1c \x01(\tR\x12osFabricanteNumero\x125\n" +
 	"\x17os_terceiros_emissor_id\x18\x1d \x01(\tR\x14osTerceirosEmissorId\x129\n" +
-	"\x19os_terceiros_emissor_nome\x18\x1e \x01(\tR\x16osTerceirosEmissorNome\"\xca\f\n" +
+	"\x19os_terceiros_emissor_nome\x18\x1e \x01(\tR\x16osTerceirosEmissorNome\x12\x18\n" +
+	"\aunidade\x18\x1f \x01(\tR\aunidade\x12+\n" +
+	"\x11setor_solicitante\x18  \x01(\tR\x10setorSolicitante\x12+\n" +
+	"\x11responsavel_local\x18! \x01(\tR\x10responsavelLocal\"\xca\f\n" +
 	"\bContract\x12\x16\n" +
 	"\x06number\x18\x01 \x01(\tR\x06number\x12(\n" +
 	"\x04type\x18\x02 \x01(\x0e2\x14.pedido.ContractTypeR\x04type\x12?\n" +
