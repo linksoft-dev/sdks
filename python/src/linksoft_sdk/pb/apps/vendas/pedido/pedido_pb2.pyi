@@ -1315,16 +1315,18 @@ class OrderTag(_message.Message):
     def __init__(self, value: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
 
 class OrderAcompanhamento(_message.Message):
-    __slots__ = ("id", "code", "name", "color")
+    __slots__ = ("id", "code", "name", "color", "entered_at")
     ID_FIELD_NUMBER: _ClassVar[int]
     CODE_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     COLOR_FIELD_NUMBER: _ClassVar[int]
+    ENTERED_AT_FIELD_NUMBER: _ClassVar[int]
     id: str
     code: str
     name: str
     color: str
-    def __init__(self, id: _Optional[str] = ..., code: _Optional[str] = ..., name: _Optional[str] = ..., color: _Optional[str] = ...) -> None: ...
+    entered_at: _timestamp_pb2.Timestamp
+    def __init__(self, id: _Optional[str] = ..., code: _Optional[str] = ..., name: _Optional[str] = ..., color: _Optional[str] = ..., entered_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SetAcompanhamentoRequest(_message.Message):
     __slots__ = ("id", "acompanhamento_id", "code")
