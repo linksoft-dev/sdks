@@ -10847,9 +10847,13 @@ type Servico struct {
 	// cadastro do serviço. Zero: sem lembrete.
 	RecompraDias int32 `protobuf:"varint,40,opt,name=recompra_dias,json=recompraDias,proto3" json:"recompra_dias,omitempty"`
 	// Data do lembrete de recompra do item (fechamento + recompra_dias).
-	RecompraEm    *timestamppb.Timestamp `protobuf:"bytes,41,opt,name=recompra_em,json=recompraEm,proto3" json:"recompra_em,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	RecompraEm *timestamppb.Timestamp `protobuf:"bytes,41,opt,name=recompra_em,json=recompraEm,proto3" json:"recompra_em,omitempty"`
+	// Item vendido pelo preço promocional do cadastro do serviço (bloco ecommerce). Marca
+	// que o preço já vem com desconto, para promoção do cadastro de descontos não incidir
+	// de novo sobre ele.
+	PrecoPromocionalAplicado bool `protobuf:"varint,42,opt,name=preco_promocional_aplicado,json=precoPromocionalAplicado,proto3" json:"preco_promocional_aplicado,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *Servico) Reset() {
@@ -11167,6 +11171,13 @@ func (x *Servico) GetRecompraEm() *timestamppb.Timestamp {
 		return x.RecompraEm
 	}
 	return nil
+}
+
+func (x *Servico) GetPrecoPromocionalAplicado() bool {
+	if x != nil {
+		return x.PrecoPromocionalAplicado
+	}
+	return false
 }
 
 type ComposicaoServico struct {
@@ -16853,7 +16864,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x11dataHoraImpressao\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x11dataHoraImpressao\x12$\n" +
 	"\rerroImpressao\x18\a \x01(\tR\rerroImpressao\x12\x1a\n" +
 	"\bentregue\x18\b \x01(\bR\bentregue\x12D\n" +
-	"\x0fdataHoraEntrega\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\"\xa9\f\n" +
+	"\x0fdataHoraEntrega\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\"\xe7\f\n" +
 	"\aServico\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x128\n" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
@@ -16909,7 +16920,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"observacao\x12#\n" +
 	"\rrecompra_dias\x18( \x01(\x05R\frecompraDias\x12A\n" +
 	"\vrecompra_em\x18) \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
-	"recompraEm\"\xe9\x01\n" +
+	"recompraEm\x12<\n" +
+	"\x1apreco_promocional_aplicado\x18* \x01(\bR\x18precoPromocionalAplicado\"\xe9\x01\n" +
 	"\x11ComposicaoServico\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\aitem_id\x18\x02 \x01(\tR\x06itemId\x12\x12\n" +
