@@ -2664,7 +2664,7 @@ class LeDocumentoIaResponse(_message.Message):
     def __init__(self, pedido: _Optional[_Union[Pedido, _Mapping]] = ..., avisos: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class ImportRequest(_message.Message):
-    __slots__ = ("data", "file_name", "orders", "validate_only", "import_pedido", "update_if_exists", "import_cliente", "import_vendedor", "import_produto", "import_servico", "import_formas_pagamento", "import_conta", "mapping_id", "overwrite_existing_fields")
+    __slots__ = ("data", "file_name", "orders", "validate_only", "import_pedido", "update_if_exists", "import_cliente", "import_vendedor", "import_produto", "import_servico", "import_formas_pagamento", "import_conta", "mapping_id", "overwrite_existing_fields", "baixa_estoque", "lanca_caixa")
     DATA_FIELD_NUMBER: _ClassVar[int]
     FILE_NAME_FIELD_NUMBER: _ClassVar[int]
     ORDERS_FIELD_NUMBER: _ClassVar[int]
@@ -2679,6 +2679,8 @@ class ImportRequest(_message.Message):
     IMPORT_CONTA_FIELD_NUMBER: _ClassVar[int]
     MAPPING_ID_FIELD_NUMBER: _ClassVar[int]
     OVERWRITE_EXISTING_FIELDS_FIELD_NUMBER: _ClassVar[int]
+    BAIXA_ESTOQUE_FIELD_NUMBER: _ClassVar[int]
+    LANCA_CAIXA_FIELD_NUMBER: _ClassVar[int]
     data: str
     file_name: str
     orders: _containers.RepeatedCompositeFieldContainer[Pedido]
@@ -2693,7 +2695,9 @@ class ImportRequest(_message.Message):
     import_conta: bool
     mapping_id: str
     overwrite_existing_fields: bool
-    def __init__(self, data: _Optional[str] = ..., file_name: _Optional[str] = ..., orders: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., validate_only: _Optional[bool] = ..., import_pedido: _Optional[bool] = ..., update_if_exists: _Optional[bool] = ..., import_cliente: _Optional[bool] = ..., import_vendedor: _Optional[bool] = ..., import_produto: _Optional[bool] = ..., import_servico: _Optional[bool] = ..., import_formas_pagamento: _Optional[bool] = ..., import_conta: _Optional[bool] = ..., mapping_id: _Optional[str] = ..., overwrite_existing_fields: _Optional[bool] = ...) -> None: ...
+    baixa_estoque: bool
+    lanca_caixa: bool
+    def __init__(self, data: _Optional[str] = ..., file_name: _Optional[str] = ..., orders: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., validate_only: _Optional[bool] = ..., import_pedido: _Optional[bool] = ..., update_if_exists: _Optional[bool] = ..., import_cliente: _Optional[bool] = ..., import_vendedor: _Optional[bool] = ..., import_produto: _Optional[bool] = ..., import_servico: _Optional[bool] = ..., import_formas_pagamento: _Optional[bool] = ..., import_conta: _Optional[bool] = ..., mapping_id: _Optional[str] = ..., overwrite_existing_fields: _Optional[bool] = ..., baixa_estoque: _Optional[bool] = ..., lanca_caixa: _Optional[bool] = ...) -> None: ...
 
 class ImportResponse(_message.Message):
     __slots__ = ("report",)

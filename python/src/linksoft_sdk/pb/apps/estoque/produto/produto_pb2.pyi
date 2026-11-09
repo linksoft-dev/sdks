@@ -1036,7 +1036,7 @@ class SerialInfo(_message.Message):
     def __init__(self, ids: _Optional[_Iterable[str]] = ..., serial_numbers: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class InputMovimentoEstoque(_message.Message):
-    __slots__ = ("estoqueNome", "produtoId", "tipo", "quantidade", "valorUnitario", "origem", "origemId", "origemNumero", "obs", "pessoaId", "pessoaNome", "batch", "variation_product_id", "serial", "comodato", "atualiza_custo")
+    __slots__ = ("estoqueNome", "produtoId", "tipo", "quantidade", "valorUnitario", "origem", "origemId", "origemNumero", "obs", "pessoaId", "pessoaNome", "batch", "variation_product_id", "serial", "comodato", "atualiza_custo", "data_movimento")
     ESTOQUENOME_FIELD_NUMBER: _ClassVar[int]
     PRODUTOID_FIELD_NUMBER: _ClassVar[int]
     TIPO_FIELD_NUMBER: _ClassVar[int]
@@ -1053,6 +1053,7 @@ class InputMovimentoEstoque(_message.Message):
     SERIAL_FIELD_NUMBER: _ClassVar[int]
     COMODATO_FIELD_NUMBER: _ClassVar[int]
     ATUALIZA_CUSTO_FIELD_NUMBER: _ClassVar[int]
+    DATA_MOVIMENTO_FIELD_NUMBER: _ClassVar[int]
     estoqueNome: str
     produtoId: str
     tipo: str
@@ -1069,7 +1070,8 @@ class InputMovimentoEstoque(_message.Message):
     serial: SerialInfo
     comodato: bool
     atualiza_custo: bool
-    def __init__(self, estoqueNome: _Optional[str] = ..., produtoId: _Optional[str] = ..., tipo: _Optional[str] = ..., quantidade: _Optional[float] = ..., valorUnitario: _Optional[float] = ..., origem: _Optional[str] = ..., origemId: _Optional[str] = ..., origemNumero: _Optional[str] = ..., obs: _Optional[str] = ..., pessoaId: _Optional[str] = ..., pessoaNome: _Optional[str] = ..., batch: _Optional[_Union[BatchInfo, _Mapping]] = ..., variation_product_id: _Optional[str] = ..., serial: _Optional[_Union[SerialInfo, _Mapping]] = ..., comodato: _Optional[bool] = ..., atualiza_custo: _Optional[bool] = ...) -> None: ...
+    data_movimento: _timestamp_pb2.Timestamp
+    def __init__(self, estoqueNome: _Optional[str] = ..., produtoId: _Optional[str] = ..., tipo: _Optional[str] = ..., quantidade: _Optional[float] = ..., valorUnitario: _Optional[float] = ..., origem: _Optional[str] = ..., origemId: _Optional[str] = ..., origemNumero: _Optional[str] = ..., obs: _Optional[str] = ..., pessoaId: _Optional[str] = ..., pessoaNome: _Optional[str] = ..., batch: _Optional[_Union[BatchInfo, _Mapping]] = ..., variation_product_id: _Optional[str] = ..., serial: _Optional[_Union[SerialInfo, _Mapping]] = ..., comodato: _Optional[bool] = ..., atualiza_custo: _Optional[bool] = ..., data_movimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class AddMediaRequest(_message.Message):
     __slots__ = ("produto_id", "media")

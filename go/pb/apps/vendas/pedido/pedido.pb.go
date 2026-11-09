@@ -13450,6 +13450,8 @@ type ImportRequest struct {
 	ImportConta             bool                   `protobuf:"varint,12,opt,name=import_conta,json=importConta,proto3" json:"import_conta,omitempty"`                                       // Importar contas a receber e a pagar
 	MappingId               string                 `protobuf:"bytes,13,opt,name=mapping_id,json=mappingId,proto3" json:"mapping_id,omitempty"`                                              // ID do mapeamento de importação a ser utilizado
 	OverwriteExistingFields bool                   `protobuf:"varint,14,opt,name=overwrite_existing_fields,json=overwriteExistingFields,proto3" json:"overwrite_existing_fields,omitempty"` // Se true (e update_if_exists): sobrescreve campos existentes; se false: preenche apenas campos vazios
+	BaixaEstoque            bool                   `protobuf:"varint,15,opt,name=baixa_estoque,json=baixaEstoque,proto3" json:"baixa_estoque,omitempty"`                                    // Dá saída no estoque dos produtos de cada pedido novo, na data da venda
+	LancaCaixa              bool                   `protobuf:"varint,16,opt,name=lanca_caixa,json=lancaCaixa,proto3" json:"lanca_caixa,omitempty"`                                          // Lança no caixa os pagamentos de cada pedido fechado novo, na data do pagamento
 	unknownFields           protoimpl.UnknownFields
 	sizeCache               protoimpl.SizeCache
 }
@@ -13578,6 +13580,20 @@ func (x *ImportRequest) GetMappingId() string {
 func (x *ImportRequest) GetOverwriteExistingFields() bool {
 	if x != nil {
 		return x.OverwriteExistingFields
+	}
+	return false
+}
+
+func (x *ImportRequest) GetBaixaEstoque() bool {
+	if x != nil {
+		return x.BaixaEstoque
+	}
+	return false
+}
+
+func (x *ImportRequest) GetLancaCaixa() bool {
+	if x != nil {
+		return x.LancaCaixa
 	}
 	return false
 }
@@ -17102,7 +17118,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x11ai_integration_id\x18\x06 \x01(\tR\x0faiIntegrationId\"W\n" +
 	"\x15LeDocumentoIaResponse\x12&\n" +
 	"\x06pedido\x18\x01 \x01(\v2\x0e.pedido.PedidoR\x06pedido\x12\x16\n" +
-	"\x06avisos\x18\x02 \x03(\tR\x06avisos\"\xb0\x04\n" +
+	"\x06avisos\x18\x02 \x03(\tR\x06avisos\"\xf6\x04\n" +
 	"\rImportRequest\x12\x12\n" +
 	"\x04data\x18\x01 \x01(\tR\x04data\x12\x1b\n" +
 	"\tfile_name\x18\x02 \x01(\tR\bfileName\x12&\n" +
@@ -17119,7 +17135,10 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\fimport_conta\x18\f \x01(\bR\vimportConta\x12\x1d\n" +
 	"\n" +
 	"mapping_id\x18\r \x01(\tR\tmappingId\x12:\n" +
-	"\x19overwrite_existing_fields\x18\x0e \x01(\bR\x17overwriteExistingFields\"A\n" +
+	"\x19overwrite_existing_fields\x18\x0e \x01(\bR\x17overwriteExistingFields\x12#\n" +
+	"\rbaixa_estoque\x18\x0f \x01(\bR\fbaixaEstoque\x12\x1f\n" +
+	"\vlanca_caixa\x18\x10 \x01(\bR\n" +
+	"lancaCaixa\"A\n" +
 	"\x0eImportResponse\x12/\n" +
 	"\x06report\x18\x01 \x01(\v2\x17.imports.ImportResponseR\x06report\"\x94\x04\n" +
 	"\x16SendPaymentLinkRequest\x12\x10\n" +
