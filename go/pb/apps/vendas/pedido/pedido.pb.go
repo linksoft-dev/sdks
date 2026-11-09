@@ -7494,10 +7494,6 @@ type Pedido struct {
 	// QR code impresso no documento com o link público dele. Nasce com a configuração da
 	// empresa e pode ser mudado no documento. Ausente: vale a configuração da empresa.
 	QrCodeDocumento *QrCodeDocumento `protobuf:"bytes,117,opt,name=qr_code_documento,json=qrCodeDocumento,proto3" json:"qr_code_documento,omitempty"`
-	// Número que o cliente deu a esta compra no sistema dele (o pedido de compra dele), até 15
-	// caracteres. Sai em cada item da NF-e gerada deste documento (xPed); vazio, sai o número
-	// do documento.
-	PedidoCompra string `protobuf:"bytes,118,opt,name=pedido_compra,json=pedidoCompra,proto3" json:"pedido_compra,omitempty"`
 	// Horário reservado na agenda para este documento (autorização pedida pelo portal). Confirmado
 	// quando o documento é pago; liberado quando é cancelado ou excluído.
 	AgendaEventId string `protobuf:"bytes,119,opt,name=agenda_event_id,json=agendaEventId,proto3" json:"agenda_event_id,omitempty"`
@@ -8316,13 +8312,6 @@ func (x *Pedido) GetQrCodeDocumento() *QrCodeDocumento {
 		return x.QrCodeDocumento
 	}
 	return nil
-}
-
-func (x *Pedido) GetPedidoCompra() string {
-	if x != nil {
-		return x.PedidoCompra
-	}
-	return ""
 }
 
 func (x *Pedido) GetAgendaEventId() string {
@@ -10103,9 +10092,6 @@ type Produto struct {
 	NumeroItem               int32 `protobuf:"varint,68,opt,name=numero_item,json=numeroItem,proto3" json:"numero_item,omitempty"` // posição do item no documento, a partir de 1; derivado, não persistido
 	// Observação livre do item no documento. Não vai para a nota fiscal.
 	Observacao string `protobuf:"bytes,69,opt,name=observacao,proto3" json:"observacao,omitempty"`
-	// Número do item no pedido do cliente (nItemPed da NF-e). Zero usa a posição do item no
-	// documento.
-	PedidoCompraItem int32 `protobuf:"varint,70,opt,name=pedido_compra_item,json=pedidoCompraItem,proto3" json:"pedido_compra_item,omitempty"`
 	// Locação: bem alugado ao cliente durante o contrato. É cobrado pelo valor do item em todo
 	// ciclo, mas sai do estoque só no ciclo em que foi incluído; a nota de remessa leva o
 	// valor_reposicao como valor do bem. Não pode ser comodato ao mesmo tempo.
@@ -10667,13 +10653,6 @@ func (x *Produto) GetObservacao() string {
 		return x.Observacao
 	}
 	return ""
-}
-
-func (x *Produto) GetPedidoCompraItem() int32 {
-	if x != nil {
-		return x.PedidoCompraItem
-	}
-	return 0
 }
 
 func (x *Produto) GetLocacao() bool {
@@ -16412,7 +16391,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x19SetAcompanhamentoResponse\x12C\n" +
 	"\x0eacompanhamento\x18\x01 \x01(\v2\x1b.pedido.OrderAcompanhamentoR\x0eacompanhamento\x12F\n" +
 	"\x11data_hora_entrega\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\x12\x1a\n" +
-	"\bsituacao\x18\x03 \x01(\tR\bsituacao\"\xdf0\n" +
+	"\bsituacao\x18\x03 \x01(\tR\bsituacao\"\xc00\n" +
 	"\x06Pedido\x12>\n" +
 	"\tcreatedAt\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12>\n" +
 	"\tupdatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tupdatedAt\x12\x1c\n" +
@@ -16534,8 +16513,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x06divida\x18r \x01(\x01R\x06divida\x126\n" +
 	"\bvalidade\x18s \x01(\v2\x1a.google.protobuf.TimestampR\bvalidade\x12,\n" +
 	"\x11validadeDescricao\x18t \x01(\tR\x11validadeDescricao\x12C\n" +
-	"\x11qr_code_documento\x18u \x01(\v2\x17.pedido.QrCodeDocumentoR\x0fqrCodeDocumento\x12#\n" +
-	"\rpedido_compra\x18v \x01(\tR\fpedidoCompra\x12&\n" +
+	"\x11qr_code_documento\x18u \x01(\v2\x17.pedido.QrCodeDocumentoR\x0fqrCodeDocumento\x12&\n" +
 	"\x0fagenda_event_id\x18w \x01(\tR\ragendaEventId\x12)\n" +
 	"\x10lembrete_cliente\x18x \x01(\bR\x0flembreteCliente\x12B\n" +
 	"\x10resposta_cliente\x18y \x01(\x0e2\x17.pedido.RespostaClienteR\x0frespostaCliente\x12(\n" +
@@ -16557,7 +16535,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x14liberacao_necessaria\x18\x88\x01 \x01(\bB\x04\xe2A\x01\x03R\x13liberacaoNecessaria\x1a?\n" +
 	"\x11CustomFieldsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x03\xc0>\x01J\x04\bi\x10jJ\x04\bj\x10kJ\x04\bk\x10l\"L\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x03\xc0>\x01J\x04\bi\x10jJ\x04\bj\x10kJ\x04\bk\x10lJ\x04\bv\x10w\"L\n" +
 	"\x0fQrCodeDocumento\x12\x14\n" +
 	"\x05ativo\x18\x01 \x01(\bR\x05ativo\x12#\n" +
 	"\rdias_validade\x18\x02 \x01(\x05R\fdiasValidade\"\x93\x02\n" +
@@ -16726,7 +16704,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\n" +
 	"SerialInfo\x12\x10\n" +
 	"\x03ids\x18\x01 \x03(\tR\x03ids\x12%\n" +
-	"\x0eserial_numbers\x18\x02 \x03(\tR\rserialNumbers\"\xdb\x17\n" +
+	"\x0eserial_numbers\x18\x02 \x03(\tR\rserialNumbers\"\xb3\x17\n" +
 	"\aProduto\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x128\n" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
@@ -16818,9 +16796,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"numeroItem\x12\x1e\n" +
 	"\n" +
 	"observacao\x18E \x01(\tR\n" +
-	"observacao\x12,\n" +
-	"\x12pedido_compra_item\x18F \x01(\x05R\x10pedidoCompraItem\x12\x18\n" +
-	"\alocacao\x18J \x01(\bR\alocacao\"\xa4\x03\n" +
+	"observacao\x12\x18\n" +
+	"\alocacao\x18J \x01(\bR\alocacaoJ\x04\bF\x10G\"\xa4\x03\n" +
 	"\fItemProducao\x12\x18\n" +
 	"\aenviado\x18\x01 \x01(\bR\aenviado\x12@\n" +
 	"\rdataHoraEnvio\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\rdataHoraEnvio\x12\"\n" +
