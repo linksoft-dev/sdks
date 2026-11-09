@@ -1137,6 +1137,26 @@ type Produto struct {
 	// Os dias de recompra são de cada unidade: o item vendido lembra em recompra_dias vezes a
 	// quantidade (10 unidades de 2 dias lembram em 20). Desligado, o prazo não muda com a quantidade.
 	RecompraPorQuantidade bool `protobuf:"varint,230,opt,name=recompra_por_quantidade,json=recompraPorQuantidade,proto3" json:"recompra_por_quantidade,omitempty"`
+	// Campos de farmácia (medicamentos). Classe terapêutica no padrão do SNGPC: 1 antimicrobiano,
+	// 2 sujeito a controle especial (Portaria 344/98). Vazio: o produto não é escriturado no SNGPC.
+	ClasseTerapeutica int32 `protobuf:"varint,231,opt,name=classe_terapeutica,json=classeTerapeutica,proto3" json:"classe_terapeutica,omitempty"`
+	// Registro do medicamento no Ministério da Saúde (ANVISA): 13 dígitos, começa com 1.
+	RegistroMs string `protobuf:"bytes,232,opt,name=registro_ms,json=registroMs,proto3" json:"registro_ms,omitempty"`
+	// Lista da Portaria 344/98 (A1, A2, A3, B1, B2, C1, C2, C3, C4, C5, D1, D2) ou AM (antimicrobiano).
+	ListaPortaria_344 string `protobuf:"bytes,233,opt,name=lista_portaria_344,json=listaPortaria344,proto3" json:"lista_portaria_344,omitempty"`
+	// Receituário que a venda exige, no padrão do SNGPC: 1 Receita de Controle Especial em 2 vias,
+	// 2 Notificação de Receita B (azul), 3 Notificação de Receita Especial (branca, retinoides),
+	// 4 Notificação de Receita A (amarela), 5 Receita de antimicrobiano em 2 vias.
+	TipoReceituario int32 `protobuf:"varint,234,opt,name=tipo_receituario,json=tipoReceituario,proto3" json:"tipo_receituario,omitempty"`
+	// Unidade escriturada no SNGPC: 1 caixa, 2 frasco.
+	UnidadeSngpc      int32  `protobuf:"varint,235,opt,name=unidade_sngpc,json=unidadeSngpc,proto3" json:"unidade_sngpc,omitempty"`
+	PrincipioAtivo    string `protobuf:"bytes,236,opt,name=principio_ativo,json=principioAtivo,proto3" json:"principio_ativo,omitempty"`
+	Concentracao      string `protobuf:"bytes,237,opt,name=concentracao,proto3" json:"concentracao,omitempty"`
+	FormaFarmaceutica string `protobuf:"bytes,238,opt,name=forma_farmaceutica,json=formaFarmaceutica,proto3" json:"forma_farmaceutica,omitempty"`
+	// Preço máximo ao consumidor da CMED, informado na NF-e (vPMC) de medicamento.
+	Pmc float64 `protobuf:"fixed64,239,opt,name=pmc,proto3" json:"pmc,omitempty"`
+	// Motivo da isenção de registro na ANVISA (xMotivoIsencao na NF-e), quando o medicamento não tem registro.
+	MotivoIsencaoAnvisa string `protobuf:"bytes,240,opt,name=motivo_isencao_anvisa,json=motivoIsencaoAnvisa,proto3" json:"motivo_isencao_anvisa,omitempty"`
 	// Impressora de produção do item (override). Quando vazio, herda o grupo de
 	// produção da categoria. Usado no roteamento da impressão para cozinha/bar.
 	ImpressoraId   string `protobuf:"bytes,215,opt,name=impressoraId,proto3" json:"impressoraId,omitempty"`
@@ -1859,6 +1879,76 @@ func (x *Produto) GetRecompraPorQuantidade() bool {
 		return x.RecompraPorQuantidade
 	}
 	return false
+}
+
+func (x *Produto) GetClasseTerapeutica() int32 {
+	if x != nil {
+		return x.ClasseTerapeutica
+	}
+	return 0
+}
+
+func (x *Produto) GetRegistroMs() string {
+	if x != nil {
+		return x.RegistroMs
+	}
+	return ""
+}
+
+func (x *Produto) GetListaPortaria_344() string {
+	if x != nil {
+		return x.ListaPortaria_344
+	}
+	return ""
+}
+
+func (x *Produto) GetTipoReceituario() int32 {
+	if x != nil {
+		return x.TipoReceituario
+	}
+	return 0
+}
+
+func (x *Produto) GetUnidadeSngpc() int32 {
+	if x != nil {
+		return x.UnidadeSngpc
+	}
+	return 0
+}
+
+func (x *Produto) GetPrincipioAtivo() string {
+	if x != nil {
+		return x.PrincipioAtivo
+	}
+	return ""
+}
+
+func (x *Produto) GetConcentracao() string {
+	if x != nil {
+		return x.Concentracao
+	}
+	return ""
+}
+
+func (x *Produto) GetFormaFarmaceutica() string {
+	if x != nil {
+		return x.FormaFarmaceutica
+	}
+	return ""
+}
+
+func (x *Produto) GetPmc() float64 {
+	if x != nil {
+		return x.Pmc
+	}
+	return 0
+}
+
+func (x *Produto) GetMotivoIsencaoAnvisa() string {
+	if x != nil {
+		return x.MotivoIsencaoAnvisa
+	}
+	return ""
 }
 
 func (x *Produto) GetImpressoraId() string {
@@ -6665,7 +6755,7 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\n" +
 	"ProdutoTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\x828\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\x9c;\n" +
 	"\aProduto\x123\n" +
 	"\x06fields\x18\x01 \x01(\v2\x15.metadata.BasicFieldsB\x04\xe2A\x01\x03R\x06fields\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xe2A\x01\x03R\x02id\x12B\n" +
@@ -6777,7 +6867,18 @@ const file_apps_estoque_produto_produto_proto_rawDesc = "" +
 	"\bcomissao\x18\xd6\x01 \x01(\x01R\bcomissao\x12&\n" +
 	"\x0ecomissao_valor\x18\xe4\x01 \x01(\x01R\rcomissaoValor\x12$\n" +
 	"\rrecompra_dias\x18\xe5\x01 \x01(\x05R\frecompraDias\x127\n" +
-	"\x17recompra_por_quantidade\x18\xe6\x01 \x01(\bR\x15recompraPorQuantidade\x12#\n" +
+	"\x17recompra_por_quantidade\x18\xe6\x01 \x01(\bR\x15recompraPorQuantidade\x12.\n" +
+	"\x12classe_terapeutica\x18\xe7\x01 \x01(\x05R\x11classeTerapeutica\x12 \n" +
+	"\vregistro_ms\x18\xe8\x01 \x01(\tR\n" +
+	"registroMs\x12-\n" +
+	"\x12lista_portaria_344\x18\xe9\x01 \x01(\tR\x10listaPortaria344\x12*\n" +
+	"\x10tipo_receituario\x18\xea\x01 \x01(\x05R\x0ftipoReceituario\x12$\n" +
+	"\runidade_sngpc\x18\xeb\x01 \x01(\x05R\funidadeSngpc\x12(\n" +
+	"\x0fprincipio_ativo\x18\xec\x01 \x01(\tR\x0eprincipioAtivo\x12#\n" +
+	"\fconcentracao\x18\xed\x01 \x01(\tR\fconcentracao\x12.\n" +
+	"\x12forma_farmaceutica\x18\xee\x01 \x01(\tR\x11formaFarmaceutica\x12\x11\n" +
+	"\x03pmc\x18\xef\x01 \x01(\x01R\x03pmc\x123\n" +
+	"\x15motivo_isencao_anvisa\x18\xf0\x01 \x01(\tR\x13motivoIsencaoAnvisa\x12#\n" +
 	"\fimpressoraId\x18\xd7\x01 \x01(\tR\fimpressoraId\x12'\n" +
 	"\x0eimpressoraNome\x18\xd8\x01 \x01(\tR\x0eimpressoraNome\x12%\n" +
 	"\rgrupoProducao\x18\xd9\x01 \x01(\tR\rgrupoProducao\x121\n" +
