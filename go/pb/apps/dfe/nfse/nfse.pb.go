@@ -1797,8 +1797,10 @@ type Servico struct {
 	CodigoTributacaoMunicipal string `protobuf:"bytes,17,opt,name=codigo_tributacao_municipal,json=codigoTributacaoMunicipal,proto3" json:"codigo_tributacao_municipal,omitempty"`
 	// Código interno do serviço no contribuinte (cIntContrib)
 	CodigoInterno string `protobuf:"bytes,18,opt,name=codigo_interno,json=codigoInterno,proto3" json:"codigo_interno,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	// Parte do desconto geral da nota que cabe ao serviço; reduz a base do ISS do serviço
+	DescontoRateado float64 `protobuf:"fixed64,19,opt,name=desconto_rateado,json=descontoRateado,proto3" json:"desconto_rateado,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Servico) Reset() {
@@ -1957,6 +1959,13 @@ func (x *Servico) GetCodigoInterno() string {
 	return ""
 }
 
+func (x *Servico) GetDescontoRateado() float64 {
+	if x != nil {
+		return x.DescontoRateado
+	}
+	return 0
+}
+
 // Evento registrado na NFSe (histórico de ações)
 type EventoNfse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2090,16 +2099,19 @@ type Nfse struct {
 	ComercioExterior        *Nfse_ComercioExterior          `protobuf:"bytes,68,opt,name=comercio_exterior,json=comercioExterior,proto3" json:"comercio_exterior,omitempty"`
 	AtividadeEvento         *Nfse_AtividadeEvento           `protobuf:"bytes,69,opt,name=atividade_evento,json=atividadeEvento,proto3" json:"atividade_evento,omitempty"`
 	ExploracaoRodoviaria    *Nfse_ExploracaoRodoviaria      `protobuf:"bytes,70,opt,name=exploracao_rodoviaria,json=exploracaoRodoviaria,proto3" json:"exploracao_rodoviaria,omitempty"`
-	Impostos                *Nfse_Impostos                  `protobuf:"bytes,17,opt,name=impostos,proto3" json:"impostos,omitempty"`
-	DescontoIncondicional   float64                         `protobuf:"fixed64,30,opt,name=desconto_incondicional,json=descontoIncondicional,proto3" json:"desconto_incondicional,omitempty"` // Mantive a tag original para evitar quebras se possível, mas mudei para snake_case
-	Subtotal                float64                         `protobuf:"fixed64,31,opt,name=subtotal,proto3" json:"subtotal,omitempty"`
-	Total                   float64                         `protobuf:"fixed64,32,opt,name=total,proto3" json:"total,omitempty"`
-	Servicos                []*Servico                      `protobuf:"bytes,33,rep,name=servicos,proto3" json:"servicos,omitempty"`
-	ConstrucaoCivil         *Nfse_ConstrucaoCivil           `protobuf:"bytes,34,opt,name=construcao_civil,json=construcaoCivil,proto3" json:"construcao_civil,omitempty"`
-	Obs                     string                          `protobuf:"bytes,35,opt,name=obs,proto3" json:"obs,omitempty"`
-	XmlLoteEnvio            string                          `protobuf:"bytes,36,opt,name=xml_lote_envio,json=xmlLoteEnvio,proto3" json:"xml_lote_envio,omitempty"`
-	XmlAutorizacao          string                          `protobuf:"bytes,37,opt,name=xml_autorizacao,json=xmlAutorizacao,proto3" json:"xml_autorizacao,omitempty"`
-	ChaveAcesso             string                          `protobuf:"bytes,38,opt,name=chave_acesso,json=chaveAcesso,proto3" json:"chave_acesso,omitempty"`
+	// Desconto incondicional dado na nota, rateado entre os serviços pelo valor de cada um (desconto_rateado)
+	DescontoGeral float64        `protobuf:"fixed64,71,opt,name=desconto_geral,json=descontoGeral,proto3" json:"desconto_geral,omitempty"`
+	Impostos      *Nfse_Impostos `protobuf:"bytes,17,opt,name=impostos,proto3" json:"impostos,omitempty"`
+	// Total dos descontos incondicionais da nota: descontos dos serviços mais o desconto geral
+	DescontoIncondicional float64               `protobuf:"fixed64,30,opt,name=desconto_incondicional,json=descontoIncondicional,proto3" json:"desconto_incondicional,omitempty"`
+	Subtotal              float64               `protobuf:"fixed64,31,opt,name=subtotal,proto3" json:"subtotal,omitempty"`
+	Total                 float64               `protobuf:"fixed64,32,opt,name=total,proto3" json:"total,omitempty"`
+	Servicos              []*Servico            `protobuf:"bytes,33,rep,name=servicos,proto3" json:"servicos,omitempty"`
+	ConstrucaoCivil       *Nfse_ConstrucaoCivil `protobuf:"bytes,34,opt,name=construcao_civil,json=construcaoCivil,proto3" json:"construcao_civil,omitempty"`
+	Obs                   string                `protobuf:"bytes,35,opt,name=obs,proto3" json:"obs,omitempty"`
+	XmlLoteEnvio          string                `protobuf:"bytes,36,opt,name=xml_lote_envio,json=xmlLoteEnvio,proto3" json:"xml_lote_envio,omitempty"`
+	XmlAutorizacao        string                `protobuf:"bytes,37,opt,name=xml_autorizacao,json=xmlAutorizacao,proto3" json:"xml_autorizacao,omitempty"`
+	ChaveAcesso           string                `protobuf:"bytes,38,opt,name=chave_acesso,json=chaveAcesso,proto3" json:"chave_acesso,omitempty"`
 	// Recibo Provisório de Serviço, campo onde o sistema guarda as informações de envio de lote
 	Rps               *Nfse_LoteRps `protobuf:"bytes,39,opt,name=rps,proto3" json:"rps,omitempty"`
 	CodigoVerificacao string        `protobuf:"bytes,40,opt,name=codigo_verificacao,json=codigoVerificacao,proto3" json:"codigo_verificacao,omitempty"`
@@ -2346,6 +2358,13 @@ func (x *Nfse) GetExploracaoRodoviaria() *Nfse_ExploracaoRodoviaria {
 		return x.ExploracaoRodoviaria
 	}
 	return nil
+}
+
+func (x *Nfse) GetDescontoGeral() float64 {
+	if x != nil {
+		return x.DescontoGeral
+	}
+	return 0
 }
 
 func (x *Nfse) GetImpostos() *Nfse_Impostos {
@@ -8364,8 +8383,7 @@ const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\x13MunicipioIncidencia\x12\x0e\n" +
 	"\x02uf\x18\x01 \x01(\tR\x02uf\x12)\n" +
 	"\x10codigo_municipio\x18\x02 \x01(\tR\x0fcodigoMunicipio\x12%\n" +
-	"\x0enome_municipio\x18\x03 \x01(\tR\rnomeMunicipio\"\xe5\n" +
-	"\n" +
+	"\x0enome_municipio\x18\x03 \x01(\tR\rnomeMunicipio\"\x96\v\n" +
 	"\aServico\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12%\n" +
 	"\x0ecodigo_servico\x18\x02 \x01(\tR\rcodigoServico\x12<\n" +
@@ -8389,7 +8407,8 @@ const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\x16desconto_incondicional\x18\r \x01(\x01R\x15descontoIncondicional\x12,\n" +
 	"\x12valor_liquido_nfse\x18\x0e \x01(\x01R\x10valorLiquidoNfse\x12>\n" +
 	"\x1bcodigo_tributacao_municipal\x18\x11 \x01(\tR\x19codigoTributacaoMunicipal\x12%\n" +
-	"\x0ecodigo_interno\x18\x12 \x01(\tR\rcodigoInterno\x1a\xa2\x05\n" +
+	"\x0ecodigo_interno\x18\x12 \x01(\tR\rcodigoInterno\x12/\n" +
+	"\x10desconto_rateado\x18\x13 \x01(\x01B\x04\xe2A\x01\x03R\x0fdescontoRateado\x1a\xa2\x05\n" +
 	"\bImpostos\x12!\n" +
 	"\faliquota_iss\x18\x01 \x01(\x01R\valiquotaIss\x12\x1b\n" +
 	"\tvalor_iss\x18\x02 \x01(\x01R\bvalorIss\x12\x1d\n" +
@@ -8423,7 +8442,7 @@ const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\x04tipo\x18\x05 \x01(\x0e2\x14.nfse.TipoEventoNfseR\x04tipo\x12\x16\n" +
 	"\x06codigo\x18\x06 \x01(\tR\x06codigo\x12\x1c\n" +
 	"\tdescricao\x18\a \x01(\tR\tdescricao\x12\x1a\n" +
-	"\bmensagem\x18\b \x01(\tR\bmensagem\"\xb7R\n" +
+	"\bmensagem\x18\b \x01(\tR\bmensagem\"\xdeR\n" +
 	"\x04Nfse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
 	"\x06numero\x18\x02 \x01(\tR\x06numero\x12*\n" +
@@ -8452,7 +8471,8 @@ const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\x11info_complementar\x18C \x01(\v2$.nfse.Nfse.InformacoesComplementaresR\x10infoComplementar\x12H\n" +
 	"\x11comercio_exterior\x18D \x01(\v2\x1b.nfse.Nfse.ComercioExteriorR\x10comercioExterior\x12E\n" +
 	"\x10atividade_evento\x18E \x01(\v2\x1a.nfse.Nfse.AtividadeEventoR\x0fatividadeEvento\x12T\n" +
-	"\x15exploracao_rodoviaria\x18F \x01(\v2\x1f.nfse.Nfse.ExploracaoRodoviariaR\x14exploracaoRodoviaria\x12/\n" +
+	"\x15exploracao_rodoviaria\x18F \x01(\v2\x1f.nfse.Nfse.ExploracaoRodoviariaR\x14exploracaoRodoviaria\x12%\n" +
+	"\x0edesconto_geral\x18G \x01(\x01R\rdescontoGeral\x12/\n" +
 	"\bimpostos\x18\x11 \x01(\v2\x13.nfse.Nfse.ImpostosR\bimpostos\x125\n" +
 	"\x16desconto_incondicional\x18\x1e \x01(\x01R\x15descontoIncondicional\x12!\n" +
 	"\bsubtotal\x18\x1f \x01(\x01B\x05\xca>\x020\x01R\bsubtotal\x12\x1b\n" +
