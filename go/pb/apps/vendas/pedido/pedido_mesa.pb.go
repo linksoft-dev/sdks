@@ -99,6 +99,7 @@ const (
 	PedidoEventType_PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE   PedidoEventType = 11 // Cliente respondeu pelo link do documento
 	PedidoEventType_PEDIDO_EVENT_TYPE_RECEITA_ALTERADA    PedidoEventType = 12 // Receita da ótica alterada depois do envio ao laboratório
 	PedidoEventType_PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER PedidoEventType = 13 // Lembrete de recompra dos itens que chegaram na data
+	PedidoEventType_PEDIDO_EVENT_TYPE_AUTOMATION          PedidoEventType = 14 // Regra de automação da etapa executada
 )
 
 // Enum value maps for PedidoEventType.
@@ -118,6 +119,7 @@ var (
 		11: "PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE",
 		12: "PEDIDO_EVENT_TYPE_RECEITA_ALTERADA",
 		13: "PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER",
+		14: "PEDIDO_EVENT_TYPE_AUTOMATION",
 	}
 	PedidoEventType_value = map[string]int32{
 		"PEDIDO_EVENT_TYPE_UNSPECIFIED":         0,
@@ -134,6 +136,7 @@ var (
 		"PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE":   11,
 		"PEDIDO_EVENT_TYPE_RECEITA_ALTERADA":    12,
 		"PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER": 13,
+		"PEDIDO_EVENT_TYPE_AUTOMATION":          14,
 	}
 )
 
@@ -417,7 +420,7 @@ const file_apps_vendas_pedido_pedido_mesa_proto_rawDesc = "" +
 	"\x1bCONSUMPTION_STATUS_OCCUPIED\x10\x02\x12\x1f\n" +
 	"\x1bCONSUMPTION_STATUS_RESERVED\x10\x03\x12\x1e\n" +
 	"\x1aCONSUMPTION_STATUS_BLOCKED\x10\x04\x12\x1e\n" +
-	"\x1aCONSUMPTION_STATUS_CLOSING\x10\x05*\xab\x04\n" +
+	"\x1aCONSUMPTION_STATUS_CLOSING\x10\x05*\xcd\x04\n" +
 	"\x0fPedidoEventType\x12!\n" +
 	"\x1dPEDIDO_EVENT_TYPE_UNSPECIFIED\x10\x00\x12\x1d\n" +
 	"\x19PEDIDO_EVENT_TYPE_CREATED\x10\x01\x12$\n" +
@@ -433,7 +436,8 @@ const file_apps_vendas_pedido_pedido_mesa_proto_rawDesc = "" +
 	"\x12'\n" +
 	"#PEDIDO_EVENT_TYPE_CUSTOMER_RESPONSE\x10\v\x12&\n" +
 	"\"PEDIDO_EVENT_TYPE_RECEITA_ALTERADA\x10\f\x12)\n" +
-	"%PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER\x10\rB\x8c\x01\n" +
+	"%PEDIDO_EVENT_TYPE_REPURCHASE_REMINDER\x10\r\x12 \n" +
+	"\x1cPEDIDO_EVENT_TYPE_AUTOMATION\x10\x0eB\x8c\x01\n" +
 	"\n" +
 	"com.pedidoB\x0fPedidoMesaProtoP\x01Z5github.com/linksoft-dev/sdks/go/pb/apps/vendas/pedido\xa2\x02\x03PXX\xaa\x02\x06Pedido\xca\x02\x06Pedido\xe2\x02\x12Pedido\\GPBMetadata\xea\x02\x06Pedidob\x06proto3"
 
