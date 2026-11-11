@@ -63,6 +63,7 @@ const (
 	PedidoService_VinculaNFManual_FullMethodName              = "/pedido.PedidoService/VinculaNFManual"
 	PedidoService_SendPaymentLink_FullMethodName              = "/pedido.PedidoService/SendPaymentLink"
 	PedidoService_SimulaCobranca_FullMethodName               = "/pedido.PedidoService/SimulaCobranca"
+	PedidoService_SimulaClienteSemComprar_FullMethodName      = "/pedido.PedidoService/SimulaClienteSemComprar"
 	PedidoService_CorrecaoMovimentacao_FullMethodName         = "/pedido.PedidoService/CorrecaoMovimentacao"
 	PedidoService_ConfirmOrderReceipt_FullMethodName          = "/pedido.PedidoService/ConfirmOrderReceipt"
 	PedidoService_AddFiles_FullMethodName                     = "/pedido.PedidoService/AddFiles"
@@ -155,6 +156,8 @@ type PedidoServiceClient interface {
 	SendPaymentLink(ctx context.Context, in *SendPaymentLinkRequest, opts ...grpc.CallOption) (*SendPaymentLinkResponse, error)
 	// Mostra o que o envio automático cobraria num dia pelo plano informado, sem enviar nada.
 	SimulaCobranca(ctx context.Context, in *SimulaCobrancaRequest, opts ...grpc.CallOption) (*SimulaCobrancaResponse, error)
+	// Mostra os clientes que a regra de cliente sem comprar avisaria, sem avisar ninguém.
+	SimulaClienteSemComprar(ctx context.Context, in *SimulaClienteSemComprarRequest, opts ...grpc.CallOption) (*SimulaClienteSemComprarResponse, error)
 	CorrecaoMovimentacao(ctx context.Context, in *CorrecaoMovimentacaoRequest, opts ...grpc.CallOption) (*CorrecaoMovimentacaoResponse, error)
 	ConfirmOrderReceipt(ctx context.Context, in *ConfirmOrderReceiptRequest, opts ...grpc.CallOption) (*ConfirmOrderReceiptResponse, error)
 	// Adiciona múltiplos arquivos ao pedido, delegando criação ao FileManager
@@ -636,6 +639,16 @@ func (c *pedidoServiceClient) SimulaCobranca(ctx context.Context, in *SimulaCobr
 	return out, nil
 }
 
+func (c *pedidoServiceClient) SimulaClienteSemComprar(ctx context.Context, in *SimulaClienteSemComprarRequest, opts ...grpc.CallOption) (*SimulaClienteSemComprarResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SimulaClienteSemComprarResponse)
+	err := c.cc.Invoke(ctx, PedidoService_SimulaClienteSemComprar_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *pedidoServiceClient) CorrecaoMovimentacao(ctx context.Context, in *CorrecaoMovimentacaoRequest, opts ...grpc.CallOption) (*CorrecaoMovimentacaoResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CorrecaoMovimentacaoResponse)
@@ -852,6 +865,8 @@ type PedidoServiceServer interface {
 	SendPaymentLink(context.Context, *SendPaymentLinkRequest) (*SendPaymentLinkResponse, error)
 	// Mostra o que o envio automático cobraria num dia pelo plano informado, sem enviar nada.
 	SimulaCobranca(context.Context, *SimulaCobrancaRequest) (*SimulaCobrancaResponse, error)
+	// Mostra os clientes que a regra de cliente sem comprar avisaria, sem avisar ninguém.
+	SimulaClienteSemComprar(context.Context, *SimulaClienteSemComprarRequest) (*SimulaClienteSemComprarResponse, error)
 	CorrecaoMovimentacao(context.Context, *CorrecaoMovimentacaoRequest) (*CorrecaoMovimentacaoResponse, error)
 	ConfirmOrderReceipt(context.Context, *ConfirmOrderReceiptRequest) (*ConfirmOrderReceiptResponse, error)
 	// Adiciona múltiplos arquivos ao pedido, delegando criação ao FileManager
@@ -1024,6 +1039,9 @@ func (UnimplementedPedidoServiceServer) SendPaymentLink(context.Context, *SendPa
 }
 func (UnimplementedPedidoServiceServer) SimulaCobranca(context.Context, *SimulaCobrancaRequest) (*SimulaCobrancaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SimulaCobranca not implemented")
+}
+func (UnimplementedPedidoServiceServer) SimulaClienteSemComprar(context.Context, *SimulaClienteSemComprarRequest) (*SimulaClienteSemComprarResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SimulaClienteSemComprar not implemented")
 }
 func (UnimplementedPedidoServiceServer) CorrecaoMovimentacao(context.Context, *CorrecaoMovimentacaoRequest) (*CorrecaoMovimentacaoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CorrecaoMovimentacao not implemented")
@@ -1880,6 +1898,24 @@ func _PedidoService_SimulaCobranca_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PedidoService_SimulaClienteSemComprar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SimulaClienteSemComprarRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PedidoServiceServer).SimulaClienteSemComprar(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PedidoService_SimulaClienteSemComprar_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PedidoServiceServer).SimulaClienteSemComprar(ctx, req.(*SimulaClienteSemComprarRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PedidoService_CorrecaoMovimentacao_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CorrecaoMovimentacaoRequest)
 	if err := dec(in); err != nil {
@@ -2314,6 +2350,10 @@ var PedidoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SimulaCobranca",
 			Handler:    _PedidoService_SimulaCobranca_Handler,
+		},
+		{
+			MethodName: "SimulaClienteSemComprar",
+			Handler:    _PedidoService_SimulaClienteSemComprar_Handler,
 		},
 		{
 			MethodName: "CorrecaoMovimentacao",

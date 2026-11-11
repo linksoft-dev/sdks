@@ -235,6 +235,11 @@ class PedidoServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaResponse.FromString,
                 _registered_method=True)
+        self.SimulaClienteSemComprar = channel.unary_unary(
+                '/pedido.PedidoService/SimulaClienteSemComprar',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaClienteSemComprarRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaClienteSemComprarResponse.FromString,
+                _registered_method=True)
         self.CorrecaoMovimentacao = channel.unary_unary(
                 '/pedido.PedidoService/CorrecaoMovimentacao',
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.CorrecaoMovimentacaoRequest.SerializeToString,
@@ -601,6 +606,13 @@ class PedidoServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SimulaClienteSemComprar(self, request, context):
+        """Mostra os clientes que a regra de cliente sem comprar avisaria, sem avisar ninguém.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def CorrecaoMovimentacao(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -924,6 +936,11 @@ def add_PedidoServiceServicer_to_server(servicer, server):
                     servicer.SimulaCobranca,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaResponse.SerializeToString,
+            ),
+            'SimulaClienteSemComprar': grpc.unary_unary_rpc_method_handler(
+                    servicer.SimulaClienteSemComprar,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaClienteSemComprarRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaClienteSemComprarResponse.SerializeToString,
             ),
             'CorrecaoMovimentacao': grpc.unary_unary_rpc_method_handler(
                     servicer.CorrecaoMovimentacao,
@@ -2185,6 +2202,33 @@ class PedidoService:
             '/pedido.PedidoService/SimulaCobranca',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaCobrancaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SimulaClienteSemComprar(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/pedido.PedidoService/SimulaClienteSemComprar',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaClienteSemComprarRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.SimulaClienteSemComprarResponse.FromString,
             options,
             channel_credentials,
             insecure,

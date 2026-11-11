@@ -15,6 +15,7 @@ from linksoft_sdk.pb.apps.filemanager import filemanager_pb2 as _filemanager_pb2
 from linksoft_sdk.pb.apps.vendas.readjustmentplan import readjustmentplan_pb2 as _readjustmentplan_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from linksoft_sdk.pb.apps.vendas.billingplan import billingplan_pb2 as _billingplan_pb2
+from linksoft_sdk.pb.apps.vendas.inactivityrule import inactivityrule_pb2 as _inactivityrule_pb2
 from linksoft_sdk.pb.imports import imports_pb2 as _imports_pb2
 from linksoft_sdk.pb.exports import exports_pb2 as _exports_pb2
 from google.protobuf.internal import containers as _containers
@@ -2755,6 +2756,38 @@ class SendPaymentLinkRequest(_message.Message):
     message_template_id: str
     sms_integration_id: str
     def __init__(self, ids: _Optional[_Iterable[str]] = ..., pedidos: _Optional[_Iterable[_Union[Pedido, _Mapping]]] = ..., email: _Optional[str] = ..., channel: _Optional[str] = ..., email_integration_id: _Optional[str] = ..., billing_plan_id: _Optional[str] = ..., billing_plan_name: _Optional[str] = ..., whatsapp_integration_id: _Optional[str] = ..., whatsapp_template_name: _Optional[str] = ..., whatsapp_template_language: _Optional[str] = ..., message_template_id: _Optional[str] = ..., sms_integration_id: _Optional[str] = ...) -> None: ...
+
+class SimulaClienteSemComprarRequest(_message.Message):
+    __slots__ = ("inactivity_rule",)
+    INACTIVITY_RULE_FIELD_NUMBER: _ClassVar[int]
+    inactivity_rule: _inactivityrule_pb2.InactivityRule
+    def __init__(self, inactivity_rule: _Optional[_Union[_inactivityrule_pb2.InactivityRule, _Mapping]] = ...) -> None: ...
+
+class SimulaClienteSemComprarResponse(_message.Message):
+    __slots__ = ("total", "clientes")
+    TOTAL_FIELD_NUMBER: _ClassVar[int]
+    CLIENTES_FIELD_NUMBER: _ClassVar[int]
+    total: int
+    clientes: _containers.RepeatedCompositeFieldContainer[SimulaClienteSemComprarItem]
+    def __init__(self, total: _Optional[int] = ..., clientes: _Optional[_Iterable[_Union[SimulaClienteSemComprarItem, _Mapping]]] = ...) -> None: ...
+
+class SimulaClienteSemComprarItem(_message.Message):
+    __slots__ = ("pessoa_id", "nome", "pedido_id", "tipo", "numero", "ultima_venda", "dias_sem_comprar")
+    PESSOA_ID_FIELD_NUMBER: _ClassVar[int]
+    NOME_FIELD_NUMBER: _ClassVar[int]
+    PEDIDO_ID_FIELD_NUMBER: _ClassVar[int]
+    TIPO_FIELD_NUMBER: _ClassVar[int]
+    NUMERO_FIELD_NUMBER: _ClassVar[int]
+    ULTIMA_VENDA_FIELD_NUMBER: _ClassVar[int]
+    DIAS_SEM_COMPRAR_FIELD_NUMBER: _ClassVar[int]
+    pessoa_id: str
+    nome: str
+    pedido_id: str
+    tipo: str
+    numero: int
+    ultima_venda: _timestamp_pb2.Timestamp
+    dias_sem_comprar: int
+    def __init__(self, pessoa_id: _Optional[str] = ..., nome: _Optional[str] = ..., pedido_id: _Optional[str] = ..., tipo: _Optional[str] = ..., numero: _Optional[int] = ..., ultima_venda: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., dias_sem_comprar: _Optional[int] = ...) -> None: ...
 
 class SimulaCobrancaRequest(_message.Message):
     __slots__ = ("billing_plan", "data", "proxima")
