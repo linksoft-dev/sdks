@@ -762,7 +762,8 @@ type Integration struct {
 	// Dias depois do vencimento em que o boleto ainda aceita pagamento
 	DiasPagamentoAposVencimento int32 `protobuf:"varint,13,opt,name=dias_pagamento_apos_vencimento,json=diasPagamentoAposVencimento,proto3" json:"dias_pagamento_apos_vencimento,omitempty"`
 	// Contrato de cobrança da empresa no banco, usado no registro do boleto pelos bancos que
-	// registram o título num convênio: número do convênio, carteira e variação da carteira
+	// registram o título num convênio: número do convênio (ou o código do beneficiário, no
+	// banco que identifica o contrato pela agência e conta), carteira e variação da carteira
 	ConvenioCobranca         string `protobuf:"bytes,14,opt,name=convenio_cobranca,json=convenioCobranca,proto3" json:"convenio_cobranca,omitempty"`
 	CarteiraCobranca         string `protobuf:"bytes,15,opt,name=carteira_cobranca,json=carteiraCobranca,proto3" json:"carteira_cobranca,omitempty"`
 	VariacaoCarteiraCobranca string `protobuf:"bytes,16,opt,name=variacao_carteira_cobranca,json=variacaoCarteiraCobranca,proto3" json:"variacao_carteira_cobranca,omitempty"`
