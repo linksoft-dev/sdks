@@ -362,10 +362,11 @@ type Person struct {
 	ContractServiceId   string `protobuf:"bytes,61,opt,name=contract_service_id,json=contractServiceId,proto3" json:"contract_service_id,omitempty"`
 	ContractServiceName string `protobuf:"bytes,62,opt,name=contract_service_name,json=contractServiceName,proto3" json:"contract_service_name,omitempty"`
 	// Profissional: serviços que realiza, além dos das especialidades.
-	PerformedServices []*PerformedService    `protobuf:"bytes,63,rep,name=performed_services,json=performedServices,proto3" json:"performed_services,omitempty"`
-	SaldoAtualizadoEm *timestamppb.Timestamp `protobuf:"bytes,44,opt,name=saldo_atualizado_em,json=saldoAtualizadoEm,proto3" json:"saldo_atualizado_em,omitempty"` // Hora da última mudança do saldo devedor
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	PerformedServices  []*PerformedService    `protobuf:"bytes,63,rep,name=performed_services,json=performedServices,proto3" json:"performed_services,omitempty"`
+	InscricaoMunicipal string                 `protobuf:"bytes,64,opt,name=inscricao_municipal,json=inscricaoMunicipal,proto3" json:"inscricao_municipal,omitempty"`
+	SaldoAtualizadoEm  *timestamppb.Timestamp `protobuf:"bytes,44,opt,name=saldo_atualizado_em,json=saldoAtualizadoEm,proto3" json:"saldo_atualizado_em,omitempty"` // Hora da última mudança do saldo devedor
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Person) Reset() {
@@ -711,6 +712,13 @@ func (x *Person) GetPerformedServices() []*PerformedService {
 		return x.PerformedServices
 	}
 	return nil
+}
+
+func (x *Person) GetInscricaoMunicipal() string {
+	if x != nil {
+		return x.InscricaoMunicipal
+	}
+	return ""
 }
 
 func (x *Person) GetSaldoAtualizadoEm() *timestamppb.Timestamp {
@@ -3330,7 +3338,7 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x18apps/person/person.proto\x12\x06person\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x18apps/report/report.proto\x1a\x15exports/exports.proto\"7\n" +
 	"\tPersonTag\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05color\x18\x02 \x01(\tR\x05color\"\xa2\x10\n" +
+	"\x05color\x18\x02 \x01(\tR\x05color\"\xd3\x10\n" +
 	"\x06Person\x12?\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
@@ -3386,7 +3394,8 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\x0fportal_benefits\x18+ \x01(\tR\x0eportalBenefits\x12.\n" +
 	"\x13contract_service_id\x18= \x01(\tR\x11contractServiceId\x122\n" +
 	"\x15contract_service_name\x18> \x01(\tR\x13contractServiceName\x12G\n" +
-	"\x12performed_services\x18? \x03(\v2\x18.person.PerformedServiceR\x11performedServices\x12P\n" +
+	"\x12performed_services\x18? \x03(\v2\x18.person.PerformedServiceR\x11performedServices\x12/\n" +
+	"\x13inscricao_municipal\x18@ \x01(\tR\x12inscricaoMunicipal\x12P\n" +
 	"\x13saldo_atualizado_em\x18, \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\x11saldoAtualizadoEm\x1a6\n" +
 	"\bIesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
