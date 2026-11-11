@@ -1607,10 +1607,8 @@ type Contact struct {
 	VerificationChannel string `protobuf:"bytes,13,opt,name=verification_channel,json=verificationChannel,proto3" json:"verification_channel,omitempty"`
 	// Recebe as cobranças enviadas à pessoa
 	ReceivesBilling bool `protobuf:"varint,14,opt,name=receives_billing,json=receivesBilling,proto3" json:"receives_billing,omitempty"`
-	// Avisos automáticos que o contato recebe e por qual canal.
-	Alerts        []*ContactAlert `protobuf:"bytes,15,rep,name=alerts,proto3" json:"alerts,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Contact) Reset() {
@@ -1741,74 +1739,6 @@ func (x *Contact) GetReceivesBilling() bool {
 	return false
 }
 
-func (x *Contact) GetAlerts() []*ContactAlert {
-	if x != nil {
-		return x.Alerts
-	}
-	return nil
-}
-
-// Aviso automático assinado pelo contato. event é a chave do tipo de envio nos modelos de mensagem.
-type ContactAlert struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Event         string                 `protobuf:"bytes,1,opt,name=event,proto3" json:"event,omitempty"`
-	Email         bool                   `protobuf:"varint,2,opt,name=email,proto3" json:"email,omitempty"`
-	Whatsapp      bool                   `protobuf:"varint,3,opt,name=whatsapp,proto3" json:"whatsapp,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ContactAlert) Reset() {
-	*x = ContactAlert{}
-	mi := &file_apps_person_person_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ContactAlert) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ContactAlert) ProtoMessage() {}
-
-func (x *ContactAlert) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ContactAlert.ProtoReflect.Descriptor instead.
-func (*ContactAlert) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *ContactAlert) GetEvent() string {
-	if x != nil {
-		return x.Event
-	}
-	return ""
-}
-
-func (x *ContactAlert) GetEmail() bool {
-	if x != nil {
-		return x.Email
-	}
-	return false
-}
-
-func (x *ContactAlert) GetWhatsapp() bool {
-	if x != nil {
-		return x.Whatsapp
-	}
-	return false
-}
-
 // Registro de quem garantiu um contato pela equipe.
 type ContactVouch struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1821,7 +1751,7 @@ type ContactVouch struct {
 
 func (x *ContactVouch) Reset() {
 	*x = ContactVouch{}
-	mi := &file_apps_person_person_proto_msgTypes[16]
+	mi := &file_apps_person_person_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1833,7 +1763,7 @@ func (x *ContactVouch) String() string {
 func (*ContactVouch) ProtoMessage() {}
 
 func (x *ContactVouch) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[16]
+	mi := &file_apps_person_person_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1846,7 +1776,7 @@ func (x *ContactVouch) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ContactVouch.ProtoReflect.Descriptor instead.
 func (*ContactVouch) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{16}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ContactVouch) GetAt() *timestamppb.Timestamp {
@@ -1881,7 +1811,7 @@ type Dependent struct {
 
 func (x *Dependent) Reset() {
 	*x = Dependent{}
-	mi := &file_apps_person_person_proto_msgTypes[17]
+	mi := &file_apps_person_person_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1893,7 +1823,7 @@ func (x *Dependent) String() string {
 func (*Dependent) ProtoMessage() {}
 
 func (x *Dependent) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[17]
+	mi := &file_apps_person_person_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1906,7 +1836,7 @@ func (x *Dependent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Dependent.ProtoReflect.Descriptor instead.
 func (*Dependent) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{17}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Dependent) GetId() string {
@@ -1944,7 +1874,7 @@ type Vendedor struct {
 
 func (x *Vendedor) Reset() {
 	*x = Vendedor{}
-	mi := &file_apps_person_person_proto_msgTypes[18]
+	mi := &file_apps_person_person_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1956,7 +1886,7 @@ func (x *Vendedor) String() string {
 func (*Vendedor) ProtoMessage() {}
 
 func (x *Vendedor) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[18]
+	mi := &file_apps_person_person_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1969,7 +1899,7 @@ func (x *Vendedor) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Vendedor.ProtoReflect.Descriptor instead.
 func (*Vendedor) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{18}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *Vendedor) GetComissao() float32 {
@@ -2020,7 +1950,7 @@ type Cliente struct {
 
 func (x *Cliente) Reset() {
 	*x = Cliente{}
-	mi := &file_apps_person_person_proto_msgTypes[19]
+	mi := &file_apps_person_person_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2032,7 +1962,7 @@ func (x *Cliente) String() string {
 func (*Cliente) ProtoMessage() {}
 
 func (x *Cliente) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[19]
+	mi := &file_apps_person_person_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2045,7 +1975,7 @@ func (x *Cliente) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Cliente.ProtoReflect.Descriptor instead.
 func (*Cliente) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{19}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *Cliente) GetVendedorId() string {
@@ -2094,7 +2024,7 @@ type Driver struct {
 
 func (x *Driver) Reset() {
 	*x = Driver{}
-	mi := &file_apps_person_person_proto_msgTypes[20]
+	mi := &file_apps_person_person_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2106,7 +2036,7 @@ func (x *Driver) String() string {
 func (*Driver) ProtoMessage() {}
 
 func (x *Driver) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[20]
+	mi := &file_apps_person_person_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2119,7 +2049,7 @@ func (x *Driver) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Driver.ProtoReflect.Descriptor instead.
 func (*Driver) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{20}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *Driver) GetLicenseNumber() string {
@@ -2153,7 +2083,7 @@ type CreateRequest struct {
 
 func (x *CreateRequest) Reset() {
 	*x = CreateRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[21]
+	mi := &file_apps_person_person_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2165,7 +2095,7 @@ func (x *CreateRequest) String() string {
 func (*CreateRequest) ProtoMessage() {}
 
 func (x *CreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[21]
+	mi := &file_apps_person_person_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2178,7 +2108,7 @@ func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
 func (*CreateRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{21}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *CreateRequest) GetPerson() *Person {
@@ -2197,7 +2127,7 @@ type CreateResponse struct {
 
 func (x *CreateResponse) Reset() {
 	*x = CreateResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[22]
+	mi := &file_apps_person_person_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2209,7 +2139,7 @@ func (x *CreateResponse) String() string {
 func (*CreateResponse) ProtoMessage() {}
 
 func (x *CreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[22]
+	mi := &file_apps_person_person_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2222,7 +2152,7 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{22}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *CreateResponse) GetPerson() *Person {
@@ -2244,7 +2174,7 @@ type UpdateRequest struct {
 
 func (x *UpdateRequest) Reset() {
 	*x = UpdateRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[23]
+	mi := &file_apps_person_person_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2256,7 +2186,7 @@ func (x *UpdateRequest) String() string {
 func (*UpdateRequest) ProtoMessage() {}
 
 func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[23]
+	mi := &file_apps_person_person_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2269,7 +2199,7 @@ func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{23}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *UpdateRequest) GetId() string {
@@ -2303,7 +2233,7 @@ type UpdateResponse struct {
 
 func (x *UpdateResponse) Reset() {
 	*x = UpdateResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[24]
+	mi := &file_apps_person_person_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2315,7 +2245,7 @@ func (x *UpdateResponse) String() string {
 func (*UpdateResponse) ProtoMessage() {}
 
 func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[24]
+	mi := &file_apps_person_person_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2328,7 +2258,7 @@ func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
 func (*UpdateResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{24}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *UpdateResponse) GetPerson() *Person {
@@ -2349,7 +2279,7 @@ type DeleteRequest struct {
 
 func (x *DeleteRequest) Reset() {
 	*x = DeleteRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[25]
+	mi := &file_apps_person_person_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2361,7 +2291,7 @@ func (x *DeleteRequest) String() string {
 func (*DeleteRequest) ProtoMessage() {}
 
 func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[25]
+	mi := &file_apps_person_person_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2374,7 +2304,7 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{25}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *DeleteRequest) GetId() string {
@@ -2401,7 +2331,7 @@ type DeleteResponse struct {
 
 func (x *DeleteResponse) Reset() {
 	*x = DeleteResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[26]
+	mi := &file_apps_person_person_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2413,7 +2343,7 @@ func (x *DeleteResponse) String() string {
 func (*DeleteResponse) ProtoMessage() {}
 
 func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[26]
+	mi := &file_apps_person_person_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2426,7 +2356,7 @@ func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
 func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{26}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *DeleteResponse) GetId() string {
@@ -2453,7 +2383,7 @@ type GetRequest struct {
 
 func (x *GetRequest) Reset() {
 	*x = GetRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[27]
+	mi := &file_apps_person_person_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2465,7 +2395,7 @@ func (x *GetRequest) String() string {
 func (*GetRequest) ProtoMessage() {}
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[27]
+	mi := &file_apps_person_person_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2478,7 +2408,7 @@ func (x *GetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{27}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetRequest) GetId() string {
@@ -2498,7 +2428,7 @@ type GetResponse struct {
 
 func (x *GetResponse) Reset() {
 	*x = GetResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[28]
+	mi := &file_apps_person_person_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2510,7 +2440,7 @@ func (x *GetResponse) String() string {
 func (*GetResponse) ProtoMessage() {}
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[28]
+	mi := &file_apps_person_person_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2523,7 +2453,7 @@ func (x *GetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
 func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{28}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetResponse) GetPerson() *Person {
@@ -2568,7 +2498,7 @@ type ListRequest struct {
 
 func (x *ListRequest) Reset() {
 	*x = ListRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[29]
+	mi := &file_apps_person_person_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2580,7 +2510,7 @@ func (x *ListRequest) String() string {
 func (*ListRequest) ProtoMessage() {}
 
 func (x *ListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[29]
+	mi := &file_apps_person_person_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2593,7 +2523,7 @@ func (x *ListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
 func (*ListRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{29}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ListRequest) GetIds() []string {
@@ -2774,7 +2704,7 @@ type ListResponse struct {
 
 func (x *ListResponse) Reset() {
 	*x = ListResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[30]
+	mi := &file_apps_person_person_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2786,7 +2716,7 @@ func (x *ListResponse) String() string {
 func (*ListResponse) ProtoMessage() {}
 
 func (x *ListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[30]
+	mi := &file_apps_person_person_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2799,7 +2729,7 @@ func (x *ListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
 func (*ListResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{30}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ListResponse) GetPersonList() []*Person {
@@ -2829,7 +2759,7 @@ type ImportRequest struct {
 
 func (x *ImportRequest) Reset() {
 	*x = ImportRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[31]
+	mi := &file_apps_person_person_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2841,7 +2771,7 @@ func (x *ImportRequest) String() string {
 func (*ImportRequest) ProtoMessage() {}
 
 func (x *ImportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[31]
+	mi := &file_apps_person_person_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2854,7 +2784,7 @@ func (x *ImportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportRequest.ProtoReflect.Descriptor instead.
 func (*ImportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{31}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ImportRequest) GetPersons() []*Person {
@@ -2905,7 +2835,7 @@ type ImportResponse struct {
 
 func (x *ImportResponse) Reset() {
 	*x = ImportResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[32]
+	mi := &file_apps_person_person_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2917,7 +2847,7 @@ func (x *ImportResponse) String() string {
 func (*ImportResponse) ProtoMessage() {}
 
 func (x *ImportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[32]
+	mi := &file_apps_person_person_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2930,7 +2860,7 @@ func (x *ImportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImportResponse.ProtoReflect.Descriptor instead.
 func (*ImportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{32}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ImportResponse) GetResult() string {
@@ -2979,7 +2909,7 @@ type ReportRequest struct {
 
 func (x *ReportRequest) Reset() {
 	*x = ReportRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[33]
+	mi := &file_apps_person_person_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2991,7 +2921,7 @@ func (x *ReportRequest) String() string {
 func (*ReportRequest) ProtoMessage() {}
 
 func (x *ReportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[33]
+	mi := &file_apps_person_person_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3004,7 +2934,7 @@ func (x *ReportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportRequest.ProtoReflect.Descriptor instead.
 func (*ReportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{33}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ReportRequest) GetTipoRelatorio() string {
@@ -3037,7 +2967,7 @@ type ReportResponse struct {
 
 func (x *ReportResponse) Reset() {
 	*x = ReportResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[34]
+	mi := &file_apps_person_person_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3049,7 +2979,7 @@ func (x *ReportResponse) String() string {
 func (*ReportResponse) ProtoMessage() {}
 
 func (x *ReportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[34]
+	mi := &file_apps_person_person_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3062,7 +2992,7 @@ func (x *ReportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportResponse.ProtoReflect.Descriptor instead.
 func (*ReportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{34}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *ReportResponse) GetResponse() *report.Response {
@@ -3086,7 +3016,7 @@ type ExportPersonsRequest struct {
 
 func (x *ExportPersonsRequest) Reset() {
 	*x = ExportPersonsRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[35]
+	mi := &file_apps_person_person_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3098,7 +3028,7 @@ func (x *ExportPersonsRequest) String() string {
 func (*ExportPersonsRequest) ProtoMessage() {}
 
 func (x *ExportPersonsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[35]
+	mi := &file_apps_person_person_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3111,7 +3041,7 @@ func (x *ExportPersonsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportPersonsRequest.ProtoReflect.Descriptor instead.
 func (*ExportPersonsRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{35}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *ExportPersonsRequest) GetFormat() exports.ExportFormat {
@@ -3158,7 +3088,7 @@ type ExportPersonsResponse struct {
 
 func (x *ExportPersonsResponse) Reset() {
 	*x = ExportPersonsResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[36]
+	mi := &file_apps_person_person_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3170,7 +3100,7 @@ func (x *ExportPersonsResponse) String() string {
 func (*ExportPersonsResponse) ProtoMessage() {}
 
 func (x *ExportPersonsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[36]
+	mi := &file_apps_person_person_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3183,7 +3113,7 @@ func (x *ExportPersonsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExportPersonsResponse.ProtoReflect.Descriptor instead.
 func (*ExportPersonsResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{36}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ExportPersonsResponse) GetExport() *exports.ExportResponse {
@@ -3202,7 +3132,7 @@ type BatchUpdateFilter struct {
 
 func (x *BatchUpdateFilter) Reset() {
 	*x = BatchUpdateFilter{}
-	mi := &file_apps_person_person_proto_msgTypes[37]
+	mi := &file_apps_person_person_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3214,7 +3144,7 @@ func (x *BatchUpdateFilter) String() string {
 func (*BatchUpdateFilter) ProtoMessage() {}
 
 func (x *BatchUpdateFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[37]
+	mi := &file_apps_person_person_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3227,7 +3157,7 @@ func (x *BatchUpdateFilter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchUpdateFilter.ProtoReflect.Descriptor instead.
 func (*BatchUpdateFilter) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{37}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *BatchUpdateFilter) GetIds() []string {
@@ -3247,7 +3177,7 @@ type BatchUpdateSeller struct {
 
 func (x *BatchUpdateSeller) Reset() {
 	*x = BatchUpdateSeller{}
-	mi := &file_apps_person_person_proto_msgTypes[38]
+	mi := &file_apps_person_person_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3259,7 +3189,7 @@ func (x *BatchUpdateSeller) String() string {
 func (*BatchUpdateSeller) ProtoMessage() {}
 
 func (x *BatchUpdateSeller) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[38]
+	mi := &file_apps_person_person_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3272,7 +3202,7 @@ func (x *BatchUpdateSeller) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchUpdateSeller.ProtoReflect.Descriptor instead.
 func (*BatchUpdateSeller) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{38}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *BatchUpdateSeller) GetId() string {
@@ -3299,7 +3229,7 @@ type BatchUpdateRequest struct {
 
 func (x *BatchUpdateRequest) Reset() {
 	*x = BatchUpdateRequest{}
-	mi := &file_apps_person_person_proto_msgTypes[39]
+	mi := &file_apps_person_person_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3311,7 +3241,7 @@ func (x *BatchUpdateRequest) String() string {
 func (*BatchUpdateRequest) ProtoMessage() {}
 
 func (x *BatchUpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[39]
+	mi := &file_apps_person_person_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3324,7 +3254,7 @@ func (x *BatchUpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchUpdateRequest.ProtoReflect.Descriptor instead.
 func (*BatchUpdateRequest) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{39}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *BatchUpdateRequest) GetFilter() *BatchUpdateFilter {
@@ -3351,7 +3281,7 @@ type BatchUpdateResponse struct {
 
 func (x *BatchUpdateResponse) Reset() {
 	*x = BatchUpdateResponse{}
-	mi := &file_apps_person_person_proto_msgTypes[40]
+	mi := &file_apps_person_person_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3363,7 +3293,7 @@ func (x *BatchUpdateResponse) String() string {
 func (*BatchUpdateResponse) ProtoMessage() {}
 
 func (x *BatchUpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_person_person_proto_msgTypes[40]
+	mi := &file_apps_person_person_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3376,7 +3306,7 @@ func (x *BatchUpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchUpdateResponse.ProtoReflect.Descriptor instead.
 func (*BatchUpdateResponse) Descriptor() ([]byte, []int) {
-	return file_apps_person_person_proto_rawDescGZIP(), []int{40}
+	return file_apps_person_person_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *BatchUpdateResponse) GetUpdatedCount() int32 {
@@ -3535,7 +3465,7 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"\achannel\x18\x03 \x01(\x0e2\x16.person.ContactChannelR\achannel\"S\n" +
 	"\x14VouchContactResponse\x12\x10\n" +
 	"\x03msg\x18\x01 \x01(\tR\x03msg\x12)\n" +
-	"\acontact\x18\x02 \x01(\v2\x0f.person.ContactR\acontact\"\xe4\x04\n" +
+	"\acontact\x18\x02 \x01(\v2\x0f.person.ContactR\acontact\"\xbc\x04\n" +
 	"\aContact\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -3554,12 +3484,7 @@ const file_apps_person_person_proto_rawDesc = "" +
 	"phoneVouch\x12+\n" +
 	"\x11verification_code\x18\f \x01(\tR\x10verificationCode\x121\n" +
 	"\x14verification_channel\x18\r \x01(\tR\x13verificationChannel\x12)\n" +
-	"\x10receives_billing\x18\x0e \x01(\bR\x0freceivesBilling\x12,\n" +
-	"\x06alerts\x18\x0f \x03(\v2\x14.person.ContactAlertR\x06alerts\"V\n" +
-	"\fContactAlert\x12\x14\n" +
-	"\x05event\x18\x01 \x01(\tR\x05event\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\bR\x05email\x12\x1a\n" +
-	"\bwhatsapp\x18\x03 \x01(\bR\bwhatsapp\"p\n" +
+	"\x10receives_billing\x18\x0e \x01(\bR\x0freceivesBillingJ\x04\b\x0f\x10\x10\"p\n" +
 	"\fContactVouch\x12*\n" +
 	"\x02at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x02at\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1b\n" +
@@ -3734,7 +3659,7 @@ func file_apps_person_person_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_person_person_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_apps_person_person_proto_msgTypes = make([]protoimpl.MessageInfo, 43)
+var file_apps_person_person_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
 var file_apps_person_person_proto_goTypes = []any{
 	(PersonStatus)(0),                          // 0: person.PersonStatus
 	(LeadStage)(0),                             // 1: person.LeadStage
@@ -3755,126 +3680,124 @@ var file_apps_person_person_proto_goTypes = []any{
 	(*VouchContactRequest)(nil),                // 16: person.VouchContactRequest
 	(*VouchContactResponse)(nil),               // 17: person.VouchContactResponse
 	(*Contact)(nil),                            // 18: person.Contact
-	(*ContactAlert)(nil),                       // 19: person.ContactAlert
-	(*ContactVouch)(nil),                       // 20: person.ContactVouch
-	(*Dependent)(nil),                          // 21: person.Dependent
-	(*Vendedor)(nil),                           // 22: person.Vendedor
-	(*Cliente)(nil),                            // 23: person.Cliente
-	(*Driver)(nil),                             // 24: person.Driver
-	(*CreateRequest)(nil),                      // 25: person.CreateRequest
-	(*CreateResponse)(nil),                     // 26: person.CreateResponse
-	(*UpdateRequest)(nil),                      // 27: person.UpdateRequest
-	(*UpdateResponse)(nil),                     // 28: person.UpdateResponse
-	(*DeleteRequest)(nil),                      // 29: person.DeleteRequest
-	(*DeleteResponse)(nil),                     // 30: person.DeleteResponse
-	(*GetRequest)(nil),                         // 31: person.GetRequest
-	(*GetResponse)(nil),                        // 32: person.GetResponse
-	(*ListRequest)(nil),                        // 33: person.ListRequest
-	(*ListResponse)(nil),                       // 34: person.ListResponse
-	(*ImportRequest)(nil),                      // 35: person.ImportRequest
-	(*ImportResponse)(nil),                     // 36: person.ImportResponse
-	(*ReportRequest)(nil),                      // 37: person.ReportRequest
-	(*ReportResponse)(nil),                     // 38: person.ReportResponse
-	(*ExportPersonsRequest)(nil),               // 39: person.ExportPersonsRequest
-	(*ExportPersonsResponse)(nil),              // 40: person.ExportPersonsResponse
-	(*BatchUpdateFilter)(nil),                  // 41: person.BatchUpdateFilter
-	(*BatchUpdateSeller)(nil),                  // 42: person.BatchUpdateSeller
-	(*BatchUpdateRequest)(nil),                 // 43: person.BatchUpdateRequest
-	(*BatchUpdateResponse)(nil),                // 44: person.BatchUpdateResponse
-	nil,                                        // 45: person.Person.IesEntry
-	nil,                                        // 46: person.Person.CustomFieldsEntry
-	(*timestamppb.Timestamp)(nil),              // 47: google.protobuf.Timestamp
-	(*metadata.BasicFields)(nil),               // 48: metadata.BasicFields
-	(*metadata.FieldMask)(nil),                 // 49: metadata.FieldMask
-	(*filter.Filter)(nil),                      // 50: Filter
-	(*report.Response)(nil),                    // 51: report.Response
-	(exports.ExportFormat)(0),                  // 52: exports.ExportFormat
-	(*exports.ExportResponse)(nil),             // 53: exports.ExportResponse
+	(*ContactVouch)(nil),                       // 19: person.ContactVouch
+	(*Dependent)(nil),                          // 20: person.Dependent
+	(*Vendedor)(nil),                           // 21: person.Vendedor
+	(*Cliente)(nil),                            // 22: person.Cliente
+	(*Driver)(nil),                             // 23: person.Driver
+	(*CreateRequest)(nil),                      // 24: person.CreateRequest
+	(*CreateResponse)(nil),                     // 25: person.CreateResponse
+	(*UpdateRequest)(nil),                      // 26: person.UpdateRequest
+	(*UpdateResponse)(nil),                     // 27: person.UpdateResponse
+	(*DeleteRequest)(nil),                      // 28: person.DeleteRequest
+	(*DeleteResponse)(nil),                     // 29: person.DeleteResponse
+	(*GetRequest)(nil),                         // 30: person.GetRequest
+	(*GetResponse)(nil),                        // 31: person.GetResponse
+	(*ListRequest)(nil),                        // 32: person.ListRequest
+	(*ListResponse)(nil),                       // 33: person.ListResponse
+	(*ImportRequest)(nil),                      // 34: person.ImportRequest
+	(*ImportResponse)(nil),                     // 35: person.ImportResponse
+	(*ReportRequest)(nil),                      // 36: person.ReportRequest
+	(*ReportResponse)(nil),                     // 37: person.ReportResponse
+	(*ExportPersonsRequest)(nil),               // 38: person.ExportPersonsRequest
+	(*ExportPersonsResponse)(nil),              // 39: person.ExportPersonsResponse
+	(*BatchUpdateFilter)(nil),                  // 40: person.BatchUpdateFilter
+	(*BatchUpdateSeller)(nil),                  // 41: person.BatchUpdateSeller
+	(*BatchUpdateRequest)(nil),                 // 42: person.BatchUpdateRequest
+	(*BatchUpdateResponse)(nil),                // 43: person.BatchUpdateResponse
+	nil,                                        // 44: person.Person.IesEntry
+	nil,                                        // 45: person.Person.CustomFieldsEntry
+	(*timestamppb.Timestamp)(nil),              // 46: google.protobuf.Timestamp
+	(*metadata.BasicFields)(nil),               // 47: metadata.BasicFields
+	(*metadata.FieldMask)(nil),                 // 48: metadata.FieldMask
+	(*filter.Filter)(nil),                      // 49: Filter
+	(*report.Response)(nil),                    // 50: report.Response
+	(exports.ExportFormat)(0),                  // 51: exports.ExportFormat
+	(*exports.ExportResponse)(nil),             // 52: exports.ExportResponse
 }
 var file_apps_person_person_proto_depIdxs = []int32{
-	47, // 0: person.Person.created_at:type_name -> google.protobuf.Timestamp
-	47, // 1: person.Person.updated_at:type_name -> google.protobuf.Timestamp
+	46, // 0: person.Person.created_at:type_name -> google.protobuf.Timestamp
+	46, // 1: person.Person.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: person.Person.status:type_name -> person.PersonStatus
 	4,  // 3: person.Person.tags:type_name -> person.PersonTag
-	47, // 4: person.Person.nascimento:type_name -> google.protobuf.Timestamp
+	46, // 4: person.Person.nascimento:type_name -> google.protobuf.Timestamp
 	11, // 5: person.Person.address:type_name -> person.Address
-	45, // 6: person.Person.ies:type_name -> person.Person.IesEntry
+	44, // 6: person.Person.ies:type_name -> person.Person.IesEntry
 	18, // 7: person.Person.contacts:type_name -> person.Contact
-	21, // 8: person.Person.dependents:type_name -> person.Dependent
-	23, // 9: person.Person.cliente:type_name -> person.Cliente
-	22, // 10: person.Person.vendedor:type_name -> person.Vendedor
-	24, // 11: person.Person.driver:type_name -> person.Driver
+	20, // 8: person.Person.dependents:type_name -> person.Dependent
+	22, // 9: person.Person.cliente:type_name -> person.Cliente
+	21, // 10: person.Person.vendedor:type_name -> person.Vendedor
+	23, // 11: person.Person.driver:type_name -> person.Driver
 	10, // 12: person.Person.lead:type_name -> person.Lead
 	8,  // 13: person.Person.carrier:type_name -> person.Carrier
-	48, // 14: person.Person.fields:type_name -> metadata.BasicFields
-	46, // 15: person.Person.custom_fields:type_name -> person.Person.CustomFieldsEntry
+	47, // 14: person.Person.fields:type_name -> metadata.BasicFields
+	45, // 15: person.Person.custom_fields:type_name -> person.Person.CustomFieldsEntry
 	6,  // 16: person.Person.specialties:type_name -> person.Specialty
 	7,  // 17: person.Person.performed_services:type_name -> person.PerformedService
-	47, // 18: person.Person.saldo_atualizado_em:type_name -> google.protobuf.Timestamp
+	46, // 18: person.Person.saldo_atualizado_em:type_name -> google.protobuf.Timestamp
 	9,  // 19: person.Carrier.vehicles:type_name -> person.CarrierVehicle
 	1,  // 20: person.Lead.stage:type_name -> person.LeadStage
 	2,  // 21: person.Lead.qualification:type_name -> person.LeadQualification
-	47, // 22: person.Lead.expected_close_date:type_name -> google.protobuf.Timestamp
-	47, // 23: person.Lead.converted_at:type_name -> google.protobuf.Timestamp
+	46, // 22: person.Lead.expected_close_date:type_name -> google.protobuf.Timestamp
+	46, // 23: person.Lead.converted_at:type_name -> google.protobuf.Timestamp
 	3,  // 24: person.SendContactVerificationRequest.channel:type_name -> person.ContactChannel
 	18, // 25: person.ConfirmContactVerificationResponse.contact:type_name -> person.Contact
 	3,  // 26: person.VouchContactRequest.channel:type_name -> person.ContactChannel
 	18, // 27: person.VouchContactResponse.contact:type_name -> person.Contact
-	47, // 28: person.Contact.email_verified_at:type_name -> google.protobuf.Timestamp
-	47, // 29: person.Contact.phone_verified_at:type_name -> google.protobuf.Timestamp
-	20, // 30: person.Contact.email_vouch:type_name -> person.ContactVouch
-	20, // 31: person.Contact.phone_vouch:type_name -> person.ContactVouch
-	19, // 32: person.Contact.alerts:type_name -> person.ContactAlert
-	47, // 33: person.ContactVouch.at:type_name -> google.protobuf.Timestamp
-	47, // 34: person.Driver.license_expiration:type_name -> google.protobuf.Timestamp
-	47, // 35: person.Driver.birth_date:type_name -> google.protobuf.Timestamp
-	5,  // 36: person.CreateRequest.person:type_name -> person.Person
-	5,  // 37: person.CreateResponse.person:type_name -> person.Person
-	5,  // 38: person.UpdateRequest.person:type_name -> person.Person
-	49, // 39: person.UpdateRequest.update_mask:type_name -> metadata.FieldMask
-	5,  // 40: person.UpdateResponse.person:type_name -> person.Person
-	5,  // 41: person.GetResponse.person:type_name -> person.Person
-	47, // 42: person.ListRequest.created_at_gte:type_name -> google.protobuf.Timestamp
-	47, // 43: person.ListRequest.created_at_lte:type_name -> google.protobuf.Timestamp
-	50, // 44: person.ListRequest.filter:type_name -> Filter
-	5,  // 45: person.ListResponse.person_list:type_name -> person.Person
-	5,  // 46: person.ImportRequest.persons:type_name -> person.Person
-	33, // 47: person.ReportRequest.list_request:type_name -> person.ListRequest
-	51, // 48: person.ReportResponse.response:type_name -> report.Response
-	52, // 49: person.ExportPersonsRequest.format:type_name -> exports.ExportFormat
-	50, // 50: person.ExportPersonsRequest.filter:type_name -> Filter
-	53, // 51: person.ExportPersonsResponse.export:type_name -> exports.ExportResponse
-	41, // 52: person.BatchUpdateRequest.filter:type_name -> person.BatchUpdateFilter
-	42, // 53: person.BatchUpdateRequest.seller:type_name -> person.BatchUpdateSeller
-	25, // 54: person.PersonService.Create:input_type -> person.CreateRequest
-	27, // 55: person.PersonService.Update:input_type -> person.UpdateRequest
-	29, // 56: person.PersonService.Delete:input_type -> person.DeleteRequest
-	31, // 57: person.PersonService.Get:input_type -> person.GetRequest
-	33, // 58: person.PersonService.List:input_type -> person.ListRequest
-	35, // 59: person.PersonService.Import:input_type -> person.ImportRequest
-	37, // 60: person.PersonService.Report:input_type -> person.ReportRequest
-	39, // 61: person.PersonService.Export:input_type -> person.ExportPersonsRequest
-	12, // 62: person.PersonService.SendContactVerification:input_type -> person.SendContactVerificationRequest
-	14, // 63: person.PersonService.ConfirmContactVerification:input_type -> person.ConfirmContactVerificationRequest
-	16, // 64: person.PersonService.VouchContact:input_type -> person.VouchContactRequest
-	43, // 65: person.PersonService.BatchUpdate:input_type -> person.BatchUpdateRequest
-	26, // 66: person.PersonService.Create:output_type -> person.CreateResponse
-	28, // 67: person.PersonService.Update:output_type -> person.UpdateResponse
-	30, // 68: person.PersonService.Delete:output_type -> person.DeleteResponse
-	32, // 69: person.PersonService.Get:output_type -> person.GetResponse
-	34, // 70: person.PersonService.List:output_type -> person.ListResponse
-	36, // 71: person.PersonService.Import:output_type -> person.ImportResponse
-	38, // 72: person.PersonService.Report:output_type -> person.ReportResponse
-	40, // 73: person.PersonService.Export:output_type -> person.ExportPersonsResponse
-	13, // 74: person.PersonService.SendContactVerification:output_type -> person.SendContactVerificationResponse
-	15, // 75: person.PersonService.ConfirmContactVerification:output_type -> person.ConfirmContactVerificationResponse
-	17, // 76: person.PersonService.VouchContact:output_type -> person.VouchContactResponse
-	44, // 77: person.PersonService.BatchUpdate:output_type -> person.BatchUpdateResponse
-	66, // [66:78] is the sub-list for method output_type
-	54, // [54:66] is the sub-list for method input_type
-	54, // [54:54] is the sub-list for extension type_name
-	54, // [54:54] is the sub-list for extension extendee
-	0,  // [0:54] is the sub-list for field type_name
+	46, // 28: person.Contact.email_verified_at:type_name -> google.protobuf.Timestamp
+	46, // 29: person.Contact.phone_verified_at:type_name -> google.protobuf.Timestamp
+	19, // 30: person.Contact.email_vouch:type_name -> person.ContactVouch
+	19, // 31: person.Contact.phone_vouch:type_name -> person.ContactVouch
+	46, // 32: person.ContactVouch.at:type_name -> google.protobuf.Timestamp
+	46, // 33: person.Driver.license_expiration:type_name -> google.protobuf.Timestamp
+	46, // 34: person.Driver.birth_date:type_name -> google.protobuf.Timestamp
+	5,  // 35: person.CreateRequest.person:type_name -> person.Person
+	5,  // 36: person.CreateResponse.person:type_name -> person.Person
+	5,  // 37: person.UpdateRequest.person:type_name -> person.Person
+	48, // 38: person.UpdateRequest.update_mask:type_name -> metadata.FieldMask
+	5,  // 39: person.UpdateResponse.person:type_name -> person.Person
+	5,  // 40: person.GetResponse.person:type_name -> person.Person
+	46, // 41: person.ListRequest.created_at_gte:type_name -> google.protobuf.Timestamp
+	46, // 42: person.ListRequest.created_at_lte:type_name -> google.protobuf.Timestamp
+	49, // 43: person.ListRequest.filter:type_name -> Filter
+	5,  // 44: person.ListResponse.person_list:type_name -> person.Person
+	5,  // 45: person.ImportRequest.persons:type_name -> person.Person
+	32, // 46: person.ReportRequest.list_request:type_name -> person.ListRequest
+	50, // 47: person.ReportResponse.response:type_name -> report.Response
+	51, // 48: person.ExportPersonsRequest.format:type_name -> exports.ExportFormat
+	49, // 49: person.ExportPersonsRequest.filter:type_name -> Filter
+	52, // 50: person.ExportPersonsResponse.export:type_name -> exports.ExportResponse
+	40, // 51: person.BatchUpdateRequest.filter:type_name -> person.BatchUpdateFilter
+	41, // 52: person.BatchUpdateRequest.seller:type_name -> person.BatchUpdateSeller
+	24, // 53: person.PersonService.Create:input_type -> person.CreateRequest
+	26, // 54: person.PersonService.Update:input_type -> person.UpdateRequest
+	28, // 55: person.PersonService.Delete:input_type -> person.DeleteRequest
+	30, // 56: person.PersonService.Get:input_type -> person.GetRequest
+	32, // 57: person.PersonService.List:input_type -> person.ListRequest
+	34, // 58: person.PersonService.Import:input_type -> person.ImportRequest
+	36, // 59: person.PersonService.Report:input_type -> person.ReportRequest
+	38, // 60: person.PersonService.Export:input_type -> person.ExportPersonsRequest
+	12, // 61: person.PersonService.SendContactVerification:input_type -> person.SendContactVerificationRequest
+	14, // 62: person.PersonService.ConfirmContactVerification:input_type -> person.ConfirmContactVerificationRequest
+	16, // 63: person.PersonService.VouchContact:input_type -> person.VouchContactRequest
+	42, // 64: person.PersonService.BatchUpdate:input_type -> person.BatchUpdateRequest
+	25, // 65: person.PersonService.Create:output_type -> person.CreateResponse
+	27, // 66: person.PersonService.Update:output_type -> person.UpdateResponse
+	29, // 67: person.PersonService.Delete:output_type -> person.DeleteResponse
+	31, // 68: person.PersonService.Get:output_type -> person.GetResponse
+	33, // 69: person.PersonService.List:output_type -> person.ListResponse
+	35, // 70: person.PersonService.Import:output_type -> person.ImportResponse
+	37, // 71: person.PersonService.Report:output_type -> person.ReportResponse
+	39, // 72: person.PersonService.Export:output_type -> person.ExportPersonsResponse
+	13, // 73: person.PersonService.SendContactVerification:output_type -> person.SendContactVerificationResponse
+	15, // 74: person.PersonService.ConfirmContactVerification:output_type -> person.ConfirmContactVerificationResponse
+	17, // 75: person.PersonService.VouchContact:output_type -> person.VouchContactResponse
+	43, // 76: person.PersonService.BatchUpdate:output_type -> person.BatchUpdateResponse
+	65, // [65:77] is the sub-list for method output_type
+	53, // [53:65] is the sub-list for method input_type
+	53, // [53:53] is the sub-list for extension type_name
+	53, // [53:53] is the sub-list for extension extendee
+	0,  // [0:53] is the sub-list for field type_name
 }
 
 func init() { file_apps_person_person_proto_init() }
@@ -3888,7 +3811,7 @@ func file_apps_person_person_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_person_person_proto_rawDesc), len(file_apps_person_person_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   43,
+			NumMessages:   42,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
