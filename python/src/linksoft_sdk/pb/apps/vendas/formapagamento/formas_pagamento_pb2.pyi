@@ -162,7 +162,7 @@ class ManualReviewPolicy(_message.Message):
     def __init__(self, enabled: _Optional[bool] = ..., required_after_antifraud: _Optional[bool] = ..., hold_payment_while_pending: _Optional[bool] = ..., min_amount: _Optional[float] = ..., min_installments: _Optional[int] = ..., reason_hint: _Optional[str] = ...) -> None: ...
 
 class Integration(_message.Message):
-    __slots__ = ("id", "name", "gateway", "gateway_ambiente", "gateway_nome_fatura_cartao", "gateway_dias_validade", "gateway_webhook_url", "gateway_pix", "modalidade_cartao", "juros_mes_percentual", "multa_percentual", "dias_pagamento_apos_vencimento")
+    __slots__ = ("id", "name", "gateway", "gateway_ambiente", "gateway_nome_fatura_cartao", "gateway_dias_validade", "gateway_webhook_url", "gateway_pix", "modalidade_cartao", "juros_mes_percentual", "multa_percentual", "dias_pagamento_apos_vencimento", "convenio_cobranca", "carteira_cobranca", "variacao_carteira_cobranca")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     GATEWAY_FIELD_NUMBER: _ClassVar[int]
@@ -175,6 +175,9 @@ class Integration(_message.Message):
     JUROS_MES_PERCENTUAL_FIELD_NUMBER: _ClassVar[int]
     MULTA_PERCENTUAL_FIELD_NUMBER: _ClassVar[int]
     DIAS_PAGAMENTO_APOS_VENCIMENTO_FIELD_NUMBER: _ClassVar[int]
+    CONVENIO_COBRANCA_FIELD_NUMBER: _ClassVar[int]
+    CARTEIRA_COBRANCA_FIELD_NUMBER: _ClassVar[int]
+    VARIACAO_CARTEIRA_COBRANCA_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     gateway: str
@@ -187,7 +190,10 @@ class Integration(_message.Message):
     juros_mes_percentual: float
     multa_percentual: float
     dias_pagamento_apos_vencimento: int
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., gateway: _Optional[str] = ..., gateway_ambiente: _Optional[str] = ..., gateway_nome_fatura_cartao: _Optional[str] = ..., gateway_dias_validade: _Optional[int] = ..., gateway_webhook_url: _Optional[str] = ..., gateway_pix: _Optional[_Union[GatewayPix, _Mapping]] = ..., modalidade_cartao: _Optional[_Union[ModalidadeCartao, str]] = ..., juros_mes_percentual: _Optional[float] = ..., multa_percentual: _Optional[float] = ..., dias_pagamento_apos_vencimento: _Optional[int] = ...) -> None: ...
+    convenio_cobranca: str
+    carteira_cobranca: str
+    variacao_carteira_cobranca: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., gateway: _Optional[str] = ..., gateway_ambiente: _Optional[str] = ..., gateway_nome_fatura_cartao: _Optional[str] = ..., gateway_dias_validade: _Optional[int] = ..., gateway_webhook_url: _Optional[str] = ..., gateway_pix: _Optional[_Union[GatewayPix, _Mapping]] = ..., modalidade_cartao: _Optional[_Union[ModalidadeCartao, str]] = ..., juros_mes_percentual: _Optional[float] = ..., multa_percentual: _Optional[float] = ..., dias_pagamento_apos_vencimento: _Optional[int] = ..., convenio_cobranca: _Optional[str] = ..., carteira_cobranca: _Optional[str] = ..., variacao_carteira_cobranca: _Optional[str] = ...) -> None: ...
 
 class GatewayPix(_message.Message):
     __slots__ = ("segundos_validos", "chave_pix", "certificado_pix", "cobranca_presencial")

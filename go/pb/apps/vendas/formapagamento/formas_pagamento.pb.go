@@ -761,8 +761,13 @@ type Integration struct {
 	MultaPercentual    float64 `protobuf:"fixed64,12,opt,name=multa_percentual,json=multaPercentual,proto3" json:"multa_percentual,omitempty"`
 	// Dias depois do vencimento em que o boleto ainda aceita pagamento
 	DiasPagamentoAposVencimento int32 `protobuf:"varint,13,opt,name=dias_pagamento_apos_vencimento,json=diasPagamentoAposVencimento,proto3" json:"dias_pagamento_apos_vencimento,omitempty"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	// Contrato de cobrança da empresa no banco, usado no registro do boleto pelos bancos que
+	// registram o título num convênio: número do convênio, carteira e variação da carteira
+	ConvenioCobranca         string `protobuf:"bytes,14,opt,name=convenio_cobranca,json=convenioCobranca,proto3" json:"convenio_cobranca,omitempty"`
+	CarteiraCobranca         string `protobuf:"bytes,15,opt,name=carteira_cobranca,json=carteiraCobranca,proto3" json:"carteira_cobranca,omitempty"`
+	VariacaoCarteiraCobranca string `protobuf:"bytes,16,opt,name=variacao_carteira_cobranca,json=variacaoCarteiraCobranca,proto3" json:"variacao_carteira_cobranca,omitempty"`
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *Integration) Reset() {
@@ -877,6 +882,27 @@ func (x *Integration) GetDiasPagamentoAposVencimento() int32 {
 		return x.DiasPagamentoAposVencimento
 	}
 	return 0
+}
+
+func (x *Integration) GetConvenioCobranca() string {
+	if x != nil {
+		return x.ConvenioCobranca
+	}
+	return ""
+}
+
+func (x *Integration) GetCarteiraCobranca() string {
+	if x != nil {
+		return x.CarteiraCobranca
+	}
+	return ""
+}
+
+func (x *Integration) GetVariacaoCarteiraCobranca() string {
+	if x != nil {
+		return x.VariacaoCarteiraCobranca
+	}
+	return ""
 }
 
 type GatewayPix struct {
@@ -1904,7 +1930,7 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"min_amount\x18\x04 \x01(\x01R\tminAmount\x12)\n" +
 	"\x10min_installments\x18\x05 \x01(\x05R\x0fminInstallments\x12\x1f\n" +
 	"\vreason_hint\x18\x06 \x01(\tR\n" +
-	"reasonHint\"\xc3\x04\n" +
+	"reasonHint\"\xdb\x05\n" +
 	"\vIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
@@ -1919,7 +1945,10 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	" \x01(\x0e2\x1f.PaymentMethod.ModalidadeCartaoR\x10modalidadeCartao\x120\n" +
 	"\x14juros_mes_percentual\x18\v \x01(\x01R\x12jurosMesPercentual\x12)\n" +
 	"\x10multa_percentual\x18\f \x01(\x01R\x0fmultaPercentual\x12C\n" +
-	"\x1edias_pagamento_apos_vencimento\x18\r \x01(\x05R\x1bdiasPagamentoAposVencimento\"\xcd\x01\n" +
+	"\x1edias_pagamento_apos_vencimento\x18\r \x01(\x05R\x1bdiasPagamentoAposVencimento\x12+\n" +
+	"\x11convenio_cobranca\x18\x0e \x01(\tR\x10convenioCobranca\x12+\n" +
+	"\x11carteira_cobranca\x18\x0f \x01(\tR\x10carteiraCobranca\x12<\n" +
+	"\x1avariacao_carteira_cobranca\x18\x10 \x01(\tR\x18variacaoCarteiraCobranca\"\xcd\x01\n" +
 	"\n" +
 	"GatewayPix\x12)\n" +
 	"\x10segundos_validos\x18\x01 \x01(\x05R\x0fsegundosValidos\x12\x1b\n" +
