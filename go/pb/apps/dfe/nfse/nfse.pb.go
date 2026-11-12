@@ -1088,8 +1088,12 @@ type CidadeSuportada struct {
 	Nome            string                 `protobuf:"bytes,2,opt,name=nome,proto3" json:"nome,omitempty"`
 	Uf              string                 `protobuf:"bytes,3,opt,name=uf,proto3" json:"uf,omitempty"`
 	Provedor        string                 `protobuf:"bytes,4,opt,name=provedor,proto3" json:"provedor,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// O provedor recusa a emissão sem o usuário do webservice cadastrado na prefeitura
+	ExigeUsuarioWebservice bool `protobuf:"varint,5,opt,name=exige_usuario_webservice,json=exigeUsuarioWebservice,proto3" json:"exige_usuario_webservice,omitempty"`
+	// O provedor recusa a emissão sem a senha do webservice cadastrada na prefeitura
+	ExigeSenhaWebservice bool `protobuf:"varint,6,opt,name=exige_senha_webservice,json=exigeSenhaWebservice,proto3" json:"exige_senha_webservice,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *CidadeSuportada) Reset() {
@@ -1148,6 +1152,20 @@ func (x *CidadeSuportada) GetProvedor() string {
 		return x.Provedor
 	}
 	return ""
+}
+
+func (x *CidadeSuportada) GetExigeUsuarioWebservice() bool {
+	if x != nil {
+		return x.ExigeUsuarioWebservice
+	}
+	return false
+}
+
+func (x *CidadeSuportada) GetExigeSenhaWebservice() bool {
+	if x != nil {
+		return x.ExigeSenhaWebservice
+	}
+	return false
 }
 
 type GetCidadesSuportadasResponse struct {
@@ -8298,12 +8316,14 @@ const file_apps_dfe_nfse_nfse_proto_rawDesc = "" +
 	"\x13recommended_actions\x18\x04 \x03(\tR\x12recommendedActions\x12\x1a\n" +
 	"\bseverity\x18\x05 \x01(\tR\bseverity\"H\n" +
 	"\x1bGetCidadesSuportadasRequest\x12)\n" +
-	"\x10codigo_municipio\x18\x01 \x01(\tR\x0fcodigoMunicipio\"|\n" +
+	"\x10codigo_municipio\x18\x01 \x01(\tR\x0fcodigoMunicipio\"\xec\x01\n" +
 	"\x0fCidadeSuportada\x12)\n" +
 	"\x10codigo_municipio\x18\x01 \x01(\tR\x0fcodigoMunicipio\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x0e\n" +
 	"\x02uf\x18\x03 \x01(\tR\x02uf\x12\x1a\n" +
-	"\bprovedor\x18\x04 \x01(\tR\bprovedor\"O\n" +
+	"\bprovedor\x18\x04 \x01(\tR\bprovedor\x128\n" +
+	"\x18exige_usuario_webservice\x18\x05 \x01(\bR\x16exigeUsuarioWebservice\x124\n" +
+	"\x16exige_senha_webservice\x18\x06 \x01(\bR\x14exigeSenhaWebservice\"O\n" +
 	"\x1cGetCidadesSuportadasResponse\x12/\n" +
 	"\acidades\x18\x01 \x03(\v2\x15.nfse.CidadeSuportadaR\acidades\"\x8f\a\n" +
 	"\aTomador\x12\x0e\n" +

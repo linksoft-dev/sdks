@@ -93,7 +93,7 @@ class ConfigNfe(_message.Message):
     def __init__(self, ambiente_padrao: _Optional[str] = ..., serie_padrao: _Optional[int] = ..., data_hora_status: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_consulta_bloqueada_ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_nsu: _Optional[int] = ..., entrada_busca_automatica: _Optional[bool] = ..., auto_atualiza_preco: _Optional[bool] = ..., entrada_vincula_itens_ia: _Optional[bool] = ..., entrada_politica_preco_ia: _Optional[str] = ...) -> None: ...
 
 class ConfigNfce(_message.Message):
-    __slots__ = ("ambiente_padrao", "serie_padrao", "data_hora_status", "entrada_consulta_bloqueada_ate", "entrada_nsu", "entrada_busca_automatica", "auto_atualiza_preco", "csc", "token")
+    __slots__ = ("ambiente_padrao", "serie_padrao", "data_hora_status", "entrada_consulta_bloqueada_ate", "entrada_nsu", "entrada_busca_automatica", "auto_atualiza_preco", "csc", "token", "csc_cadastrado")
     AMBIENTE_PADRAO_FIELD_NUMBER: _ClassVar[int]
     SERIE_PADRAO_FIELD_NUMBER: _ClassVar[int]
     DATA_HORA_STATUS_FIELD_NUMBER: _ClassVar[int]
@@ -103,6 +103,7 @@ class ConfigNfce(_message.Message):
     AUTO_ATUALIZA_PRECO_FIELD_NUMBER: _ClassVar[int]
     CSC_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
+    CSC_CADASTRADO_FIELD_NUMBER: _ClassVar[int]
     ambiente_padrao: str
     serie_padrao: int
     data_hora_status: _timestamp_pb2.Timestamp
@@ -112,7 +113,8 @@ class ConfigNfce(_message.Message):
     auto_atualiza_preco: bool
     csc: str
     token: int
-    def __init__(self, ambiente_padrao: _Optional[str] = ..., serie_padrao: _Optional[int] = ..., data_hora_status: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_consulta_bloqueada_ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_nsu: _Optional[int] = ..., entrada_busca_automatica: _Optional[bool] = ..., auto_atualiza_preco: _Optional[bool] = ..., csc: _Optional[str] = ..., token: _Optional[int] = ...) -> None: ...
+    csc_cadastrado: bool
+    def __init__(self, ambiente_padrao: _Optional[str] = ..., serie_padrao: _Optional[int] = ..., data_hora_status: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_consulta_bloqueada_ate: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., entrada_nsu: _Optional[int] = ..., entrada_busca_automatica: _Optional[bool] = ..., auto_atualiza_preco: _Optional[bool] = ..., csc: _Optional[str] = ..., token: _Optional[int] = ..., csc_cadastrado: _Optional[bool] = ...) -> None: ...
 
 class ConfigMdfe(_message.Message):
     __slots__ = ("ambiente_padrao", "serie_padrao")
@@ -133,7 +135,7 @@ class ConfigCte(_message.Message):
     def __init__(self, ambiente_padrao: _Optional[_Union[AmbientePadrao, str]] = ..., serie_padrao: _Optional[int] = ..., serie: _Optional[int] = ...) -> None: ...
 
 class ConfigNfse(_message.Message):
-    __slots__ = ("ambiente_padrao", "iss", "reg_ap_trib_sn", "nfse_auto_emite", "serie_padrao", "envia_email_automatico", "webservice_usuario", "webservice_senha", "aliquota_simples_nacional")
+    __slots__ = ("ambiente_padrao", "iss", "reg_ap_trib_sn", "nfse_auto_emite", "serie_padrao", "envia_email_automatico", "webservice_usuario", "webservice_senha", "aliquota_simples_nacional", "servico_padrao", "webservice_senha_cadastrada")
     AMBIENTE_PADRAO_FIELD_NUMBER: _ClassVar[int]
     ISS_FIELD_NUMBER: _ClassVar[int]
     REG_AP_TRIB_SN_FIELD_NUMBER: _ClassVar[int]
@@ -143,6 +145,8 @@ class ConfigNfse(_message.Message):
     WEBSERVICE_USUARIO_FIELD_NUMBER: _ClassVar[int]
     WEBSERVICE_SENHA_FIELD_NUMBER: _ClassVar[int]
     ALIQUOTA_SIMPLES_NACIONAL_FIELD_NUMBER: _ClassVar[int]
+    SERVICO_PADRAO_FIELD_NUMBER: _ClassVar[int]
+    WEBSERVICE_SENHA_CADASTRADA_FIELD_NUMBER: _ClassVar[int]
     ambiente_padrao: AmbientePadrao
     iss: float
     reg_ap_trib_sn: int
@@ -152,7 +156,23 @@ class ConfigNfse(_message.Message):
     webservice_usuario: str
     webservice_senha: str
     aliquota_simples_nacional: float
-    def __init__(self, ambiente_padrao: _Optional[_Union[AmbientePadrao, str]] = ..., iss: _Optional[float] = ..., reg_ap_trib_sn: _Optional[int] = ..., nfse_auto_emite: _Optional[bool] = ..., serie_padrao: _Optional[str] = ..., envia_email_automatico: _Optional[bool] = ..., webservice_usuario: _Optional[str] = ..., webservice_senha: _Optional[str] = ..., aliquota_simples_nacional: _Optional[float] = ...) -> None: ...
+    servico_padrao: CodigoServicoNfse
+    webservice_senha_cadastrada: bool
+    def __init__(self, ambiente_padrao: _Optional[_Union[AmbientePadrao, str]] = ..., iss: _Optional[float] = ..., reg_ap_trib_sn: _Optional[int] = ..., nfse_auto_emite: _Optional[bool] = ..., serie_padrao: _Optional[str] = ..., envia_email_automatico: _Optional[bool] = ..., webservice_usuario: _Optional[str] = ..., webservice_senha: _Optional[str] = ..., aliquota_simples_nacional: _Optional[float] = ..., servico_padrao: _Optional[_Union[CodigoServicoNfse, _Mapping]] = ..., webservice_senha_cadastrada: _Optional[bool] = ...) -> None: ...
+
+class CodigoServicoNfse(_message.Message):
+    __slots__ = ("codigo_servico_id", "codigo_servico_codigo", "codigo_servico_nome", "cnae_codigo", "codigo_nbs")
+    CODIGO_SERVICO_ID_FIELD_NUMBER: _ClassVar[int]
+    CODIGO_SERVICO_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    CODIGO_SERVICO_NOME_FIELD_NUMBER: _ClassVar[int]
+    CNAE_CODIGO_FIELD_NUMBER: _ClassVar[int]
+    CODIGO_NBS_FIELD_NUMBER: _ClassVar[int]
+    codigo_servico_id: str
+    codigo_servico_codigo: str
+    codigo_servico_nome: str
+    cnae_codigo: str
+    codigo_nbs: str
+    def __init__(self, codigo_servico_id: _Optional[str] = ..., codigo_servico_codigo: _Optional[str] = ..., codigo_servico_nome: _Optional[str] = ..., cnae_codigo: _Optional[str] = ..., codigo_nbs: _Optional[str] = ...) -> None: ...
 
 class Cnae(_message.Message):
     __slots__ = ("nome", "codigo")

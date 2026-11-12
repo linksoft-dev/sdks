@@ -245,16 +245,20 @@ class GetCidadesSuportadasRequest(_message.Message):
     def __init__(self, codigo_municipio: _Optional[str] = ...) -> None: ...
 
 class CidadeSuportada(_message.Message):
-    __slots__ = ("codigo_municipio", "nome", "uf", "provedor")
+    __slots__ = ("codigo_municipio", "nome", "uf", "provedor", "exige_usuario_webservice", "exige_senha_webservice")
     CODIGO_MUNICIPIO_FIELD_NUMBER: _ClassVar[int]
     NOME_FIELD_NUMBER: _ClassVar[int]
     UF_FIELD_NUMBER: _ClassVar[int]
     PROVEDOR_FIELD_NUMBER: _ClassVar[int]
+    EXIGE_USUARIO_WEBSERVICE_FIELD_NUMBER: _ClassVar[int]
+    EXIGE_SENHA_WEBSERVICE_FIELD_NUMBER: _ClassVar[int]
     codigo_municipio: str
     nome: str
     uf: str
     provedor: str
-    def __init__(self, codigo_municipio: _Optional[str] = ..., nome: _Optional[str] = ..., uf: _Optional[str] = ..., provedor: _Optional[str] = ...) -> None: ...
+    exige_usuario_webservice: bool
+    exige_senha_webservice: bool
+    def __init__(self, codigo_municipio: _Optional[str] = ..., nome: _Optional[str] = ..., uf: _Optional[str] = ..., provedor: _Optional[str] = ..., exige_usuario_webservice: _Optional[bool] = ..., exige_senha_webservice: _Optional[bool] = ...) -> None: ...
 
 class GetCidadesSuportadasResponse(_message.Message):
     __slots__ = ("cidades",)

@@ -443,8 +443,10 @@ type ConfigNfce struct {
 	AutoAtualizaPreco           bool                   `protobuf:"varint,7,opt,name=auto_atualiza_preco,json=autoAtualizaPreco,proto3" json:"auto_atualiza_preco,omitempty"`
 	Csc                         string                 `protobuf:"bytes,8,opt,name=csc,proto3" json:"csc,omitempty"`
 	Token                       int32                  `protobuf:"varint,9,opt,name=token,proto3" json:"token,omitempty"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
+	// Há CSC gravado; o CSC em si não volta nas respostas
+	CscCadastrado bool `protobuf:"varint,10,opt,name=csc_cadastrado,json=cscCadastrado,proto3" json:"csc_cadastrado,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ConfigNfce) Reset() {
@@ -538,6 +540,13 @@ func (x *ConfigNfce) GetToken() int32 {
 		return x.Token
 	}
 	return 0
+}
+
+func (x *ConfigNfce) GetCscCadastrado() bool {
+	if x != nil {
+		return x.CscCadastrado
+	}
+	return false
 }
 
 type ConfigMdfe struct {
@@ -668,8 +677,12 @@ type ConfigNfse struct {
 	WebserviceSenha      string `protobuf:"bytes,8,opt,name=webservice_senha,json=webserviceSenha,proto3" json:"webservice_senha,omitempty"`                   // Senha de acesso ao webservice de NFSe do município (quando o provedor exige login)
 	// Alíquota do Simples Nacional (%) informada na NFS-e como valor aproximado dos tributos (ME/EPP)
 	AliquotaSimplesNacional float64 `protobuf:"fixed64,9,opt,name=aliquota_simples_nacional,json=aliquotaSimplesNacional,proto3" json:"aliquota_simples_nacional,omitempty"`
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	// Código de serviço da NFS-e dos serviços que não têm código próprio no cadastro
+	ServicoPadrao *CodigoServicoNfse `protobuf:"bytes,10,opt,name=servico_padrao,json=servicoPadrao,proto3" json:"servico_padrao,omitempty"`
+	// Há senha do webservice gravada; a senha em si não volta nas respostas
+	WebserviceSenhaCadastrada bool `protobuf:"varint,11,opt,name=webservice_senha_cadastrada,json=webserviceSenhaCadastrada,proto3" json:"webservice_senha_cadastrada,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *ConfigNfse) Reset() {
@@ -765,6 +778,97 @@ func (x *ConfigNfse) GetAliquotaSimplesNacional() float64 {
 	return 0
 }
 
+func (x *ConfigNfse) GetServicoPadrao() *CodigoServicoNfse {
+	if x != nil {
+		return x.ServicoPadrao
+	}
+	return nil
+}
+
+func (x *ConfigNfse) GetWebserviceSenhaCadastrada() bool {
+	if x != nil {
+		return x.WebserviceSenhaCadastrada
+	}
+	return false
+}
+
+// Código de serviço da NFS-e (item da lista de serviços) com o CNAE e a NBS
+type CodigoServicoNfse struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	CodigoServicoId     string                 `protobuf:"bytes,1,opt,name=codigo_servico_id,json=codigoServicoId,proto3" json:"codigo_servico_id,omitempty"`
+	CodigoServicoCodigo string                 `protobuf:"bytes,2,opt,name=codigo_servico_codigo,json=codigoServicoCodigo,proto3" json:"codigo_servico_codigo,omitempty"`
+	CodigoServicoNome   string                 `protobuf:"bytes,3,opt,name=codigo_servico_nome,json=codigoServicoNome,proto3" json:"codigo_servico_nome,omitempty"`
+	CnaeCodigo          string                 `protobuf:"bytes,4,opt,name=cnae_codigo,json=cnaeCodigo,proto3" json:"cnae_codigo,omitempty"`
+	CodigoNbs           string                 `protobuf:"bytes,5,opt,name=codigo_nbs,json=codigoNbs,proto3" json:"codigo_nbs,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *CodigoServicoNfse) Reset() {
+	*x = CodigoServicoNfse{}
+	mi := &file_apps_config_config_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CodigoServicoNfse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CodigoServicoNfse) ProtoMessage() {}
+
+func (x *CodigoServicoNfse) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_config_config_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CodigoServicoNfse.ProtoReflect.Descriptor instead.
+func (*CodigoServicoNfse) Descriptor() ([]byte, []int) {
+	return file_apps_config_config_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *CodigoServicoNfse) GetCodigoServicoId() string {
+	if x != nil {
+		return x.CodigoServicoId
+	}
+	return ""
+}
+
+func (x *CodigoServicoNfse) GetCodigoServicoCodigo() string {
+	if x != nil {
+		return x.CodigoServicoCodigo
+	}
+	return ""
+}
+
+func (x *CodigoServicoNfse) GetCodigoServicoNome() string {
+	if x != nil {
+		return x.CodigoServicoNome
+	}
+	return ""
+}
+
+func (x *CodigoServicoNfse) GetCnaeCodigo() string {
+	if x != nil {
+		return x.CnaeCodigo
+	}
+	return ""
+}
+
+func (x *CodigoServicoNfse) GetCodigoNbs() string {
+	if x != nil {
+		return x.CodigoNbs
+	}
+	return ""
+}
+
 type Cnae struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Nome          string                 `protobuf:"bytes,1,opt,name=nome,proto3" json:"nome,omitempty"`
@@ -775,7 +879,7 @@ type Cnae struct {
 
 func (x *Cnae) Reset() {
 	*x = Cnae{}
-	mi := &file_apps_config_config_proto_msgTypes[7]
+	mi := &file_apps_config_config_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -787,7 +891,7 @@ func (x *Cnae) String() string {
 func (*Cnae) ProtoMessage() {}
 
 func (x *Cnae) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[7]
+	mi := &file_apps_config_config_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -800,7 +904,7 @@ func (x *Cnae) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Cnae.ProtoReflect.Descriptor instead.
 func (*Cnae) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{7}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Cnae) GetNome() string {
@@ -860,7 +964,7 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\x18entrada_busca_automatica\x18\x06 \x01(\bR\x16entradaBuscaAutomatica\x12.\n" +
 	"\x13auto_atualiza_preco\x18\a \x01(\bR\x11autoAtualizaPreco\x127\n" +
 	"\x18entrada_vincula_itens_ia\x18\b \x01(\bR\x15entradaVinculaItensIa\x129\n" +
-	"\x19entrada_politica_preco_ia\x18\t \x01(\tR\x16entradaPoliticaPrecoIa\"\xb8\x03\n" +
+	"\x19entrada_politica_preco_ia\x18\t \x01(\tR\x16entradaPoliticaPrecoIa\"\xe5\x03\n" +
 	"\n" +
 	"ConfigNfce\x12'\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\tR\x0eambientePadrao\x12!\n" +
@@ -872,7 +976,9 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\x18entrada_busca_automatica\x18\x06 \x01(\bR\x16entradaBuscaAutomatica\x12.\n" +
 	"\x13auto_atualiza_preco\x18\a \x01(\bR\x11autoAtualizaPreco\x12\x16\n" +
 	"\x03csc\x18\b \x01(\tB\x04\xe2A\x01\x04R\x03csc\x12\x14\n" +
-	"\x05token\x18\t \x01(\x05R\x05token\"X\n" +
+	"\x05token\x18\t \x01(\x05R\x05token\x12+\n" +
+	"\x0ecsc_cadastrado\x18\n" +
+	" \x01(\bB\x04\xe2A\x01\x03R\rcscCadastrado\"X\n" +
 	"\n" +
 	"ConfigMdfe\x12'\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\tR\x0eambientePadrao\x12!\n" +
@@ -880,7 +986,7 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\tConfigCte\x12?\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\x0e2\x16.config.AmbientePadraoR\x0eambientePadrao\x12!\n" +
 	"\fserie_padrao\x18\x02 \x01(\x05R\vseriePadrao\x12\x14\n" +
-	"\x05serie\x18\x03 \x01(\x05R\x05serie\"\xa1\x03\n" +
+	"\x05serie\x18\x03 \x01(\x05R\x05serie\"\xa9\x04\n" +
 	"\n" +
 	"ConfigNfse\x12?\n" +
 	"\x0fambiente_padrao\x18\x01 \x01(\x0e2\x16.config.AmbientePadraoR\x0eambientePadrao\x12\x10\n" +
@@ -891,7 +997,18 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\x16envia_email_automatico\x18\x06 \x01(\bR\x14enviaEmailAutomatico\x12-\n" +
 	"\x12webservice_usuario\x18\a \x01(\tR\x11webserviceUsuario\x12/\n" +
 	"\x10webservice_senha\x18\b \x01(\tB\x04\xe2A\x01\x04R\x0fwebserviceSenha\x12:\n" +
-	"\x19aliquota_simples_nacional\x18\t \x01(\x01R\x17aliquotaSimplesNacional\"2\n" +
+	"\x19aliquota_simples_nacional\x18\t \x01(\x01R\x17aliquotaSimplesNacional\x12@\n" +
+	"\x0eservico_padrao\x18\n" +
+	" \x01(\v2\x19.config.CodigoServicoNfseR\rservicoPadrao\x12D\n" +
+	"\x1bwebservice_senha_cadastrada\x18\v \x01(\bB\x04\xe2A\x01\x03R\x19webserviceSenhaCadastrada\"\xe3\x01\n" +
+	"\x11CodigoServicoNfse\x12*\n" +
+	"\x11codigo_servico_id\x18\x01 \x01(\tR\x0fcodigoServicoId\x122\n" +
+	"\x15codigo_servico_codigo\x18\x02 \x01(\tR\x13codigoServicoCodigo\x12.\n" +
+	"\x13codigo_servico_nome\x18\x03 \x01(\tR\x11codigoServicoNome\x12\x1f\n" +
+	"\vcnae_codigo\x18\x04 \x01(\tR\n" +
+	"cnaeCodigo\x12\x1d\n" +
+	"\n" +
+	"codigo_nbs\x18\x05 \x01(\tR\tcodigoNbs\"2\n" +
 	"\x04Cnae\x12\x12\n" +
 	"\x04nome\x18\x01 \x01(\tR\x04nome\x12\x16\n" +
 	"\x06codigo\x18\x02 \x01(\tR\x06codigo*p\n" +
@@ -915,7 +1032,7 @@ func file_apps_config_config_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_config_config_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_apps_config_config_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_apps_config_config_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_apps_config_config_proto_goTypes = []any{
 	(AmbientePadrao)(0),           // 0: config.AmbientePadrao
 	(*Contador)(nil),              // 1: config.Contador
@@ -925,22 +1042,24 @@ var file_apps_config_config_proto_goTypes = []any{
 	(*ConfigMdfe)(nil),            // 5: config.ConfigMdfe
 	(*ConfigCte)(nil),             // 6: config.ConfigCte
 	(*ConfigNfse)(nil),            // 7: config.ConfigNfse
-	(*Cnae)(nil),                  // 8: config.Cnae
-	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
+	(*CodigoServicoNfse)(nil),     // 8: config.CodigoServicoNfse
+	(*Cnae)(nil),                  // 9: config.Cnae
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
 }
 var file_apps_config_config_proto_depIdxs = []int32{
-	9, // 0: config.CertificadoModel.validade:type_name -> google.protobuf.Timestamp
-	9, // 1: config.ConfigNfe.data_hora_status:type_name -> google.protobuf.Timestamp
-	9, // 2: config.ConfigNfe.entrada_consulta_bloqueada_ate:type_name -> google.protobuf.Timestamp
-	9, // 3: config.ConfigNfce.data_hora_status:type_name -> google.protobuf.Timestamp
-	9, // 4: config.ConfigNfce.entrada_consulta_bloqueada_ate:type_name -> google.protobuf.Timestamp
-	0, // 5: config.ConfigCte.ambiente_padrao:type_name -> config.AmbientePadrao
-	0, // 6: config.ConfigNfse.ambiente_padrao:type_name -> config.AmbientePadrao
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	10, // 0: config.CertificadoModel.validade:type_name -> google.protobuf.Timestamp
+	10, // 1: config.ConfigNfe.data_hora_status:type_name -> google.protobuf.Timestamp
+	10, // 2: config.ConfigNfe.entrada_consulta_bloqueada_ate:type_name -> google.protobuf.Timestamp
+	10, // 3: config.ConfigNfce.data_hora_status:type_name -> google.protobuf.Timestamp
+	10, // 4: config.ConfigNfce.entrada_consulta_bloqueada_ate:type_name -> google.protobuf.Timestamp
+	0,  // 5: config.ConfigCte.ambiente_padrao:type_name -> config.AmbientePadrao
+	0,  // 6: config.ConfigNfse.ambiente_padrao:type_name -> config.AmbientePadrao
+	8,  // 7: config.ConfigNfse.servico_padrao:type_name -> config.CodigoServicoNfse
+	8,  // [8:8] is the sub-list for method output_type
+	8,  // [8:8] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_apps_config_config_proto_init() }
@@ -954,7 +1073,7 @@ func file_apps_config_config_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_config_config_proto_rawDesc), len(file_apps_config_config_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
