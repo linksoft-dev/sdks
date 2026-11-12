@@ -3095,6 +3095,125 @@ class ReorderItemsResponse(_message.Message):
     pedido: Pedido
     def __init__(self, pedido: _Optional[_Union[Pedido, _Mapping]] = ...) -> None: ...
 
+class DashboardOrcamentosRequest(_message.Message):
+    __slots__ = ("to", "vendedor_id")
+    FROM_FIELD_NUMBER: _ClassVar[int]
+    TO_FIELD_NUMBER: _ClassVar[int]
+    VENDEDOR_ID_FIELD_NUMBER: _ClassVar[int]
+    to: _timestamp_pb2.Timestamp
+    vendedor_id: str
+    def __init__(self, to: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., vendedor_id: _Optional[str] = ..., **kwargs) -> None: ...
+
+class DashboardOrcamentosTotais(_message.Message):
+    __slots__ = ("orcamentos", "valor", "convertidos", "valor_convertido", "abertos", "valor_aberto", "vencidos", "valor_vencido", "perdidos", "valor_perdido", "taxa_conversao", "taxa_conversao_valor", "ticket_medio", "ticket_medio_convertido", "dias_ate_converter", "vencendo", "valor_vencendo", "aguardando_retorno", "enviados", "visualizados", "respondidos", "desconto")
+    ORCAMENTOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    CONVERTIDOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_CONVERTIDO_FIELD_NUMBER: _ClassVar[int]
+    ABERTOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_ABERTO_FIELD_NUMBER: _ClassVar[int]
+    VENCIDOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_VENCIDO_FIELD_NUMBER: _ClassVar[int]
+    PERDIDOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_PERDIDO_FIELD_NUMBER: _ClassVar[int]
+    TAXA_CONVERSAO_FIELD_NUMBER: _ClassVar[int]
+    TAXA_CONVERSAO_VALOR_FIELD_NUMBER: _ClassVar[int]
+    TICKET_MEDIO_FIELD_NUMBER: _ClassVar[int]
+    TICKET_MEDIO_CONVERTIDO_FIELD_NUMBER: _ClassVar[int]
+    DIAS_ATE_CONVERTER_FIELD_NUMBER: _ClassVar[int]
+    VENCENDO_FIELD_NUMBER: _ClassVar[int]
+    VALOR_VENCENDO_FIELD_NUMBER: _ClassVar[int]
+    AGUARDANDO_RETORNO_FIELD_NUMBER: _ClassVar[int]
+    ENVIADOS_FIELD_NUMBER: _ClassVar[int]
+    VISUALIZADOS_FIELD_NUMBER: _ClassVar[int]
+    RESPONDIDOS_FIELD_NUMBER: _ClassVar[int]
+    DESCONTO_FIELD_NUMBER: _ClassVar[int]
+    orcamentos: int
+    valor: float
+    convertidos: int
+    valor_convertido: float
+    abertos: int
+    valor_aberto: float
+    vencidos: int
+    valor_vencido: float
+    perdidos: int
+    valor_perdido: float
+    taxa_conversao: float
+    taxa_conversao_valor: float
+    ticket_medio: float
+    ticket_medio_convertido: float
+    dias_ate_converter: float
+    vencendo: int
+    valor_vencendo: float
+    aguardando_retorno: int
+    enviados: int
+    visualizados: int
+    respondidos: int
+    desconto: float
+    def __init__(self, orcamentos: _Optional[int] = ..., valor: _Optional[float] = ..., convertidos: _Optional[int] = ..., valor_convertido: _Optional[float] = ..., abertos: _Optional[int] = ..., valor_aberto: _Optional[float] = ..., vencidos: _Optional[int] = ..., valor_vencido: _Optional[float] = ..., perdidos: _Optional[int] = ..., valor_perdido: _Optional[float] = ..., taxa_conversao: _Optional[float] = ..., taxa_conversao_valor: _Optional[float] = ..., ticket_medio: _Optional[float] = ..., ticket_medio_convertido: _Optional[float] = ..., dias_ate_converter: _Optional[float] = ..., vencendo: _Optional[int] = ..., valor_vencendo: _Optional[float] = ..., aguardando_retorno: _Optional[int] = ..., enviados: _Optional[int] = ..., visualizados: _Optional[int] = ..., respondidos: _Optional[int] = ..., desconto: _Optional[float] = ...) -> None: ...
+
+class DashboardOrcamentosGrupo(_message.Message):
+    __slots__ = ("key", "label", "orcamentos", "valor", "convertidos", "valor_convertido", "abertos", "valor_aberto", "vencidos", "valor_vencido", "perdidos", "valor_perdido", "taxa_conversao")
+    KEY_FIELD_NUMBER: _ClassVar[int]
+    LABEL_FIELD_NUMBER: _ClassVar[int]
+    ORCAMENTOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    CONVERTIDOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_CONVERTIDO_FIELD_NUMBER: _ClassVar[int]
+    ABERTOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_ABERTO_FIELD_NUMBER: _ClassVar[int]
+    VENCIDOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_VENCIDO_FIELD_NUMBER: _ClassVar[int]
+    PERDIDOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_PERDIDO_FIELD_NUMBER: _ClassVar[int]
+    TAXA_CONVERSAO_FIELD_NUMBER: _ClassVar[int]
+    key: str
+    label: str
+    orcamentos: int
+    valor: float
+    convertidos: int
+    valor_convertido: float
+    abertos: int
+    valor_aberto: float
+    vencidos: int
+    valor_vencido: float
+    perdidos: int
+    valor_perdido: float
+    taxa_conversao: float
+    def __init__(self, key: _Optional[str] = ..., label: _Optional[str] = ..., orcamentos: _Optional[int] = ..., valor: _Optional[float] = ..., convertidos: _Optional[int] = ..., valor_convertido: _Optional[float] = ..., abertos: _Optional[int] = ..., valor_aberto: _Optional[float] = ..., vencidos: _Optional[int] = ..., valor_vencido: _Optional[float] = ..., perdidos: _Optional[int] = ..., valor_perdido: _Optional[float] = ..., taxa_conversao: _Optional[float] = ...) -> None: ...
+
+class DashboardOrcamentosPeriodo(_message.Message):
+    __slots__ = ("periodo", "orcamentos", "valor", "convertidos", "valor_convertido")
+    PERIODO_FIELD_NUMBER: _ClassVar[int]
+    ORCAMENTOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_FIELD_NUMBER: _ClassVar[int]
+    CONVERTIDOS_FIELD_NUMBER: _ClassVar[int]
+    VALOR_CONVERTIDO_FIELD_NUMBER: _ClassVar[int]
+    periodo: str
+    orcamentos: int
+    valor: float
+    convertidos: int
+    valor_convertido: float
+    def __init__(self, periodo: _Optional[str] = ..., orcamentos: _Optional[int] = ..., valor: _Optional[float] = ..., convertidos: _Optional[int] = ..., valor_convertido: _Optional[float] = ...) -> None: ...
+
+class DashboardOrcamentosResponse(_message.Message):
+    __slots__ = ("totais", "vendedores", "motivos_perda", "respostas", "idades", "clientes", "periodos")
+    TOTAIS_FIELD_NUMBER: _ClassVar[int]
+    VENDEDORES_FIELD_NUMBER: _ClassVar[int]
+    MOTIVOS_PERDA_FIELD_NUMBER: _ClassVar[int]
+    RESPOSTAS_FIELD_NUMBER: _ClassVar[int]
+    IDADES_FIELD_NUMBER: _ClassVar[int]
+    CLIENTES_FIELD_NUMBER: _ClassVar[int]
+    PERIODOS_FIELD_NUMBER: _ClassVar[int]
+    totais: DashboardOrcamentosTotais
+    vendedores: _containers.RepeatedCompositeFieldContainer[DashboardOrcamentosGrupo]
+    motivos_perda: _containers.RepeatedCompositeFieldContainer[DashboardOrcamentosGrupo]
+    respostas: _containers.RepeatedCompositeFieldContainer[DashboardOrcamentosGrupo]
+    idades: _containers.RepeatedCompositeFieldContainer[DashboardOrcamentosGrupo]
+    clientes: _containers.RepeatedCompositeFieldContainer[DashboardOrcamentosGrupo]
+    periodos: _containers.RepeatedCompositeFieldContainer[DashboardOrcamentosPeriodo]
+    def __init__(self, totais: _Optional[_Union[DashboardOrcamentosTotais, _Mapping]] = ..., vendedores: _Optional[_Iterable[_Union[DashboardOrcamentosGrupo, _Mapping]]] = ..., motivos_perda: _Optional[_Iterable[_Union[DashboardOrcamentosGrupo, _Mapping]]] = ..., respostas: _Optional[_Iterable[_Union[DashboardOrcamentosGrupo, _Mapping]]] = ..., idades: _Optional[_Iterable[_Union[DashboardOrcamentosGrupo, _Mapping]]] = ..., clientes: _Optional[_Iterable[_Union[DashboardOrcamentosGrupo, _Mapping]]] = ..., periodos: _Optional[_Iterable[_Union[DashboardOrcamentosPeriodo, _Mapping]]] = ...) -> None: ...
+
 class FaixaResumoVendas(_message.Message):
     __slots__ = ("chave", "inicio", "fim")
     CHAVE_FIELD_NUMBER: _ClassVar[int]

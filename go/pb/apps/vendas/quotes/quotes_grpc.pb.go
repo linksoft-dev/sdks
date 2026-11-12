@@ -47,6 +47,7 @@ const (
 	QuotesService_Report_FullMethodName                = "/quotes.QuotesService/Report"
 	QuotesService_Import_FullMethodName                = "/quotes.QuotesService/Import"
 	QuotesService_SincronizaPessoa_FullMethodName      = "/quotes.QuotesService/SincronizaPessoa"
+	QuotesService_Dashboard_FullMethodName             = "/quotes.QuotesService/Dashboard"
 )
 
 // QuotesServiceClient is the client API for QuotesService service.
@@ -82,6 +83,9 @@ type QuotesServiceClient interface {
 	Report(ctx context.Context, in *pedido.ReportRequest, opts ...grpc.CallOption) (*pedido.ReportResponse, error)
 	Import(ctx context.Context, in *pedido.ImportRequest, opts ...grpc.CallOption) (*pedido.ImportResponse, error)
 	SincronizaPessoa(ctx context.Context, in *pedido.SincronizaPessoaRequest, opts ...grpc.CallOption) (*pedido.SincronizaPessoaResponse, error)
+	// Painel dos orçamentos criados no período: conversão, valor em aberto, vencidos, perdidos e
+	// motivos da perda, resposta do cliente, tempo até converter, por vendedor e por dia.
+	Dashboard(ctx context.Context, in *pedido.DashboardOrcamentosRequest, opts ...grpc.CallOption) (*pedido.DashboardOrcamentosResponse, error)
 }
 
 type quotesServiceClient struct {
@@ -362,6 +366,16 @@ func (c *quotesServiceClient) SincronizaPessoa(ctx context.Context, in *pedido.S
 	return out, nil
 }
 
+func (c *quotesServiceClient) Dashboard(ctx context.Context, in *pedido.DashboardOrcamentosRequest, opts ...grpc.CallOption) (*pedido.DashboardOrcamentosResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(pedido.DashboardOrcamentosResponse)
+	err := c.cc.Invoke(ctx, QuotesService_Dashboard_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QuotesServiceServer is the server API for QuotesService service.
 // All implementations must embed UnimplementedQuotesServiceServer
 // for forward compatibility.
@@ -395,6 +409,9 @@ type QuotesServiceServer interface {
 	Report(context.Context, *pedido.ReportRequest) (*pedido.ReportResponse, error)
 	Import(context.Context, *pedido.ImportRequest) (*pedido.ImportResponse, error)
 	SincronizaPessoa(context.Context, *pedido.SincronizaPessoaRequest) (*pedido.SincronizaPessoaResponse, error)
+	// Painel dos orçamentos criados no período: conversão, valor em aberto, vencidos, perdidos e
+	// motivos da perda, resposta do cliente, tempo até converter, por vendedor e por dia.
+	Dashboard(context.Context, *pedido.DashboardOrcamentosRequest) (*pedido.DashboardOrcamentosResponse, error)
 	mustEmbedUnimplementedQuotesServiceServer()
 }
 
@@ -485,6 +502,9 @@ func (UnimplementedQuotesServiceServer) Import(context.Context, *pedido.ImportRe
 }
 func (UnimplementedQuotesServiceServer) SincronizaPessoa(context.Context, *pedido.SincronizaPessoaRequest) (*pedido.SincronizaPessoaResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method SincronizaPessoa not implemented")
+}
+func (UnimplementedQuotesServiceServer) Dashboard(context.Context, *pedido.DashboardOrcamentosRequest) (*pedido.DashboardOrcamentosResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Dashboard not implemented")
 }
 func (UnimplementedQuotesServiceServer) mustEmbedUnimplementedQuotesServiceServer() {}
 func (UnimplementedQuotesServiceServer) testEmbeddedByValue()                       {}
@@ -993,6 +1013,24 @@ func _QuotesService_SincronizaPessoa_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _QuotesService_Dashboard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(pedido.DashboardOrcamentosRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QuotesServiceServer).Dashboard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: QuotesService_Dashboard_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QuotesServiceServer).Dashboard(ctx, req.(*pedido.DashboardOrcamentosRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // QuotesService_ServiceDesc is the grpc.ServiceDesc for QuotesService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1107,6 +1145,10 @@ var QuotesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SincronizaPessoa",
 			Handler:    _QuotesService_SincronizaPessoa_Handler,
+		},
+		{
+			MethodName: "Dashboard",
+			Handler:    _QuotesService_Dashboard_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

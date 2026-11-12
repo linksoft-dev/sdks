@@ -149,6 +149,11 @@ class QuotesServiceStub:
                 request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SincronizaPessoaRequest.SerializeToString,
                 response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SincronizaPessoaResponse.FromString,
                 _registered_method=True)
+        self.Dashboard = channel.unary_unary(
+                '/quotes.QuotesService/Dashboard',
+                request_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DashboardOrcamentosRequest.SerializeToString,
+                response_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DashboardOrcamentosResponse.FromString,
+                _registered_method=True)
 
 
 class QuotesServiceServicer:
@@ -318,6 +323,14 @@ class QuotesServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Dashboard(self, request, context):
+        """Painel dos orçamentos criados no período: conversão, valor em aberto, vencidos, perdidos e
+        motivos da perda, resposta do cliente, tempo até converter, por vendedor e por dia.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_QuotesServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -455,6 +468,11 @@ def add_QuotesServiceServicer_to_server(servicer, server):
                     servicer.SincronizaPessoa,
                     request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SincronizaPessoaRequest.FromString,
                     response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.SincronizaPessoaResponse.SerializeToString,
+            ),
+            'Dashboard': grpc.unary_unary_rpc_method_handler(
+                    servicer.Dashboard,
+                    request_deserializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DashboardOrcamentosRequest.FromString,
+                    response_serializer=apps_dot_vendas_dot_pedido_dot_pedido__pb2.DashboardOrcamentosResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1186,6 +1204,33 @@ class QuotesService:
             '/quotes.QuotesService/SincronizaPessoa',
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.SincronizaPessoaRequest.SerializeToString,
             apps_dot_vendas_dot_pedido_dot_pedido__pb2.SincronizaPessoaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Dashboard(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/quotes.QuotesService/Dashboard',
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.DashboardOrcamentosRequest.SerializeToString,
+            apps_dot_vendas_dot_pedido_dot_pedido__pb2.DashboardOrcamentosResponse.FromString,
             options,
             channel_credentials,
             insecure,

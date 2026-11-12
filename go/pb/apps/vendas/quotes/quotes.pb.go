@@ -26,7 +26,7 @@ var File_apps_vendas_quotes_quotes_proto protoreflect.FileDescriptor
 
 const file_apps_vendas_quotes_quotes_proto_rawDesc = "" +
 	"\n" +
-	"\x1fapps/vendas/quotes/quotes.proto\x12\x06quotes\x1a\x1cgoogle/api/annotations.proto\x1a\x1fapps/vendas/pedido/pedido.proto2\xe2\x17\n" +
+	"\x1fapps/vendas/quotes/quotes.proto\x12\x06quotes\x1a\x1cgoogle/api/annotations.proto\x1a\x1fapps/vendas/pedido/pedido.proto2\xda\x18\n" +
 	"\rQuotesService\x12[\n" +
 	"\x06Create\x12\x1b.pedido.CreatePedidoRequest\x1a\x1c.pedido.CreatePedidoResponse\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/api/quotes\x12u\n" +
 	"\x0fCreateValidated\x12\x1b.pedido.CreatePedidoRequest\x1a\x1c.pedido.CreatePedidoResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/quotes/create-validated\x12t\n" +
@@ -56,7 +56,8 @@ const file_apps_vendas_quotes_quotes_proto_rawDesc = "" +
 	"\x11AplicaTabelaPreco\x12 .pedido.AplicaTabelaPrecoRequest\x1a!.pedido.AplicaTabelaPrecoResponse\"5\x82\xd3\xe4\x93\x02/:\x01*\"*/api/quotes/{pedidoId}/aplica-tabela-preco\x12V\n" +
 	"\x06Report\x12\x15.pedido.ReportRequest\x1a\x16.pedido.ReportResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/quotes/report\x12W\n" +
 	"\x06Import\x12\x15.pedido.ImportRequest\x1a\x16.pedido.ImportResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/quotes/importa\x12\x84\x01\n" +
-	"\x10SincronizaPessoa\x12\x1f.pedido.SincronizaPessoaRequest\x1a .pedido.SincronizaPessoaResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/quotes/{id}/sincroniza-pessoaB\x88\x01\n" +
+	"\x10SincronizaPessoa\x12\x1f.pedido.SincronizaPessoaRequest\x1a .pedido.SincronizaPessoaResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/quotes/{id}/sincroniza-pessoa\x12v\n" +
+	"\tDashboard\x12\".pedido.DashboardOrcamentosRequest\x1a#.pedido.DashboardOrcamentosResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/quotes/dashboardB\x88\x01\n" +
 	"\n" +
 	"com.quotesB\vQuotesProtoP\x01Z5github.com/linksoft-dev/sdks/go/pb/apps/vendas/quotes\xa2\x02\x03QXX\xaa\x02\x06Quotes\xca\x02\x06Quotes\xe2\x02\x12Quotes\\GPBMetadata\xea\x02\x06Quotesb\x06proto3"
 
@@ -87,32 +88,34 @@ var file_apps_vendas_quotes_quotes_proto_goTypes = []any{
 	(*pedido.ReportRequest)(nil),                 // 23: pedido.ReportRequest
 	(*pedido.ImportRequest)(nil),                 // 24: pedido.ImportRequest
 	(*pedido.SincronizaPessoaRequest)(nil),       // 25: pedido.SincronizaPessoaRequest
-	(*pedido.CreatePedidoResponse)(nil),          // 26: pedido.CreatePedidoResponse
-	(*pedido.LeDocumentoIaResponse)(nil),         // 27: pedido.LeDocumentoIaResponse
-	(*pedido.UpdatePedidoResponse)(nil),          // 28: pedido.UpdatePedidoResponse
-	(*pedido.SetAcompanhamentoResponse)(nil),     // 29: pedido.SetAcompanhamentoResponse
-	(*pedido.ReorderItemsResponse)(nil),          // 30: pedido.ReorderItemsResponse
-	(*pedido.ExportOrdersResponse)(nil),          // 31: pedido.ExportOrdersResponse
-	(*pedido.DeletePedidoResponse)(nil),          // 32: pedido.DeletePedidoResponse
-	(*pedido.GetPedidoResponse)(nil),             // 33: pedido.GetPedidoResponse
-	(*pedido.ListPedidoResponse)(nil),            // 34: pedido.ListPedidoResponse
-	(*pedido.PrintPedidoResponse)(nil),           // 35: pedido.PrintPedidoResponse
-	(*pedido.GenerateFromOrcamentoResponse)(nil), // 36: pedido.GenerateFromOrcamentoResponse
-	(*pedido.CancelPedidoResponse)(nil),          // 37: pedido.CancelPedidoResponse
-	(*pedido.ClonePedidoResponse)(nil),           // 38: pedido.ClonePedidoResponse
-	(*pedido.RenumberResponse)(nil),              // 39: pedido.RenumberResponse
-	(*pedido.AddProductResponse)(nil),            // 40: pedido.AddProductResponse
-	(*pedido.UpdateProductResponse)(nil),         // 41: pedido.UpdateProductResponse
-	(*pedido.DeleteProductResponse)(nil),         // 42: pedido.DeleteProductResponse
-	(*pedido.AddServiceResponse)(nil),            // 43: pedido.AddServiceResponse
-	(*pedido.UpdateServiceResponse)(nil),         // 44: pedido.UpdateServiceResponse
-	(*pedido.DeleteServiceResponse)(nil),         // 45: pedido.DeleteServiceResponse
-	(*pedido.SendByEmailResponse)(nil),           // 46: pedido.SendByEmailResponse
-	(*pedido.SendReminderResponse)(nil),          // 47: pedido.SendReminderResponse
-	(*pedido.AplicaTabelaPrecoResponse)(nil),     // 48: pedido.AplicaTabelaPrecoResponse
-	(*pedido.ReportResponse)(nil),                // 49: pedido.ReportResponse
-	(*pedido.ImportResponse)(nil),                // 50: pedido.ImportResponse
-	(*pedido.SincronizaPessoaResponse)(nil),      // 51: pedido.SincronizaPessoaResponse
+	(*pedido.DashboardOrcamentosRequest)(nil),    // 26: pedido.DashboardOrcamentosRequest
+	(*pedido.CreatePedidoResponse)(nil),          // 27: pedido.CreatePedidoResponse
+	(*pedido.LeDocumentoIaResponse)(nil),         // 28: pedido.LeDocumentoIaResponse
+	(*pedido.UpdatePedidoResponse)(nil),          // 29: pedido.UpdatePedidoResponse
+	(*pedido.SetAcompanhamentoResponse)(nil),     // 30: pedido.SetAcompanhamentoResponse
+	(*pedido.ReorderItemsResponse)(nil),          // 31: pedido.ReorderItemsResponse
+	(*pedido.ExportOrdersResponse)(nil),          // 32: pedido.ExportOrdersResponse
+	(*pedido.DeletePedidoResponse)(nil),          // 33: pedido.DeletePedidoResponse
+	(*pedido.GetPedidoResponse)(nil),             // 34: pedido.GetPedidoResponse
+	(*pedido.ListPedidoResponse)(nil),            // 35: pedido.ListPedidoResponse
+	(*pedido.PrintPedidoResponse)(nil),           // 36: pedido.PrintPedidoResponse
+	(*pedido.GenerateFromOrcamentoResponse)(nil), // 37: pedido.GenerateFromOrcamentoResponse
+	(*pedido.CancelPedidoResponse)(nil),          // 38: pedido.CancelPedidoResponse
+	(*pedido.ClonePedidoResponse)(nil),           // 39: pedido.ClonePedidoResponse
+	(*pedido.RenumberResponse)(nil),              // 40: pedido.RenumberResponse
+	(*pedido.AddProductResponse)(nil),            // 41: pedido.AddProductResponse
+	(*pedido.UpdateProductResponse)(nil),         // 42: pedido.UpdateProductResponse
+	(*pedido.DeleteProductResponse)(nil),         // 43: pedido.DeleteProductResponse
+	(*pedido.AddServiceResponse)(nil),            // 44: pedido.AddServiceResponse
+	(*pedido.UpdateServiceResponse)(nil),         // 45: pedido.UpdateServiceResponse
+	(*pedido.DeleteServiceResponse)(nil),         // 46: pedido.DeleteServiceResponse
+	(*pedido.SendByEmailResponse)(nil),           // 47: pedido.SendByEmailResponse
+	(*pedido.SendReminderResponse)(nil),          // 48: pedido.SendReminderResponse
+	(*pedido.AplicaTabelaPrecoResponse)(nil),     // 49: pedido.AplicaTabelaPrecoResponse
+	(*pedido.ReportResponse)(nil),                // 50: pedido.ReportResponse
+	(*pedido.ImportResponse)(nil),                // 51: pedido.ImportResponse
+	(*pedido.SincronizaPessoaResponse)(nil),      // 52: pedido.SincronizaPessoaResponse
+	(*pedido.DashboardOrcamentosResponse)(nil),   // 53: pedido.DashboardOrcamentosResponse
 }
 var file_apps_vendas_quotes_quotes_proto_depIdxs = []int32{
 	0,  // 0: quotes.QuotesService.Create:input_type -> pedido.CreatePedidoRequest
@@ -142,35 +145,37 @@ var file_apps_vendas_quotes_quotes_proto_depIdxs = []int32{
 	23, // 24: quotes.QuotesService.Report:input_type -> pedido.ReportRequest
 	24, // 25: quotes.QuotesService.Import:input_type -> pedido.ImportRequest
 	25, // 26: quotes.QuotesService.SincronizaPessoa:input_type -> pedido.SincronizaPessoaRequest
-	26, // 27: quotes.QuotesService.Create:output_type -> pedido.CreatePedidoResponse
-	26, // 28: quotes.QuotesService.CreateValidated:output_type -> pedido.CreatePedidoResponse
-	27, // 29: quotes.QuotesService.LeDocumentoIa:output_type -> pedido.LeDocumentoIaResponse
-	28, // 30: quotes.QuotesService.Update:output_type -> pedido.UpdatePedidoResponse
-	29, // 31: quotes.QuotesService.SetAcompanhamento:output_type -> pedido.SetAcompanhamentoResponse
-	30, // 32: quotes.QuotesService.ReorderItems:output_type -> pedido.ReorderItemsResponse
-	31, // 33: quotes.QuotesService.Export:output_type -> pedido.ExportOrdersResponse
-	32, // 34: quotes.QuotesService.Delete:output_type -> pedido.DeletePedidoResponse
-	33, // 35: quotes.QuotesService.Get:output_type -> pedido.GetPedidoResponse
-	34, // 36: quotes.QuotesService.List:output_type -> pedido.ListPedidoResponse
-	35, // 37: quotes.QuotesService.Print:output_type -> pedido.PrintPedidoResponse
-	36, // 38: quotes.QuotesService.GenerateFromOrcamento:output_type -> pedido.GenerateFromOrcamentoResponse
-	37, // 39: quotes.QuotesService.Cancel:output_type -> pedido.CancelPedidoResponse
-	38, // 40: quotes.QuotesService.Clone:output_type -> pedido.ClonePedidoResponse
-	39, // 41: quotes.QuotesService.Renumber:output_type -> pedido.RenumberResponse
-	40, // 42: quotes.QuotesService.AddProduct:output_type -> pedido.AddProductResponse
-	41, // 43: quotes.QuotesService.UpdateProduct:output_type -> pedido.UpdateProductResponse
-	42, // 44: quotes.QuotesService.DeleteProduct:output_type -> pedido.DeleteProductResponse
-	43, // 45: quotes.QuotesService.AddService:output_type -> pedido.AddServiceResponse
-	44, // 46: quotes.QuotesService.UpdateService:output_type -> pedido.UpdateServiceResponse
-	45, // 47: quotes.QuotesService.DeleteService:output_type -> pedido.DeleteServiceResponse
-	46, // 48: quotes.QuotesService.SendByEmail:output_type -> pedido.SendByEmailResponse
-	47, // 49: quotes.QuotesService.SendReminder:output_type -> pedido.SendReminderResponse
-	48, // 50: quotes.QuotesService.AplicaTabelaPreco:output_type -> pedido.AplicaTabelaPrecoResponse
-	49, // 51: quotes.QuotesService.Report:output_type -> pedido.ReportResponse
-	50, // 52: quotes.QuotesService.Import:output_type -> pedido.ImportResponse
-	51, // 53: quotes.QuotesService.SincronizaPessoa:output_type -> pedido.SincronizaPessoaResponse
-	27, // [27:54] is the sub-list for method output_type
-	0,  // [0:27] is the sub-list for method input_type
+	26, // 27: quotes.QuotesService.Dashboard:input_type -> pedido.DashboardOrcamentosRequest
+	27, // 28: quotes.QuotesService.Create:output_type -> pedido.CreatePedidoResponse
+	27, // 29: quotes.QuotesService.CreateValidated:output_type -> pedido.CreatePedidoResponse
+	28, // 30: quotes.QuotesService.LeDocumentoIa:output_type -> pedido.LeDocumentoIaResponse
+	29, // 31: quotes.QuotesService.Update:output_type -> pedido.UpdatePedidoResponse
+	30, // 32: quotes.QuotesService.SetAcompanhamento:output_type -> pedido.SetAcompanhamentoResponse
+	31, // 33: quotes.QuotesService.ReorderItems:output_type -> pedido.ReorderItemsResponse
+	32, // 34: quotes.QuotesService.Export:output_type -> pedido.ExportOrdersResponse
+	33, // 35: quotes.QuotesService.Delete:output_type -> pedido.DeletePedidoResponse
+	34, // 36: quotes.QuotesService.Get:output_type -> pedido.GetPedidoResponse
+	35, // 37: quotes.QuotesService.List:output_type -> pedido.ListPedidoResponse
+	36, // 38: quotes.QuotesService.Print:output_type -> pedido.PrintPedidoResponse
+	37, // 39: quotes.QuotesService.GenerateFromOrcamento:output_type -> pedido.GenerateFromOrcamentoResponse
+	38, // 40: quotes.QuotesService.Cancel:output_type -> pedido.CancelPedidoResponse
+	39, // 41: quotes.QuotesService.Clone:output_type -> pedido.ClonePedidoResponse
+	40, // 42: quotes.QuotesService.Renumber:output_type -> pedido.RenumberResponse
+	41, // 43: quotes.QuotesService.AddProduct:output_type -> pedido.AddProductResponse
+	42, // 44: quotes.QuotesService.UpdateProduct:output_type -> pedido.UpdateProductResponse
+	43, // 45: quotes.QuotesService.DeleteProduct:output_type -> pedido.DeleteProductResponse
+	44, // 46: quotes.QuotesService.AddService:output_type -> pedido.AddServiceResponse
+	45, // 47: quotes.QuotesService.UpdateService:output_type -> pedido.UpdateServiceResponse
+	46, // 48: quotes.QuotesService.DeleteService:output_type -> pedido.DeleteServiceResponse
+	47, // 49: quotes.QuotesService.SendByEmail:output_type -> pedido.SendByEmailResponse
+	48, // 50: quotes.QuotesService.SendReminder:output_type -> pedido.SendReminderResponse
+	49, // 51: quotes.QuotesService.AplicaTabelaPreco:output_type -> pedido.AplicaTabelaPrecoResponse
+	50, // 52: quotes.QuotesService.Report:output_type -> pedido.ReportResponse
+	51, // 53: quotes.QuotesService.Import:output_type -> pedido.ImportResponse
+	52, // 54: quotes.QuotesService.SincronizaPessoa:output_type -> pedido.SincronizaPessoaResponse
+	53, // 55: quotes.QuotesService.Dashboard:output_type -> pedido.DashboardOrcamentosResponse
+	28, // [28:56] is the sub-list for method output_type
+	0,  // [0:28] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
