@@ -2357,7 +2357,7 @@ class Parcelas(_message.Message):
     def __init__(self, id: _Optional[str] = ..., parcela: _Optional[str] = ..., valor: _Optional[float] = ..., valorTipoMoeda: _Optional[float] = ..., taxaAdm: _Optional[float] = ..., taxaAdmValor: _Optional[float] = ..., taxaValorFixo: _Optional[float] = ..., taxaAntecipacao: _Optional[float] = ..., taxaAntecipacaoValor: _Optional[float] = ..., adquirenteValorReceber: _Optional[float] = ..., vencimento: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., pedidoPagamento: _Optional[_Union[Pagamento, _Mapping]] = ...) -> None: ...
 
 class Pessoa(_message.Message):
-    __slots__ = ("id", "revenda", "cpfCnpj", "ie", "nome", "nome2", "usuarioId", "usuarioNome", "comissao", "endId", "endNome", "endCep", "endEndereco", "endNumero", "endBairro", "endCidade", "endCidadeCodigo", "endUf", "endComplemento", "telefone", "email", "dataNascimento", "genero", "desconto_maximo", "inscricao_municipal")
+    __slots__ = ("id", "revenda", "cpfCnpj", "ie", "nome", "nome2", "usuarioId", "usuarioNome", "comissao", "endId", "endNome", "endCep", "endEndereco", "endNumero", "endBairro", "endCidade", "endCidadeCodigo", "endUf", "endComplemento", "telefone", "email", "dataNascimento", "genero", "desconto_maximo", "inscricao_municipal", "avulso")
     ID_FIELD_NUMBER: _ClassVar[int]
     REVENDA_FIELD_NUMBER: _ClassVar[int]
     CPFCNPJ_FIELD_NUMBER: _ClassVar[int]
@@ -2383,6 +2383,7 @@ class Pessoa(_message.Message):
     GENERO_FIELD_NUMBER: _ClassVar[int]
     DESCONTO_MAXIMO_FIELD_NUMBER: _ClassVar[int]
     INSCRICAO_MUNICIPAL_FIELD_NUMBER: _ClassVar[int]
+    AVULSO_FIELD_NUMBER: _ClassVar[int]
     id: str
     revenda: bool
     cpfCnpj: str
@@ -2408,7 +2409,8 @@ class Pessoa(_message.Message):
     genero: str
     desconto_maximo: float
     inscricao_municipal: str
-    def __init__(self, id: _Optional[str] = ..., revenda: _Optional[bool] = ..., cpfCnpj: _Optional[str] = ..., ie: _Optional[str] = ..., nome: _Optional[str] = ..., nome2: _Optional[str] = ..., usuarioId: _Optional[str] = ..., usuarioNome: _Optional[str] = ..., comissao: _Optional[float] = ..., endId: _Optional[str] = ..., endNome: _Optional[str] = ..., endCep: _Optional[str] = ..., endEndereco: _Optional[str] = ..., endNumero: _Optional[str] = ..., endBairro: _Optional[str] = ..., endCidade: _Optional[str] = ..., endCidadeCodigo: _Optional[str] = ..., endUf: _Optional[str] = ..., endComplemento: _Optional[str] = ..., telefone: _Optional[str] = ..., email: _Optional[str] = ..., dataNascimento: _Optional[str] = ..., genero: _Optional[str] = ..., desconto_maximo: _Optional[float] = ..., inscricao_municipal: _Optional[str] = ...) -> None: ...
+    avulso: bool
+    def __init__(self, id: _Optional[str] = ..., revenda: _Optional[bool] = ..., cpfCnpj: _Optional[str] = ..., ie: _Optional[str] = ..., nome: _Optional[str] = ..., nome2: _Optional[str] = ..., usuarioId: _Optional[str] = ..., usuarioNome: _Optional[str] = ..., comissao: _Optional[float] = ..., endId: _Optional[str] = ..., endNome: _Optional[str] = ..., endCep: _Optional[str] = ..., endEndereco: _Optional[str] = ..., endNumero: _Optional[str] = ..., endBairro: _Optional[str] = ..., endCidade: _Optional[str] = ..., endCidadeCodigo: _Optional[str] = ..., endUf: _Optional[str] = ..., endComplemento: _Optional[str] = ..., telefone: _Optional[str] = ..., email: _Optional[str] = ..., dataNascimento: _Optional[str] = ..., genero: _Optional[str] = ..., desconto_maximo: _Optional[float] = ..., inscricao_municipal: _Optional[str] = ..., avulso: _Optional[bool] = ...) -> None: ...
 
 class Dfe(_message.Message):
     __slots__ = ("nfe", "nfce", "nfse", "emissao_automatica")

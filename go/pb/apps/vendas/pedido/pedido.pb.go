@@ -11885,6 +11885,7 @@ type Pessoa struct {
 	Genero             string  `protobuf:"bytes,23,opt,name=genero,proto3" json:"genero,omitempty"`
 	DescontoMaximo     float64 `protobuf:"fixed64,24,opt,name=desconto_maximo,json=descontoMaximo,proto3" json:"desconto_maximo,omitempty"` // percentual maximo de desconto do vendedor, copiado do cadastro
 	InscricaoMunicipal string  `protobuf:"bytes,25,opt,name=inscricao_municipal,json=inscricaoMunicipal,proto3" json:"inscricao_municipal,omitempty"`
+	Avulso             bool    `protobuf:"varint,26,opt,name=avulso,proto3" json:"avulso,omitempty"` // cliente só desta venda: fechar a venda e emitir a nota não o incluem no cadastro de pessoas
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -12092,6 +12093,13 @@ func (x *Pessoa) GetInscricaoMunicipal() string {
 		return x.InscricaoMunicipal
 	}
 	return ""
+}
+
+func (x *Pessoa) GetAvulso() bool {
+	if x != nil {
+		return x.Avulso
+	}
+	return false
 }
 
 type Dfe struct {
@@ -17865,7 +17873,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\n" +
 	"vencimento\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"vencimento\x12;\n" +
-	"\x0fpedidoPagamento\x18\f \x01(\v2\x11.pedido.PagamentoR\x0fpedidoPagamento\"\xe5\x05\n" +
+	"\x0fpedidoPagamento\x18\f \x01(\v2\x11.pedido.PagamentoR\x0fpedidoPagamento\"\xfd\x05\n" +
 	"\x06Pessoa\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\arevenda\x18\x02 \x01(\bR\arevenda\x12\x18\n" +
@@ -17892,7 +17900,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x0edataNascimento\x18\x16 \x01(\tR\x0edataNascimento\x12\x16\n" +
 	"\x06genero\x18\x17 \x01(\tR\x06genero\x12'\n" +
 	"\x0fdesconto_maximo\x18\x18 \x01(\x01R\x0edescontoMaximo\x12/\n" +
-	"\x13inscricao_municipal\x18\x19 \x01(\tR\x12inscricaoMunicipal\"\xb2\x01\n" +
+	"\x13inscricao_municipal\x18\x19 \x01(\tR\x12inscricaoMunicipal\x12\x16\n" +
+	"\x06avulso\x18\x1a \x01(\bR\x06avulso\"\xb2\x01\n" +
 	"\x03Dfe\x12\x1d\n" +
 	"\x03nfe\x18\x01 \x01(\v2\v.pedido.NfeR\x03nfe\x12 \n" +
 	"\x04nfce\x18\x02 \x01(\v2\f.pedido.NfceR\x04nfce\x12 \n" +

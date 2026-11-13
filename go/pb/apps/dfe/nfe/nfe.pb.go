@@ -1856,6 +1856,7 @@ type Pessoa struct {
 	Telefone          string                 `protobuf:"bytes,17,opt,name=telefone,proto3" json:"telefone,omitempty"`
 	Email             string                 `protobuf:"bytes,18,opt,name=email,proto3" json:"email,omitempty"`
 	EnviarNfePorEmail bool                   `protobuf:"varint,19,opt,name=enviarNfePorEmail,proto3" json:"enviarNfePorEmail,omitempty"`
+	Avulso            bool                   `protobuf:"varint,20,opt,name=avulso,proto3" json:"avulso,omitempty"` // destinatário só desta nota: a emissão não o inclui no cadastro de pessoas
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -2019,6 +2020,13 @@ func (x *Pessoa) GetEmail() string {
 func (x *Pessoa) GetEnviarNfePorEmail() bool {
 	if x != nil {
 		return x.EnviarNfePorEmail
+	}
+	return false
+}
+
+func (x *Pessoa) GetAvulso() bool {
+	if x != nil {
+		return x.Avulso
 	}
 	return false
 }
@@ -9809,7 +9817,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\rlocal_entrega\x18r \x01(\v2\n" +
 	".nfe.LocalR\flocalEntrega\x121\n" +
 	"\x0elocal_retirada\x18s \x01(\v2\n" +
-	".nfe.LocalR\rlocalRetirada:\x03\xc0>\x01J\x04\bh\x10i\"\x9c\x04\n" +
+	".nfe.LocalR\rlocalRetirada:\x03\xc0>\x01J\x04\bh\x10i\"\xb4\x04\n" +
 	"\x06Pessoa\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x14\n" +
@@ -9830,7 +9838,8 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\x0eendComplemento\x18\x10 \x01(\tR\x0eendComplemento\x12\x1a\n" +
 	"\btelefone\x18\x11 \x01(\tR\btelefone\x12\x14\n" +
 	"\x05email\x18\x12 \x01(\tR\x05email\x12,\n" +
-	"\x11enviarNfePorEmail\x18\x13 \x01(\bR\x11enviarNfePorEmail\"\xbf\x02\n" +
+	"\x11enviarNfePorEmail\x18\x13 \x01(\bR\x11enviarNfePorEmail\x12\x16\n" +
+	"\x06avulso\x18\x14 \x01(\bR\x06avulso\"\xbf\x02\n" +
 	"\x05Local\x12\x19\n" +
 	"\bcpf_cnpj\x18\x01 \x01(\tR\acpfCnpj\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x0e\n" +
