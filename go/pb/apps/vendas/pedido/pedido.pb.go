@@ -9317,11 +9317,12 @@ type Contract struct {
 	DueDate                 *timestamppb.Timestamp       `protobuf:"bytes,26,opt,name=due_date,json=dueDate,proto3" json:"due_date,omitempty"`                                                   // Vencimento da parcela: até quando ela deve ser paga. Vazio na criação, vale o que o tipo do contrato põe na cobertura
 	// Encargos da parcela paga depois do vencimento: juros ao mês e multa, em percentual sobre o
 	// valor em aberto. Zerado vale o padrão da configuração de contratos; herdados pelas renovações
-	JurosMesPercentual float64                 `protobuf:"fixed64,27,opt,name=juros_mes_percentual,json=jurosMesPercentual,proto3" json:"juros_mes_percentual,omitempty"`
-	MultaPercentual    float64                 `protobuf:"fixed64,28,opt,name=multa_percentual,json=multaPercentual,proto3" json:"multa_percentual,omitempty"`
-	ServicesChange     *ContractServicesChange `protobuf:"bytes,29,opt,name=services_change,json=servicesChange,proto3" json:"services_change,omitempty"` // Alteração de serviços ou de periodicidade feita com esta parcela já paga: os itens dela não mudam, e o que mudou vale a partir de effective_at e na parcela seguinte
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	JurosMesPercentual       float64                 `protobuf:"fixed64,27,opt,name=juros_mes_percentual,json=jurosMesPercentual,proto3" json:"juros_mes_percentual,omitempty"`
+	MultaPercentual          float64                 `protobuf:"fixed64,28,opt,name=multa_percentual,json=multaPercentual,proto3" json:"multa_percentual,omitempty"`
+	ServicesChange           *ContractServicesChange `protobuf:"bytes,29,opt,name=services_change,json=servicesChange,proto3" json:"services_change,omitempty"`                                    // Alteração de serviços ou de periodicidade feita com esta parcela já paga: os itens dela não mudam, e o que mudou vale a partir de effective_at e na parcela seguinte
+	AdjustmentsThisCycleOnly bool                    `protobuf:"varint,30,opt,name=adjustments_this_cycle_only,json=adjustmentsThisCycleOnly,proto3" json:"adjustments_this_cycle_only,omitempty"` // Desconto e acréscimo do documento valem só nesta parcela: a renovação sai sem eles
+	unknownFields            protoimpl.UnknownFields
+	sizeCache                protoimpl.SizeCache
 }
 
 func (x *Contract) Reset() {
@@ -9549,6 +9550,13 @@ func (x *Contract) GetServicesChange() *ContractServicesChange {
 		return x.ServicesChange
 	}
 	return nil
+}
+
+func (x *Contract) GetAdjustmentsThisCycleOnly() bool {
+	if x != nil {
+		return x.AdjustmentsThisCycleOnly
+	}
+	return false
 }
 
 // Reajuste do contrato. Sem plano o contrato não reajusta; plano excluído ou inativo também deixa de
@@ -10863,6 +10871,7 @@ type Servico struct {
 	// que o preço já vem com desconto, para promoção do cadastro de descontos não incidir
 	// de novo sobre ele.
 	PrecoPromocionalAplicado bool `protobuf:"varint,42,opt,name=preco_promocional_aplicado,json=precoPromocionalAplicado,proto3" json:"preco_promocional_aplicado,omitempty"`
+	ThisCycleOnly            bool `protobuf:"varint,43,opt,name=this_cycle_only,json=thisCycleOnly,proto3" json:"this_cycle_only,omitempty"` // Item cobrado só nesta parcela do contrato: a renovação não o leva
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -11187,6 +11196,13 @@ func (x *Servico) GetRecompraEm() *timestamppb.Timestamp {
 func (x *Servico) GetPrecoPromocionalAplicado() bool {
 	if x != nil {
 		return x.PrecoPromocionalAplicado
+	}
+	return false
+}
+
+func (x *Servico) GetThisCycleOnly() bool {
+	if x != nil {
+		return x.ThisCycleOnly
 	}
 	return false
 }
@@ -17549,7 +17565,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x19os_terceiros_emissor_nome\x18\x1e \x01(\tR\x16osTerceirosEmissorNome\x12\x18\n" +
 	"\aunidade\x18\x1f \x01(\tR\aunidade\x12+\n" +
 	"\x11setor_solicitante\x18  \x01(\tR\x10setorSolicitante\x12+\n" +
-	"\x11responsavel_local\x18! \x01(\tR\x10responsavelLocal\"\xca\f\n" +
+	"\x11responsavel_local\x18! \x01(\tR\x10responsavelLocal\"\x89\r\n" +
 	"\bContract\x12\x16\n" +
 	"\x06number\x18\x01 \x01(\tR\x06number\x12(\n" +
 	"\x04type\x18\x02 \x01(\x0e2\x14.pedido.ContractTypeR\x04type\x12?\n" +
@@ -17583,7 +17599,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\bdue_date\x18\x1a \x01(\v2\x1a.google.protobuf.TimestampR\adueDate\x120\n" +
 	"\x14juros_mes_percentual\x18\x1b \x01(\x01R\x12jurosMesPercentual\x12)\n" +
 	"\x10multa_percentual\x18\x1c \x01(\x01R\x0fmultaPercentual\x12M\n" +
-	"\x0fservices_change\x18\x1d \x01(\v2\x1e.pedido.ContractServicesChangeB\x04\xe2A\x01\x03R\x0eservicesChange\x1ab\n" +
+	"\x0fservices_change\x18\x1d \x01(\v2\x1e.pedido.ContractServicesChangeB\x04\xe2A\x01\x03R\x0eservicesChange\x12=\n" +
+	"\x1badjustments_this_cycle_only\x18\x1e \x01(\bR\x18adjustmentsThisCycleOnly\x1ab\n" +
 	"\n" +
 	"LastAccess\x127\n" +
 	"\tlast_date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\blastDate\x12\x1b\n" +
@@ -17735,7 +17752,7 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x11dataHoraImpressao\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x11dataHoraImpressao\x12$\n" +
 	"\rerroImpressao\x18\a \x01(\tR\rerroImpressao\x12\x1a\n" +
 	"\bentregue\x18\b \x01(\bR\bentregue\x12D\n" +
-	"\x0fdataHoraEntrega\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\"\xe7\f\n" +
+	"\x0fdataHoraEntrega\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\x0fdataHoraEntrega\"\x8f\r\n" +
 	"\aServico\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x128\n" +
 	"\tcreatedAt\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x128\n" +
@@ -17792,7 +17809,8 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\rrecompra_dias\x18( \x01(\x05R\frecompraDias\x12A\n" +
 	"\vrecompra_em\x18) \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
 	"recompraEm\x12<\n" +
-	"\x1apreco_promocional_aplicado\x18* \x01(\bR\x18precoPromocionalAplicado\"\xb8\x01\n" +
+	"\x1apreco_promocional_aplicado\x18* \x01(\bR\x18precoPromocionalAplicado\x12&\n" +
+	"\x0fthis_cycle_only\x18+ \x01(\bR\rthisCycleOnly\"\xb8\x01\n" +
 	"\x12ProdutoServicoNfse\x122\n" +
 	"\x15codigo_servico_codigo\x18\x01 \x01(\tR\x13codigoServicoCodigo\x12.\n" +
 	"\x13codigo_servico_nome\x18\x02 \x01(\tR\x11codigoServicoNome\x12\x1f\n" +
