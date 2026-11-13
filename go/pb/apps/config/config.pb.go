@@ -72,6 +72,61 @@ func (AmbientePadrao) EnumDescriptor() ([]byte, []int) {
 	return file_apps_config_config_proto_rawDescGZIP(), []int{0}
 }
 
+type ContadorAcompanhamentoSituacao int32
+
+const (
+	ContadorAcompanhamentoSituacao_CONTADOR_ACOMPANHAMENTO_SITUACAO_UNSPECIFIED ContadorAcompanhamentoSituacao = 0
+	ContadorAcompanhamentoSituacao_CONTADOR_ACOMPANHAMENTO_SITUACAO_CONVIDADO   ContadorAcompanhamentoSituacao = 1
+	ContadorAcompanhamentoSituacao_CONTADOR_ACOMPANHAMENTO_SITUACAO_ATIVO       ContadorAcompanhamentoSituacao = 2
+	ContadorAcompanhamentoSituacao_CONTADOR_ACOMPANHAMENTO_SITUACAO_RECUSADO    ContadorAcompanhamentoSituacao = 3
+	ContadorAcompanhamentoSituacao_CONTADOR_ACOMPANHAMENTO_SITUACAO_REVOGADO    ContadorAcompanhamentoSituacao = 4
+)
+
+// Enum value maps for ContadorAcompanhamentoSituacao.
+var (
+	ContadorAcompanhamentoSituacao_name = map[int32]string{
+		0: "CONTADOR_ACOMPANHAMENTO_SITUACAO_UNSPECIFIED",
+		1: "CONTADOR_ACOMPANHAMENTO_SITUACAO_CONVIDADO",
+		2: "CONTADOR_ACOMPANHAMENTO_SITUACAO_ATIVO",
+		3: "CONTADOR_ACOMPANHAMENTO_SITUACAO_RECUSADO",
+		4: "CONTADOR_ACOMPANHAMENTO_SITUACAO_REVOGADO",
+	}
+	ContadorAcompanhamentoSituacao_value = map[string]int32{
+		"CONTADOR_ACOMPANHAMENTO_SITUACAO_UNSPECIFIED": 0,
+		"CONTADOR_ACOMPANHAMENTO_SITUACAO_CONVIDADO":   1,
+		"CONTADOR_ACOMPANHAMENTO_SITUACAO_ATIVO":       2,
+		"CONTADOR_ACOMPANHAMENTO_SITUACAO_RECUSADO":    3,
+		"CONTADOR_ACOMPANHAMENTO_SITUACAO_REVOGADO":    4,
+	}
+)
+
+func (x ContadorAcompanhamentoSituacao) Enum() *ContadorAcompanhamentoSituacao {
+	p := new(ContadorAcompanhamentoSituacao)
+	*p = x
+	return p
+}
+
+func (x ContadorAcompanhamentoSituacao) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ContadorAcompanhamentoSituacao) Descriptor() protoreflect.EnumDescriptor {
+	return file_apps_config_config_proto_enumTypes[1].Descriptor()
+}
+
+func (ContadorAcompanhamentoSituacao) Type() protoreflect.EnumType {
+	return &file_apps_config_config_proto_enumTypes[1]
+}
+
+func (x ContadorAcompanhamentoSituacao) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ContadorAcompanhamentoSituacao.Descriptor instead.
+func (ContadorAcompanhamentoSituacao) EnumDescriptor() ([]byte, []int) {
+	return file_apps_config_config_proto_rawDescGZIP(), []int{1}
+}
+
 type Contador struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Id                string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -91,8 +146,11 @@ type Contador struct {
 	Email             string                 `protobuf:"bytes,15,opt,name=email,proto3" json:"email,omitempty"`
 	EnviarNfePorEmail bool                   `protobuf:"varint,16,opt,name=enviar_nfe_por_email,json=enviarNfePorEmail,proto3" json:"enviar_nfe_por_email,omitempty"`
 	Crc               string                 `protobuf:"bytes,17,opt,name=crc,proto3" json:"crc,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// Acompanhamento da organização pelo contador. Gravado só pelo servidor: o que vier
+	// no Set é ignorado, e trocar o e-mail do contador zera o acompanhamento.
+	Acompanhamento *ContadorAcompanhamento `protobuf:"bytes,18,opt,name=acompanhamento,proto3" json:"acompanhamento,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Contador) Reset() {
@@ -244,6 +302,138 @@ func (x *Contador) GetCrc() string {
 	return ""
 }
 
+func (x *Contador) GetAcompanhamento() *ContadorAcompanhamento {
+	if x != nil {
+		return x.Acompanhamento
+	}
+	return nil
+}
+
+// Acesso do contador aos dados fiscais da organização e envio automático de arquivos.
+type ContadorAcompanhamento struct {
+	state              protoimpl.MessageState         `protogen:"open.v1"`
+	Situacao           ContadorAcompanhamentoSituacao `protobuf:"varint,1,opt,name=situacao,proto3,enum=config.ContadorAcompanhamentoSituacao" json:"situacao,omitempty"`
+	ParceiroId         string                         `protobuf:"bytes,2,opt,name=parceiro_id,json=parceiroId,proto3" json:"parceiro_id,omitempty"` // conta do contador que aceitou o convite
+	ConvidadoEm        *timestamppb.Timestamp         `protobuf:"bytes,3,opt,name=convidado_em,json=convidadoEm,proto3" json:"convidado_em,omitempty"`
+	ConvidadoPor       string                         `protobuf:"bytes,4,opt,name=convidado_por,json=convidadoPor,proto3" json:"convidado_por,omitempty"` // nome de quem enviou o convite
+	AceitoEm           *timestamppb.Timestamp         `protobuf:"bytes,5,opt,name=aceito_em,json=aceitoEm,proto3" json:"aceito_em,omitempty"`
+	AceitoPor          string                         `protobuf:"bytes,6,opt,name=aceito_por,json=aceitoPor,proto3" json:"aceito_por,omitempty"`    // e-mail da conta que aceitou
+	EmailEnvio         string                         `protobuf:"bytes,7,opt,name=email_envio,json=emailEnvio,proto3" json:"email_envio,omitempty"` // destino dos arquivos; vazio = e-mail do contador
+	NaoEnviarXmlMensal bool                           `protobuf:"varint,8,opt,name=nao_enviar_xml_mensal,json=naoEnviarXmlMensal,proto3" json:"nao_enviar_xml_mensal,omitempty"`
+	NaoEnviarSped      bool                           `protobuf:"varint,9,opt,name=nao_enviar_sped,json=naoEnviarSped,proto3" json:"nao_enviar_sped,omitempty"`
+	EnviarXmlEmissao   bool                           `protobuf:"varint,10,opt,name=enviar_xml_emissao,json=enviarXmlEmissao,proto3" json:"enviar_xml_emissao,omitempty"`    // XML de cada NF-e autorizada
+	SugestaoDispensada string                         `protobuf:"bytes,11,opt,name=sugestao_dispensada,json=sugestaoDispensada,proto3" json:"sugestao_dispensada,omitempty"` // marca dos dados do perfil do contador que a empresa preferiu não aplicar
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *ContadorAcompanhamento) Reset() {
+	*x = ContadorAcompanhamento{}
+	mi := &file_apps_config_config_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ContadorAcompanhamento) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ContadorAcompanhamento) ProtoMessage() {}
+
+func (x *ContadorAcompanhamento) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_config_config_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ContadorAcompanhamento.ProtoReflect.Descriptor instead.
+func (*ContadorAcompanhamento) Descriptor() ([]byte, []int) {
+	return file_apps_config_config_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ContadorAcompanhamento) GetSituacao() ContadorAcompanhamentoSituacao {
+	if x != nil {
+		return x.Situacao
+	}
+	return ContadorAcompanhamentoSituacao_CONTADOR_ACOMPANHAMENTO_SITUACAO_UNSPECIFIED
+}
+
+func (x *ContadorAcompanhamento) GetParceiroId() string {
+	if x != nil {
+		return x.ParceiroId
+	}
+	return ""
+}
+
+func (x *ContadorAcompanhamento) GetConvidadoEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ConvidadoEm
+	}
+	return nil
+}
+
+func (x *ContadorAcompanhamento) GetConvidadoPor() string {
+	if x != nil {
+		return x.ConvidadoPor
+	}
+	return ""
+}
+
+func (x *ContadorAcompanhamento) GetAceitoEm() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AceitoEm
+	}
+	return nil
+}
+
+func (x *ContadorAcompanhamento) GetAceitoPor() string {
+	if x != nil {
+		return x.AceitoPor
+	}
+	return ""
+}
+
+func (x *ContadorAcompanhamento) GetEmailEnvio() string {
+	if x != nil {
+		return x.EmailEnvio
+	}
+	return ""
+}
+
+func (x *ContadorAcompanhamento) GetNaoEnviarXmlMensal() bool {
+	if x != nil {
+		return x.NaoEnviarXmlMensal
+	}
+	return false
+}
+
+func (x *ContadorAcompanhamento) GetNaoEnviarSped() bool {
+	if x != nil {
+		return x.NaoEnviarSped
+	}
+	return false
+}
+
+func (x *ContadorAcompanhamento) GetEnviarXmlEmissao() bool {
+	if x != nil {
+		return x.EnviarXmlEmissao
+	}
+	return false
+}
+
+func (x *ContadorAcompanhamento) GetSugestaoDispensada() string {
+	if x != nil {
+		return x.SugestaoDispensada
+	}
+	return ""
+}
+
 type CertificadoModel struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
 	ArquivoNome string                 `protobuf:"bytes,1,opt,name=arquivo_nome,json=arquivoNome,proto3" json:"arquivo_nome,omitempty"`
@@ -259,7 +449,7 @@ type CertificadoModel struct {
 
 func (x *CertificadoModel) Reset() {
 	*x = CertificadoModel{}
-	mi := &file_apps_config_config_proto_msgTypes[1]
+	mi := &file_apps_config_config_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -271,7 +461,7 @@ func (x *CertificadoModel) String() string {
 func (*CertificadoModel) ProtoMessage() {}
 
 func (x *CertificadoModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[1]
+	mi := &file_apps_config_config_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,7 +474,7 @@ func (x *CertificadoModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertificadoModel.ProtoReflect.Descriptor instead.
 func (*CertificadoModel) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{1}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CertificadoModel) GetArquivoNome() string {
@@ -341,7 +531,7 @@ type ConfigNfe struct {
 
 func (x *ConfigNfe) Reset() {
 	*x = ConfigNfe{}
-	mi := &file_apps_config_config_proto_msgTypes[2]
+	mi := &file_apps_config_config_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -353,7 +543,7 @@ func (x *ConfigNfe) String() string {
 func (*ConfigNfe) ProtoMessage() {}
 
 func (x *ConfigNfe) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[2]
+	mi := &file_apps_config_config_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -366,7 +556,7 @@ func (x *ConfigNfe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigNfe.ProtoReflect.Descriptor instead.
 func (*ConfigNfe) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{2}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ConfigNfe) GetAmbientePadrao() string {
@@ -451,7 +641,7 @@ type ConfigNfce struct {
 
 func (x *ConfigNfce) Reset() {
 	*x = ConfigNfce{}
-	mi := &file_apps_config_config_proto_msgTypes[3]
+	mi := &file_apps_config_config_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -463,7 +653,7 @@ func (x *ConfigNfce) String() string {
 func (*ConfigNfce) ProtoMessage() {}
 
 func (x *ConfigNfce) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[3]
+	mi := &file_apps_config_config_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -476,7 +666,7 @@ func (x *ConfigNfce) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigNfce.ProtoReflect.Descriptor instead.
 func (*ConfigNfce) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{3}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ConfigNfce) GetAmbientePadrao() string {
@@ -559,7 +749,7 @@ type ConfigMdfe struct {
 
 func (x *ConfigMdfe) Reset() {
 	*x = ConfigMdfe{}
-	mi := &file_apps_config_config_proto_msgTypes[4]
+	mi := &file_apps_config_config_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -571,7 +761,7 @@ func (x *ConfigMdfe) String() string {
 func (*ConfigMdfe) ProtoMessage() {}
 
 func (x *ConfigMdfe) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[4]
+	mi := &file_apps_config_config_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -584,7 +774,7 @@ func (x *ConfigMdfe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigMdfe.ProtoReflect.Descriptor instead.
 func (*ConfigMdfe) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{4}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *ConfigMdfe) GetAmbientePadrao() string {
@@ -612,7 +802,7 @@ type ConfigCte struct {
 
 func (x *ConfigCte) Reset() {
 	*x = ConfigCte{}
-	mi := &file_apps_config_config_proto_msgTypes[5]
+	mi := &file_apps_config_config_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -624,7 +814,7 @@ func (x *ConfigCte) String() string {
 func (*ConfigCte) ProtoMessage() {}
 
 func (x *ConfigCte) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[5]
+	mi := &file_apps_config_config_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -637,7 +827,7 @@ func (x *ConfigCte) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigCte.ProtoReflect.Descriptor instead.
 func (*ConfigCte) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{5}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ConfigCte) GetAmbientePadrao() AmbientePadrao {
@@ -687,7 +877,7 @@ type ConfigNfse struct {
 
 func (x *ConfigNfse) Reset() {
 	*x = ConfigNfse{}
-	mi := &file_apps_config_config_proto_msgTypes[6]
+	mi := &file_apps_config_config_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -699,7 +889,7 @@ func (x *ConfigNfse) String() string {
 func (*ConfigNfse) ProtoMessage() {}
 
 func (x *ConfigNfse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[6]
+	mi := &file_apps_config_config_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -712,7 +902,7 @@ func (x *ConfigNfse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigNfse.ProtoReflect.Descriptor instead.
 func (*ConfigNfse) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{6}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ConfigNfse) GetAmbientePadrao() AmbientePadrao {
@@ -806,7 +996,7 @@ type CodigoServicoNfse struct {
 
 func (x *CodigoServicoNfse) Reset() {
 	*x = CodigoServicoNfse{}
-	mi := &file_apps_config_config_proto_msgTypes[7]
+	mi := &file_apps_config_config_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -818,7 +1008,7 @@ func (x *CodigoServicoNfse) String() string {
 func (*CodigoServicoNfse) ProtoMessage() {}
 
 func (x *CodigoServicoNfse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[7]
+	mi := &file_apps_config_config_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -831,7 +1021,7 @@ func (x *CodigoServicoNfse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CodigoServicoNfse.ProtoReflect.Descriptor instead.
 func (*CodigoServicoNfse) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{7}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CodigoServicoNfse) GetCodigoServicoId() string {
@@ -879,7 +1069,7 @@ type Cnae struct {
 
 func (x *Cnae) Reset() {
 	*x = Cnae{}
-	mi := &file_apps_config_config_proto_msgTypes[8]
+	mi := &file_apps_config_config_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -891,7 +1081,7 @@ func (x *Cnae) String() string {
 func (*Cnae) ProtoMessage() {}
 
 func (x *Cnae) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_config_config_proto_msgTypes[8]
+	mi := &file_apps_config_config_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -904,7 +1094,7 @@ func (x *Cnae) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Cnae.ProtoReflect.Descriptor instead.
 func (*Cnae) Descriptor() ([]byte, []int) {
-	return file_apps_config_config_proto_rawDescGZIP(), []int{8}
+	return file_apps_config_config_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Cnae) GetNome() string {
@@ -925,7 +1115,7 @@ var File_apps_config_config_proto protoreflect.FileDescriptor
 
 const file_apps_config_config_proto_rawDesc = "" +
 	"\n" +
-	"\x18apps/config/config.proto\x12\x06config\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf0\x03\n" +
+	"\x18apps/config/config.proto\x12\x06config\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb8\x04\n" +
 	"\bContador\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x19\n" +
@@ -947,7 +1137,24 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\btelefone\x18\x0e \x01(\tR\btelefone\x12\x14\n" +
 	"\x05email\x18\x0f \x01(\tR\x05email\x12/\n" +
 	"\x14enviar_nfe_por_email\x18\x10 \x01(\bR\x11enviarNfePorEmail\x12\x10\n" +
-	"\x03crc\x18\x11 \x01(\tR\x03crc\"\xe3\x01\n" +
+	"\x03crc\x18\x11 \x01(\tR\x03crc\x12F\n" +
+	"\x0eacompanhamento\x18\x12 \x01(\v2\x1e.config.ContadorAcompanhamentoR\x0eacompanhamento\"\x94\x04\n" +
+	"\x16ContadorAcompanhamento\x12B\n" +
+	"\bsituacao\x18\x01 \x01(\x0e2&.config.ContadorAcompanhamentoSituacaoR\bsituacao\x12\x1f\n" +
+	"\vparceiro_id\x18\x02 \x01(\tR\n" +
+	"parceiroId\x12=\n" +
+	"\fconvidado_em\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vconvidadoEm\x12#\n" +
+	"\rconvidado_por\x18\x04 \x01(\tR\fconvidadoPor\x127\n" +
+	"\taceito_em\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\baceitoEm\x12\x1d\n" +
+	"\n" +
+	"aceito_por\x18\x06 \x01(\tR\taceitoPor\x12\x1f\n" +
+	"\vemail_envio\x18\a \x01(\tR\n" +
+	"emailEnvio\x121\n" +
+	"\x15nao_enviar_xml_mensal\x18\b \x01(\bR\x12naoEnviarXmlMensal\x12&\n" +
+	"\x0fnao_enviar_sped\x18\t \x01(\bR\rnaoEnviarSped\x12,\n" +
+	"\x12enviar_xml_emissao\x18\n" +
+	" \x01(\bR\x10enviarXmlEmissao\x12/\n" +
+	"\x13sugestao_dispensada\x18\v \x01(\tR\x12sugestaoDispensada\"\xe3\x01\n" +
 	"\x10CertificadoModel\x12!\n" +
 	"\farquivo_nome\x18\x01 \x01(\tR\varquivoNome\x126\n" +
 	"\bvalidade\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\bvalidade\x12\x1a\n" +
@@ -1015,7 +1222,13 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\x0eAmbientePadrao\x12\x1f\n" +
 	"\x1bAMBIENTE_PADRAO_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18AMBIENTE_PADRAO_PRODUCAO\x10\x01\x12\x1f\n" +
-	"\x1bAMBIENTE_PADRAO_HOMOLOGACAO\x10\x02B\x81\x01\n" +
+	"\x1bAMBIENTE_PADRAO_HOMOLOGACAO\x10\x02*\x8c\x02\n" +
+	"\x1eContadorAcompanhamentoSituacao\x120\n" +
+	",CONTADOR_ACOMPANHAMENTO_SITUACAO_UNSPECIFIED\x10\x00\x12.\n" +
+	"*CONTADOR_ACOMPANHAMENTO_SITUACAO_CONVIDADO\x10\x01\x12*\n" +
+	"&CONTADOR_ACOMPANHAMENTO_SITUACAO_ATIVO\x10\x02\x12-\n" +
+	")CONTADOR_ACOMPANHAMENTO_SITUACAO_RECUSADO\x10\x03\x12-\n" +
+	")CONTADOR_ACOMPANHAMENTO_SITUACAO_REVOGADO\x10\x04B\x81\x01\n" +
 	"\n" +
 	"com.configB\vConfigProtoP\x01Z.github.com/linksoft-dev/sdks/go/pb/apps/config\xa2\x02\x03CXX\xaa\x02\x06Config\xca\x02\x06Config\xe2\x02\x12Config\\GPBMetadata\xea\x02\x06Configb\x06proto3"
 
@@ -1031,35 +1244,41 @@ func file_apps_config_config_proto_rawDescGZIP() []byte {
 	return file_apps_config_config_proto_rawDescData
 }
 
-var file_apps_config_config_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_apps_config_config_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_apps_config_config_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_apps_config_config_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_apps_config_config_proto_goTypes = []any{
-	(AmbientePadrao)(0),           // 0: config.AmbientePadrao
-	(*Contador)(nil),              // 1: config.Contador
-	(*CertificadoModel)(nil),      // 2: config.CertificadoModel
-	(*ConfigNfe)(nil),             // 3: config.ConfigNfe
-	(*ConfigNfce)(nil),            // 4: config.ConfigNfce
-	(*ConfigMdfe)(nil),            // 5: config.ConfigMdfe
-	(*ConfigCte)(nil),             // 6: config.ConfigCte
-	(*ConfigNfse)(nil),            // 7: config.ConfigNfse
-	(*CodigoServicoNfse)(nil),     // 8: config.CodigoServicoNfse
-	(*Cnae)(nil),                  // 9: config.Cnae
-	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
+	(AmbientePadrao)(0),                 // 0: config.AmbientePadrao
+	(ContadorAcompanhamentoSituacao)(0), // 1: config.ContadorAcompanhamentoSituacao
+	(*Contador)(nil),                    // 2: config.Contador
+	(*ContadorAcompanhamento)(nil),      // 3: config.ContadorAcompanhamento
+	(*CertificadoModel)(nil),            // 4: config.CertificadoModel
+	(*ConfigNfe)(nil),                   // 5: config.ConfigNfe
+	(*ConfigNfce)(nil),                  // 6: config.ConfigNfce
+	(*ConfigMdfe)(nil),                  // 7: config.ConfigMdfe
+	(*ConfigCte)(nil),                   // 8: config.ConfigCte
+	(*ConfigNfse)(nil),                  // 9: config.ConfigNfse
+	(*CodigoServicoNfse)(nil),           // 10: config.CodigoServicoNfse
+	(*Cnae)(nil),                        // 11: config.Cnae
+	(*timestamppb.Timestamp)(nil),       // 12: google.protobuf.Timestamp
 }
 var file_apps_config_config_proto_depIdxs = []int32{
-	10, // 0: config.CertificadoModel.validade:type_name -> google.protobuf.Timestamp
-	10, // 1: config.ConfigNfe.data_hora_status:type_name -> google.protobuf.Timestamp
-	10, // 2: config.ConfigNfe.entrada_consulta_bloqueada_ate:type_name -> google.protobuf.Timestamp
-	10, // 3: config.ConfigNfce.data_hora_status:type_name -> google.protobuf.Timestamp
-	10, // 4: config.ConfigNfce.entrada_consulta_bloqueada_ate:type_name -> google.protobuf.Timestamp
-	0,  // 5: config.ConfigCte.ambiente_padrao:type_name -> config.AmbientePadrao
-	0,  // 6: config.ConfigNfse.ambiente_padrao:type_name -> config.AmbientePadrao
-	8,  // 7: config.ConfigNfse.servico_padrao:type_name -> config.CodigoServicoNfse
-	8,  // [8:8] is the sub-list for method output_type
-	8,  // [8:8] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	3,  // 0: config.Contador.acompanhamento:type_name -> config.ContadorAcompanhamento
+	1,  // 1: config.ContadorAcompanhamento.situacao:type_name -> config.ContadorAcompanhamentoSituacao
+	12, // 2: config.ContadorAcompanhamento.convidado_em:type_name -> google.protobuf.Timestamp
+	12, // 3: config.ContadorAcompanhamento.aceito_em:type_name -> google.protobuf.Timestamp
+	12, // 4: config.CertificadoModel.validade:type_name -> google.protobuf.Timestamp
+	12, // 5: config.ConfigNfe.data_hora_status:type_name -> google.protobuf.Timestamp
+	12, // 6: config.ConfigNfe.entrada_consulta_bloqueada_ate:type_name -> google.protobuf.Timestamp
+	12, // 7: config.ConfigNfce.data_hora_status:type_name -> google.protobuf.Timestamp
+	12, // 8: config.ConfigNfce.entrada_consulta_bloqueada_ate:type_name -> google.protobuf.Timestamp
+	0,  // 9: config.ConfigCte.ambiente_padrao:type_name -> config.AmbientePadrao
+	0,  // 10: config.ConfigNfse.ambiente_padrao:type_name -> config.AmbientePadrao
+	10, // 11: config.ConfigNfse.servico_padrao:type_name -> config.CodigoServicoNfse
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_apps_config_config_proto_init() }
@@ -1072,8 +1291,8 @@ func file_apps_config_config_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_config_config_proto_rawDesc), len(file_apps_config_config_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   9,
+			NumEnums:      2,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

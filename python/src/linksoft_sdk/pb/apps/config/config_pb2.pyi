@@ -14,12 +14,25 @@ class AmbientePadrao(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     AMBIENTE_PADRAO_UNSPECIFIED: _ClassVar[AmbientePadrao]
     AMBIENTE_PADRAO_PRODUCAO: _ClassVar[AmbientePadrao]
     AMBIENTE_PADRAO_HOMOLOGACAO: _ClassVar[AmbientePadrao]
+
+class ContadorAcompanhamentoSituacao(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    CONTADOR_ACOMPANHAMENTO_SITUACAO_UNSPECIFIED: _ClassVar[ContadorAcompanhamentoSituacao]
+    CONTADOR_ACOMPANHAMENTO_SITUACAO_CONVIDADO: _ClassVar[ContadorAcompanhamentoSituacao]
+    CONTADOR_ACOMPANHAMENTO_SITUACAO_ATIVO: _ClassVar[ContadorAcompanhamentoSituacao]
+    CONTADOR_ACOMPANHAMENTO_SITUACAO_RECUSADO: _ClassVar[ContadorAcompanhamentoSituacao]
+    CONTADOR_ACOMPANHAMENTO_SITUACAO_REVOGADO: _ClassVar[ContadorAcompanhamentoSituacao]
 AMBIENTE_PADRAO_UNSPECIFIED: AmbientePadrao
 AMBIENTE_PADRAO_PRODUCAO: AmbientePadrao
 AMBIENTE_PADRAO_HOMOLOGACAO: AmbientePadrao
+CONTADOR_ACOMPANHAMENTO_SITUACAO_UNSPECIFIED: ContadorAcompanhamentoSituacao
+CONTADOR_ACOMPANHAMENTO_SITUACAO_CONVIDADO: ContadorAcompanhamentoSituacao
+CONTADOR_ACOMPANHAMENTO_SITUACAO_ATIVO: ContadorAcompanhamentoSituacao
+CONTADOR_ACOMPANHAMENTO_SITUACAO_RECUSADO: ContadorAcompanhamentoSituacao
+CONTADOR_ACOMPANHAMENTO_SITUACAO_REVOGADO: ContadorAcompanhamentoSituacao
 
 class Contador(_message.Message):
-    __slots__ = ("id", "nome", "cpf_cnpj", "cnpj_escritorio", "ie", "isento_ie", "end_cep", "end_endereco", "end_numero", "end_bairro", "end_cidade", "end_cidade_codigo", "end_uf", "telefone", "email", "enviar_nfe_por_email", "crc")
+    __slots__ = ("id", "nome", "cpf_cnpj", "cnpj_escritorio", "ie", "isento_ie", "end_cep", "end_endereco", "end_numero", "end_bairro", "end_cidade", "end_cidade_codigo", "end_uf", "telefone", "email", "enviar_nfe_por_email", "crc", "acompanhamento")
     ID_FIELD_NUMBER: _ClassVar[int]
     NOME_FIELD_NUMBER: _ClassVar[int]
     CPF_CNPJ_FIELD_NUMBER: _ClassVar[int]
@@ -37,6 +50,7 @@ class Contador(_message.Message):
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     ENVIAR_NFE_POR_EMAIL_FIELD_NUMBER: _ClassVar[int]
     CRC_FIELD_NUMBER: _ClassVar[int]
+    ACOMPANHAMENTO_FIELD_NUMBER: _ClassVar[int]
     id: str
     nome: str
     cpf_cnpj: str
@@ -54,7 +68,34 @@ class Contador(_message.Message):
     email: str
     enviar_nfe_por_email: bool
     crc: str
-    def __init__(self, id: _Optional[str] = ..., nome: _Optional[str] = ..., cpf_cnpj: _Optional[str] = ..., cnpj_escritorio: _Optional[str] = ..., ie: _Optional[str] = ..., isento_ie: _Optional[bool] = ..., end_cep: _Optional[str] = ..., end_endereco: _Optional[str] = ..., end_numero: _Optional[str] = ..., end_bairro: _Optional[str] = ..., end_cidade: _Optional[str] = ..., end_cidade_codigo: _Optional[str] = ..., end_uf: _Optional[str] = ..., telefone: _Optional[str] = ..., email: _Optional[str] = ..., enviar_nfe_por_email: _Optional[bool] = ..., crc: _Optional[str] = ...) -> None: ...
+    acompanhamento: ContadorAcompanhamento
+    def __init__(self, id: _Optional[str] = ..., nome: _Optional[str] = ..., cpf_cnpj: _Optional[str] = ..., cnpj_escritorio: _Optional[str] = ..., ie: _Optional[str] = ..., isento_ie: _Optional[bool] = ..., end_cep: _Optional[str] = ..., end_endereco: _Optional[str] = ..., end_numero: _Optional[str] = ..., end_bairro: _Optional[str] = ..., end_cidade: _Optional[str] = ..., end_cidade_codigo: _Optional[str] = ..., end_uf: _Optional[str] = ..., telefone: _Optional[str] = ..., email: _Optional[str] = ..., enviar_nfe_por_email: _Optional[bool] = ..., crc: _Optional[str] = ..., acompanhamento: _Optional[_Union[ContadorAcompanhamento, _Mapping]] = ...) -> None: ...
+
+class ContadorAcompanhamento(_message.Message):
+    __slots__ = ("situacao", "parceiro_id", "convidado_em", "convidado_por", "aceito_em", "aceito_por", "email_envio", "nao_enviar_xml_mensal", "nao_enviar_sped", "enviar_xml_emissao", "sugestao_dispensada")
+    SITUACAO_FIELD_NUMBER: _ClassVar[int]
+    PARCEIRO_ID_FIELD_NUMBER: _ClassVar[int]
+    CONVIDADO_EM_FIELD_NUMBER: _ClassVar[int]
+    CONVIDADO_POR_FIELD_NUMBER: _ClassVar[int]
+    ACEITO_EM_FIELD_NUMBER: _ClassVar[int]
+    ACEITO_POR_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_ENVIO_FIELD_NUMBER: _ClassVar[int]
+    NAO_ENVIAR_XML_MENSAL_FIELD_NUMBER: _ClassVar[int]
+    NAO_ENVIAR_SPED_FIELD_NUMBER: _ClassVar[int]
+    ENVIAR_XML_EMISSAO_FIELD_NUMBER: _ClassVar[int]
+    SUGESTAO_DISPENSADA_FIELD_NUMBER: _ClassVar[int]
+    situacao: ContadorAcompanhamentoSituacao
+    parceiro_id: str
+    convidado_em: _timestamp_pb2.Timestamp
+    convidado_por: str
+    aceito_em: _timestamp_pb2.Timestamp
+    aceito_por: str
+    email_envio: str
+    nao_enviar_xml_mensal: bool
+    nao_enviar_sped: bool
+    enviar_xml_emissao: bool
+    sugestao_dispensada: str
+    def __init__(self, situacao: _Optional[_Union[ContadorAcompanhamentoSituacao, str]] = ..., parceiro_id: _Optional[str] = ..., convidado_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., convidado_por: _Optional[str] = ..., aceito_em: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., aceito_por: _Optional[str] = ..., email_envio: _Optional[str] = ..., nao_enviar_xml_mensal: _Optional[bool] = ..., nao_enviar_sped: _Optional[bool] = ..., enviar_xml_emissao: _Optional[bool] = ..., sugestao_dispensada: _Optional[str] = ...) -> None: ...
 
 class CertificadoModel(_message.Message):
     __slots__ = ("arquivo_nome", "validade", "senha", "conteudo_upload", "download_link")
