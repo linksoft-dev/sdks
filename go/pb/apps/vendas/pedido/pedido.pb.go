@@ -8758,8 +8758,11 @@ type TransactionsOnline struct {
 	PaymentLinkExpirationDate *timestamppb.Timestamp   `protobuf:"bytes,4,opt,name=payment_link_expiration_date,json=paymentLinkExpirationDate,proto3" json:"payment_link_expiration_date,omitempty"`
 	PaymentMethods            []*PaymentMethod         `protobuf:"bytes,5,rep,name=payment_methods,json=paymentMethods,proto3" json:"payment_methods,omitempty"`
 	Links                     []*OnlineTransactionLink `protobuf:"bytes,6,rep,name=links,proto3" json:"links,omitempty"`
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
+	// Permite ou recusa o pagamento parcial no checkout deste documento. Sem valor, segue a
+	// configuração do checkout.
+	AllowPartialPayment *bool `protobuf:"varint,7,opt,name=allow_partial_payment,json=allowPartialPayment,proto3,oneof" json:"allow_partial_payment,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *TransactionsOnline) Reset() {
@@ -8832,6 +8835,13 @@ func (x *TransactionsOnline) GetLinks() []*OnlineTransactionLink {
 		return x.Links
 	}
 	return nil
+}
+
+func (x *TransactionsOnline) GetAllowPartialPayment() bool {
+	if x != nil && x.AllowPartialPayment != nil {
+		return *x.AllowPartialPayment
+	}
+	return false
 }
 
 type PaymentMethod struct {
@@ -17503,14 +17513,16 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\x0fpayment_methods\x18\x04 \x03(\v2\x15.pedido.PaymentMethodR\x0epaymentMethods\x12)\n" +
 	"\x10max_installments\x18\x05 \x01(\x05R\x0fmaxInstallments\x12H\n" +
 	"\x12preferred_due_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x10preferredDueDate\x12[\n" +
-	"\x1cpayment_link_expiration_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x19paymentLinkExpirationDate\"\xfe\x02\n" +
+	"\x1cpayment_link_expiration_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x19paymentLinkExpirationDate\"\xd1\x03\n" +
 	"\x12TransactionsOnline\x12!\n" +
 	"\fcheckout_url\x18\x01 \x01(\tR\vcheckoutUrl\x12)\n" +
 	"\x10max_installments\x18\x02 \x01(\x05R\x0fmaxInstallments\x12H\n" +
 	"\x12preferred_due_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x10preferredDueDate\x12[\n" +
 	"\x1cpayment_link_expiration_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x19paymentLinkExpirationDate\x12>\n" +
 	"\x0fpayment_methods\x18\x05 \x03(\v2\x15.pedido.PaymentMethodR\x0epaymentMethods\x123\n" +
-	"\x05links\x18\x06 \x03(\v2\x1d.pedido.OnlineTransactionLinkR\x05links\"k\n" +
+	"\x05links\x18\x06 \x03(\v2\x1d.pedido.OnlineTransactionLinkR\x05links\x127\n" +
+	"\x15allow_partial_payment\x18\a \x01(\bH\x00R\x13allowPartialPayment\x88\x01\x01B\x18\n" +
+	"\x16_allow_partial_payment\"k\n" +
 	"\rPaymentMethod\x12*\n" +
 	"\x11payment_method_id\x18\x01 \x01(\tR\x0fpaymentMethodId\x12.\n" +
 	"\x13payment_method_name\x18\x02 \x01(\tR\x11paymentMethodName\"\xe8\x02\n" +
@@ -19194,6 +19206,7 @@ func file_apps_vendas_pedido_pedido_proto_init() {
 	file_apps_vendas_pedido_pedido_otica_proto_init()
 	file_apps_vendas_pedido_pedido_farmacia_proto_init()
 	file_apps_vendas_pedido_pedido_mesa_proto_init()
+	file_apps_vendas_pedido_pedido_proto_msgTypes[103].OneofWrappers = []any{}
 	file_apps_vendas_pedido_pedido_proto_msgTypes[108].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

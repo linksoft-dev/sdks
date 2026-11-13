@@ -1668,20 +1668,22 @@ class OnlineTransactionLink(_message.Message):
     def __init__(self, id: _Optional[str] = ..., url: _Optional[str] = ..., description: _Optional[str] = ..., payment_methods: _Optional[_Iterable[_Union[PaymentMethod, _Mapping]]] = ..., max_installments: _Optional[int] = ..., preferred_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., payment_link_expiration_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class TransactionsOnline(_message.Message):
-    __slots__ = ("checkout_url", "max_installments", "preferred_due_date", "payment_link_expiration_date", "payment_methods", "links")
+    __slots__ = ("checkout_url", "max_installments", "preferred_due_date", "payment_link_expiration_date", "payment_methods", "links", "allow_partial_payment")
     CHECKOUT_URL_FIELD_NUMBER: _ClassVar[int]
     MAX_INSTALLMENTS_FIELD_NUMBER: _ClassVar[int]
     PREFERRED_DUE_DATE_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_LINK_EXPIRATION_DATE_FIELD_NUMBER: _ClassVar[int]
     PAYMENT_METHODS_FIELD_NUMBER: _ClassVar[int]
     LINKS_FIELD_NUMBER: _ClassVar[int]
+    ALLOW_PARTIAL_PAYMENT_FIELD_NUMBER: _ClassVar[int]
     checkout_url: str
     max_installments: int
     preferred_due_date: _timestamp_pb2.Timestamp
     payment_link_expiration_date: _timestamp_pb2.Timestamp
     payment_methods: _containers.RepeatedCompositeFieldContainer[PaymentMethod]
     links: _containers.RepeatedCompositeFieldContainer[OnlineTransactionLink]
-    def __init__(self, checkout_url: _Optional[str] = ..., max_installments: _Optional[int] = ..., preferred_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., payment_link_expiration_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., payment_methods: _Optional[_Iterable[_Union[PaymentMethod, _Mapping]]] = ..., links: _Optional[_Iterable[_Union[OnlineTransactionLink, _Mapping]]] = ...) -> None: ...
+    allow_partial_payment: bool
+    def __init__(self, checkout_url: _Optional[str] = ..., max_installments: _Optional[int] = ..., preferred_due_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., payment_link_expiration_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., payment_methods: _Optional[_Iterable[_Union[PaymentMethod, _Mapping]]] = ..., links: _Optional[_Iterable[_Union[OnlineTransactionLink, _Mapping]]] = ..., allow_partial_payment: _Optional[bool] = ...) -> None: ...
 
 class PaymentMethod(_message.Message):
     __slots__ = ("payment_method_id", "payment_method_name")
