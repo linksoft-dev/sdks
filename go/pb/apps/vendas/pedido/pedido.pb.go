@@ -802,10 +802,9 @@ type ContractStatus int32
 const (
 	ContractStatus_CONTRACT_STATUS_UNSPECIFIED ContractStatus = 0 // contrato sem status gravado; equivale a ACTIVE
 	ContractStatus_CONTRACT_STATUS_ACTIVE      ContractStatus = 1
-	// Deprecated: Marked as deprecated in apps/vendas/pedido/pedido.proto.
-	ContractStatus_CONTRACT_STATUS_INACTIVE ContractStatus = 2
-	ContractStatus_CONTRACT_STATUS_CANCELED ContractStatus = 3
-	// Situação de atraso do contrato é derivada do vencimento das parcelas, não do status.
+	ContractStatus_CONTRACT_STATUS_INACTIVE    ContractStatus = 2 // validade vencida há mais dias que o prazo da empresa, sem renovação; volta a ACTIVE quando renova
+	ContractStatus_CONTRACT_STATUS_CANCELED    ContractStatus = 3
+	// Atraso não muda o status: contrato com a validade vencida dentro do prazo da empresa segue ACTIVE.
 	//
 	// Deprecated: Marked as deprecated in apps/vendas/pedido/pedido.proto.
 	ContractStatus_CONTRACT_STATUS_BLOCKED       ContractStatus = 4
@@ -18435,11 +18434,11 @@ const file_apps_vendas_pedido_pedido_proto_rawDesc = "" +
 	"\fContractType\x12\x1d\n" +
 	"\x19CONTRACT_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16CONTRACT_TYPE_PRE_PAID\x10\x01\x12\x1b\n" +
-	"\x17CONTRACT_TYPE_POST_PAID\x10\x02*\x8b\x02\n" +
+	"\x17CONTRACT_TYPE_POST_PAID\x10\x02*\x87\x02\n" +
 	"\x0eContractStatus\x12\x1f\n" +
 	"\x1bCONTRACT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
-	"\x16CONTRACT_STATUS_ACTIVE\x10\x01\x12 \n" +
-	"\x18CONTRACT_STATUS_INACTIVE\x10\x02\x1a\x02\b\x01\x12\x1c\n" +
+	"\x16CONTRACT_STATUS_ACTIVE\x10\x01\x12\x1c\n" +
+	"\x18CONTRACT_STATUS_INACTIVE\x10\x02\x12\x1c\n" +
 	"\x18CONTRACT_STATUS_CANCELED\x10\x03\x12\x1f\n" +
 	"\x17CONTRACT_STATUS_BLOCKED\x10\x04\x1a\x02\b\x01\x12\x19\n" +
 	"\x15CONTRACT_STATUS_TRIAL\x10\x05\x12\x1d\n" +
