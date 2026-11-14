@@ -146,8 +146,8 @@ type Contador struct {
 	Email             string                 `protobuf:"bytes,15,opt,name=email,proto3" json:"email,omitempty"`
 	EnviarNfePorEmail bool                   `protobuf:"varint,16,opt,name=enviar_nfe_por_email,json=enviarNfePorEmail,proto3" json:"enviar_nfe_por_email,omitempty"`
 	Crc               string                 `protobuf:"bytes,17,opt,name=crc,proto3" json:"crc,omitempty"`
-	// Acompanhamento da organização pelo contador. Gravado só pelo servidor: o que vier
-	// no Set é ignorado, e trocar o e-mail do contador zera o acompanhamento.
+	// Acesso do contador à organização pelo Portal do Parceiro: situação do convite e do acesso
+	// e as preferências de envio que o contador escolheu.
 	Acompanhamento *ContadorAcompanhamento `protobuf:"bytes,18,opt,name=acompanhamento,proto3" json:"acompanhamento,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
@@ -1115,7 +1115,7 @@ var File_apps_config_config_proto protoreflect.FileDescriptor
 
 const file_apps_config_config_proto_rawDesc = "" +
 	"\n" +
-	"\x18apps/config/config.proto\x12\x06config\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb8\x04\n" +
+	"\x18apps/config/config.proto\x12\x06config\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbe\x04\n" +
 	"\bContador\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x19\n" +
@@ -1137,8 +1137,8 @@ const file_apps_config_config_proto_rawDesc = "" +
 	"\btelefone\x18\x0e \x01(\tR\btelefone\x12\x14\n" +
 	"\x05email\x18\x0f \x01(\tR\x05email\x12/\n" +
 	"\x14enviar_nfe_por_email\x18\x10 \x01(\bR\x11enviarNfePorEmail\x12\x10\n" +
-	"\x03crc\x18\x11 \x01(\tR\x03crc\x12F\n" +
-	"\x0eacompanhamento\x18\x12 \x01(\v2\x1e.config.ContadorAcompanhamentoR\x0eacompanhamento\"\x94\x04\n" +
+	"\x03crc\x18\x11 \x01(\tR\x03crc\x12L\n" +
+	"\x0eacompanhamento\x18\x12 \x01(\v2\x1e.config.ContadorAcompanhamentoB\x04\xe2A\x01\x03R\x0eacompanhamento\"\x94\x04\n" +
 	"\x16ContadorAcompanhamento\x12B\n" +
 	"\bsituacao\x18\x01 \x01(\x0e2&.config.ContadorAcompanhamentoSituacaoR\bsituacao\x12\x1f\n" +
 	"\vparceiro_id\x18\x02 \x01(\tR\n" +
