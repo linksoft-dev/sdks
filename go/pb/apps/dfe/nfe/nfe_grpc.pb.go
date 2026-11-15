@@ -50,8 +50,6 @@ const (
 	NfeService_NfeEnviaXml_FullMethodName              = "/nfe.NfeService/NfeEnviaXml"
 	NfeService_EnviaXmlsPeriodo_FullMethodName         = "/nfe.NfeService/EnviaXmlsPeriodo"
 	NfeService_GerarNFeReimpressao_FullMethodName      = "/nfe.NfeService/GerarNFeReimpressao"
-	NfeService_NfeRecuperaProtocolo_FullMethodName     = "/nfe.NfeService/NfeRecuperaProtocolo"
-	NfeService_NfeImportacaoChave_FullMethodName       = "/nfe.NfeService/NfeImportacaoChave"
 	NfeService_Danfe_FullMethodName                    = "/nfe.NfeService/Danfe"
 	NfeService_GetDownloadLinkXml_FullMethodName       = "/nfe.NfeService/GetDownloadLinkXml"
 	NfeService_GetWsStatus_FullMethodName              = "/nfe.NfeService/GetWsStatus"
@@ -101,8 +99,6 @@ type NfeServiceClient interface {
 	// Envia todos os XML's encontrados dentro do período informado na request
 	EnviaXmlsPeriodo(ctx context.Context, in *EnviaXmlsPeriodoRequest, opts ...grpc.CallOption) (*EnviaXmlsPeriodoResponse, error)
 	GerarNFeReimpressao(ctx context.Context, in *GerarNFeReimpressaoRequest, opts ...grpc.CallOption) (*GerarNFeReimpressaoResponse, error)
-	NfeRecuperaProtocolo(ctx context.Context, in *NfeRecuperaProtocoloRequest, opts ...grpc.CallOption) (*NfeRecuperaProtocoloResponse, error)
-	NfeImportacaoChave(ctx context.Context, in *NfeImportacaoChaveRequest, opts ...grpc.CallOption) (*NfeImportacaoChaveResponse, error)
 	Danfe(ctx context.Context, in *DanfeRequest, opts ...grpc.CallOption) (*DanfeResponse, error)
 	// GetDownloadLinkXml retorna um link para download do xml da nota fiscal
 	GetDownloadLinkXml(ctx context.Context, in *GetDownloadLinkXmlRequest, opts ...grpc.CallOption) (*GetDownloadLinkXmlResponse, error)
@@ -430,26 +426,6 @@ func (c *nfeServiceClient) GerarNFeReimpressao(ctx context.Context, in *GerarNFe
 	return out, nil
 }
 
-func (c *nfeServiceClient) NfeRecuperaProtocolo(ctx context.Context, in *NfeRecuperaProtocoloRequest, opts ...grpc.CallOption) (*NfeRecuperaProtocoloResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(NfeRecuperaProtocoloResponse)
-	err := c.cc.Invoke(ctx, NfeService_NfeRecuperaProtocolo_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *nfeServiceClient) NfeImportacaoChave(ctx context.Context, in *NfeImportacaoChaveRequest, opts ...grpc.CallOption) (*NfeImportacaoChaveResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(NfeImportacaoChaveResponse)
-	err := c.cc.Invoke(ctx, NfeService_NfeImportacaoChave_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *nfeServiceClient) Danfe(ctx context.Context, in *DanfeRequest, opts ...grpc.CallOption) (*DanfeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DanfeResponse)
@@ -551,8 +527,6 @@ type NfeServiceServer interface {
 	// Envia todos os XML's encontrados dentro do período informado na request
 	EnviaXmlsPeriodo(context.Context, *EnviaXmlsPeriodoRequest) (*EnviaXmlsPeriodoResponse, error)
 	GerarNFeReimpressao(context.Context, *GerarNFeReimpressaoRequest) (*GerarNFeReimpressaoResponse, error)
-	NfeRecuperaProtocolo(context.Context, *NfeRecuperaProtocoloRequest) (*NfeRecuperaProtocoloResponse, error)
-	NfeImportacaoChave(context.Context, *NfeImportacaoChaveRequest) (*NfeImportacaoChaveResponse, error)
 	Danfe(context.Context, *DanfeRequest) (*DanfeResponse, error)
 	// GetDownloadLinkXml retorna um link para download do xml da nota fiscal
 	GetDownloadLinkXml(context.Context, *GetDownloadLinkXmlRequest) (*GetDownloadLinkXmlResponse, error)
@@ -662,12 +636,6 @@ func (UnimplementedNfeServiceServer) EnviaXmlsPeriodo(context.Context, *EnviaXml
 }
 func (UnimplementedNfeServiceServer) GerarNFeReimpressao(context.Context, *GerarNFeReimpressaoRequest) (*GerarNFeReimpressaoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GerarNFeReimpressao not implemented")
-}
-func (UnimplementedNfeServiceServer) NfeRecuperaProtocolo(context.Context, *NfeRecuperaProtocoloRequest) (*NfeRecuperaProtocoloResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method NfeRecuperaProtocolo not implemented")
-}
-func (UnimplementedNfeServiceServer) NfeImportacaoChave(context.Context, *NfeImportacaoChaveRequest) (*NfeImportacaoChaveResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method NfeImportacaoChave not implemented")
 }
 func (UnimplementedNfeServiceServer) Danfe(context.Context, *DanfeRequest) (*DanfeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Danfe not implemented")
@@ -1266,42 +1234,6 @@ func _NfeService_GerarNFeReimpressao_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NfeService_NfeRecuperaProtocolo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NfeRecuperaProtocoloRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NfeServiceServer).NfeRecuperaProtocolo(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NfeService_NfeRecuperaProtocolo_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NfeServiceServer).NfeRecuperaProtocolo(ctx, req.(*NfeRecuperaProtocoloRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NfeService_NfeImportacaoChave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NfeImportacaoChaveRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NfeServiceServer).NfeImportacaoChave(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NfeService_NfeImportacaoChave_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NfeServiceServer).NfeImportacaoChave(ctx, req.(*NfeImportacaoChaveRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _NfeService_Danfe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DanfeRequest)
 	if err := dec(in); err != nil {
@@ -1542,14 +1474,6 @@ var NfeService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _NfeService_GerarNFeReimpressao_Handler,
 		},
 		{
-			MethodName: "NfeRecuperaProtocolo",
-			Handler:    _NfeService_NfeRecuperaProtocolo_Handler,
-		},
-		{
-			MethodName: "NfeImportacaoChave",
-			Handler:    _NfeService_NfeImportacaoChave_Handler,
-		},
-		{
 			MethodName: "Danfe",
 			Handler:    _NfeService_Danfe_Handler,
 		},
@@ -1610,8 +1534,6 @@ const (
 	NfceService_NfeEnviaXml_FullMethodName              = "/nfe.NfceService/NfeEnviaXml"
 	NfceService_EnviaXmlsPeriodo_FullMethodName         = "/nfe.NfceService/EnviaXmlsPeriodo"
 	NfceService_GerarNFeReimpressao_FullMethodName      = "/nfe.NfceService/GerarNFeReimpressao"
-	NfceService_NfeRecuperaProtocolo_FullMethodName     = "/nfe.NfceService/NfeRecuperaProtocolo"
-	NfceService_NfeImportacaoChave_FullMethodName       = "/nfe.NfceService/NfeImportacaoChave"
 	NfceService_Danfe_FullMethodName                    = "/nfe.NfceService/Danfe"
 	NfceService_GetDownloadLinkXml_FullMethodName       = "/nfe.NfceService/GetDownloadLinkXml"
 	NfceService_GetWsStatus_FullMethodName              = "/nfe.NfceService/GetWsStatus"
@@ -1661,8 +1583,6 @@ type NfceServiceClient interface {
 	// Envia todos os XML's encontrados dentro do período informado na request
 	EnviaXmlsPeriodo(ctx context.Context, in *EnviaXmlsPeriodoRequest, opts ...grpc.CallOption) (*EnviaXmlsPeriodoResponse, error)
 	GerarNFeReimpressao(ctx context.Context, in *GerarNFeReimpressaoRequest, opts ...grpc.CallOption) (*GerarNFeReimpressaoResponse, error)
-	NfeRecuperaProtocolo(ctx context.Context, in *NfeRecuperaProtocoloRequest, opts ...grpc.CallOption) (*NfeRecuperaProtocoloResponse, error)
-	NfeImportacaoChave(ctx context.Context, in *NfeImportacaoChaveRequest, opts ...grpc.CallOption) (*NfeImportacaoChaveResponse, error)
 	Danfe(ctx context.Context, in *DanfeRequest, opts ...grpc.CallOption) (*DanfeResponse, error)
 	// GetDownloadLinkXml retorna um link para download do xml da nota fiscal
 	GetDownloadLinkXml(ctx context.Context, in *GetDownloadLinkXmlRequest, opts ...grpc.CallOption) (*GetDownloadLinkXmlResponse, error)
@@ -1990,26 +1910,6 @@ func (c *nfceServiceClient) GerarNFeReimpressao(ctx context.Context, in *GerarNF
 	return out, nil
 }
 
-func (c *nfceServiceClient) NfeRecuperaProtocolo(ctx context.Context, in *NfeRecuperaProtocoloRequest, opts ...grpc.CallOption) (*NfeRecuperaProtocoloResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(NfeRecuperaProtocoloResponse)
-	err := c.cc.Invoke(ctx, NfceService_NfeRecuperaProtocolo_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *nfceServiceClient) NfeImportacaoChave(ctx context.Context, in *NfeImportacaoChaveRequest, opts ...grpc.CallOption) (*NfeImportacaoChaveResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(NfeImportacaoChaveResponse)
-	err := c.cc.Invoke(ctx, NfceService_NfeImportacaoChave_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *nfceServiceClient) Danfe(ctx context.Context, in *DanfeRequest, opts ...grpc.CallOption) (*DanfeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DanfeResponse)
@@ -2111,8 +2011,6 @@ type NfceServiceServer interface {
 	// Envia todos os XML's encontrados dentro do período informado na request
 	EnviaXmlsPeriodo(context.Context, *EnviaXmlsPeriodoRequest) (*EnviaXmlsPeriodoResponse, error)
 	GerarNFeReimpressao(context.Context, *GerarNFeReimpressaoRequest) (*GerarNFeReimpressaoResponse, error)
-	NfeRecuperaProtocolo(context.Context, *NfeRecuperaProtocoloRequest) (*NfeRecuperaProtocoloResponse, error)
-	NfeImportacaoChave(context.Context, *NfeImportacaoChaveRequest) (*NfeImportacaoChaveResponse, error)
 	Danfe(context.Context, *DanfeRequest) (*DanfeResponse, error)
 	// GetDownloadLinkXml retorna um link para download do xml da nota fiscal
 	GetDownloadLinkXml(context.Context, *GetDownloadLinkXmlRequest) (*GetDownloadLinkXmlResponse, error)
@@ -2222,12 +2120,6 @@ func (UnimplementedNfceServiceServer) EnviaXmlsPeriodo(context.Context, *EnviaXm
 }
 func (UnimplementedNfceServiceServer) GerarNFeReimpressao(context.Context, *GerarNFeReimpressaoRequest) (*GerarNFeReimpressaoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GerarNFeReimpressao not implemented")
-}
-func (UnimplementedNfceServiceServer) NfeRecuperaProtocolo(context.Context, *NfeRecuperaProtocoloRequest) (*NfeRecuperaProtocoloResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method NfeRecuperaProtocolo not implemented")
-}
-func (UnimplementedNfceServiceServer) NfeImportacaoChave(context.Context, *NfeImportacaoChaveRequest) (*NfeImportacaoChaveResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method NfeImportacaoChave not implemented")
 }
 func (UnimplementedNfceServiceServer) Danfe(context.Context, *DanfeRequest) (*DanfeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method Danfe not implemented")
@@ -2826,42 +2718,6 @@ func _NfceService_GerarNFeReimpressao_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NfceService_NfeRecuperaProtocolo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NfeRecuperaProtocoloRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NfceServiceServer).NfeRecuperaProtocolo(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NfceService_NfeRecuperaProtocolo_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NfceServiceServer).NfeRecuperaProtocolo(ctx, req.(*NfeRecuperaProtocoloRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _NfceService_NfeImportacaoChave_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(NfeImportacaoChaveRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(NfceServiceServer).NfeImportacaoChave(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: NfceService_NfeImportacaoChave_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NfceServiceServer).NfeImportacaoChave(ctx, req.(*NfeImportacaoChaveRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _NfceService_Danfe_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DanfeRequest)
 	if err := dec(in); err != nil {
@@ -3100,14 +2956,6 @@ var NfceService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GerarNFeReimpressao",
 			Handler:    _NfceService_GerarNFeReimpressao_Handler,
-		},
-		{
-			MethodName: "NfeRecuperaProtocolo",
-			Handler:    _NfceService_NfeRecuperaProtocolo_Handler,
-		},
-		{
-			MethodName: "NfeImportacaoChave",
-			Handler:    _NfceService_NfeImportacaoChave_Handler,
 		},
 		{
 			MethodName: "Danfe",

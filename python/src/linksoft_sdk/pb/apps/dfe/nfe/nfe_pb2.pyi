@@ -1739,24 +1739,6 @@ class GerarNFeReimpressaoResponse(_message.Message):
     nfe: Nfe
     def __init__(self, status: _Optional[str] = ..., nfe: _Optional[_Union[Nfe, _Mapping]] = ...) -> None: ...
 
-class NfeRecuperaProtocoloRequest(_message.Message):
-    __slots__ = ("id", "tipoDocumento", "numero", "chave")
-    ID_FIELD_NUMBER: _ClassVar[int]
-    TIPODOCUMENTO_FIELD_NUMBER: _ClassVar[int]
-    NUMERO_FIELD_NUMBER: _ClassVar[int]
-    CHAVE_FIELD_NUMBER: _ClassVar[int]
-    id: str
-    tipoDocumento: str
-    numero: int
-    chave: str
-    def __init__(self, id: _Optional[str] = ..., tipoDocumento: _Optional[str] = ..., numero: _Optional[int] = ..., chave: _Optional[str] = ...) -> None: ...
-
-class NfeRecuperaProtocoloResponse(_message.Message):
-    __slots__ = ("nfe",)
-    NFE_FIELD_NUMBER: _ClassVar[int]
-    nfe: Nfe
-    def __init__(self, nfe: _Optional[_Union[Nfe, _Mapping]] = ...) -> None: ...
-
 class GetDownloadLinkXmlRequest(_message.Message):
     __slots__ = ("id",)
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -1780,18 +1762,6 @@ class GetWsStatusResponse(_message.Message):
     ONLINE_FIELD_NUMBER: _ClassVar[int]
     online: bool
     def __init__(self, online: _Optional[bool] = ...) -> None: ...
-
-class NfeImportacaoChaveRequest(_message.Message):
-    __slots__ = ("chave",)
-    CHAVE_FIELD_NUMBER: _ClassVar[int]
-    chave: str
-    def __init__(self, chave: _Optional[str] = ...) -> None: ...
-
-class NfeImportacaoChaveResponse(_message.Message):
-    __slots__ = ("nfe",)
-    NFE_FIELD_NUMBER: _ClassVar[int]
-    nfe: Nfe
-    def __init__(self, nfe: _Optional[_Union[Nfe, _Mapping]] = ...) -> None: ...
 
 class ReportRequest(_message.Message):
     __slots__ = ("tipoRelatorio", "list_request", "mail")

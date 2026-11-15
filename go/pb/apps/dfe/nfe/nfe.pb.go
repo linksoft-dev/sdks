@@ -8807,118 +8807,6 @@ func (x *GerarNFeReimpressaoResponse) GetNfe() *Nfe {
 	return nil
 }
 
-type NfeRecuperaProtocoloRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	TipoDocumento string                 `protobuf:"bytes,2,opt,name=tipoDocumento,proto3" json:"tipoDocumento,omitempty"`
-	Numero        int32                  `protobuf:"varint,3,opt,name=numero,proto3" json:"numero,omitempty"`
-	Chave         string                 `protobuf:"bytes,4,opt,name=chave,proto3" json:"chave,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *NfeRecuperaProtocoloRequest) Reset() {
-	*x = NfeRecuperaProtocoloRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[92]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *NfeRecuperaProtocoloRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*NfeRecuperaProtocoloRequest) ProtoMessage() {}
-
-func (x *NfeRecuperaProtocoloRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[92]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use NfeRecuperaProtocoloRequest.ProtoReflect.Descriptor instead.
-func (*NfeRecuperaProtocoloRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{92}
-}
-
-func (x *NfeRecuperaProtocoloRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *NfeRecuperaProtocoloRequest) GetTipoDocumento() string {
-	if x != nil {
-		return x.TipoDocumento
-	}
-	return ""
-}
-
-func (x *NfeRecuperaProtocoloRequest) GetNumero() int32 {
-	if x != nil {
-		return x.Numero
-	}
-	return 0
-}
-
-func (x *NfeRecuperaProtocoloRequest) GetChave() string {
-	if x != nil {
-		return x.Chave
-	}
-	return ""
-}
-
-type NfeRecuperaProtocoloResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Nfe           *Nfe                   `protobuf:"bytes,1,opt,name=nfe,proto3" json:"nfe,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *NfeRecuperaProtocoloResponse) Reset() {
-	*x = NfeRecuperaProtocoloResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[93]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *NfeRecuperaProtocoloResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*NfeRecuperaProtocoloResponse) ProtoMessage() {}
-
-func (x *NfeRecuperaProtocoloResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[93]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use NfeRecuperaProtocoloResponse.ProtoReflect.Descriptor instead.
-func (*NfeRecuperaProtocoloResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{93}
-}
-
-func (x *NfeRecuperaProtocoloResponse) GetNfe() *Nfe {
-	if x != nil {
-		return x.Nfe
-	}
-	return nil
-}
-
 type GetDownloadLinkXmlRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -8928,7 +8816,7 @@ type GetDownloadLinkXmlRequest struct {
 
 func (x *GetDownloadLinkXmlRequest) Reset() {
 	*x = GetDownloadLinkXmlRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[94]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8940,7 +8828,7 @@ func (x *GetDownloadLinkXmlRequest) String() string {
 func (*GetDownloadLinkXmlRequest) ProtoMessage() {}
 
 func (x *GetDownloadLinkXmlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[94]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8953,7 +8841,7 @@ func (x *GetDownloadLinkXmlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDownloadLinkXmlRequest.ProtoReflect.Descriptor instead.
 func (*GetDownloadLinkXmlRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{94}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *GetDownloadLinkXmlRequest) GetId() string {
@@ -8972,7 +8860,7 @@ type GetDownloadLinkXmlResponse struct {
 
 func (x *GetDownloadLinkXmlResponse) Reset() {
 	*x = GetDownloadLinkXmlResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[95]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8984,7 +8872,7 @@ func (x *GetDownloadLinkXmlResponse) String() string {
 func (*GetDownloadLinkXmlResponse) ProtoMessage() {}
 
 func (x *GetDownloadLinkXmlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[95]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8997,7 +8885,7 @@ func (x *GetDownloadLinkXmlResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDownloadLinkXmlResponse.ProtoReflect.Descriptor instead.
 func (*GetDownloadLinkXmlResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{95}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *GetDownloadLinkXmlResponse) GetUrl() string {
@@ -9016,7 +8904,7 @@ type GetWsStatusRequest struct {
 
 func (x *GetWsStatusRequest) Reset() {
 	*x = GetWsStatusRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[96]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9028,7 +8916,7 @@ func (x *GetWsStatusRequest) String() string {
 func (*GetWsStatusRequest) ProtoMessage() {}
 
 func (x *GetWsStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[96]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9041,7 +8929,7 @@ func (x *GetWsStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWsStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetWsStatusRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{96}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *GetWsStatusRequest) GetTipo() string {
@@ -9060,7 +8948,7 @@ type GetWsStatusResponse struct {
 
 func (x *GetWsStatusResponse) Reset() {
 	*x = GetWsStatusResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[97]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9072,7 +8960,7 @@ func (x *GetWsStatusResponse) String() string {
 func (*GetWsStatusResponse) ProtoMessage() {}
 
 func (x *GetWsStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[97]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9085,7 +8973,7 @@ func (x *GetWsStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWsStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetWsStatusResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{97}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *GetWsStatusResponse) GetOnline() bool {
@@ -9093,94 +8981,6 @@ func (x *GetWsStatusResponse) GetOnline() bool {
 		return x.Online
 	}
 	return false
-}
-
-type NfeImportacaoChaveRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Chave         string                 `protobuf:"bytes,1,opt,name=chave,proto3" json:"chave,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *NfeImportacaoChaveRequest) Reset() {
-	*x = NfeImportacaoChaveRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[98]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *NfeImportacaoChaveRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*NfeImportacaoChaveRequest) ProtoMessage() {}
-
-func (x *NfeImportacaoChaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[98]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use NfeImportacaoChaveRequest.ProtoReflect.Descriptor instead.
-func (*NfeImportacaoChaveRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{98}
-}
-
-func (x *NfeImportacaoChaveRequest) GetChave() string {
-	if x != nil {
-		return x.Chave
-	}
-	return ""
-}
-
-type NfeImportacaoChaveResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Nfe           *Nfe                   `protobuf:"bytes,1,opt,name=nfe,proto3" json:"nfe,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *NfeImportacaoChaveResponse) Reset() {
-	*x = NfeImportacaoChaveResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[99]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *NfeImportacaoChaveResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*NfeImportacaoChaveResponse) ProtoMessage() {}
-
-func (x *NfeImportacaoChaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[99]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use NfeImportacaoChaveResponse.ProtoReflect.Descriptor instead.
-func (*NfeImportacaoChaveResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{99}
-}
-
-func (x *NfeImportacaoChaveResponse) GetNfe() *Nfe {
-	if x != nil {
-		return x.Nfe
-	}
-	return nil
 }
 
 type ReportRequest struct {
@@ -9194,7 +8994,7 @@ type ReportRequest struct {
 
 func (x *ReportRequest) Reset() {
 	*x = ReportRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[100]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9206,7 +9006,7 @@ func (x *ReportRequest) String() string {
 func (*ReportRequest) ProtoMessage() {}
 
 func (x *ReportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[100]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9219,7 +9019,7 @@ func (x *ReportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportRequest.ProtoReflect.Descriptor instead.
 func (*ReportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{100}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *ReportRequest) GetTipoRelatorio() string {
@@ -9252,7 +9052,7 @@ type ReportResponse struct {
 
 func (x *ReportResponse) Reset() {
 	*x = ReportResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[101]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9264,7 +9064,7 @@ func (x *ReportResponse) String() string {
 func (*ReportResponse) ProtoMessage() {}
 
 func (x *ReportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[101]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9277,7 +9077,7 @@ func (x *ReportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportResponse.ProtoReflect.Descriptor instead.
 func (*ReportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{101}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *ReportResponse) GetResponse() *report.Response {
@@ -9300,7 +9100,7 @@ type CorrecaoMovimentacaoRequest struct {
 
 func (x *CorrecaoMovimentacaoRequest) Reset() {
 	*x = CorrecaoMovimentacaoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[102]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9312,7 +9112,7 @@ func (x *CorrecaoMovimentacaoRequest) String() string {
 func (*CorrecaoMovimentacaoRequest) ProtoMessage() {}
 
 func (x *CorrecaoMovimentacaoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[102]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9325,7 +9125,7 @@ func (x *CorrecaoMovimentacaoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CorrecaoMovimentacaoRequest.ProtoReflect.Descriptor instead.
 func (*CorrecaoMovimentacaoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{102}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *CorrecaoMovimentacaoRequest) GetIds() []string {
@@ -9371,7 +9171,7 @@ type CorrecaoMovimentacaoResponse struct {
 
 func (x *CorrecaoMovimentacaoResponse) Reset() {
 	*x = CorrecaoMovimentacaoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[103]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9383,7 +9183,7 @@ func (x *CorrecaoMovimentacaoResponse) String() string {
 func (*CorrecaoMovimentacaoResponse) ProtoMessage() {}
 
 func (x *CorrecaoMovimentacaoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[103]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9396,7 +9196,7 @@ func (x *CorrecaoMovimentacaoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CorrecaoMovimentacaoResponse.ProtoReflect.Descriptor instead.
 func (*CorrecaoMovimentacaoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{103}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{99}
 }
 
 type ExplainRejectionRequest struct {
@@ -9410,7 +9210,7 @@ type ExplainRejectionRequest struct {
 
 func (x *ExplainRejectionRequest) Reset() {
 	*x = ExplainRejectionRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[104]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9422,7 +9222,7 @@ func (x *ExplainRejectionRequest) String() string {
 func (*ExplainRejectionRequest) ProtoMessage() {}
 
 func (x *ExplainRejectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[104]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9435,7 +9235,7 @@ func (x *ExplainRejectionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExplainRejectionRequest.ProtoReflect.Descriptor instead.
 func (*ExplainRejectionRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{104}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *ExplainRejectionRequest) GetId() string {
@@ -9470,7 +9270,7 @@ type ExplainRejectionResponse struct {
 
 func (x *ExplainRejectionResponse) Reset() {
 	*x = ExplainRejectionResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[105]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9482,7 +9282,7 @@ func (x *ExplainRejectionResponse) String() string {
 func (*ExplainRejectionResponse) ProtoMessage() {}
 
 func (x *ExplainRejectionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[105]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9495,7 +9295,7 @@ func (x *ExplainRejectionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExplainRejectionResponse.ProtoReflect.Descriptor instead.
 func (*ExplainRejectionResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{105}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *ExplainRejectionResponse) GetCstat() string {
@@ -9547,7 +9347,7 @@ type DanfeResponse_DanfeResponseList struct {
 
 func (x *DanfeResponse_DanfeResponseList) Reset() {
 	*x = DanfeResponse_DanfeResponseList{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[106]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9559,7 +9359,7 @@ func (x *DanfeResponse_DanfeResponseList) String() string {
 func (*DanfeResponse_DanfeResponseList) ProtoMessage() {}
 
 func (x *DanfeResponse_DanfeResponseList) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[106]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -10488,14 +10288,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\rpessoaCpfCnpj\x18\x02 \x01(\tR\rpessoaCpfCnpj\"Q\n" +
 	"\x1bGerarNFeReimpressaoResponse\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\x12\x1a\n" +
-	"\x03nfe\x18\x02 \x01(\v2\b.nfe.NfeR\x03nfe\"\x81\x01\n" +
-	"\x1bNfeRecuperaProtocoloRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12$\n" +
-	"\rtipoDocumento\x18\x02 \x01(\tR\rtipoDocumento\x12\x16\n" +
-	"\x06numero\x18\x03 \x01(\x05R\x06numero\x12\x14\n" +
-	"\x05chave\x18\x04 \x01(\tR\x05chave\":\n" +
-	"\x1cNfeRecuperaProtocoloResponse\x12\x1a\n" +
-	"\x03nfe\x18\x01 \x01(\v2\b.nfe.NfeR\x03nfe\"+\n" +
+	"\x03nfe\x18\x02 \x01(\v2\b.nfe.NfeR\x03nfe\"+\n" +
 	"\x19GetDownloadLinkXmlRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\".\n" +
 	"\x1aGetDownloadLinkXmlResponse\x12\x10\n" +
@@ -10503,11 +10296,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\x12GetWsStatusRequest\x12\x12\n" +
 	"\x04tipo\x18\x01 \x01(\tR\x04tipo\"-\n" +
 	"\x13GetWsStatusResponse\x12\x16\n" +
-	"\x06online\x18\x01 \x01(\bR\x06online\"1\n" +
-	"\x19NfeImportacaoChaveRequest\x12\x14\n" +
-	"\x05chave\x18\x01 \x01(\tR\x05chave\"8\n" +
-	"\x1aNfeImportacaoChaveResponse\x12\x1a\n" +
-	"\x03nfe\x18\x01 \x01(\v2\b.nfe.NfeR\x03nfe\"\x81\x01\n" +
+	"\x06online\x18\x01 \x01(\bR\x06online\"\x81\x01\n" +
 	"\rReportRequest\x12$\n" +
 	"\rtipoRelatorio\x18\x01 \x01(\tR\rtipoRelatorio\x126\n" +
 	"\flist_request\x18\x02 \x01(\v2\x13.nfe.ListNfeRequestR\vlistRequest\x12\x12\n" +
@@ -10540,7 +10329,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\x16DANFE_TIPO_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eDANFE_TIPO_PDF\x10\x01\x12\x13\n" +
 	"\x0fDANFE_TIPO_HTML\x10\x02\x12\x15\n" +
-	"\x11DANFE_TIPO_REPORT\x10\x032\x8a!\n" +
+	"\x11DANFE_TIPO_REPORT\x10\x032\x87\x1f\n" +
 	"\n" +
 	"NfeService\x12V\n" +
 	"\tEmitirNfe\x12\x15.nfe.EmitirNfeRequest\x1a\x16.nfe.EmitirNfeResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/nfe/emitir\x12\x95\x01\n" +
@@ -10574,15 +10363,13 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\rNfeImportaXml\x12\x19.nfe.NfeImportaXmlRequest\x1a\x1a.nfe.NfeImportaXmlResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/api/nfe/importa-xml\x12_\n" +
 	"\vNfeEnviaXml\x12\x17.nfe.NfeEnviaXmlRequest\x1a\x18.nfe.NfeEnviaXmlResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/nfe/envia-xml\x12w\n" +
 	"\x10EnviaXmlsPeriodo\x12\x1c.nfe.EnviaXmlsPeriodoRequest\x1a\x1d.nfe.EnviaXmlsPeriodoResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/nfe/envia-xmls-periodo\x12~\n" +
-	"\x13GerarNFeReimpressao\x12\x1f.nfe.GerarNFeReimpressaoRequest\x1a .nfe.GerarNFeReimpressaoResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/nfe/gera-reimpressao\x12\x83\x01\n" +
-	"\x14NfeRecuperaProtocolo\x12 .nfe.NfeRecuperaProtocoloRequest\x1a!.nfe.NfeRecuperaProtocoloResponse\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/api/nfe/recupera-protocolo\x12{\n" +
-	"\x12NfeImportacaoChave\x12\x1e.nfe.NfeImportacaoChaveRequest\x1a\x1f.nfe.NfeImportacaoChaveResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/nfe/importacao-chave\x12I\n" +
+	"\x13GerarNFeReimpressao\x12\x1f.nfe.GerarNFeReimpressaoRequest\x1a .nfe.GerarNFeReimpressaoResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/nfe/gera-reimpressao\x12I\n" +
 	"\x05Danfe\x12\x11.nfe.DanfeRequest\x1a\x12.nfe.DanfeResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/api/nfe/danfe\x12~\n" +
 	"\x12GetDownloadLinkXml\x12\x1e.nfe.GetDownloadLinkXmlRequest\x1a\x1f.nfe.GetDownloadLinkXmlResponse\"'\x82\xd3\xe4\x93\x02!\x12\x1f/api/nfe/download-link-xml/{id}\x12c\n" +
 	"\vGetWsStatus\x12\x17.nfe.GetWsStatusRequest\x1a\x18.nfe.GetWsStatusResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/api/nfe/ws-status/{tipo}\x12M\n" +
 	"\x06Report\x12\x12.nfe.ReportRequest\x1a\x13.nfe.ReportResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/nfe/report\x12\x86\x01\n" +
 	"\x14CorrecaoMovimentacao\x12 .nfe.CorrecaoMovimentacaoRequest\x1a!.nfe.CorrecaoMovimentacaoResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/api/nfe/correcao-movimentacao\x12~\n" +
-	"\x10ExplainRejection\x12\x1c.nfe.ExplainRejectionRequest\x1a\x1d.nfe.ExplainRejectionResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/nfe/{id}/ai/explain-rejection2\xb2!\n" +
+	"\x10ExplainRejection\x12\x1c.nfe.ExplainRejectionRequest\x1a\x1d.nfe.ExplainRejectionResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/nfe/{id}/ai/explain-rejection2\xad\x1f\n" +
 	"\vNfceService\x12W\n" +
 	"\tEmitirNfe\x12\x15.nfe.EmitirNfeRequest\x1a\x16.nfe.EmitirNfeResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/nfce/emitir\x12\x96\x01\n" +
 	"\x18ConsultaProtocoloByChave\x12$.nfe.ConsultaProtocoloByChaveRequest\x1a%.nfe.ConsultaProtocoloByChaveResponse\"-\x82\xd3\xe4\x93\x02':\x01*\"\"/api/nfce/consulta-protocolo-chave\x12_\n" +
@@ -10615,9 +10402,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\rNfeImportaXml\x12\x19.nfe.NfeImportaXmlRequest\x1a\x1a.nfe.NfeImportaXmlResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/api/nfce/importa-xml\x12`\n" +
 	"\vNfeEnviaXml\x12\x17.nfe.NfeEnviaXmlRequest\x1a\x18.nfe.NfeEnviaXmlResponse\"\x1e\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/nfce/envia-xml\x12x\n" +
 	"\x10EnviaXmlsPeriodo\x12\x1c.nfe.EnviaXmlsPeriodoRequest\x1a\x1d.nfe.EnviaXmlsPeriodoResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/nfce/envia-xmls-periodo\x12\x7f\n" +
-	"\x13GerarNFeReimpressao\x12\x1f.nfe.GerarNFeReimpressaoRequest\x1a .nfe.GerarNFeReimpressaoResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/nfce/gera-reimpressao\x12\x84\x01\n" +
-	"\x14NfeRecuperaProtocolo\x12 .nfe.NfeRecuperaProtocoloRequest\x1a!.nfe.NfeRecuperaProtocoloResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/nfce/recupera-protocolo\x12|\n" +
-	"\x12NfeImportacaoChave\x12\x1e.nfe.NfeImportacaoChaveRequest\x1a\x1f.nfe.NfeImportacaoChaveResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/nfce/importacao-chave\x12J\n" +
+	"\x13GerarNFeReimpressao\x12\x1f.nfe.GerarNFeReimpressaoRequest\x1a .nfe.GerarNFeReimpressaoResponse\"%\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/nfce/gera-reimpressao\x12J\n" +
 	"\x05Danfe\x12\x11.nfe.DanfeRequest\x1a\x12.nfe.DanfeResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/nfce/danfe\x12\x7f\n" +
 	"\x12GetDownloadLinkXml\x12\x1e.nfe.GetDownloadLinkXmlRequest\x1a\x1f.nfe.GetDownloadLinkXmlResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /api/nfce/download-link-xml/{id}\x12d\n" +
 	"\vGetWsStatus\x12\x17.nfe.GetWsStatusRequest\x1a\x18.nfe.GetWsStatusResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/api/nfce/ws-status/{tipo}\x12N\n" +
@@ -10639,7 +10424,7 @@ func file_apps_dfe_nfe_nfe_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_dfe_nfe_nfe_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_apps_dfe_nfe_nfe_proto_msgTypes = make([]protoimpl.MessageInfo, 107)
+var file_apps_dfe_nfe_nfe_proto_msgTypes = make([]protoimpl.MessageInfo, 103)
 var file_apps_dfe_nfe_nfe_proto_goTypes = []any{
 	(Tipo)(0),                                // 0: nfe.Tipo
 	(DanfeTipo)(0),                           // 1: nfe.DanfeTipo
@@ -10735,102 +10520,98 @@ var file_apps_dfe_nfe_nfe_proto_goTypes = []any{
 	(*EnviaXmlsPeriodoResponse)(nil),         // 91: nfe.EnviaXmlsPeriodoResponse
 	(*GerarNFeReimpressaoRequest)(nil),       // 92: nfe.GerarNFeReimpressaoRequest
 	(*GerarNFeReimpressaoResponse)(nil),      // 93: nfe.GerarNFeReimpressaoResponse
-	(*NfeRecuperaProtocoloRequest)(nil),      // 94: nfe.NfeRecuperaProtocoloRequest
-	(*NfeRecuperaProtocoloResponse)(nil),     // 95: nfe.NfeRecuperaProtocoloResponse
-	(*GetDownloadLinkXmlRequest)(nil),        // 96: nfe.GetDownloadLinkXmlRequest
-	(*GetDownloadLinkXmlResponse)(nil),       // 97: nfe.GetDownloadLinkXmlResponse
-	(*GetWsStatusRequest)(nil),               // 98: nfe.GetWsStatusRequest
-	(*GetWsStatusResponse)(nil),              // 99: nfe.GetWsStatusResponse
-	(*NfeImportacaoChaveRequest)(nil),        // 100: nfe.NfeImportacaoChaveRequest
-	(*NfeImportacaoChaveResponse)(nil),       // 101: nfe.NfeImportacaoChaveResponse
-	(*ReportRequest)(nil),                    // 102: nfe.ReportRequest
-	(*ReportResponse)(nil),                   // 103: nfe.ReportResponse
-	(*CorrecaoMovimentacaoRequest)(nil),      // 104: nfe.CorrecaoMovimentacaoRequest
-	(*CorrecaoMovimentacaoResponse)(nil),     // 105: nfe.CorrecaoMovimentacaoResponse
-	(*ExplainRejectionRequest)(nil),          // 106: nfe.ExplainRejectionRequest
-	(*ExplainRejectionResponse)(nil),         // 107: nfe.ExplainRejectionResponse
-	(*DanfeResponse_DanfeResponseList)(nil),  // 108: nfe.DanfeResponse.DanfeResponseList
-	(*metadata.FieldMask)(nil),               // 109: metadata.FieldMask
-	(*timestamppb.Timestamp)(nil),            // 110: google.protobuf.Timestamp
-	(*filter.Filter)(nil),                    // 111: Filter
-	(*metadata.BasicFields)(nil),             // 112: metadata.BasicFields
-	(*emitente.Emitente)(nil),                // 113: dfe.Emitente
-	(*Totais)(nil),                           // 114: nfe.Totais
-	(*ImpostoIs)(nil),                        // 115: nfe.ImpostoIs
-	(*ImpostoIbsCbs)(nil),                    // 116: nfe.ImpostoIbsCbs
-	(*report.Response)(nil),                  // 117: report.Response
+	(*GetDownloadLinkXmlRequest)(nil),        // 94: nfe.GetDownloadLinkXmlRequest
+	(*GetDownloadLinkXmlResponse)(nil),       // 95: nfe.GetDownloadLinkXmlResponse
+	(*GetWsStatusRequest)(nil),               // 96: nfe.GetWsStatusRequest
+	(*GetWsStatusResponse)(nil),              // 97: nfe.GetWsStatusResponse
+	(*ReportRequest)(nil),                    // 98: nfe.ReportRequest
+	(*ReportResponse)(nil),                   // 99: nfe.ReportResponse
+	(*CorrecaoMovimentacaoRequest)(nil),      // 100: nfe.CorrecaoMovimentacaoRequest
+	(*CorrecaoMovimentacaoResponse)(nil),     // 101: nfe.CorrecaoMovimentacaoResponse
+	(*ExplainRejectionRequest)(nil),          // 102: nfe.ExplainRejectionRequest
+	(*ExplainRejectionResponse)(nil),         // 103: nfe.ExplainRejectionResponse
+	(*DanfeResponse_DanfeResponseList)(nil),  // 104: nfe.DanfeResponse.DanfeResponseList
+	(*metadata.FieldMask)(nil),               // 105: metadata.FieldMask
+	(*timestamppb.Timestamp)(nil),            // 106: google.protobuf.Timestamp
+	(*filter.Filter)(nil),                    // 107: Filter
+	(*metadata.BasicFields)(nil),             // 108: metadata.BasicFields
+	(*emitente.Emitente)(nil),                // 109: dfe.Emitente
+	(*Totais)(nil),                           // 110: nfe.Totais
+	(*ImpostoIs)(nil),                        // 111: nfe.ImpostoIs
+	(*ImpostoIbsCbs)(nil),                    // 112: nfe.ImpostoIbsCbs
+	(*report.Response)(nil),                  // 113: report.Response
 }
 var file_apps_dfe_nfe_nfe_proto_depIdxs = []int32{
 	12,  // 0: nfe.CreateNfeRequest.nfe:type_name -> nfe.Nfe
 	12,  // 1: nfe.CreateNfeResponse.nfe:type_name -> nfe.Nfe
 	12,  // 2: nfe.UpdateNfeRequest.nfe:type_name -> nfe.Nfe
-	109, // 3: nfe.UpdateNfeRequest.update_mask:type_name -> metadata.FieldMask
+	105, // 3: nfe.UpdateNfeRequest.update_mask:type_name -> metadata.FieldMask
 	12,  // 4: nfe.UpdateNfeResponse.nfe:type_name -> nfe.Nfe
 	12,  // 5: nfe.GetNfeResponse.nfe:type_name -> nfe.Nfe
-	110, // 6: nfe.ListNfeRequest.dataHoraEmissaoGte:type_name -> google.protobuf.Timestamp
-	110, // 7: nfe.ListNfeRequest.dataHoraEmissaoLte:type_name -> google.protobuf.Timestamp
-	110, // 8: nfe.ListNfeRequest.entradaDataHoraAceiteRejeicaoGte:type_name -> google.protobuf.Timestamp
-	110, // 9: nfe.ListNfeRequest.entradaDataHoraAceiteRejeicaoLte:type_name -> google.protobuf.Timestamp
-	111, // 10: nfe.ListNfeRequest.filter:type_name -> Filter
+	106, // 6: nfe.ListNfeRequest.dataHoraEmissaoGte:type_name -> google.protobuf.Timestamp
+	106, // 7: nfe.ListNfeRequest.dataHoraEmissaoLte:type_name -> google.protobuf.Timestamp
+	106, // 8: nfe.ListNfeRequest.entradaDataHoraAceiteRejeicaoGte:type_name -> google.protobuf.Timestamp
+	106, // 9: nfe.ListNfeRequest.entradaDataHoraAceiteRejeicaoLte:type_name -> google.protobuf.Timestamp
+	107, // 10: nfe.ListNfeRequest.filter:type_name -> Filter
 	0,   // 11: nfe.ListNfeRequest.tipos:type_name -> nfe.Tipo
 	12,  // 12: nfe.ListNfeResponse.nfeList:type_name -> nfe.Nfe
-	110, // 13: nfe.Nfe.created_at:type_name -> google.protobuf.Timestamp
-	110, // 14: nfe.Nfe.updated_at:type_name -> google.protobuf.Timestamp
-	112, // 15: nfe.Nfe.fields:type_name -> metadata.BasicFields
-	113, // 16: nfe.Nfe.emitente:type_name -> dfe.Emitente
+	106, // 13: nfe.Nfe.created_at:type_name -> google.protobuf.Timestamp
+	106, // 14: nfe.Nfe.updated_at:type_name -> google.protobuf.Timestamp
+	108, // 15: nfe.Nfe.fields:type_name -> metadata.BasicFields
+	109, // 16: nfe.Nfe.emitente:type_name -> dfe.Emitente
 	13,  // 17: nfe.Nfe.pessoa:type_name -> nfe.Pessoa
-	110, // 18: nfe.Nfe.entrada_data_hora_aceite_rejeicao:type_name -> google.protobuf.Timestamp
-	110, // 19: nfe.Nfe.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
-	110, // 20: nfe.Nfe.data_hora_emissao:type_name -> google.protobuf.Timestamp
-	110, // 21: nfe.Nfe.data_hora_saida:type_name -> google.protobuf.Timestamp
-	110, // 22: nfe.Nfe.data_hora_cancelamento:type_name -> google.protobuf.Timestamp
-	110, // 23: nfe.Nfe.contingencia_data_hora:type_name -> google.protobuf.Timestamp
-	110, // 24: nfe.Nfe.contingencia_processada_em:type_name -> google.protobuf.Timestamp
+	106, // 18: nfe.Nfe.entrada_data_hora_aceite_rejeicao:type_name -> google.protobuf.Timestamp
+	106, // 19: nfe.Nfe.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
+	106, // 20: nfe.Nfe.data_hora_emissao:type_name -> google.protobuf.Timestamp
+	106, // 21: nfe.Nfe.data_hora_saida:type_name -> google.protobuf.Timestamp
+	106, // 22: nfe.Nfe.data_hora_cancelamento:type_name -> google.protobuf.Timestamp
+	106, // 23: nfe.Nfe.contingencia_data_hora:type_name -> google.protobuf.Timestamp
+	106, // 24: nfe.Nfe.contingencia_processada_em:type_name -> google.protobuf.Timestamp
 	15,  // 25: nfe.Nfe.rejeicoes:type_name -> nfe.Rejeicao
 	16,  // 26: nfe.Nfe.transporte:type_name -> nfe.TranspDados
 	26,  // 27: nfe.Nfe.impostos:type_name -> nfe.Impostos
-	114, // 28: nfe.Nfe.totais:type_name -> nfe.Totais
+	110, // 28: nfe.Nfe.totais:type_name -> nfe.Totais
 	19,  // 29: nfe.Nfe.produtos:type_name -> nfe.ItemModel
 	21,  // 30: nfe.Nfe.pagamentos:type_name -> nfe.PagamentoModel
 	22,  // 31: nfe.Nfe.duplicatas:type_name -> nfe.DuplicataModel
 	24,  // 32: nfe.Nfe.volumes:type_name -> nfe.VolumesModel
 	25,  // 33: nfe.Nfe.referencias:type_name -> nfe.ReferenciaModel
 	23,  // 34: nfe.Nfe.eventos:type_name -> nfe.Evento
-	110, // 35: nfe.Nfe.entrada_data_hora_consulta_sefaz:type_name -> google.protobuf.Timestamp
+	106, // 35: nfe.Nfe.entrada_data_hora_consulta_sefaz:type_name -> google.protobuf.Timestamp
 	14,  // 36: nfe.Nfe.local_entrega:type_name -> nfe.Local
 	14,  // 37: nfe.Nfe.local_retirada:type_name -> nfe.Local
-	110, // 38: nfe.Rejeicao.dataHora:type_name -> google.protobuf.Timestamp
-	110, // 39: nfe.Rejeicao.dataHoraSituacaoDoc:type_name -> google.protobuf.Timestamp
-	110, // 40: nfe.BatchInfo.expiration_date:type_name -> google.protobuf.Timestamp
-	110, // 41: nfe.BatchInfo.manufacturing_date:type_name -> google.protobuf.Timestamp
-	110, // 42: nfe.ItemRastro.fabricacao:type_name -> google.protobuf.Timestamp
-	110, // 43: nfe.ItemRastro.validade:type_name -> google.protobuf.Timestamp
-	110, // 44: nfe.ItemModel.createdAt:type_name -> google.protobuf.Timestamp
-	110, // 45: nfe.ItemModel.updatedAt:type_name -> google.protobuf.Timestamp
+	106, // 38: nfe.Rejeicao.dataHora:type_name -> google.protobuf.Timestamp
+	106, // 39: nfe.Rejeicao.dataHoraSituacaoDoc:type_name -> google.protobuf.Timestamp
+	106, // 40: nfe.BatchInfo.expiration_date:type_name -> google.protobuf.Timestamp
+	106, // 41: nfe.BatchInfo.manufacturing_date:type_name -> google.protobuf.Timestamp
+	106, // 42: nfe.ItemRastro.fabricacao:type_name -> google.protobuf.Timestamp
+	106, // 43: nfe.ItemRastro.validade:type_name -> google.protobuf.Timestamp
+	106, // 44: nfe.ItemModel.createdAt:type_name -> google.protobuf.Timestamp
+	106, // 45: nfe.ItemModel.updatedAt:type_name -> google.protobuf.Timestamp
 	20,  // 46: nfe.ItemModel.posto:type_name -> nfe.PostoDados
 	26,  // 47: nfe.ItemModel.impostos:type_name -> nfe.Impostos
 	17,  // 48: nfe.ItemModel.batch:type_name -> nfe.BatchInfo
 	18,  // 49: nfe.ItemModel.rastro:type_name -> nfe.ItemRastro
-	110, // 50: nfe.PagamentoModel.createdAt:type_name -> google.protobuf.Timestamp
-	110, // 51: nfe.PagamentoModel.updatedAt:type_name -> google.protobuf.Timestamp
-	110, // 52: nfe.DuplicataModel.createdAt:type_name -> google.protobuf.Timestamp
-	110, // 53: nfe.DuplicataModel.updatedAt:type_name -> google.protobuf.Timestamp
-	110, // 54: nfe.DuplicataModel.vencimento:type_name -> google.protobuf.Timestamp
-	110, // 55: nfe.Evento.created_at:type_name -> google.protobuf.Timestamp
-	110, // 56: nfe.Evento.data_hora_evento:type_name -> google.protobuf.Timestamp
-	110, // 57: nfe.VolumesModel.createdAt:type_name -> google.protobuf.Timestamp
-	110, // 58: nfe.VolumesModel.updatedAt:type_name -> google.protobuf.Timestamp
-	110, // 59: nfe.ReferenciaModel.createdAt:type_name -> google.protobuf.Timestamp
-	110, // 60: nfe.ReferenciaModel.updatedAt:type_name -> google.protobuf.Timestamp
+	106, // 50: nfe.PagamentoModel.createdAt:type_name -> google.protobuf.Timestamp
+	106, // 51: nfe.PagamentoModel.updatedAt:type_name -> google.protobuf.Timestamp
+	106, // 52: nfe.DuplicataModel.createdAt:type_name -> google.protobuf.Timestamp
+	106, // 53: nfe.DuplicataModel.updatedAt:type_name -> google.protobuf.Timestamp
+	106, // 54: nfe.DuplicataModel.vencimento:type_name -> google.protobuf.Timestamp
+	106, // 55: nfe.Evento.created_at:type_name -> google.protobuf.Timestamp
+	106, // 56: nfe.Evento.data_hora_evento:type_name -> google.protobuf.Timestamp
+	106, // 57: nfe.VolumesModel.createdAt:type_name -> google.protobuf.Timestamp
+	106, // 58: nfe.VolumesModel.updatedAt:type_name -> google.protobuf.Timestamp
+	106, // 59: nfe.ReferenciaModel.createdAt:type_name -> google.protobuf.Timestamp
+	106, // 60: nfe.ReferenciaModel.updatedAt:type_name -> google.protobuf.Timestamp
 	27,  // 61: nfe.Impostos.icms:type_name -> nfe.ImpostoIcms
 	28,  // 62: nfe.Impostos.ipi:type_name -> nfe.ImpostoIpi
 	29,  // 63: nfe.Impostos.pis:type_name -> nfe.ImpostoPis
 	30,  // 64: nfe.Impostos.cofins:type_name -> nfe.ImpostoCofins
-	115, // 65: nfe.Impostos.is:type_name -> nfe.ImpostoIs
-	116, // 66: nfe.Impostos.ibsCbs:type_name -> nfe.ImpostoIbsCbs
+	111, // 65: nfe.Impostos.is:type_name -> nfe.ImpostoIs
+	112, // 66: nfe.Impostos.ibsCbs:type_name -> nfe.ImpostoIbsCbs
 	31,  // 67: nfe.Impostos.aliquotasNacionais:type_name -> nfe.AliquotasNacionais
 	34,  // 68: nfe.EmitirNfeRequest.nota:type_name -> nfe.NfeEmissao
-	110, // 69: nfe.NfeEmissao.data_hora_saida:type_name -> google.protobuf.Timestamp
+	106, // 69: nfe.NfeEmissao.data_hora_saida:type_name -> google.protobuf.Timestamp
 	13,  // 70: nfe.NfeEmissao.pessoa:type_name -> nfe.Pessoa
 	38,  // 71: nfe.NfeEmissao.volumes:type_name -> nfe.NfeEmissaoVolume
 	35,  // 72: nfe.NfeEmissao.produtos:type_name -> nfe.NfeEmissaoItem
@@ -10841,9 +10622,9 @@ var file_apps_dfe_nfe_nfe_proto_depIdxs = []int32{
 	14,  // 77: nfe.NfeEmissao.local_retirada:type_name -> nfe.Local
 	20,  // 78: nfe.NfeEmissaoItem.posto:type_name -> nfe.PostoDados
 	18,  // 79: nfe.NfeEmissaoItem.rastro:type_name -> nfe.ItemRastro
-	110, // 80: nfe.NfeEmissaoDuplicata.vencimento:type_name -> google.protobuf.Timestamp
-	110, // 81: nfe.EmitirNfeResponse.data_hora_emissao:type_name -> google.protobuf.Timestamp
-	110, // 82: nfe.EmitirNfeResponse.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
+	106, // 80: nfe.NfeEmissaoDuplicata.vencimento:type_name -> google.protobuf.Timestamp
+	106, // 81: nfe.EmitirNfeResponse.data_hora_emissao:type_name -> google.protobuf.Timestamp
+	106, // 82: nfe.EmitirNfeResponse.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
 	0,   // 83: nfe.ConsultaProtocoloByChaveRequest.tipo:type_name -> nfe.Tipo
 	12,  // 84: nfe.ConsultaProtocoloByChaveResponse.nfe:type_name -> nfe.Nfe
 	12,  // 85: nfe.CancelarNfeResponse.nfe:type_name -> nfe.Nfe
@@ -10886,176 +10667,166 @@ var file_apps_dfe_nfe_nfe_proto_depIdxs = []int32{
 	12,  // 122: nfe.DuplicaResponse.nfe:type_name -> nfe.Nfe
 	1,   // 123: nfe.DanfeRequest.danfe_tipo:type_name -> nfe.DanfeTipo
 	1,   // 124: nfe.DanfeResponse.danfe_tipo:type_name -> nfe.DanfeTipo
-	108, // 125: nfe.DanfeResponse.danfeResponseList:type_name -> nfe.DanfeResponse.DanfeResponseList
+	104, // 125: nfe.DanfeResponse.danfeResponseList:type_name -> nfe.DanfeResponse.DanfeResponseList
 	12,  // 126: nfe.NfeImportaXmlResponse.nfe:type_name -> nfe.Nfe
-	110, // 127: nfe.EnviaXmlsPeriodoRequest.dataInicial:type_name -> google.protobuf.Timestamp
-	110, // 128: nfe.EnviaXmlsPeriodoRequest.dataFinal:type_name -> google.protobuf.Timestamp
+	106, // 127: nfe.EnviaXmlsPeriodoRequest.dataInicial:type_name -> google.protobuf.Timestamp
+	106, // 128: nfe.EnviaXmlsPeriodoRequest.dataFinal:type_name -> google.protobuf.Timestamp
 	12,  // 129: nfe.GerarNFeReimpressaoResponse.nfe:type_name -> nfe.Nfe
-	12,  // 130: nfe.NfeRecuperaProtocoloResponse.nfe:type_name -> nfe.Nfe
-	12,  // 131: nfe.NfeImportacaoChaveResponse.nfe:type_name -> nfe.Nfe
-	10,  // 132: nfe.ReportRequest.list_request:type_name -> nfe.ListNfeRequest
-	117, // 133: nfe.ReportResponse.response:type_name -> report.Response
-	33,  // 134: nfe.NfeService.EmitirNfe:input_type -> nfe.EmitirNfeRequest
-	41,  // 135: nfe.NfeService.ConsultaProtocoloByChave:input_type -> nfe.ConsultaProtocoloByChaveRequest
-	43,  // 136: nfe.NfeService.CancelarNfe:input_type -> nfe.CancelarNfeRequest
-	45,  // 137: nfe.NfeService.GerarDevolucaoNfe:input_type -> nfe.GerarDevolucaoNfeRequest
-	47,  // 138: nfe.NfeService.CancelaOuGeraDevolucao:input_type -> nfe.CancelaOuGeraDevolucaoRequest
-	2,   // 139: nfe.NfeService.Create:input_type -> nfe.CreateNfeRequest
-	4,   // 140: nfe.NfeService.Update:input_type -> nfe.UpdateNfeRequest
-	6,   // 141: nfe.NfeService.Delete:input_type -> nfe.DeleteNfeRequest
-	8,   // 142: nfe.NfeService.Get:input_type -> nfe.GetNfeRequest
-	10,  // 143: nfe.NfeService.List:input_type -> nfe.ListNfeRequest
-	49,  // 144: nfe.NfeService.AddProduto:input_type -> nfe.AddProdutoRequest
-	54,  // 145: nfe.NfeService.UpdateProduto:input_type -> nfe.UpdateProdutoRequest
-	56,  // 146: nfe.NfeService.DeleteProduto:input_type -> nfe.DeleteProdutoRequest
-	58,  // 147: nfe.NfeService.AddPagamentos:input_type -> nfe.AddPagamentoRequest
-	60,  // 148: nfe.NfeService.UpdatePagamento:input_type -> nfe.UpdatePagamentoRequest
-	62,  // 149: nfe.NfeService.DeletePagamento:input_type -> nfe.DeletePagamentoRequest
-	64,  // 150: nfe.NfeService.AddReferencia:input_type -> nfe.AddReferenciaRequest
-	66,  // 151: nfe.NfeService.UpdateReferencia:input_type -> nfe.UpdateReferenciaRequest
-	68,  // 152: nfe.NfeService.DeleteReferencia:input_type -> nfe.DeleteReferenciaRequest
-	70,  // 153: nfe.NfeService.AddDuplicata:input_type -> nfe.AddDuplicataRequest
-	72,  // 154: nfe.NfeService.UpdateDuplicata:input_type -> nfe.UpdateDuplicataRequest
-	74,  // 155: nfe.NfeService.DeleteDuplicata:input_type -> nfe.DeleteDuplicataRequest
-	76,  // 156: nfe.NfeService.AddVolume:input_type -> nfe.AddVolumeRequest
-	78,  // 157: nfe.NfeService.UpdateVolume:input_type -> nfe.UpdateVolumeRequest
-	80,  // 158: nfe.NfeService.DeleteVolume:input_type -> nfe.DeleteVolumeRequest
-	82,  // 159: nfe.NfeService.Duplica:input_type -> nfe.DuplicaRequest
-	52,  // 160: nfe.NfeService.AlteracaoConjuntaItens:input_type -> nfe.AlteracaoConjuntaItensRequest
-	86,  // 161: nfe.NfeService.NfeImportaXml:input_type -> nfe.NfeImportaXmlRequest
-	88,  // 162: nfe.NfeService.NfeEnviaXml:input_type -> nfe.NfeEnviaXmlRequest
-	90,  // 163: nfe.NfeService.EnviaXmlsPeriodo:input_type -> nfe.EnviaXmlsPeriodoRequest
-	92,  // 164: nfe.NfeService.GerarNFeReimpressao:input_type -> nfe.GerarNFeReimpressaoRequest
-	94,  // 165: nfe.NfeService.NfeRecuperaProtocolo:input_type -> nfe.NfeRecuperaProtocoloRequest
-	100, // 166: nfe.NfeService.NfeImportacaoChave:input_type -> nfe.NfeImportacaoChaveRequest
-	84,  // 167: nfe.NfeService.Danfe:input_type -> nfe.DanfeRequest
-	96,  // 168: nfe.NfeService.GetDownloadLinkXml:input_type -> nfe.GetDownloadLinkXmlRequest
-	98,  // 169: nfe.NfeService.GetWsStatus:input_type -> nfe.GetWsStatusRequest
-	102, // 170: nfe.NfeService.Report:input_type -> nfe.ReportRequest
-	104, // 171: nfe.NfeService.CorrecaoMovimentacao:input_type -> nfe.CorrecaoMovimentacaoRequest
-	106, // 172: nfe.NfeService.ExplainRejection:input_type -> nfe.ExplainRejectionRequest
-	33,  // 173: nfe.NfceService.EmitirNfe:input_type -> nfe.EmitirNfeRequest
-	41,  // 174: nfe.NfceService.ConsultaProtocoloByChave:input_type -> nfe.ConsultaProtocoloByChaveRequest
-	43,  // 175: nfe.NfceService.CancelarNfe:input_type -> nfe.CancelarNfeRequest
-	45,  // 176: nfe.NfceService.GerarDevolucaoNfe:input_type -> nfe.GerarDevolucaoNfeRequest
-	47,  // 177: nfe.NfceService.CancelaOuGeraDevolucao:input_type -> nfe.CancelaOuGeraDevolucaoRequest
-	2,   // 178: nfe.NfceService.Create:input_type -> nfe.CreateNfeRequest
-	4,   // 179: nfe.NfceService.Update:input_type -> nfe.UpdateNfeRequest
-	6,   // 180: nfe.NfceService.Delete:input_type -> nfe.DeleteNfeRequest
-	8,   // 181: nfe.NfceService.Get:input_type -> nfe.GetNfeRequest
-	10,  // 182: nfe.NfceService.List:input_type -> nfe.ListNfeRequest
-	49,  // 183: nfe.NfceService.AddProduto:input_type -> nfe.AddProdutoRequest
-	54,  // 184: nfe.NfceService.UpdateProduto:input_type -> nfe.UpdateProdutoRequest
-	56,  // 185: nfe.NfceService.DeleteProduto:input_type -> nfe.DeleteProdutoRequest
-	58,  // 186: nfe.NfceService.AddPagamentos:input_type -> nfe.AddPagamentoRequest
-	60,  // 187: nfe.NfceService.UpdatePagamento:input_type -> nfe.UpdatePagamentoRequest
-	62,  // 188: nfe.NfceService.DeletePagamento:input_type -> nfe.DeletePagamentoRequest
-	64,  // 189: nfe.NfceService.AddReferencia:input_type -> nfe.AddReferenciaRequest
-	66,  // 190: nfe.NfceService.UpdateReferencia:input_type -> nfe.UpdateReferenciaRequest
-	68,  // 191: nfe.NfceService.DeleteReferencia:input_type -> nfe.DeleteReferenciaRequest
-	70,  // 192: nfe.NfceService.AddDuplicata:input_type -> nfe.AddDuplicataRequest
-	72,  // 193: nfe.NfceService.UpdateDuplicata:input_type -> nfe.UpdateDuplicataRequest
-	74,  // 194: nfe.NfceService.DeleteDuplicata:input_type -> nfe.DeleteDuplicataRequest
-	76,  // 195: nfe.NfceService.AddVolume:input_type -> nfe.AddVolumeRequest
-	78,  // 196: nfe.NfceService.UpdateVolume:input_type -> nfe.UpdateVolumeRequest
-	80,  // 197: nfe.NfceService.DeleteVolume:input_type -> nfe.DeleteVolumeRequest
-	82,  // 198: nfe.NfceService.Duplica:input_type -> nfe.DuplicaRequest
-	52,  // 199: nfe.NfceService.AlteracaoConjuntaItens:input_type -> nfe.AlteracaoConjuntaItensRequest
-	86,  // 200: nfe.NfceService.NfeImportaXml:input_type -> nfe.NfeImportaXmlRequest
-	88,  // 201: nfe.NfceService.NfeEnviaXml:input_type -> nfe.NfeEnviaXmlRequest
-	90,  // 202: nfe.NfceService.EnviaXmlsPeriodo:input_type -> nfe.EnviaXmlsPeriodoRequest
-	92,  // 203: nfe.NfceService.GerarNFeReimpressao:input_type -> nfe.GerarNFeReimpressaoRequest
-	94,  // 204: nfe.NfceService.NfeRecuperaProtocolo:input_type -> nfe.NfeRecuperaProtocoloRequest
-	100, // 205: nfe.NfceService.NfeImportacaoChave:input_type -> nfe.NfeImportacaoChaveRequest
-	84,  // 206: nfe.NfceService.Danfe:input_type -> nfe.DanfeRequest
-	96,  // 207: nfe.NfceService.GetDownloadLinkXml:input_type -> nfe.GetDownloadLinkXmlRequest
-	98,  // 208: nfe.NfceService.GetWsStatus:input_type -> nfe.GetWsStatusRequest
-	102, // 209: nfe.NfceService.Report:input_type -> nfe.ReportRequest
-	104, // 210: nfe.NfceService.CorrecaoMovimentacao:input_type -> nfe.CorrecaoMovimentacaoRequest
-	106, // 211: nfe.NfceService.ExplainRejection:input_type -> nfe.ExplainRejectionRequest
-	40,  // 212: nfe.NfeService.EmitirNfe:output_type -> nfe.EmitirNfeResponse
-	42,  // 213: nfe.NfeService.ConsultaProtocoloByChave:output_type -> nfe.ConsultaProtocoloByChaveResponse
-	44,  // 214: nfe.NfeService.CancelarNfe:output_type -> nfe.CancelarNfeResponse
-	46,  // 215: nfe.NfeService.GerarDevolucaoNfe:output_type -> nfe.GerarDevolucaoNfeResponse
-	48,  // 216: nfe.NfeService.CancelaOuGeraDevolucao:output_type -> nfe.CancelaOuGeraDevolucaoResponse
-	3,   // 217: nfe.NfeService.Create:output_type -> nfe.CreateNfeResponse
-	5,   // 218: nfe.NfeService.Update:output_type -> nfe.UpdateNfeResponse
-	7,   // 219: nfe.NfeService.Delete:output_type -> nfe.DeleteNfeResponse
-	9,   // 220: nfe.NfeService.Get:output_type -> nfe.GetNfeResponse
-	11,  // 221: nfe.NfeService.List:output_type -> nfe.ListNfeResponse
-	50,  // 222: nfe.NfeService.AddProduto:output_type -> nfe.AddProdutoResponse
-	55,  // 223: nfe.NfeService.UpdateProduto:output_type -> nfe.UpdateProdutoResponse
-	57,  // 224: nfe.NfeService.DeleteProduto:output_type -> nfe.DeleteProdutoResponse
-	59,  // 225: nfe.NfeService.AddPagamentos:output_type -> nfe.AddPagamentoResponse
-	61,  // 226: nfe.NfeService.UpdatePagamento:output_type -> nfe.UpdatePagamentoResponse
-	63,  // 227: nfe.NfeService.DeletePagamento:output_type -> nfe.DeletePagamentoResponse
-	65,  // 228: nfe.NfeService.AddReferencia:output_type -> nfe.AddReferenciaResponse
-	67,  // 229: nfe.NfeService.UpdateReferencia:output_type -> nfe.UpdateReferenciaResponse
-	69,  // 230: nfe.NfeService.DeleteReferencia:output_type -> nfe.DeleteReferenciaResponse
-	71,  // 231: nfe.NfeService.AddDuplicata:output_type -> nfe.AddDuplicataResponse
-	73,  // 232: nfe.NfeService.UpdateDuplicata:output_type -> nfe.UpdateDuplicataResponse
-	75,  // 233: nfe.NfeService.DeleteDuplicata:output_type -> nfe.DeleteDuplicataResponse
-	77,  // 234: nfe.NfeService.AddVolume:output_type -> nfe.AddVolumeResponse
-	79,  // 235: nfe.NfeService.UpdateVolume:output_type -> nfe.UpdateVolumeResponse
-	81,  // 236: nfe.NfeService.DeleteVolume:output_type -> nfe.DeleteVolumeResponse
-	83,  // 237: nfe.NfeService.Duplica:output_type -> nfe.DuplicaResponse
-	53,  // 238: nfe.NfeService.AlteracaoConjuntaItens:output_type -> nfe.AlteracaoConjuntaItensResponse
-	87,  // 239: nfe.NfeService.NfeImportaXml:output_type -> nfe.NfeImportaXmlResponse
-	89,  // 240: nfe.NfeService.NfeEnviaXml:output_type -> nfe.NfeEnviaXmlResponse
-	91,  // 241: nfe.NfeService.EnviaXmlsPeriodo:output_type -> nfe.EnviaXmlsPeriodoResponse
-	93,  // 242: nfe.NfeService.GerarNFeReimpressao:output_type -> nfe.GerarNFeReimpressaoResponse
-	95,  // 243: nfe.NfeService.NfeRecuperaProtocolo:output_type -> nfe.NfeRecuperaProtocoloResponse
-	101, // 244: nfe.NfeService.NfeImportacaoChave:output_type -> nfe.NfeImportacaoChaveResponse
-	85,  // 245: nfe.NfeService.Danfe:output_type -> nfe.DanfeResponse
-	97,  // 246: nfe.NfeService.GetDownloadLinkXml:output_type -> nfe.GetDownloadLinkXmlResponse
-	99,  // 247: nfe.NfeService.GetWsStatus:output_type -> nfe.GetWsStatusResponse
-	103, // 248: nfe.NfeService.Report:output_type -> nfe.ReportResponse
-	105, // 249: nfe.NfeService.CorrecaoMovimentacao:output_type -> nfe.CorrecaoMovimentacaoResponse
-	107, // 250: nfe.NfeService.ExplainRejection:output_type -> nfe.ExplainRejectionResponse
-	40,  // 251: nfe.NfceService.EmitirNfe:output_type -> nfe.EmitirNfeResponse
-	42,  // 252: nfe.NfceService.ConsultaProtocoloByChave:output_type -> nfe.ConsultaProtocoloByChaveResponse
-	44,  // 253: nfe.NfceService.CancelarNfe:output_type -> nfe.CancelarNfeResponse
-	46,  // 254: nfe.NfceService.GerarDevolucaoNfe:output_type -> nfe.GerarDevolucaoNfeResponse
-	48,  // 255: nfe.NfceService.CancelaOuGeraDevolucao:output_type -> nfe.CancelaOuGeraDevolucaoResponse
-	3,   // 256: nfe.NfceService.Create:output_type -> nfe.CreateNfeResponse
-	5,   // 257: nfe.NfceService.Update:output_type -> nfe.UpdateNfeResponse
-	7,   // 258: nfe.NfceService.Delete:output_type -> nfe.DeleteNfeResponse
-	9,   // 259: nfe.NfceService.Get:output_type -> nfe.GetNfeResponse
-	11,  // 260: nfe.NfceService.List:output_type -> nfe.ListNfeResponse
-	50,  // 261: nfe.NfceService.AddProduto:output_type -> nfe.AddProdutoResponse
-	55,  // 262: nfe.NfceService.UpdateProduto:output_type -> nfe.UpdateProdutoResponse
-	57,  // 263: nfe.NfceService.DeleteProduto:output_type -> nfe.DeleteProdutoResponse
-	59,  // 264: nfe.NfceService.AddPagamentos:output_type -> nfe.AddPagamentoResponse
-	61,  // 265: nfe.NfceService.UpdatePagamento:output_type -> nfe.UpdatePagamentoResponse
-	63,  // 266: nfe.NfceService.DeletePagamento:output_type -> nfe.DeletePagamentoResponse
-	65,  // 267: nfe.NfceService.AddReferencia:output_type -> nfe.AddReferenciaResponse
-	67,  // 268: nfe.NfceService.UpdateReferencia:output_type -> nfe.UpdateReferenciaResponse
-	69,  // 269: nfe.NfceService.DeleteReferencia:output_type -> nfe.DeleteReferenciaResponse
-	71,  // 270: nfe.NfceService.AddDuplicata:output_type -> nfe.AddDuplicataResponse
-	73,  // 271: nfe.NfceService.UpdateDuplicata:output_type -> nfe.UpdateDuplicataResponse
-	75,  // 272: nfe.NfceService.DeleteDuplicata:output_type -> nfe.DeleteDuplicataResponse
-	77,  // 273: nfe.NfceService.AddVolume:output_type -> nfe.AddVolumeResponse
-	79,  // 274: nfe.NfceService.UpdateVolume:output_type -> nfe.UpdateVolumeResponse
-	81,  // 275: nfe.NfceService.DeleteVolume:output_type -> nfe.DeleteVolumeResponse
-	83,  // 276: nfe.NfceService.Duplica:output_type -> nfe.DuplicaResponse
-	53,  // 277: nfe.NfceService.AlteracaoConjuntaItens:output_type -> nfe.AlteracaoConjuntaItensResponse
-	87,  // 278: nfe.NfceService.NfeImportaXml:output_type -> nfe.NfeImportaXmlResponse
-	89,  // 279: nfe.NfceService.NfeEnviaXml:output_type -> nfe.NfeEnviaXmlResponse
-	91,  // 280: nfe.NfceService.EnviaXmlsPeriodo:output_type -> nfe.EnviaXmlsPeriodoResponse
-	93,  // 281: nfe.NfceService.GerarNFeReimpressao:output_type -> nfe.GerarNFeReimpressaoResponse
-	95,  // 282: nfe.NfceService.NfeRecuperaProtocolo:output_type -> nfe.NfeRecuperaProtocoloResponse
-	101, // 283: nfe.NfceService.NfeImportacaoChave:output_type -> nfe.NfeImportacaoChaveResponse
-	85,  // 284: nfe.NfceService.Danfe:output_type -> nfe.DanfeResponse
-	97,  // 285: nfe.NfceService.GetDownloadLinkXml:output_type -> nfe.GetDownloadLinkXmlResponse
-	99,  // 286: nfe.NfceService.GetWsStatus:output_type -> nfe.GetWsStatusResponse
-	103, // 287: nfe.NfceService.Report:output_type -> nfe.ReportResponse
-	105, // 288: nfe.NfceService.CorrecaoMovimentacao:output_type -> nfe.CorrecaoMovimentacaoResponse
-	107, // 289: nfe.NfceService.ExplainRejection:output_type -> nfe.ExplainRejectionResponse
-	212, // [212:290] is the sub-list for method output_type
-	134, // [134:212] is the sub-list for method input_type
-	134, // [134:134] is the sub-list for extension type_name
-	134, // [134:134] is the sub-list for extension extendee
-	0,   // [0:134] is the sub-list for field type_name
+	10,  // 130: nfe.ReportRequest.list_request:type_name -> nfe.ListNfeRequest
+	113, // 131: nfe.ReportResponse.response:type_name -> report.Response
+	33,  // 132: nfe.NfeService.EmitirNfe:input_type -> nfe.EmitirNfeRequest
+	41,  // 133: nfe.NfeService.ConsultaProtocoloByChave:input_type -> nfe.ConsultaProtocoloByChaveRequest
+	43,  // 134: nfe.NfeService.CancelarNfe:input_type -> nfe.CancelarNfeRequest
+	45,  // 135: nfe.NfeService.GerarDevolucaoNfe:input_type -> nfe.GerarDevolucaoNfeRequest
+	47,  // 136: nfe.NfeService.CancelaOuGeraDevolucao:input_type -> nfe.CancelaOuGeraDevolucaoRequest
+	2,   // 137: nfe.NfeService.Create:input_type -> nfe.CreateNfeRequest
+	4,   // 138: nfe.NfeService.Update:input_type -> nfe.UpdateNfeRequest
+	6,   // 139: nfe.NfeService.Delete:input_type -> nfe.DeleteNfeRequest
+	8,   // 140: nfe.NfeService.Get:input_type -> nfe.GetNfeRequest
+	10,  // 141: nfe.NfeService.List:input_type -> nfe.ListNfeRequest
+	49,  // 142: nfe.NfeService.AddProduto:input_type -> nfe.AddProdutoRequest
+	54,  // 143: nfe.NfeService.UpdateProduto:input_type -> nfe.UpdateProdutoRequest
+	56,  // 144: nfe.NfeService.DeleteProduto:input_type -> nfe.DeleteProdutoRequest
+	58,  // 145: nfe.NfeService.AddPagamentos:input_type -> nfe.AddPagamentoRequest
+	60,  // 146: nfe.NfeService.UpdatePagamento:input_type -> nfe.UpdatePagamentoRequest
+	62,  // 147: nfe.NfeService.DeletePagamento:input_type -> nfe.DeletePagamentoRequest
+	64,  // 148: nfe.NfeService.AddReferencia:input_type -> nfe.AddReferenciaRequest
+	66,  // 149: nfe.NfeService.UpdateReferencia:input_type -> nfe.UpdateReferenciaRequest
+	68,  // 150: nfe.NfeService.DeleteReferencia:input_type -> nfe.DeleteReferenciaRequest
+	70,  // 151: nfe.NfeService.AddDuplicata:input_type -> nfe.AddDuplicataRequest
+	72,  // 152: nfe.NfeService.UpdateDuplicata:input_type -> nfe.UpdateDuplicataRequest
+	74,  // 153: nfe.NfeService.DeleteDuplicata:input_type -> nfe.DeleteDuplicataRequest
+	76,  // 154: nfe.NfeService.AddVolume:input_type -> nfe.AddVolumeRequest
+	78,  // 155: nfe.NfeService.UpdateVolume:input_type -> nfe.UpdateVolumeRequest
+	80,  // 156: nfe.NfeService.DeleteVolume:input_type -> nfe.DeleteVolumeRequest
+	82,  // 157: nfe.NfeService.Duplica:input_type -> nfe.DuplicaRequest
+	52,  // 158: nfe.NfeService.AlteracaoConjuntaItens:input_type -> nfe.AlteracaoConjuntaItensRequest
+	86,  // 159: nfe.NfeService.NfeImportaXml:input_type -> nfe.NfeImportaXmlRequest
+	88,  // 160: nfe.NfeService.NfeEnviaXml:input_type -> nfe.NfeEnviaXmlRequest
+	90,  // 161: nfe.NfeService.EnviaXmlsPeriodo:input_type -> nfe.EnviaXmlsPeriodoRequest
+	92,  // 162: nfe.NfeService.GerarNFeReimpressao:input_type -> nfe.GerarNFeReimpressaoRequest
+	84,  // 163: nfe.NfeService.Danfe:input_type -> nfe.DanfeRequest
+	94,  // 164: nfe.NfeService.GetDownloadLinkXml:input_type -> nfe.GetDownloadLinkXmlRequest
+	96,  // 165: nfe.NfeService.GetWsStatus:input_type -> nfe.GetWsStatusRequest
+	98,  // 166: nfe.NfeService.Report:input_type -> nfe.ReportRequest
+	100, // 167: nfe.NfeService.CorrecaoMovimentacao:input_type -> nfe.CorrecaoMovimentacaoRequest
+	102, // 168: nfe.NfeService.ExplainRejection:input_type -> nfe.ExplainRejectionRequest
+	33,  // 169: nfe.NfceService.EmitirNfe:input_type -> nfe.EmitirNfeRequest
+	41,  // 170: nfe.NfceService.ConsultaProtocoloByChave:input_type -> nfe.ConsultaProtocoloByChaveRequest
+	43,  // 171: nfe.NfceService.CancelarNfe:input_type -> nfe.CancelarNfeRequest
+	45,  // 172: nfe.NfceService.GerarDevolucaoNfe:input_type -> nfe.GerarDevolucaoNfeRequest
+	47,  // 173: nfe.NfceService.CancelaOuGeraDevolucao:input_type -> nfe.CancelaOuGeraDevolucaoRequest
+	2,   // 174: nfe.NfceService.Create:input_type -> nfe.CreateNfeRequest
+	4,   // 175: nfe.NfceService.Update:input_type -> nfe.UpdateNfeRequest
+	6,   // 176: nfe.NfceService.Delete:input_type -> nfe.DeleteNfeRequest
+	8,   // 177: nfe.NfceService.Get:input_type -> nfe.GetNfeRequest
+	10,  // 178: nfe.NfceService.List:input_type -> nfe.ListNfeRequest
+	49,  // 179: nfe.NfceService.AddProduto:input_type -> nfe.AddProdutoRequest
+	54,  // 180: nfe.NfceService.UpdateProduto:input_type -> nfe.UpdateProdutoRequest
+	56,  // 181: nfe.NfceService.DeleteProduto:input_type -> nfe.DeleteProdutoRequest
+	58,  // 182: nfe.NfceService.AddPagamentos:input_type -> nfe.AddPagamentoRequest
+	60,  // 183: nfe.NfceService.UpdatePagamento:input_type -> nfe.UpdatePagamentoRequest
+	62,  // 184: nfe.NfceService.DeletePagamento:input_type -> nfe.DeletePagamentoRequest
+	64,  // 185: nfe.NfceService.AddReferencia:input_type -> nfe.AddReferenciaRequest
+	66,  // 186: nfe.NfceService.UpdateReferencia:input_type -> nfe.UpdateReferenciaRequest
+	68,  // 187: nfe.NfceService.DeleteReferencia:input_type -> nfe.DeleteReferenciaRequest
+	70,  // 188: nfe.NfceService.AddDuplicata:input_type -> nfe.AddDuplicataRequest
+	72,  // 189: nfe.NfceService.UpdateDuplicata:input_type -> nfe.UpdateDuplicataRequest
+	74,  // 190: nfe.NfceService.DeleteDuplicata:input_type -> nfe.DeleteDuplicataRequest
+	76,  // 191: nfe.NfceService.AddVolume:input_type -> nfe.AddVolumeRequest
+	78,  // 192: nfe.NfceService.UpdateVolume:input_type -> nfe.UpdateVolumeRequest
+	80,  // 193: nfe.NfceService.DeleteVolume:input_type -> nfe.DeleteVolumeRequest
+	82,  // 194: nfe.NfceService.Duplica:input_type -> nfe.DuplicaRequest
+	52,  // 195: nfe.NfceService.AlteracaoConjuntaItens:input_type -> nfe.AlteracaoConjuntaItensRequest
+	86,  // 196: nfe.NfceService.NfeImportaXml:input_type -> nfe.NfeImportaXmlRequest
+	88,  // 197: nfe.NfceService.NfeEnviaXml:input_type -> nfe.NfeEnviaXmlRequest
+	90,  // 198: nfe.NfceService.EnviaXmlsPeriodo:input_type -> nfe.EnviaXmlsPeriodoRequest
+	92,  // 199: nfe.NfceService.GerarNFeReimpressao:input_type -> nfe.GerarNFeReimpressaoRequest
+	84,  // 200: nfe.NfceService.Danfe:input_type -> nfe.DanfeRequest
+	94,  // 201: nfe.NfceService.GetDownloadLinkXml:input_type -> nfe.GetDownloadLinkXmlRequest
+	96,  // 202: nfe.NfceService.GetWsStatus:input_type -> nfe.GetWsStatusRequest
+	98,  // 203: nfe.NfceService.Report:input_type -> nfe.ReportRequest
+	100, // 204: nfe.NfceService.CorrecaoMovimentacao:input_type -> nfe.CorrecaoMovimentacaoRequest
+	102, // 205: nfe.NfceService.ExplainRejection:input_type -> nfe.ExplainRejectionRequest
+	40,  // 206: nfe.NfeService.EmitirNfe:output_type -> nfe.EmitirNfeResponse
+	42,  // 207: nfe.NfeService.ConsultaProtocoloByChave:output_type -> nfe.ConsultaProtocoloByChaveResponse
+	44,  // 208: nfe.NfeService.CancelarNfe:output_type -> nfe.CancelarNfeResponse
+	46,  // 209: nfe.NfeService.GerarDevolucaoNfe:output_type -> nfe.GerarDevolucaoNfeResponse
+	48,  // 210: nfe.NfeService.CancelaOuGeraDevolucao:output_type -> nfe.CancelaOuGeraDevolucaoResponse
+	3,   // 211: nfe.NfeService.Create:output_type -> nfe.CreateNfeResponse
+	5,   // 212: nfe.NfeService.Update:output_type -> nfe.UpdateNfeResponse
+	7,   // 213: nfe.NfeService.Delete:output_type -> nfe.DeleteNfeResponse
+	9,   // 214: nfe.NfeService.Get:output_type -> nfe.GetNfeResponse
+	11,  // 215: nfe.NfeService.List:output_type -> nfe.ListNfeResponse
+	50,  // 216: nfe.NfeService.AddProduto:output_type -> nfe.AddProdutoResponse
+	55,  // 217: nfe.NfeService.UpdateProduto:output_type -> nfe.UpdateProdutoResponse
+	57,  // 218: nfe.NfeService.DeleteProduto:output_type -> nfe.DeleteProdutoResponse
+	59,  // 219: nfe.NfeService.AddPagamentos:output_type -> nfe.AddPagamentoResponse
+	61,  // 220: nfe.NfeService.UpdatePagamento:output_type -> nfe.UpdatePagamentoResponse
+	63,  // 221: nfe.NfeService.DeletePagamento:output_type -> nfe.DeletePagamentoResponse
+	65,  // 222: nfe.NfeService.AddReferencia:output_type -> nfe.AddReferenciaResponse
+	67,  // 223: nfe.NfeService.UpdateReferencia:output_type -> nfe.UpdateReferenciaResponse
+	69,  // 224: nfe.NfeService.DeleteReferencia:output_type -> nfe.DeleteReferenciaResponse
+	71,  // 225: nfe.NfeService.AddDuplicata:output_type -> nfe.AddDuplicataResponse
+	73,  // 226: nfe.NfeService.UpdateDuplicata:output_type -> nfe.UpdateDuplicataResponse
+	75,  // 227: nfe.NfeService.DeleteDuplicata:output_type -> nfe.DeleteDuplicataResponse
+	77,  // 228: nfe.NfeService.AddVolume:output_type -> nfe.AddVolumeResponse
+	79,  // 229: nfe.NfeService.UpdateVolume:output_type -> nfe.UpdateVolumeResponse
+	81,  // 230: nfe.NfeService.DeleteVolume:output_type -> nfe.DeleteVolumeResponse
+	83,  // 231: nfe.NfeService.Duplica:output_type -> nfe.DuplicaResponse
+	53,  // 232: nfe.NfeService.AlteracaoConjuntaItens:output_type -> nfe.AlteracaoConjuntaItensResponse
+	87,  // 233: nfe.NfeService.NfeImportaXml:output_type -> nfe.NfeImportaXmlResponse
+	89,  // 234: nfe.NfeService.NfeEnviaXml:output_type -> nfe.NfeEnviaXmlResponse
+	91,  // 235: nfe.NfeService.EnviaXmlsPeriodo:output_type -> nfe.EnviaXmlsPeriodoResponse
+	93,  // 236: nfe.NfeService.GerarNFeReimpressao:output_type -> nfe.GerarNFeReimpressaoResponse
+	85,  // 237: nfe.NfeService.Danfe:output_type -> nfe.DanfeResponse
+	95,  // 238: nfe.NfeService.GetDownloadLinkXml:output_type -> nfe.GetDownloadLinkXmlResponse
+	97,  // 239: nfe.NfeService.GetWsStatus:output_type -> nfe.GetWsStatusResponse
+	99,  // 240: nfe.NfeService.Report:output_type -> nfe.ReportResponse
+	101, // 241: nfe.NfeService.CorrecaoMovimentacao:output_type -> nfe.CorrecaoMovimentacaoResponse
+	103, // 242: nfe.NfeService.ExplainRejection:output_type -> nfe.ExplainRejectionResponse
+	40,  // 243: nfe.NfceService.EmitirNfe:output_type -> nfe.EmitirNfeResponse
+	42,  // 244: nfe.NfceService.ConsultaProtocoloByChave:output_type -> nfe.ConsultaProtocoloByChaveResponse
+	44,  // 245: nfe.NfceService.CancelarNfe:output_type -> nfe.CancelarNfeResponse
+	46,  // 246: nfe.NfceService.GerarDevolucaoNfe:output_type -> nfe.GerarDevolucaoNfeResponse
+	48,  // 247: nfe.NfceService.CancelaOuGeraDevolucao:output_type -> nfe.CancelaOuGeraDevolucaoResponse
+	3,   // 248: nfe.NfceService.Create:output_type -> nfe.CreateNfeResponse
+	5,   // 249: nfe.NfceService.Update:output_type -> nfe.UpdateNfeResponse
+	7,   // 250: nfe.NfceService.Delete:output_type -> nfe.DeleteNfeResponse
+	9,   // 251: nfe.NfceService.Get:output_type -> nfe.GetNfeResponse
+	11,  // 252: nfe.NfceService.List:output_type -> nfe.ListNfeResponse
+	50,  // 253: nfe.NfceService.AddProduto:output_type -> nfe.AddProdutoResponse
+	55,  // 254: nfe.NfceService.UpdateProduto:output_type -> nfe.UpdateProdutoResponse
+	57,  // 255: nfe.NfceService.DeleteProduto:output_type -> nfe.DeleteProdutoResponse
+	59,  // 256: nfe.NfceService.AddPagamentos:output_type -> nfe.AddPagamentoResponse
+	61,  // 257: nfe.NfceService.UpdatePagamento:output_type -> nfe.UpdatePagamentoResponse
+	63,  // 258: nfe.NfceService.DeletePagamento:output_type -> nfe.DeletePagamentoResponse
+	65,  // 259: nfe.NfceService.AddReferencia:output_type -> nfe.AddReferenciaResponse
+	67,  // 260: nfe.NfceService.UpdateReferencia:output_type -> nfe.UpdateReferenciaResponse
+	69,  // 261: nfe.NfceService.DeleteReferencia:output_type -> nfe.DeleteReferenciaResponse
+	71,  // 262: nfe.NfceService.AddDuplicata:output_type -> nfe.AddDuplicataResponse
+	73,  // 263: nfe.NfceService.UpdateDuplicata:output_type -> nfe.UpdateDuplicataResponse
+	75,  // 264: nfe.NfceService.DeleteDuplicata:output_type -> nfe.DeleteDuplicataResponse
+	77,  // 265: nfe.NfceService.AddVolume:output_type -> nfe.AddVolumeResponse
+	79,  // 266: nfe.NfceService.UpdateVolume:output_type -> nfe.UpdateVolumeResponse
+	81,  // 267: nfe.NfceService.DeleteVolume:output_type -> nfe.DeleteVolumeResponse
+	83,  // 268: nfe.NfceService.Duplica:output_type -> nfe.DuplicaResponse
+	53,  // 269: nfe.NfceService.AlteracaoConjuntaItens:output_type -> nfe.AlteracaoConjuntaItensResponse
+	87,  // 270: nfe.NfceService.NfeImportaXml:output_type -> nfe.NfeImportaXmlResponse
+	89,  // 271: nfe.NfceService.NfeEnviaXml:output_type -> nfe.NfeEnviaXmlResponse
+	91,  // 272: nfe.NfceService.EnviaXmlsPeriodo:output_type -> nfe.EnviaXmlsPeriodoResponse
+	93,  // 273: nfe.NfceService.GerarNFeReimpressao:output_type -> nfe.GerarNFeReimpressaoResponse
+	85,  // 274: nfe.NfceService.Danfe:output_type -> nfe.DanfeResponse
+	95,  // 275: nfe.NfceService.GetDownloadLinkXml:output_type -> nfe.GetDownloadLinkXmlResponse
+	97,  // 276: nfe.NfceService.GetWsStatus:output_type -> nfe.GetWsStatusResponse
+	99,  // 277: nfe.NfceService.Report:output_type -> nfe.ReportResponse
+	101, // 278: nfe.NfceService.CorrecaoMovimentacao:output_type -> nfe.CorrecaoMovimentacaoResponse
+	103, // 279: nfe.NfceService.ExplainRejection:output_type -> nfe.ExplainRejectionResponse
+	206, // [206:280] is the sub-list for method output_type
+	132, // [132:206] is the sub-list for method input_type
+	132, // [132:132] is the sub-list for extension type_name
+	132, // [132:132] is the sub-list for extension extendee
+	0,   // [0:132] is the sub-list for field type_name
 }
 
 func init() { file_apps_dfe_nfe_nfe_proto_init() }
@@ -11071,7 +10842,7 @@ func file_apps_dfe_nfe_nfe_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_dfe_nfe_nfe_proto_rawDesc), len(file_apps_dfe_nfe_nfe_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   107,
+			NumMessages:   103,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

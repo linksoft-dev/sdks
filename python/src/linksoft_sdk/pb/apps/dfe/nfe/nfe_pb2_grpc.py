@@ -170,16 +170,6 @@ class NfeServiceStub:
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoRequest.SerializeToString,
                 response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoResponse.FromString,
                 _registered_method=True)
-        self.NfeRecuperaProtocolo = channel.unary_unary(
-                '/nfe.NfeService/NfeRecuperaProtocolo',
-                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloRequest.SerializeToString,
-                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloResponse.FromString,
-                _registered_method=True)
-        self.NfeImportacaoChave = channel.unary_unary(
-                '/nfe.NfeService/NfeImportacaoChave',
-                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveRequest.SerializeToString,
-                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveResponse.FromString,
-                _registered_method=True)
         self.Danfe = channel.unary_unary(
                 '/nfe.NfeService/Danfe',
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DanfeRequest.SerializeToString,
@@ -406,18 +396,6 @@ class NfeServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def NfeRecuperaProtocolo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def NfeImportacaoChave(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def Danfe(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -612,16 +590,6 @@ def add_NfeServiceServicer_to_server(servicer, server):
                     servicer.GerarNFeReimpressao,
                     request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoRequest.FromString,
                     response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoResponse.SerializeToString,
-            ),
-            'NfeRecuperaProtocolo': grpc.unary_unary_rpc_method_handler(
-                    servicer.NfeRecuperaProtocolo,
-                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloRequest.FromString,
-                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloResponse.SerializeToString,
-            ),
-            'NfeImportacaoChave': grpc.unary_unary_rpc_method_handler(
-                    servicer.NfeImportacaoChave,
-                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveRequest.FromString,
-                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveResponse.SerializeToString,
             ),
             'Danfe': grpc.unary_unary_rpc_method_handler(
                     servicer.Danfe,
@@ -1503,60 +1471,6 @@ class NfeService:
             _registered_method=True)
 
     @staticmethod
-    def NfeRecuperaProtocolo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/nfe.NfeService/NfeRecuperaProtocolo',
-            apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloRequest.SerializeToString,
-            apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def NfeImportacaoChave(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/nfe.NfeService/NfeImportacaoChave',
-            apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveRequest.SerializeToString,
-            apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
     def Danfe(request,
             target,
             options=(),
@@ -1884,16 +1798,6 @@ class NfceServiceStub:
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoRequest.SerializeToString,
                 response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoResponse.FromString,
                 _registered_method=True)
-        self.NfeRecuperaProtocolo = channel.unary_unary(
-                '/nfe.NfceService/NfeRecuperaProtocolo',
-                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloRequest.SerializeToString,
-                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloResponse.FromString,
-                _registered_method=True)
-        self.NfeImportacaoChave = channel.unary_unary(
-                '/nfe.NfceService/NfeImportacaoChave',
-                request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveRequest.SerializeToString,
-                response_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveResponse.FromString,
-                _registered_method=True)
         self.Danfe = channel.unary_unary(
                 '/nfe.NfceService/Danfe',
                 request_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.DanfeRequest.SerializeToString,
@@ -2120,18 +2024,6 @@ class NfceServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def NfeRecuperaProtocolo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def NfeImportacaoChave(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def Danfe(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -2326,16 +2218,6 @@ def add_NfceServiceServicer_to_server(servicer, server):
                     servicer.GerarNFeReimpressao,
                     request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoRequest.FromString,
                     response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoResponse.SerializeToString,
-            ),
-            'NfeRecuperaProtocolo': grpc.unary_unary_rpc_method_handler(
-                    servicer.NfeRecuperaProtocolo,
-                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloRequest.FromString,
-                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloResponse.SerializeToString,
-            ),
-            'NfeImportacaoChave': grpc.unary_unary_rpc_method_handler(
-                    servicer.NfeImportacaoChave,
-                    request_deserializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveRequest.FromString,
-                    response_serializer=apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveResponse.SerializeToString,
             ),
             'Danfe': grpc.unary_unary_rpc_method_handler(
                     servicer.Danfe,
@@ -3206,60 +3088,6 @@ class NfceService:
             '/nfe.NfceService/GerarNFeReimpressao',
             apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoRequest.SerializeToString,
             apps_dot_dfe_dot_nfe_dot_nfe__pb2.GerarNFeReimpressaoResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def NfeRecuperaProtocolo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/nfe.NfceService/NfeRecuperaProtocolo',
-            apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloRequest.SerializeToString,
-            apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeRecuperaProtocoloResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def NfeImportacaoChave(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/nfe.NfceService/NfeImportacaoChave',
-            apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveRequest.SerializeToString,
-            apps_dot_dfe_dot_nfe_dot_nfe__pb2.NfeImportacaoChaveResponse.FromString,
             options,
             channel_credentials,
             insecure,
