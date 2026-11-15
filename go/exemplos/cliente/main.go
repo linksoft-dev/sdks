@@ -40,6 +40,8 @@ func main() {
 	confere(err, "conectar")
 	defer cliente.Close()
 
+	// identificador fixo do programa: exigido onde a empresa só permite dispositivos autorizados
+	cliente.SetDeviceID(os.Getenv("API_APARELHO"))
 	login, err := cliente.Login(ctx, usuario, senha, os.Getenv("API_ORG"))
 	confere(err, "entrar")
 	fmt.Printf("Conectado como %s na empresa %s\n", login.GetName(), cliente.Org())

@@ -19,9 +19,11 @@ type servidor struct {
 	healthpb.UnimplementedHealthServer
 	recebida  []metadata.MD
 	novoToken string
+	login     *authpb.LoginRequest
 }
 
 func (s *servidor) Login(_ context.Context, req *authpb.LoginRequest) (*authpb.LoginResponse, error) {
+	s.login = req
 	return &authpb.LoginResponse{Token: "token-do-login", CurrentOrg: &authpb.OrgLoginModel{Id: "empresa-padrao"}}, nil
 }
 
@@ -82,6 +84,20 @@ func TestLoginPassaAUsarOTokenEAEmpresaPadrao(t *testing.T) {
 	md := s.recebida[0]
 	if valor(md, "token") != "token-do-login" || valor(md, "org") != "empresa-padrao" {
 		t.Fatalf("credencial enviada: %v", md)
+	}
+}
+
+// O identificador do programa vai como aparelho no login: é o que a empresa que só permite
+// dispositivos autorizados libera.
+func TestLoginSendsDeviceID(t *testing.T) {
+	c, s := conecta(t)
+	c.SetDeviceID("integracao-estoque")
+
+	if _, err := c.Login(context.Background(), "integracao@empresa.com", "senha", ""); err != nil {
+		t.Fatal(err)
+	}
+	if s.login.GetDeviceId() != "integracao-estoque" {
+		t.Fatalf("aparelho enviado = %q", s.login.GetDeviceId())
 	}
 }
 

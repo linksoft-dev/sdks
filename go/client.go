@@ -20,10 +20,11 @@ import (
 type Client struct {
 	conn *grpc.ClientConn
 
-	mu     sync.RWMutex
-	token  string
-	bearer string
-	org    string
+	mu       sync.RWMutex
+	token    string
+	bearer   string
+	org      string
+	deviceID string
 }
 
 // Dial abre a conexão. address é host:porta, por exemplo "app.sigeflex.com:443" ou o
@@ -53,13 +54,26 @@ func (c *Client) Conn() *grpc.ClientConn { return c.conn }
 // Close encerra a conexão.
 func (c *Client) Close() error { return c.conn.Close() }
 
+// SetDeviceID define o identificador fixo do programa que o Login informa como aparelho. A
+// empresa que só permite dispositivos autorizados recusa o login sem ele: o aparelho aparece
+// pendente em Dispositivos e passa a entrar depois de autorizado.
+func (c *Client) SetDeviceID(id string) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.deviceID = id
+}
+
 // Login entra com o usuário da integração e passa a usar o token devolvido. org
 // escolhe a empresa; vazio usa a empresa padrão do usuário.
 func (c *Client) Login(ctx context.Context, username, password, org string) (*authpb.LoginResponse, error) {
+	c.mu.RLock()
+	deviceID := c.deviceID
+	c.mu.RUnlock()
 	resp, err := authpb.NewAuthServiceClient(c.conn).Login(ctx, &authpb.LoginRequest{
 		Username: username,
 		Password: password,
 		OrgId:    org,
+		DeviceId: deviceID,
 	})
 	if err != nil {
 		return nil, err
