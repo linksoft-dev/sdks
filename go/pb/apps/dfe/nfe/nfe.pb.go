@@ -1003,6 +1003,8 @@ type Nfe struct {
 	// operação é interna ou interestadual (CFOP, alíquota e idDest)
 	LocalEntrega  *Local `protobuf:"bytes,114,opt,name=local_entrega,json=localEntrega,proto3" json:"local_entrega,omitempty"`
 	LocalRetirada *Local `protobuf:"bytes,115,opt,name=local_retirada,json=localRetirada,proto3" json:"local_retirada,omitempty"`
+	// Venda a órgão público: nota de empenho, pedido e contrato da compra (grupo "compra")
+	Compra        *Compra `protobuf:"bytes,116,opt,name=compra,proto3" json:"compra,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1835,6 +1837,13 @@ func (x *Nfe) GetLocalRetirada() *Local {
 	return nil
 }
 
+func (x *Nfe) GetCompra() *Compra {
+	if x != nil {
+		return x.Compra
+	}
+	return nil
+}
+
 type Pessoa struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Id                string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -2173,6 +2182,67 @@ func (x *Local) GetEmail() string {
 	return ""
 }
 
+// Identificação da compra feita pelo destinatário (grupo "compra" da NF-e)
+type Compra struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	NotaEmpenho   string                 `protobuf:"bytes,1,opt,name=nota_empenho,json=notaEmpenho,proto3" json:"nota_empenho,omitempty"` // número da nota de empenho (xNEmp), até 22 caracteres
+	Pedido        string                 `protobuf:"bytes,2,opt,name=pedido,proto3" json:"pedido,omitempty"`                              // número do pedido (xPed), até 60 caracteres
+	Contrato      string                 `protobuf:"bytes,3,opt,name=contrato,proto3" json:"contrato,omitempty"`                          // número do contrato (xCont), até 60 caracteres
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Compra) Reset() {
+	*x = Compra{}
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Compra) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Compra) ProtoMessage() {}
+
+func (x *Compra) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Compra.ProtoReflect.Descriptor instead.
+func (*Compra) Descriptor() ([]byte, []int) {
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *Compra) GetNotaEmpenho() string {
+	if x != nil {
+		return x.NotaEmpenho
+	}
+	return ""
+}
+
+func (x *Compra) GetPedido() string {
+	if x != nil {
+		return x.Pedido
+	}
+	return ""
+}
+
+func (x *Compra) GetContrato() string {
+	if x != nil {
+		return x.Contrato
+	}
+	return ""
+}
+
 type Rejeicao struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Id                  string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -2186,7 +2256,7 @@ type Rejeicao struct {
 
 func (x *Rejeicao) Reset() {
 	*x = Rejeicao{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[13]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2198,7 +2268,7 @@ func (x *Rejeicao) String() string {
 func (*Rejeicao) ProtoMessage() {}
 
 func (x *Rejeicao) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[13]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2211,7 +2281,7 @@ func (x *Rejeicao) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rejeicao.ProtoReflect.Descriptor instead.
 func (*Rejeicao) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{13}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *Rejeicao) GetId() string {
@@ -2273,7 +2343,7 @@ type TranspDados struct {
 
 func (x *TranspDados) Reset() {
 	*x = TranspDados{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[14]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2285,7 +2355,7 @@ func (x *TranspDados) String() string {
 func (*TranspDados) ProtoMessage() {}
 
 func (x *TranspDados) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[14]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2298,7 +2368,7 @@ func (x *TranspDados) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TranspDados.ProtoReflect.Descriptor instead.
 func (*TranspDados) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{14}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *TranspDados) GetTranspId() string {
@@ -2427,7 +2497,7 @@ type BatchInfo struct {
 
 func (x *BatchInfo) Reset() {
 	*x = BatchInfo{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[15]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2439,7 +2509,7 @@ func (x *BatchInfo) String() string {
 func (*BatchInfo) ProtoMessage() {}
 
 func (x *BatchInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[15]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2452,7 +2522,7 @@ func (x *BatchInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BatchInfo.ProtoReflect.Descriptor instead.
 func (*BatchInfo) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{15}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *BatchInfo) GetId() string {
@@ -2503,7 +2573,7 @@ type ItemRastro struct {
 
 func (x *ItemRastro) Reset() {
 	*x = ItemRastro{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[16]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2515,7 +2585,7 @@ func (x *ItemRastro) String() string {
 func (*ItemRastro) ProtoMessage() {}
 
 func (x *ItemRastro) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[16]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2528,7 +2598,7 @@ func (x *ItemRastro) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemRastro.ProtoReflect.Descriptor instead.
 func (*ItemRastro) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{16}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ItemRastro) GetLote() string {
@@ -2675,7 +2745,7 @@ type ItemModel struct {
 
 func (x *ItemModel) Reset() {
 	*x = ItemModel{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[17]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2687,7 +2757,7 @@ func (x *ItemModel) String() string {
 func (*ItemModel) ProtoMessage() {}
 
 func (x *ItemModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[17]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2700,7 +2770,7 @@ func (x *ItemModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemModel.ProtoReflect.Descriptor instead.
 func (*ItemModel) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{17}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ItemModel) GetCreatedAt() *timestamppb.Timestamp {
@@ -3304,7 +3374,7 @@ type PostoDados struct {
 
 func (x *PostoDados) Reset() {
 	*x = PostoDados{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[18]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3316,7 +3386,7 @@ func (x *PostoDados) String() string {
 func (*PostoDados) ProtoMessage() {}
 
 func (x *PostoDados) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[18]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3329,7 +3399,7 @@ func (x *PostoDados) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PostoDados.ProtoReflect.Descriptor instead.
 func (*PostoDados) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{18}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *PostoDados) GetCodigoAnp() string {
@@ -3439,7 +3509,7 @@ type PagamentoModel struct {
 
 func (x *PagamentoModel) Reset() {
 	*x = PagamentoModel{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[19]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3451,7 +3521,7 @@ func (x *PagamentoModel) String() string {
 func (*PagamentoModel) ProtoMessage() {}
 
 func (x *PagamentoModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[19]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3464,7 +3534,7 @@ func (x *PagamentoModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PagamentoModel.ProtoReflect.Descriptor instead.
 func (*PagamentoModel) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{19}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *PagamentoModel) GetCreatedAt() *timestamppb.Timestamp {
@@ -3589,7 +3659,7 @@ type DuplicataModel struct {
 
 func (x *DuplicataModel) Reset() {
 	*x = DuplicataModel{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[20]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3601,7 +3671,7 @@ func (x *DuplicataModel) String() string {
 func (*DuplicataModel) ProtoMessage() {}
 
 func (x *DuplicataModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[20]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3614,7 +3684,7 @@ func (x *DuplicataModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DuplicataModel.ProtoReflect.Descriptor instead.
 func (*DuplicataModel) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{20}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *DuplicataModel) GetCreatedAt() *timestamppb.Timestamp {
@@ -3703,7 +3773,7 @@ type Evento struct {
 
 func (x *Evento) Reset() {
 	*x = Evento{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[21]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3715,7 +3785,7 @@ func (x *Evento) String() string {
 func (*Evento) ProtoMessage() {}
 
 func (x *Evento) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[21]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3728,7 +3798,7 @@ func (x *Evento) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Evento.ProtoReflect.Descriptor instead.
 func (*Evento) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{21}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *Evento) GetId() string {
@@ -3837,7 +3907,7 @@ type VolumesModel struct {
 
 func (x *VolumesModel) Reset() {
 	*x = VolumesModel{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[22]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3849,7 +3919,7 @@ func (x *VolumesModel) String() string {
 func (*VolumesModel) ProtoMessage() {}
 
 func (x *VolumesModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[22]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3862,7 +3932,7 @@ func (x *VolumesModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VolumesModel.ProtoReflect.Descriptor instead.
 func (*VolumesModel) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{22}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *VolumesModel) GetCreatedAt() *timestamppb.Timestamp {
@@ -3963,7 +4033,7 @@ type ReferenciaModel struct {
 
 func (x *ReferenciaModel) Reset() {
 	*x = ReferenciaModel{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[23]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3975,7 +4045,7 @@ func (x *ReferenciaModel) String() string {
 func (*ReferenciaModel) ProtoMessage() {}
 
 func (x *ReferenciaModel) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[23]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3988,7 +4058,7 @@ func (x *ReferenciaModel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReferenciaModel.ProtoReflect.Descriptor instead.
 func (*ReferenciaModel) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{23}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ReferenciaModel) GetCreatedAt() *timestamppb.Timestamp {
@@ -4048,7 +4118,7 @@ type Impostos struct {
 
 func (x *Impostos) Reset() {
 	*x = Impostos{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[24]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4060,7 +4130,7 @@ func (x *Impostos) String() string {
 func (*Impostos) ProtoMessage() {}
 
 func (x *Impostos) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[24]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4073,7 +4143,7 @@ func (x *Impostos) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Impostos.ProtoReflect.Descriptor instead.
 func (*Impostos) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{24}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *Impostos) GetIcms() *ImpostoIcms {
@@ -4169,7 +4239,7 @@ type ImpostoIcms struct {
 
 func (x *ImpostoIcms) Reset() {
 	*x = ImpostoIcms{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[25]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4181,7 +4251,7 @@ func (x *ImpostoIcms) String() string {
 func (*ImpostoIcms) ProtoMessage() {}
 
 func (x *ImpostoIcms) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[25]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4194,7 +4264,7 @@ func (x *ImpostoIcms) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImpostoIcms.ProtoReflect.Descriptor instead.
 func (*ImpostoIcms) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{25}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ImpostoIcms) GetCst() string {
@@ -4434,7 +4504,7 @@ type ImpostoIpi struct {
 
 func (x *ImpostoIpi) Reset() {
 	*x = ImpostoIpi{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[26]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4446,7 +4516,7 @@ func (x *ImpostoIpi) String() string {
 func (*ImpostoIpi) ProtoMessage() {}
 
 func (x *ImpostoIpi) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[26]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4459,7 +4529,7 @@ func (x *ImpostoIpi) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImpostoIpi.ProtoReflect.Descriptor instead.
 func (*ImpostoIpi) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{26}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ImpostoIpi) GetCst() string {
@@ -4513,7 +4583,7 @@ type ImpostoPis struct {
 
 func (x *ImpostoPis) Reset() {
 	*x = ImpostoPis{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[27]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4525,7 +4595,7 @@ func (x *ImpostoPis) String() string {
 func (*ImpostoPis) ProtoMessage() {}
 
 func (x *ImpostoPis) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[27]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4538,7 +4608,7 @@ func (x *ImpostoPis) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImpostoPis.ProtoReflect.Descriptor instead.
 func (*ImpostoPis) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{27}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ImpostoPis) GetCst() string {
@@ -4613,7 +4683,7 @@ type ImpostoCofins struct {
 
 func (x *ImpostoCofins) Reset() {
 	*x = ImpostoCofins{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[28]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4625,7 +4695,7 @@ func (x *ImpostoCofins) String() string {
 func (*ImpostoCofins) ProtoMessage() {}
 
 func (x *ImpostoCofins) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[28]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4638,7 +4708,7 @@ func (x *ImpostoCofins) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ImpostoCofins.ProtoReflect.Descriptor instead.
 func (*ImpostoCofins) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{28}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ImpostoCofins) GetCst() string {
@@ -4711,7 +4781,7 @@ type AliquotasNacionais struct {
 
 func (x *AliquotasNacionais) Reset() {
 	*x = AliquotasNacionais{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[29]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4723,7 +4793,7 @@ func (x *AliquotasNacionais) String() string {
 func (*AliquotasNacionais) ProtoMessage() {}
 
 func (x *AliquotasNacionais) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[29]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4736,7 +4806,7 @@ func (x *AliquotasNacionais) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AliquotasNacionais.ProtoReflect.Descriptor instead.
 func (*AliquotasNacionais) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{29}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *AliquotasNacionais) GetAliquotaFederal() float64 {
@@ -4799,7 +4869,7 @@ type ItemDevolucao struct {
 
 func (x *ItemDevolucao) Reset() {
 	*x = ItemDevolucao{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[30]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4811,7 +4881,7 @@ func (x *ItemDevolucao) String() string {
 func (*ItemDevolucao) ProtoMessage() {}
 
 func (x *ItemDevolucao) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[30]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4824,7 +4894,7 @@ func (x *ItemDevolucao) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ItemDevolucao.ProtoReflect.Descriptor instead.
 func (*ItemDevolucao) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{30}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ItemDevolucao) GetId() string {
@@ -4890,7 +4960,7 @@ type EmitirNfeRequest struct {
 
 func (x *EmitirNfeRequest) Reset() {
 	*x = EmitirNfeRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[31]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4902,7 +4972,7 @@ func (x *EmitirNfeRequest) String() string {
 func (*EmitirNfeRequest) ProtoMessage() {}
 
 func (x *EmitirNfeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[31]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4915,7 +4985,7 @@ func (x *EmitirNfeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmitirNfeRequest.ProtoReflect.Descriptor instead.
 func (*EmitirNfeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{31}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *EmitirNfeRequest) GetId() string {
@@ -4977,13 +5047,14 @@ type NfeEmissao struct {
 	PagAntecipadoRefs   []string                `protobuf:"bytes,32,rep,name=pag_antecipado_refs,json=pagAntecipadoRefs,proto3" json:"pag_antecipado_refs,omitempty"`
 	LocalEntrega        *Local                  `protobuf:"bytes,33,opt,name=local_entrega,json=localEntrega,proto3" json:"local_entrega,omitempty"`    // entrega em endereço diferente do destinatário
 	LocalRetirada       *Local                  `protobuf:"bytes,34,opt,name=local_retirada,json=localRetirada,proto3" json:"local_retirada,omitempty"` // retirada em endereço diferente do emitente
+	Compra              *Compra                 `protobuf:"bytes,35,opt,name=compra,proto3" json:"compra,omitempty"`                                    // nota de empenho, pedido e contrato da compra do destinatário
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
 
 func (x *NfeEmissao) Reset() {
 	*x = NfeEmissao{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[32]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4995,7 +5066,7 @@ func (x *NfeEmissao) String() string {
 func (*NfeEmissao) ProtoMessage() {}
 
 func (x *NfeEmissao) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[32]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5008,7 +5079,7 @@ func (x *NfeEmissao) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeEmissao.ProtoReflect.Descriptor instead.
 func (*NfeEmissao) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{32}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *NfeEmissao) GetTipoOperacao() string {
@@ -5249,6 +5320,13 @@ func (x *NfeEmissao) GetLocalRetirada() *Local {
 	return nil
 }
 
+func (x *NfeEmissao) GetCompra() *Compra {
+	if x != nil {
+		return x.Compra
+	}
+	return nil
+}
+
 // Item da emissão direta: o produto tem de estar cadastrado e é achado pelo id, pelo código, pelo
 // EAN ou pelo nome exato, nessa ordem. Nome, unidade e preço vazios vêm do cadastro; a tributação é
 // a do produto.
@@ -5279,7 +5357,7 @@ type NfeEmissaoItem struct {
 
 func (x *NfeEmissaoItem) Reset() {
 	*x = NfeEmissaoItem{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[33]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5291,7 +5369,7 @@ func (x *NfeEmissaoItem) String() string {
 func (*NfeEmissaoItem) ProtoMessage() {}
 
 func (x *NfeEmissaoItem) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[33]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5304,7 +5382,7 @@ func (x *NfeEmissaoItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeEmissaoItem.ProtoReflect.Descriptor instead.
 func (*NfeEmissaoItem) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{33}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *NfeEmissaoItem) GetProdutoId() string {
@@ -5451,7 +5529,7 @@ type NfeEmissaoPagamento struct {
 
 func (x *NfeEmissaoPagamento) Reset() {
 	*x = NfeEmissaoPagamento{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[34]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5463,7 +5541,7 @@ func (x *NfeEmissaoPagamento) String() string {
 func (*NfeEmissaoPagamento) ProtoMessage() {}
 
 func (x *NfeEmissaoPagamento) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[34]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5476,7 +5554,7 @@ func (x *NfeEmissaoPagamento) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeEmissaoPagamento.ProtoReflect.Descriptor instead.
 func (*NfeEmissaoPagamento) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{34}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *NfeEmissaoPagamento) GetFormaPagamentoId() string {
@@ -5560,7 +5638,7 @@ type NfeEmissaoDuplicata struct {
 
 func (x *NfeEmissaoDuplicata) Reset() {
 	*x = NfeEmissaoDuplicata{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[35]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5572,7 +5650,7 @@ func (x *NfeEmissaoDuplicata) String() string {
 func (*NfeEmissaoDuplicata) ProtoMessage() {}
 
 func (x *NfeEmissaoDuplicata) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[35]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5585,7 +5663,7 @@ func (x *NfeEmissaoDuplicata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeEmissaoDuplicata.ProtoReflect.Descriptor instead.
 func (*NfeEmissaoDuplicata) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{35}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *NfeEmissaoDuplicata) GetNumero() string {
@@ -5623,7 +5701,7 @@ type NfeEmissaoVolume struct {
 
 func (x *NfeEmissaoVolume) Reset() {
 	*x = NfeEmissaoVolume{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[36]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5635,7 +5713,7 @@ func (x *NfeEmissaoVolume) String() string {
 func (*NfeEmissaoVolume) ProtoMessage() {}
 
 func (x *NfeEmissaoVolume) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[36]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5648,7 +5726,7 @@ func (x *NfeEmissaoVolume) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeEmissaoVolume.ProtoReflect.Descriptor instead.
 func (*NfeEmissaoVolume) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{36}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *NfeEmissaoVolume) GetQuantidade() int32 {
@@ -5702,7 +5780,7 @@ type NfeEmissaoReferencia struct {
 
 func (x *NfeEmissaoReferencia) Reset() {
 	*x = NfeEmissaoReferencia{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[37]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5714,7 +5792,7 @@ func (x *NfeEmissaoReferencia) String() string {
 func (*NfeEmissaoReferencia) ProtoMessage() {}
 
 func (x *NfeEmissaoReferencia) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[37]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5727,7 +5805,7 @@ func (x *NfeEmissaoReferencia) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeEmissaoReferencia.ProtoReflect.Descriptor instead.
 func (*NfeEmissaoReferencia) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{37}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *NfeEmissaoReferencia) GetChave() string {
@@ -5757,7 +5835,7 @@ type EmitirNfeResponse struct {
 
 func (x *EmitirNfeResponse) Reset() {
 	*x = EmitirNfeResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[38]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5769,7 +5847,7 @@ func (x *EmitirNfeResponse) String() string {
 func (*EmitirNfeResponse) ProtoMessage() {}
 
 func (x *EmitirNfeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[38]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5782,7 +5860,7 @@ func (x *EmitirNfeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmitirNfeResponse.ProtoReflect.Descriptor instead.
 func (*EmitirNfeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{38}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *EmitirNfeResponse) GetId() string {
@@ -5882,7 +5960,7 @@ type ConsultaProtocoloByChaveRequest struct {
 
 func (x *ConsultaProtocoloByChaveRequest) Reset() {
 	*x = ConsultaProtocoloByChaveRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[39]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5894,7 +5972,7 @@ func (x *ConsultaProtocoloByChaveRequest) String() string {
 func (*ConsultaProtocoloByChaveRequest) ProtoMessage() {}
 
 func (x *ConsultaProtocoloByChaveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[39]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5907,7 +5985,7 @@ func (x *ConsultaProtocoloByChaveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsultaProtocoloByChaveRequest.ProtoReflect.Descriptor instead.
 func (*ConsultaProtocoloByChaveRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{39}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *ConsultaProtocoloByChaveRequest) GetId() string {
@@ -5947,7 +6025,7 @@ type ConsultaProtocoloByChaveResponse struct {
 
 func (x *ConsultaProtocoloByChaveResponse) Reset() {
 	*x = ConsultaProtocoloByChaveResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[40]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5959,7 +6037,7 @@ func (x *ConsultaProtocoloByChaveResponse) String() string {
 func (*ConsultaProtocoloByChaveResponse) ProtoMessage() {}
 
 func (x *ConsultaProtocoloByChaveResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[40]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5972,7 +6050,7 @@ func (x *ConsultaProtocoloByChaveResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConsultaProtocoloByChaveResponse.ProtoReflect.Descriptor instead.
 func (*ConsultaProtocoloByChaveResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{40}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ConsultaProtocoloByChaveResponse) GetNfe() *Nfe {
@@ -5993,7 +6071,7 @@ type CancelarNfeRequest struct {
 
 func (x *CancelarNfeRequest) Reset() {
 	*x = CancelarNfeRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[41]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6005,7 +6083,7 @@ func (x *CancelarNfeRequest) String() string {
 func (*CancelarNfeRequest) ProtoMessage() {}
 
 func (x *CancelarNfeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[41]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6018,7 +6096,7 @@ func (x *CancelarNfeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelarNfeRequest.ProtoReflect.Descriptor instead.
 func (*CancelarNfeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{41}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *CancelarNfeRequest) GetId() string {
@@ -6044,7 +6122,7 @@ type CancelarNfeResponse struct {
 
 func (x *CancelarNfeResponse) Reset() {
 	*x = CancelarNfeResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[42]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6056,7 +6134,7 @@ func (x *CancelarNfeResponse) String() string {
 func (*CancelarNfeResponse) ProtoMessage() {}
 
 func (x *CancelarNfeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[42]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6069,7 +6147,7 @@ func (x *CancelarNfeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelarNfeResponse.ProtoReflect.Descriptor instead.
 func (*CancelarNfeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{42}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *CancelarNfeResponse) GetNfe() *Nfe {
@@ -6093,7 +6171,7 @@ type GerarDevolucaoNfeRequest struct {
 
 func (x *GerarDevolucaoNfeRequest) Reset() {
 	*x = GerarDevolucaoNfeRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[43]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6105,7 +6183,7 @@ func (x *GerarDevolucaoNfeRequest) String() string {
 func (*GerarDevolucaoNfeRequest) ProtoMessage() {}
 
 func (x *GerarDevolucaoNfeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[43]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6118,7 +6196,7 @@ func (x *GerarDevolucaoNfeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GerarDevolucaoNfeRequest.ProtoReflect.Descriptor instead.
 func (*GerarDevolucaoNfeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{43}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *GerarDevolucaoNfeRequest) GetIds() []string {
@@ -6172,7 +6250,7 @@ type GerarDevolucaoNfeResponse struct {
 
 func (x *GerarDevolucaoNfeResponse) Reset() {
 	*x = GerarDevolucaoNfeResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[44]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6184,7 +6262,7 @@ func (x *GerarDevolucaoNfeResponse) String() string {
 func (*GerarDevolucaoNfeResponse) ProtoMessage() {}
 
 func (x *GerarDevolucaoNfeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[44]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6197,7 +6275,7 @@ func (x *GerarDevolucaoNfeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GerarDevolucaoNfeResponse.ProtoReflect.Descriptor instead.
 func (*GerarDevolucaoNfeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{44}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *GerarDevolucaoNfeResponse) GetNfe() *Nfe {
@@ -6217,7 +6295,7 @@ type CancelaOuGeraDevolucaoRequest struct {
 
 func (x *CancelaOuGeraDevolucaoRequest) Reset() {
 	*x = CancelaOuGeraDevolucaoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[45]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6229,7 +6307,7 @@ func (x *CancelaOuGeraDevolucaoRequest) String() string {
 func (*CancelaOuGeraDevolucaoRequest) ProtoMessage() {}
 
 func (x *CancelaOuGeraDevolucaoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[45]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6242,7 +6320,7 @@ func (x *CancelaOuGeraDevolucaoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelaOuGeraDevolucaoRequest.ProtoReflect.Descriptor instead.
 func (*CancelaOuGeraDevolucaoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{45}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *CancelaOuGeraDevolucaoRequest) GetId() string {
@@ -6268,7 +6346,7 @@ type CancelaOuGeraDevolucaoResponse struct {
 
 func (x *CancelaOuGeraDevolucaoResponse) Reset() {
 	*x = CancelaOuGeraDevolucaoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[46]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6280,7 +6358,7 @@ func (x *CancelaOuGeraDevolucaoResponse) String() string {
 func (*CancelaOuGeraDevolucaoResponse) ProtoMessage() {}
 
 func (x *CancelaOuGeraDevolucaoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[46]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6293,7 +6371,7 @@ func (x *CancelaOuGeraDevolucaoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelaOuGeraDevolucaoResponse.ProtoReflect.Descriptor instead.
 func (*CancelaOuGeraDevolucaoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{46}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *CancelaOuGeraDevolucaoResponse) GetNfe() *Nfe {
@@ -6314,7 +6392,7 @@ type AddProdutoRequest struct {
 
 func (x *AddProdutoRequest) Reset() {
 	*x = AddProdutoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[47]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6326,7 +6404,7 @@ func (x *AddProdutoRequest) String() string {
 func (*AddProdutoRequest) ProtoMessage() {}
 
 func (x *AddProdutoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[47]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6339,7 +6417,7 @@ func (x *AddProdutoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddProdutoRequest.ProtoReflect.Descriptor instead.
 func (*AddProdutoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{47}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *AddProdutoRequest) GetNfeId() string {
@@ -6366,7 +6444,7 @@ type AddProdutoResponse struct {
 
 func (x *AddProdutoResponse) Reset() {
 	*x = AddProdutoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[48]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6378,7 +6456,7 @@ func (x *AddProdutoResponse) String() string {
 func (*AddProdutoResponse) ProtoMessage() {}
 
 func (x *AddProdutoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[48]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6391,7 +6469,7 @@ func (x *AddProdutoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddProdutoResponse.ProtoReflect.Descriptor instead.
 func (*AddProdutoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{48}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *AddProdutoResponse) GetNfe() *Nfe {
@@ -6420,7 +6498,7 @@ type TributacaoItens struct {
 
 func (x *TributacaoItens) Reset() {
 	*x = TributacaoItens{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[49]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6432,7 +6510,7 @@ func (x *TributacaoItens) String() string {
 func (*TributacaoItens) ProtoMessage() {}
 
 func (x *TributacaoItens) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[49]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6445,7 +6523,7 @@ func (x *TributacaoItens) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TributacaoItens.ProtoReflect.Descriptor instead.
 func (*TributacaoItens) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{49}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *TributacaoItens) GetCfop() string {
@@ -6480,7 +6558,7 @@ type AlteracaoConjuntaItensRequest struct {
 
 func (x *AlteracaoConjuntaItensRequest) Reset() {
 	*x = AlteracaoConjuntaItensRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[50]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6492,7 +6570,7 @@ func (x *AlteracaoConjuntaItensRequest) String() string {
 func (*AlteracaoConjuntaItensRequest) ProtoMessage() {}
 
 func (x *AlteracaoConjuntaItensRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[50]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6505,7 +6583,7 @@ func (x *AlteracaoConjuntaItensRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlteracaoConjuntaItensRequest.ProtoReflect.Descriptor instead.
 func (*AlteracaoConjuntaItensRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{50}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *AlteracaoConjuntaItensRequest) GetNfeId() string {
@@ -6538,7 +6616,7 @@ type AlteracaoConjuntaItensResponse struct {
 
 func (x *AlteracaoConjuntaItensResponse) Reset() {
 	*x = AlteracaoConjuntaItensResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[51]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6550,7 +6628,7 @@ func (x *AlteracaoConjuntaItensResponse) String() string {
 func (*AlteracaoConjuntaItensResponse) ProtoMessage() {}
 
 func (x *AlteracaoConjuntaItensResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[51]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6563,7 +6641,7 @@ func (x *AlteracaoConjuntaItensResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlteracaoConjuntaItensResponse.ProtoReflect.Descriptor instead.
 func (*AlteracaoConjuntaItensResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{51}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *AlteracaoConjuntaItensResponse) GetItensAlterados() int32 {
@@ -6585,7 +6663,7 @@ type UpdateProdutoRequest struct {
 
 func (x *UpdateProdutoRequest) Reset() {
 	*x = UpdateProdutoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[52]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6597,7 +6675,7 @@ func (x *UpdateProdutoRequest) String() string {
 func (*UpdateProdutoRequest) ProtoMessage() {}
 
 func (x *UpdateProdutoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[52]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6610,7 +6688,7 @@ func (x *UpdateProdutoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProdutoRequest.ProtoReflect.Descriptor instead.
 func (*UpdateProdutoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{52}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *UpdateProdutoRequest) GetNfeId() string {
@@ -6644,7 +6722,7 @@ type UpdateProdutoResponse struct {
 
 func (x *UpdateProdutoResponse) Reset() {
 	*x = UpdateProdutoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[53]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6656,7 +6734,7 @@ func (x *UpdateProdutoResponse) String() string {
 func (*UpdateProdutoResponse) ProtoMessage() {}
 
 func (x *UpdateProdutoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[53]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6669,7 +6747,7 @@ func (x *UpdateProdutoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateProdutoResponse.ProtoReflect.Descriptor instead.
 func (*UpdateProdutoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{53}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *UpdateProdutoResponse) GetProduto() *ItemModel {
@@ -6697,7 +6775,7 @@ type DeleteProdutoRequest struct {
 
 func (x *DeleteProdutoRequest) Reset() {
 	*x = DeleteProdutoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[54]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6709,7 +6787,7 @@ func (x *DeleteProdutoRequest) String() string {
 func (*DeleteProdutoRequest) ProtoMessage() {}
 
 func (x *DeleteProdutoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[54]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6722,7 +6800,7 @@ func (x *DeleteProdutoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteProdutoRequest.ProtoReflect.Descriptor instead.
 func (*DeleteProdutoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{54}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *DeleteProdutoRequest) GetNfeId() string {
@@ -6749,7 +6827,7 @@ type DeleteProdutoResponse struct {
 
 func (x *DeleteProdutoResponse) Reset() {
 	*x = DeleteProdutoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[55]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6761,7 +6839,7 @@ func (x *DeleteProdutoResponse) String() string {
 func (*DeleteProdutoResponse) ProtoMessage() {}
 
 func (x *DeleteProdutoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[55]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6774,7 +6852,7 @@ func (x *DeleteProdutoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteProdutoResponse.ProtoReflect.Descriptor instead.
 func (*DeleteProdutoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{55}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *DeleteProdutoResponse) GetResult() string {
@@ -6802,7 +6880,7 @@ type AddPagamentoRequest struct {
 
 func (x *AddPagamentoRequest) Reset() {
 	*x = AddPagamentoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[56]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6814,7 +6892,7 @@ func (x *AddPagamentoRequest) String() string {
 func (*AddPagamentoRequest) ProtoMessage() {}
 
 func (x *AddPagamentoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[56]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6827,7 +6905,7 @@ func (x *AddPagamentoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPagamentoRequest.ProtoReflect.Descriptor instead.
 func (*AddPagamentoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{56}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *AddPagamentoRequest) GetNfeId() string {
@@ -6853,7 +6931,7 @@ type AddPagamentoResponse struct {
 
 func (x *AddPagamentoResponse) Reset() {
 	*x = AddPagamentoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[57]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6865,7 +6943,7 @@ func (x *AddPagamentoResponse) String() string {
 func (*AddPagamentoResponse) ProtoMessage() {}
 
 func (x *AddPagamentoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[57]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6878,7 +6956,7 @@ func (x *AddPagamentoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddPagamentoResponse.ProtoReflect.Descriptor instead.
 func (*AddPagamentoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{57}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *AddPagamentoResponse) GetNfe() *Nfe {
@@ -6900,7 +6978,7 @@ type UpdatePagamentoRequest struct {
 
 func (x *UpdatePagamentoRequest) Reset() {
 	*x = UpdatePagamentoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[58]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6912,7 +6990,7 @@ func (x *UpdatePagamentoRequest) String() string {
 func (*UpdatePagamentoRequest) ProtoMessage() {}
 
 func (x *UpdatePagamentoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[58]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6925,7 +7003,7 @@ func (x *UpdatePagamentoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePagamentoRequest.ProtoReflect.Descriptor instead.
 func (*UpdatePagamentoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{58}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *UpdatePagamentoRequest) GetNfeId() string {
@@ -6959,7 +7037,7 @@ type UpdatePagamentoResponse struct {
 
 func (x *UpdatePagamentoResponse) Reset() {
 	*x = UpdatePagamentoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[59]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6971,7 +7049,7 @@ func (x *UpdatePagamentoResponse) String() string {
 func (*UpdatePagamentoResponse) ProtoMessage() {}
 
 func (x *UpdatePagamentoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[59]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6984,7 +7062,7 @@ func (x *UpdatePagamentoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdatePagamentoResponse.ProtoReflect.Descriptor instead.
 func (*UpdatePagamentoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{59}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *UpdatePagamentoResponse) GetPagamento() *PagamentoModel {
@@ -7012,7 +7090,7 @@ type DeletePagamentoRequest struct {
 
 func (x *DeletePagamentoRequest) Reset() {
 	*x = DeletePagamentoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[60]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7024,7 +7102,7 @@ func (x *DeletePagamentoRequest) String() string {
 func (*DeletePagamentoRequest) ProtoMessage() {}
 
 func (x *DeletePagamentoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[60]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7037,7 +7115,7 @@ func (x *DeletePagamentoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePagamentoRequest.ProtoReflect.Descriptor instead.
 func (*DeletePagamentoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{60}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *DeletePagamentoRequest) GetNfeId() string {
@@ -7064,7 +7142,7 @@ type DeletePagamentoResponse struct {
 
 func (x *DeletePagamentoResponse) Reset() {
 	*x = DeletePagamentoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[61]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7076,7 +7154,7 @@ func (x *DeletePagamentoResponse) String() string {
 func (*DeletePagamentoResponse) ProtoMessage() {}
 
 func (x *DeletePagamentoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[61]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7089,7 +7167,7 @@ func (x *DeletePagamentoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeletePagamentoResponse.ProtoReflect.Descriptor instead.
 func (*DeletePagamentoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{61}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *DeletePagamentoResponse) GetResult() string {
@@ -7117,7 +7195,7 @@ type AddReferenciaRequest struct {
 
 func (x *AddReferenciaRequest) Reset() {
 	*x = AddReferenciaRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[62]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7129,7 +7207,7 @@ func (x *AddReferenciaRequest) String() string {
 func (*AddReferenciaRequest) ProtoMessage() {}
 
 func (x *AddReferenciaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[62]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7142,7 +7220,7 @@ func (x *AddReferenciaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddReferenciaRequest.ProtoReflect.Descriptor instead.
 func (*AddReferenciaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{62}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *AddReferenciaRequest) GetNfeId() string {
@@ -7168,7 +7246,7 @@ type AddReferenciaResponse struct {
 
 func (x *AddReferenciaResponse) Reset() {
 	*x = AddReferenciaResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[63]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7180,7 +7258,7 @@ func (x *AddReferenciaResponse) String() string {
 func (*AddReferenciaResponse) ProtoMessage() {}
 
 func (x *AddReferenciaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[63]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7193,7 +7271,7 @@ func (x *AddReferenciaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddReferenciaResponse.ProtoReflect.Descriptor instead.
 func (*AddReferenciaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{63}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *AddReferenciaResponse) GetNfe() *Nfe {
@@ -7215,7 +7293,7 @@ type UpdateReferenciaRequest struct {
 
 func (x *UpdateReferenciaRequest) Reset() {
 	*x = UpdateReferenciaRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[64]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7227,7 +7305,7 @@ func (x *UpdateReferenciaRequest) String() string {
 func (*UpdateReferenciaRequest) ProtoMessage() {}
 
 func (x *UpdateReferenciaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[64]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7240,7 +7318,7 @@ func (x *UpdateReferenciaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateReferenciaRequest.ProtoReflect.Descriptor instead.
 func (*UpdateReferenciaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{64}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *UpdateReferenciaRequest) GetNfeId() string {
@@ -7274,7 +7352,7 @@ type UpdateReferenciaResponse struct {
 
 func (x *UpdateReferenciaResponse) Reset() {
 	*x = UpdateReferenciaResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[65]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7286,7 +7364,7 @@ func (x *UpdateReferenciaResponse) String() string {
 func (*UpdateReferenciaResponse) ProtoMessage() {}
 
 func (x *UpdateReferenciaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[65]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7299,7 +7377,7 @@ func (x *UpdateReferenciaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateReferenciaResponse.ProtoReflect.Descriptor instead.
 func (*UpdateReferenciaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{65}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *UpdateReferenciaResponse) GetReferencia() *ReferenciaModel {
@@ -7327,7 +7405,7 @@ type DeleteReferenciaRequest struct {
 
 func (x *DeleteReferenciaRequest) Reset() {
 	*x = DeleteReferenciaRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[66]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7339,7 +7417,7 @@ func (x *DeleteReferenciaRequest) String() string {
 func (*DeleteReferenciaRequest) ProtoMessage() {}
 
 func (x *DeleteReferenciaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[66]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7352,7 +7430,7 @@ func (x *DeleteReferenciaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteReferenciaRequest.ProtoReflect.Descriptor instead.
 func (*DeleteReferenciaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{66}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *DeleteReferenciaRequest) GetNfeId() string {
@@ -7379,7 +7457,7 @@ type DeleteReferenciaResponse struct {
 
 func (x *DeleteReferenciaResponse) Reset() {
 	*x = DeleteReferenciaResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[67]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7391,7 +7469,7 @@ func (x *DeleteReferenciaResponse) String() string {
 func (*DeleteReferenciaResponse) ProtoMessage() {}
 
 func (x *DeleteReferenciaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[67]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7404,7 +7482,7 @@ func (x *DeleteReferenciaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteReferenciaResponse.ProtoReflect.Descriptor instead.
 func (*DeleteReferenciaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{67}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *DeleteReferenciaResponse) GetResult() string {
@@ -7432,7 +7510,7 @@ type AddDuplicataRequest struct {
 
 func (x *AddDuplicataRequest) Reset() {
 	*x = AddDuplicataRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[68]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7444,7 +7522,7 @@ func (x *AddDuplicataRequest) String() string {
 func (*AddDuplicataRequest) ProtoMessage() {}
 
 func (x *AddDuplicataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[68]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7457,7 +7535,7 @@ func (x *AddDuplicataRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddDuplicataRequest.ProtoReflect.Descriptor instead.
 func (*AddDuplicataRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{68}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *AddDuplicataRequest) GetNfeId() string {
@@ -7483,7 +7561,7 @@ type AddDuplicataResponse struct {
 
 func (x *AddDuplicataResponse) Reset() {
 	*x = AddDuplicataResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[69]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7495,7 +7573,7 @@ func (x *AddDuplicataResponse) String() string {
 func (*AddDuplicataResponse) ProtoMessage() {}
 
 func (x *AddDuplicataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[69]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7508,7 +7586,7 @@ func (x *AddDuplicataResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddDuplicataResponse.ProtoReflect.Descriptor instead.
 func (*AddDuplicataResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{69}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *AddDuplicataResponse) GetNfe() *Nfe {
@@ -7530,7 +7608,7 @@ type UpdateDuplicataRequest struct {
 
 func (x *UpdateDuplicataRequest) Reset() {
 	*x = UpdateDuplicataRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[70]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7542,7 +7620,7 @@ func (x *UpdateDuplicataRequest) String() string {
 func (*UpdateDuplicataRequest) ProtoMessage() {}
 
 func (x *UpdateDuplicataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[70]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7555,7 +7633,7 @@ func (x *UpdateDuplicataRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDuplicataRequest.ProtoReflect.Descriptor instead.
 func (*UpdateDuplicataRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{70}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *UpdateDuplicataRequest) GetNfeId() string {
@@ -7589,7 +7667,7 @@ type UpdateDuplicataResponse struct {
 
 func (x *UpdateDuplicataResponse) Reset() {
 	*x = UpdateDuplicataResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[71]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7601,7 +7679,7 @@ func (x *UpdateDuplicataResponse) String() string {
 func (*UpdateDuplicataResponse) ProtoMessage() {}
 
 func (x *UpdateDuplicataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[71]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7614,7 +7692,7 @@ func (x *UpdateDuplicataResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDuplicataResponse.ProtoReflect.Descriptor instead.
 func (*UpdateDuplicataResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{71}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *UpdateDuplicataResponse) GetDuplicata() *DuplicataModel {
@@ -7642,7 +7720,7 @@ type DeleteDuplicataRequest struct {
 
 func (x *DeleteDuplicataRequest) Reset() {
 	*x = DeleteDuplicataRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[72]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7654,7 +7732,7 @@ func (x *DeleteDuplicataRequest) String() string {
 func (*DeleteDuplicataRequest) ProtoMessage() {}
 
 func (x *DeleteDuplicataRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[72]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7667,7 +7745,7 @@ func (x *DeleteDuplicataRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteDuplicataRequest.ProtoReflect.Descriptor instead.
 func (*DeleteDuplicataRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{72}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *DeleteDuplicataRequest) GetNfeId() string {
@@ -7694,7 +7772,7 @@ type DeleteDuplicataResponse struct {
 
 func (x *DeleteDuplicataResponse) Reset() {
 	*x = DeleteDuplicataResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[73]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7706,7 +7784,7 @@ func (x *DeleteDuplicataResponse) String() string {
 func (*DeleteDuplicataResponse) ProtoMessage() {}
 
 func (x *DeleteDuplicataResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[73]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7719,7 +7797,7 @@ func (x *DeleteDuplicataResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteDuplicataResponse.ProtoReflect.Descriptor instead.
 func (*DeleteDuplicataResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{73}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *DeleteDuplicataResponse) GetResult() string {
@@ -7747,7 +7825,7 @@ type AddVolumeRequest struct {
 
 func (x *AddVolumeRequest) Reset() {
 	*x = AddVolumeRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[74]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7759,7 +7837,7 @@ func (x *AddVolumeRequest) String() string {
 func (*AddVolumeRequest) ProtoMessage() {}
 
 func (x *AddVolumeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[74]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7772,7 +7850,7 @@ func (x *AddVolumeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddVolumeRequest.ProtoReflect.Descriptor instead.
 func (*AddVolumeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{74}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *AddVolumeRequest) GetNfeId() string {
@@ -7798,7 +7876,7 @@ type AddVolumeResponse struct {
 
 func (x *AddVolumeResponse) Reset() {
 	*x = AddVolumeResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[75]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7810,7 +7888,7 @@ func (x *AddVolumeResponse) String() string {
 func (*AddVolumeResponse) ProtoMessage() {}
 
 func (x *AddVolumeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[75]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7823,7 +7901,7 @@ func (x *AddVolumeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddVolumeResponse.ProtoReflect.Descriptor instead.
 func (*AddVolumeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{75}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *AddVolumeResponse) GetNfe() *Nfe {
@@ -7845,7 +7923,7 @@ type UpdateVolumeRequest struct {
 
 func (x *UpdateVolumeRequest) Reset() {
 	*x = UpdateVolumeRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[76]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7857,7 +7935,7 @@ func (x *UpdateVolumeRequest) String() string {
 func (*UpdateVolumeRequest) ProtoMessage() {}
 
 func (x *UpdateVolumeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[76]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7870,7 +7948,7 @@ func (x *UpdateVolumeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateVolumeRequest.ProtoReflect.Descriptor instead.
 func (*UpdateVolumeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{76}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *UpdateVolumeRequest) GetNfeId() string {
@@ -7904,7 +7982,7 @@ type UpdateVolumeResponse struct {
 
 func (x *UpdateVolumeResponse) Reset() {
 	*x = UpdateVolumeResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[77]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7916,7 +7994,7 @@ func (x *UpdateVolumeResponse) String() string {
 func (*UpdateVolumeResponse) ProtoMessage() {}
 
 func (x *UpdateVolumeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[77]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7929,7 +8007,7 @@ func (x *UpdateVolumeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateVolumeResponse.ProtoReflect.Descriptor instead.
 func (*UpdateVolumeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{77}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *UpdateVolumeResponse) GetVolume() *VolumesModel {
@@ -7957,7 +8035,7 @@ type DeleteVolumeRequest struct {
 
 func (x *DeleteVolumeRequest) Reset() {
 	*x = DeleteVolumeRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[78]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7969,7 +8047,7 @@ func (x *DeleteVolumeRequest) String() string {
 func (*DeleteVolumeRequest) ProtoMessage() {}
 
 func (x *DeleteVolumeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[78]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7982,7 +8060,7 @@ func (x *DeleteVolumeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteVolumeRequest.ProtoReflect.Descriptor instead.
 func (*DeleteVolumeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{78}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *DeleteVolumeRequest) GetNfeId() string {
@@ -8009,7 +8087,7 @@ type DeleteVolumeResponse struct {
 
 func (x *DeleteVolumeResponse) Reset() {
 	*x = DeleteVolumeResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[79]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8021,7 +8099,7 @@ func (x *DeleteVolumeResponse) String() string {
 func (*DeleteVolumeResponse) ProtoMessage() {}
 
 func (x *DeleteVolumeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[79]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8034,7 +8112,7 @@ func (x *DeleteVolumeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteVolumeResponse.ProtoReflect.Descriptor instead.
 func (*DeleteVolumeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{79}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *DeleteVolumeResponse) GetResult() string {
@@ -8061,7 +8139,7 @@ type DuplicaRequest struct {
 
 func (x *DuplicaRequest) Reset() {
 	*x = DuplicaRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[80]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8073,7 +8151,7 @@ func (x *DuplicaRequest) String() string {
 func (*DuplicaRequest) ProtoMessage() {}
 
 func (x *DuplicaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[80]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8086,7 +8164,7 @@ func (x *DuplicaRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DuplicaRequest.ProtoReflect.Descriptor instead.
 func (*DuplicaRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{80}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *DuplicaRequest) GetId() string {
@@ -8105,7 +8183,7 @@ type DuplicaResponse struct {
 
 func (x *DuplicaResponse) Reset() {
 	*x = DuplicaResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[81]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8117,7 +8195,7 @@ func (x *DuplicaResponse) String() string {
 func (*DuplicaResponse) ProtoMessage() {}
 
 func (x *DuplicaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[81]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8130,7 +8208,7 @@ func (x *DuplicaResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DuplicaResponse.ProtoReflect.Descriptor instead.
 func (*DuplicaResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{81}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *DuplicaResponse) GetNfe() *Nfe {
@@ -8150,7 +8228,7 @@ type DanfeRequest struct {
 
 func (x *DanfeRequest) Reset() {
 	*x = DanfeRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[82]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8162,7 +8240,7 @@ func (x *DanfeRequest) String() string {
 func (*DanfeRequest) ProtoMessage() {}
 
 func (x *DanfeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[82]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8175,7 +8253,7 @@ func (x *DanfeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DanfeRequest.ProtoReflect.Descriptor instead.
 func (*DanfeRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{82}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *DanfeRequest) GetIds() []string {
@@ -8202,7 +8280,7 @@ type DanfeResponse struct {
 
 func (x *DanfeResponse) Reset() {
 	*x = DanfeResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[83]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8214,7 +8292,7 @@ func (x *DanfeResponse) String() string {
 func (*DanfeResponse) ProtoMessage() {}
 
 func (x *DanfeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[83]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8227,7 +8305,7 @@ func (x *DanfeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DanfeResponse.ProtoReflect.Descriptor instead.
 func (*DanfeResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{83}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *DanfeResponse) GetDanfeTipo() DanfeTipo {
@@ -8259,7 +8337,7 @@ type NfeImportaXmlRequest struct {
 
 func (x *NfeImportaXmlRequest) Reset() {
 	*x = NfeImportaXmlRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[84]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8271,7 +8349,7 @@ func (x *NfeImportaXmlRequest) String() string {
 func (*NfeImportaXmlRequest) ProtoMessage() {}
 
 func (x *NfeImportaXmlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[84]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8284,7 +8362,7 @@ func (x *NfeImportaXmlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeImportaXmlRequest.ProtoReflect.Descriptor instead.
 func (*NfeImportaXmlRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{84}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *NfeImportaXmlRequest) GetFile() []byte {
@@ -8345,7 +8423,7 @@ type NfeImportaXmlResponse struct {
 
 func (x *NfeImportaXmlResponse) Reset() {
 	*x = NfeImportaXmlResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[85]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8357,7 +8435,7 @@ func (x *NfeImportaXmlResponse) String() string {
 func (*NfeImportaXmlResponse) ProtoMessage() {}
 
 func (x *NfeImportaXmlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[85]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8370,7 +8448,7 @@ func (x *NfeImportaXmlResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeImportaXmlResponse.ProtoReflect.Descriptor instead.
 func (*NfeImportaXmlResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{85}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{86}
 }
 
 func (x *NfeImportaXmlResponse) GetNfe() []*Nfe {
@@ -8401,7 +8479,7 @@ type NfeEnviaXmlRequest struct {
 
 func (x *NfeEnviaXmlRequest) Reset() {
 	*x = NfeEnviaXmlRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[86]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8413,7 +8491,7 @@ func (x *NfeEnviaXmlRequest) String() string {
 func (*NfeEnviaXmlRequest) ProtoMessage() {}
 
 func (x *NfeEnviaXmlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[86]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8426,7 +8504,7 @@ func (x *NfeEnviaXmlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeEnviaXmlRequest.ProtoReflect.Descriptor instead.
 func (*NfeEnviaXmlRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{86}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *NfeEnviaXmlRequest) GetEmail() string {
@@ -8509,7 +8587,7 @@ type NfeEnviaXmlResponse struct {
 
 func (x *NfeEnviaXmlResponse) Reset() {
 	*x = NfeEnviaXmlResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[87]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8521,7 +8599,7 @@ func (x *NfeEnviaXmlResponse) String() string {
 func (*NfeEnviaXmlResponse) ProtoMessage() {}
 
 func (x *NfeEnviaXmlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[87]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8534,7 +8612,7 @@ func (x *NfeEnviaXmlResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NfeEnviaXmlResponse.ProtoReflect.Descriptor instead.
 func (*NfeEnviaXmlResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{87}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *NfeEnviaXmlResponse) GetWhatsappWebMessage() string {
@@ -8563,7 +8641,7 @@ type EnviaXmlsPeriodoRequest struct {
 
 func (x *EnviaXmlsPeriodoRequest) Reset() {
 	*x = EnviaXmlsPeriodoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[88]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8575,7 +8653,7 @@ func (x *EnviaXmlsPeriodoRequest) String() string {
 func (*EnviaXmlsPeriodoRequest) ProtoMessage() {}
 
 func (x *EnviaXmlsPeriodoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[88]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8588,7 +8666,7 @@ func (x *EnviaXmlsPeriodoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnviaXmlsPeriodoRequest.ProtoReflect.Descriptor instead.
 func (*EnviaXmlsPeriodoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{88}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *EnviaXmlsPeriodoRequest) GetEmail() string {
@@ -8633,7 +8711,7 @@ type EnviaXmlsPeriodoResponse struct {
 
 func (x *EnviaXmlsPeriodoResponse) Reset() {
 	*x = EnviaXmlsPeriodoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[89]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8645,7 +8723,7 @@ func (x *EnviaXmlsPeriodoResponse) String() string {
 func (*EnviaXmlsPeriodoResponse) ProtoMessage() {}
 
 func (x *EnviaXmlsPeriodoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[89]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8658,7 +8736,7 @@ func (x *EnviaXmlsPeriodoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EnviaXmlsPeriodoResponse.ProtoReflect.Descriptor instead.
 func (*EnviaXmlsPeriodoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{89}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *EnviaXmlsPeriodoResponse) GetStatus() string {
@@ -8713,7 +8791,7 @@ type GerarNFeReimpressaoRequest struct {
 
 func (x *GerarNFeReimpressaoRequest) Reset() {
 	*x = GerarNFeReimpressaoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[90]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8725,7 +8803,7 @@ func (x *GerarNFeReimpressaoRequest) String() string {
 func (*GerarNFeReimpressaoRequest) ProtoMessage() {}
 
 func (x *GerarNFeReimpressaoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[90]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8738,7 +8816,7 @@ func (x *GerarNFeReimpressaoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GerarNFeReimpressaoRequest.ProtoReflect.Descriptor instead.
 func (*GerarNFeReimpressaoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{90}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *GerarNFeReimpressaoRequest) GetIds() []string {
@@ -8765,7 +8843,7 @@ type GerarNFeReimpressaoResponse struct {
 
 func (x *GerarNFeReimpressaoResponse) Reset() {
 	*x = GerarNFeReimpressaoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[91]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8777,7 +8855,7 @@ func (x *GerarNFeReimpressaoResponse) String() string {
 func (*GerarNFeReimpressaoResponse) ProtoMessage() {}
 
 func (x *GerarNFeReimpressaoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[91]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8790,7 +8868,7 @@ func (x *GerarNFeReimpressaoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GerarNFeReimpressaoResponse.ProtoReflect.Descriptor instead.
 func (*GerarNFeReimpressaoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{91}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *GerarNFeReimpressaoResponse) GetStatus() string {
@@ -8816,7 +8894,7 @@ type GetDownloadLinkXmlRequest struct {
 
 func (x *GetDownloadLinkXmlRequest) Reset() {
 	*x = GetDownloadLinkXmlRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[92]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8828,7 +8906,7 @@ func (x *GetDownloadLinkXmlRequest) String() string {
 func (*GetDownloadLinkXmlRequest) ProtoMessage() {}
 
 func (x *GetDownloadLinkXmlRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[92]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8841,7 +8919,7 @@ func (x *GetDownloadLinkXmlRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDownloadLinkXmlRequest.ProtoReflect.Descriptor instead.
 func (*GetDownloadLinkXmlRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{92}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *GetDownloadLinkXmlRequest) GetId() string {
@@ -8860,7 +8938,7 @@ type GetDownloadLinkXmlResponse struct {
 
 func (x *GetDownloadLinkXmlResponse) Reset() {
 	*x = GetDownloadLinkXmlResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[93]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8872,7 +8950,7 @@ func (x *GetDownloadLinkXmlResponse) String() string {
 func (*GetDownloadLinkXmlResponse) ProtoMessage() {}
 
 func (x *GetDownloadLinkXmlResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[93]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8885,7 +8963,7 @@ func (x *GetDownloadLinkXmlResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDownloadLinkXmlResponse.ProtoReflect.Descriptor instead.
 func (*GetDownloadLinkXmlResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{93}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *GetDownloadLinkXmlResponse) GetUrl() string {
@@ -8904,7 +8982,7 @@ type GetWsStatusRequest struct {
 
 func (x *GetWsStatusRequest) Reset() {
 	*x = GetWsStatusRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[94]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8916,7 +8994,7 @@ func (x *GetWsStatusRequest) String() string {
 func (*GetWsStatusRequest) ProtoMessage() {}
 
 func (x *GetWsStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[94]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8929,7 +9007,7 @@ func (x *GetWsStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWsStatusRequest.ProtoReflect.Descriptor instead.
 func (*GetWsStatusRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{94}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *GetWsStatusRequest) GetTipo() string {
@@ -8948,7 +9026,7 @@ type GetWsStatusResponse struct {
 
 func (x *GetWsStatusResponse) Reset() {
 	*x = GetWsStatusResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[95]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8960,7 +9038,7 @@ func (x *GetWsStatusResponse) String() string {
 func (*GetWsStatusResponse) ProtoMessage() {}
 
 func (x *GetWsStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[95]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8973,7 +9051,7 @@ func (x *GetWsStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetWsStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetWsStatusResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{95}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *GetWsStatusResponse) GetOnline() bool {
@@ -8994,7 +9072,7 @@ type ReportRequest struct {
 
 func (x *ReportRequest) Reset() {
 	*x = ReportRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[96]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9006,7 +9084,7 @@ func (x *ReportRequest) String() string {
 func (*ReportRequest) ProtoMessage() {}
 
 func (x *ReportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[96]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9019,7 +9097,7 @@ func (x *ReportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportRequest.ProtoReflect.Descriptor instead.
 func (*ReportRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{96}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *ReportRequest) GetTipoRelatorio() string {
@@ -9052,7 +9130,7 @@ type ReportResponse struct {
 
 func (x *ReportResponse) Reset() {
 	*x = ReportResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[97]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9064,7 +9142,7 @@ func (x *ReportResponse) String() string {
 func (*ReportResponse) ProtoMessage() {}
 
 func (x *ReportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[97]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9077,7 +9155,7 @@ func (x *ReportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportResponse.ProtoReflect.Descriptor instead.
 func (*ReportResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{97}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *ReportResponse) GetResponse() *report.Response {
@@ -9100,7 +9178,7 @@ type CorrecaoMovimentacaoRequest struct {
 
 func (x *CorrecaoMovimentacaoRequest) Reset() {
 	*x = CorrecaoMovimentacaoRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[98]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9112,7 +9190,7 @@ func (x *CorrecaoMovimentacaoRequest) String() string {
 func (*CorrecaoMovimentacaoRequest) ProtoMessage() {}
 
 func (x *CorrecaoMovimentacaoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[98]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9125,7 +9203,7 @@ func (x *CorrecaoMovimentacaoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CorrecaoMovimentacaoRequest.ProtoReflect.Descriptor instead.
 func (*CorrecaoMovimentacaoRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{98}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *CorrecaoMovimentacaoRequest) GetIds() []string {
@@ -9171,7 +9249,7 @@ type CorrecaoMovimentacaoResponse struct {
 
 func (x *CorrecaoMovimentacaoResponse) Reset() {
 	*x = CorrecaoMovimentacaoResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[99]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9183,7 +9261,7 @@ func (x *CorrecaoMovimentacaoResponse) String() string {
 func (*CorrecaoMovimentacaoResponse) ProtoMessage() {}
 
 func (x *CorrecaoMovimentacaoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[99]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9196,7 +9274,7 @@ func (x *CorrecaoMovimentacaoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CorrecaoMovimentacaoResponse.ProtoReflect.Descriptor instead.
 func (*CorrecaoMovimentacaoResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{99}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{100}
 }
 
 type ExplainRejectionRequest struct {
@@ -9210,7 +9288,7 @@ type ExplainRejectionRequest struct {
 
 func (x *ExplainRejectionRequest) Reset() {
 	*x = ExplainRejectionRequest{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[100]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9222,7 +9300,7 @@ func (x *ExplainRejectionRequest) String() string {
 func (*ExplainRejectionRequest) ProtoMessage() {}
 
 func (x *ExplainRejectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[100]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9235,7 +9313,7 @@ func (x *ExplainRejectionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExplainRejectionRequest.ProtoReflect.Descriptor instead.
 func (*ExplainRejectionRequest) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{100}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *ExplainRejectionRequest) GetId() string {
@@ -9270,7 +9348,7 @@ type ExplainRejectionResponse struct {
 
 func (x *ExplainRejectionResponse) Reset() {
 	*x = ExplainRejectionResponse{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[101]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9282,7 +9360,7 @@ func (x *ExplainRejectionResponse) String() string {
 func (*ExplainRejectionResponse) ProtoMessage() {}
 
 func (x *ExplainRejectionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[101]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9295,7 +9373,7 @@ func (x *ExplainRejectionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ExplainRejectionResponse.ProtoReflect.Descriptor instead.
 func (*ExplainRejectionResponse) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{101}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *ExplainRejectionResponse) GetCstat() string {
@@ -9347,7 +9425,7 @@ type DanfeResponse_DanfeResponseList struct {
 
 func (x *DanfeResponse_DanfeResponseList) Reset() {
 	*x = DanfeResponse_DanfeResponseList{}
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[102]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[103]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -9359,7 +9437,7 @@ func (x *DanfeResponse_DanfeResponseList) String() string {
 func (*DanfeResponse_DanfeResponseList) ProtoMessage() {}
 
 func (x *DanfeResponse_DanfeResponseList) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[102]
+	mi := &file_apps_dfe_nfe_nfe_proto_msgTypes[103]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9372,7 +9450,7 @@ func (x *DanfeResponse_DanfeResponseList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DanfeResponse_DanfeResponseList.ProtoReflect.Descriptor instead.
 func (*DanfeResponse_DanfeResponseList) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{83, 0}
+	return file_apps_dfe_nfe_nfe_proto_rawDescGZIP(), []int{84, 0}
 }
 
 func (x *DanfeResponse_DanfeResponseList) GetNumero() uint32 {
@@ -9482,7 +9560,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"cstsCofins\"]\n" +
 	"\x0fListNfeResponse\x12\"\n" +
 	"\anfeList\x18\x01 \x03(\v2\b.nfe.NfeR\anfeList\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xad,\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xd2,\n" +
 	"\x03Nfe\x12?\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\tcreatedAt\x12?\n" +
@@ -9617,7 +9695,8 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\rlocal_entrega\x18r \x01(\v2\n" +
 	".nfe.LocalR\flocalEntrega\x121\n" +
 	"\x0elocal_retirada\x18s \x01(\v2\n" +
-	".nfe.LocalR\rlocalRetirada:\x03\xc0>\x01J\x04\bh\x10i\"\xb4\x04\n" +
+	".nfe.LocalR\rlocalRetirada\x12#\n" +
+	"\x06compra\x18t \x01(\v2\v.nfe.CompraR\x06compra:\x03\xc0>\x01J\x04\bh\x10i\"\xb4\x04\n" +
 	"\x06Pessoa\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04nome\x18\x02 \x01(\tR\x04nome\x12\x14\n" +
@@ -9655,7 +9734,11 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	" \x01(\tR\tcidadeCod\x12\x0e\n" +
 	"\x02uf\x18\v \x01(\tR\x02uf\x12\x1a\n" +
 	"\btelefone\x18\f \x01(\tR\btelefone\x12\x14\n" +
-	"\x05email\x18\r \x01(\tR\x05email\"\xd2\x01\n" +
+	"\x05email\x18\r \x01(\tR\x05email\"_\n" +
+	"\x06Compra\x12!\n" +
+	"\fnota_empenho\x18\x01 \x01(\tR\vnotaEmpenho\x12\x16\n" +
+	"\x06pedido\x18\x02 \x01(\tR\x06pedido\x12\x1a\n" +
+	"\bcontrato\x18\x03 \x01(\tR\bcontrato\"\xd2\x01\n" +
 	"\bRejeicao\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x126\n" +
 	"\bdataHora\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\bdataHora\x12L\n" +
@@ -9973,7 +10056,7 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\x10EmitirNfeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12#\n" +
 	"\x04nota\x18\x02 \x01(\v2\x0f.nfe.NfeEmissaoR\x04nota\x12'\n" +
-	"\x0fidempotency_key\x18\x03 \x01(\tR\x0eidempotencyKey\"\xaa\v\n" +
+	"\x0fidempotency_key\x18\x03 \x01(\tR\x0eidempotencyKey\"\xcf\v\n" +
 	"\n" +
 	"NfeEmissao\x12#\n" +
 	"\rtipo_operacao\x18\x01 \x01(\tR\ftipoOperacao\x12-\n" +
@@ -10018,7 +10101,8 @@ const file_apps_dfe_nfe_nfe_proto_rawDesc = "" +
 	"\rlocal_entrega\x18! \x01(\v2\n" +
 	".nfe.LocalR\flocalEntrega\x121\n" +
 	"\x0elocal_retirada\x18\" \x01(\v2\n" +
-	".nfe.LocalR\rlocalRetirada\"\xee\x04\n" +
+	".nfe.LocalR\rlocalRetirada\x12#\n" +
+	"\x06compra\x18# \x01(\v2\v.nfe.CompraR\x06compra\"\xee\x04\n" +
 	"\x0eNfeEmissaoItem\x12\x1d\n" +
 	"\n" +
 	"produto_id\x18\x01 \x01(\tR\tprodutoId\x12\x16\n" +
@@ -10424,7 +10508,7 @@ func file_apps_dfe_nfe_nfe_proto_rawDescGZIP() []byte {
 }
 
 var file_apps_dfe_nfe_nfe_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_apps_dfe_nfe_nfe_proto_msgTypes = make([]protoimpl.MessageInfo, 103)
+var file_apps_dfe_nfe_nfe_proto_msgTypes = make([]protoimpl.MessageInfo, 104)
 var file_apps_dfe_nfe_nfe_proto_goTypes = []any{
 	(Tipo)(0),                                // 0: nfe.Tipo
 	(DanfeTipo)(0),                           // 1: nfe.DanfeTipo
@@ -10441,392 +10525,395 @@ var file_apps_dfe_nfe_nfe_proto_goTypes = []any{
 	(*Nfe)(nil),                              // 12: nfe.Nfe
 	(*Pessoa)(nil),                           // 13: nfe.Pessoa
 	(*Local)(nil),                            // 14: nfe.Local
-	(*Rejeicao)(nil),                         // 15: nfe.Rejeicao
-	(*TranspDados)(nil),                      // 16: nfe.TranspDados
-	(*BatchInfo)(nil),                        // 17: nfe.BatchInfo
-	(*ItemRastro)(nil),                       // 18: nfe.ItemRastro
-	(*ItemModel)(nil),                        // 19: nfe.ItemModel
-	(*PostoDados)(nil),                       // 20: nfe.PostoDados
-	(*PagamentoModel)(nil),                   // 21: nfe.PagamentoModel
-	(*DuplicataModel)(nil),                   // 22: nfe.DuplicataModel
-	(*Evento)(nil),                           // 23: nfe.Evento
-	(*VolumesModel)(nil),                     // 24: nfe.VolumesModel
-	(*ReferenciaModel)(nil),                  // 25: nfe.ReferenciaModel
-	(*Impostos)(nil),                         // 26: nfe.Impostos
-	(*ImpostoIcms)(nil),                      // 27: nfe.ImpostoIcms
-	(*ImpostoIpi)(nil),                       // 28: nfe.ImpostoIpi
-	(*ImpostoPis)(nil),                       // 29: nfe.ImpostoPis
-	(*ImpostoCofins)(nil),                    // 30: nfe.ImpostoCofins
-	(*AliquotasNacionais)(nil),               // 31: nfe.AliquotasNacionais
-	(*ItemDevolucao)(nil),                    // 32: nfe.ItemDevolucao
-	(*EmitirNfeRequest)(nil),                 // 33: nfe.EmitirNfeRequest
-	(*NfeEmissao)(nil),                       // 34: nfe.NfeEmissao
-	(*NfeEmissaoItem)(nil),                   // 35: nfe.NfeEmissaoItem
-	(*NfeEmissaoPagamento)(nil),              // 36: nfe.NfeEmissaoPagamento
-	(*NfeEmissaoDuplicata)(nil),              // 37: nfe.NfeEmissaoDuplicata
-	(*NfeEmissaoVolume)(nil),                 // 38: nfe.NfeEmissaoVolume
-	(*NfeEmissaoReferencia)(nil),             // 39: nfe.NfeEmissaoReferencia
-	(*EmitirNfeResponse)(nil),                // 40: nfe.EmitirNfeResponse
-	(*ConsultaProtocoloByChaveRequest)(nil),  // 41: nfe.ConsultaProtocoloByChaveRequest
-	(*ConsultaProtocoloByChaveResponse)(nil), // 42: nfe.ConsultaProtocoloByChaveResponse
-	(*CancelarNfeRequest)(nil),               // 43: nfe.CancelarNfeRequest
-	(*CancelarNfeResponse)(nil),              // 44: nfe.CancelarNfeResponse
-	(*GerarDevolucaoNfeRequest)(nil),         // 45: nfe.GerarDevolucaoNfeRequest
-	(*GerarDevolucaoNfeResponse)(nil),        // 46: nfe.GerarDevolucaoNfeResponse
-	(*CancelaOuGeraDevolucaoRequest)(nil),    // 47: nfe.CancelaOuGeraDevolucaoRequest
-	(*CancelaOuGeraDevolucaoResponse)(nil),   // 48: nfe.CancelaOuGeraDevolucaoResponse
-	(*AddProdutoRequest)(nil),                // 49: nfe.AddProdutoRequest
-	(*AddProdutoResponse)(nil),               // 50: nfe.AddProdutoResponse
-	(*TributacaoItens)(nil),                  // 51: nfe.TributacaoItens
-	(*AlteracaoConjuntaItensRequest)(nil),    // 52: nfe.AlteracaoConjuntaItensRequest
-	(*AlteracaoConjuntaItensResponse)(nil),   // 53: nfe.AlteracaoConjuntaItensResponse
-	(*UpdateProdutoRequest)(nil),             // 54: nfe.UpdateProdutoRequest
-	(*UpdateProdutoResponse)(nil),            // 55: nfe.UpdateProdutoResponse
-	(*DeleteProdutoRequest)(nil),             // 56: nfe.DeleteProdutoRequest
-	(*DeleteProdutoResponse)(nil),            // 57: nfe.DeleteProdutoResponse
-	(*AddPagamentoRequest)(nil),              // 58: nfe.AddPagamentoRequest
-	(*AddPagamentoResponse)(nil),             // 59: nfe.AddPagamentoResponse
-	(*UpdatePagamentoRequest)(nil),           // 60: nfe.UpdatePagamentoRequest
-	(*UpdatePagamentoResponse)(nil),          // 61: nfe.UpdatePagamentoResponse
-	(*DeletePagamentoRequest)(nil),           // 62: nfe.DeletePagamentoRequest
-	(*DeletePagamentoResponse)(nil),          // 63: nfe.DeletePagamentoResponse
-	(*AddReferenciaRequest)(nil),             // 64: nfe.AddReferenciaRequest
-	(*AddReferenciaResponse)(nil),            // 65: nfe.AddReferenciaResponse
-	(*UpdateReferenciaRequest)(nil),          // 66: nfe.UpdateReferenciaRequest
-	(*UpdateReferenciaResponse)(nil),         // 67: nfe.UpdateReferenciaResponse
-	(*DeleteReferenciaRequest)(nil),          // 68: nfe.DeleteReferenciaRequest
-	(*DeleteReferenciaResponse)(nil),         // 69: nfe.DeleteReferenciaResponse
-	(*AddDuplicataRequest)(nil),              // 70: nfe.AddDuplicataRequest
-	(*AddDuplicataResponse)(nil),             // 71: nfe.AddDuplicataResponse
-	(*UpdateDuplicataRequest)(nil),           // 72: nfe.UpdateDuplicataRequest
-	(*UpdateDuplicataResponse)(nil),          // 73: nfe.UpdateDuplicataResponse
-	(*DeleteDuplicataRequest)(nil),           // 74: nfe.DeleteDuplicataRequest
-	(*DeleteDuplicataResponse)(nil),          // 75: nfe.DeleteDuplicataResponse
-	(*AddVolumeRequest)(nil),                 // 76: nfe.AddVolumeRequest
-	(*AddVolumeResponse)(nil),                // 77: nfe.AddVolumeResponse
-	(*UpdateVolumeRequest)(nil),              // 78: nfe.UpdateVolumeRequest
-	(*UpdateVolumeResponse)(nil),             // 79: nfe.UpdateVolumeResponse
-	(*DeleteVolumeRequest)(nil),              // 80: nfe.DeleteVolumeRequest
-	(*DeleteVolumeResponse)(nil),             // 81: nfe.DeleteVolumeResponse
-	(*DuplicaRequest)(nil),                   // 82: nfe.DuplicaRequest
-	(*DuplicaResponse)(nil),                  // 83: nfe.DuplicaResponse
-	(*DanfeRequest)(nil),                     // 84: nfe.DanfeRequest
-	(*DanfeResponse)(nil),                    // 85: nfe.DanfeResponse
-	(*NfeImportaXmlRequest)(nil),             // 86: nfe.NfeImportaXmlRequest
-	(*NfeImportaXmlResponse)(nil),            // 87: nfe.NfeImportaXmlResponse
-	(*NfeEnviaXmlRequest)(nil),               // 88: nfe.NfeEnviaXmlRequest
-	(*NfeEnviaXmlResponse)(nil),              // 89: nfe.NfeEnviaXmlResponse
-	(*EnviaXmlsPeriodoRequest)(nil),          // 90: nfe.EnviaXmlsPeriodoRequest
-	(*EnviaXmlsPeriodoResponse)(nil),         // 91: nfe.EnviaXmlsPeriodoResponse
-	(*GerarNFeReimpressaoRequest)(nil),       // 92: nfe.GerarNFeReimpressaoRequest
-	(*GerarNFeReimpressaoResponse)(nil),      // 93: nfe.GerarNFeReimpressaoResponse
-	(*GetDownloadLinkXmlRequest)(nil),        // 94: nfe.GetDownloadLinkXmlRequest
-	(*GetDownloadLinkXmlResponse)(nil),       // 95: nfe.GetDownloadLinkXmlResponse
-	(*GetWsStatusRequest)(nil),               // 96: nfe.GetWsStatusRequest
-	(*GetWsStatusResponse)(nil),              // 97: nfe.GetWsStatusResponse
-	(*ReportRequest)(nil),                    // 98: nfe.ReportRequest
-	(*ReportResponse)(nil),                   // 99: nfe.ReportResponse
-	(*CorrecaoMovimentacaoRequest)(nil),      // 100: nfe.CorrecaoMovimentacaoRequest
-	(*CorrecaoMovimentacaoResponse)(nil),     // 101: nfe.CorrecaoMovimentacaoResponse
-	(*ExplainRejectionRequest)(nil),          // 102: nfe.ExplainRejectionRequest
-	(*ExplainRejectionResponse)(nil),         // 103: nfe.ExplainRejectionResponse
-	(*DanfeResponse_DanfeResponseList)(nil),  // 104: nfe.DanfeResponse.DanfeResponseList
-	(*metadata.FieldMask)(nil),               // 105: metadata.FieldMask
-	(*timestamppb.Timestamp)(nil),            // 106: google.protobuf.Timestamp
-	(*filter.Filter)(nil),                    // 107: Filter
-	(*metadata.BasicFields)(nil),             // 108: metadata.BasicFields
-	(*emitente.Emitente)(nil),                // 109: dfe.Emitente
-	(*Totais)(nil),                           // 110: nfe.Totais
-	(*ImpostoIs)(nil),                        // 111: nfe.ImpostoIs
-	(*ImpostoIbsCbs)(nil),                    // 112: nfe.ImpostoIbsCbs
-	(*report.Response)(nil),                  // 113: report.Response
+	(*Compra)(nil),                           // 15: nfe.Compra
+	(*Rejeicao)(nil),                         // 16: nfe.Rejeicao
+	(*TranspDados)(nil),                      // 17: nfe.TranspDados
+	(*BatchInfo)(nil),                        // 18: nfe.BatchInfo
+	(*ItemRastro)(nil),                       // 19: nfe.ItemRastro
+	(*ItemModel)(nil),                        // 20: nfe.ItemModel
+	(*PostoDados)(nil),                       // 21: nfe.PostoDados
+	(*PagamentoModel)(nil),                   // 22: nfe.PagamentoModel
+	(*DuplicataModel)(nil),                   // 23: nfe.DuplicataModel
+	(*Evento)(nil),                           // 24: nfe.Evento
+	(*VolumesModel)(nil),                     // 25: nfe.VolumesModel
+	(*ReferenciaModel)(nil),                  // 26: nfe.ReferenciaModel
+	(*Impostos)(nil),                         // 27: nfe.Impostos
+	(*ImpostoIcms)(nil),                      // 28: nfe.ImpostoIcms
+	(*ImpostoIpi)(nil),                       // 29: nfe.ImpostoIpi
+	(*ImpostoPis)(nil),                       // 30: nfe.ImpostoPis
+	(*ImpostoCofins)(nil),                    // 31: nfe.ImpostoCofins
+	(*AliquotasNacionais)(nil),               // 32: nfe.AliquotasNacionais
+	(*ItemDevolucao)(nil),                    // 33: nfe.ItemDevolucao
+	(*EmitirNfeRequest)(nil),                 // 34: nfe.EmitirNfeRequest
+	(*NfeEmissao)(nil),                       // 35: nfe.NfeEmissao
+	(*NfeEmissaoItem)(nil),                   // 36: nfe.NfeEmissaoItem
+	(*NfeEmissaoPagamento)(nil),              // 37: nfe.NfeEmissaoPagamento
+	(*NfeEmissaoDuplicata)(nil),              // 38: nfe.NfeEmissaoDuplicata
+	(*NfeEmissaoVolume)(nil),                 // 39: nfe.NfeEmissaoVolume
+	(*NfeEmissaoReferencia)(nil),             // 40: nfe.NfeEmissaoReferencia
+	(*EmitirNfeResponse)(nil),                // 41: nfe.EmitirNfeResponse
+	(*ConsultaProtocoloByChaveRequest)(nil),  // 42: nfe.ConsultaProtocoloByChaveRequest
+	(*ConsultaProtocoloByChaveResponse)(nil), // 43: nfe.ConsultaProtocoloByChaveResponse
+	(*CancelarNfeRequest)(nil),               // 44: nfe.CancelarNfeRequest
+	(*CancelarNfeResponse)(nil),              // 45: nfe.CancelarNfeResponse
+	(*GerarDevolucaoNfeRequest)(nil),         // 46: nfe.GerarDevolucaoNfeRequest
+	(*GerarDevolucaoNfeResponse)(nil),        // 47: nfe.GerarDevolucaoNfeResponse
+	(*CancelaOuGeraDevolucaoRequest)(nil),    // 48: nfe.CancelaOuGeraDevolucaoRequest
+	(*CancelaOuGeraDevolucaoResponse)(nil),   // 49: nfe.CancelaOuGeraDevolucaoResponse
+	(*AddProdutoRequest)(nil),                // 50: nfe.AddProdutoRequest
+	(*AddProdutoResponse)(nil),               // 51: nfe.AddProdutoResponse
+	(*TributacaoItens)(nil),                  // 52: nfe.TributacaoItens
+	(*AlteracaoConjuntaItensRequest)(nil),    // 53: nfe.AlteracaoConjuntaItensRequest
+	(*AlteracaoConjuntaItensResponse)(nil),   // 54: nfe.AlteracaoConjuntaItensResponse
+	(*UpdateProdutoRequest)(nil),             // 55: nfe.UpdateProdutoRequest
+	(*UpdateProdutoResponse)(nil),            // 56: nfe.UpdateProdutoResponse
+	(*DeleteProdutoRequest)(nil),             // 57: nfe.DeleteProdutoRequest
+	(*DeleteProdutoResponse)(nil),            // 58: nfe.DeleteProdutoResponse
+	(*AddPagamentoRequest)(nil),              // 59: nfe.AddPagamentoRequest
+	(*AddPagamentoResponse)(nil),             // 60: nfe.AddPagamentoResponse
+	(*UpdatePagamentoRequest)(nil),           // 61: nfe.UpdatePagamentoRequest
+	(*UpdatePagamentoResponse)(nil),          // 62: nfe.UpdatePagamentoResponse
+	(*DeletePagamentoRequest)(nil),           // 63: nfe.DeletePagamentoRequest
+	(*DeletePagamentoResponse)(nil),          // 64: nfe.DeletePagamentoResponse
+	(*AddReferenciaRequest)(nil),             // 65: nfe.AddReferenciaRequest
+	(*AddReferenciaResponse)(nil),            // 66: nfe.AddReferenciaResponse
+	(*UpdateReferenciaRequest)(nil),          // 67: nfe.UpdateReferenciaRequest
+	(*UpdateReferenciaResponse)(nil),         // 68: nfe.UpdateReferenciaResponse
+	(*DeleteReferenciaRequest)(nil),          // 69: nfe.DeleteReferenciaRequest
+	(*DeleteReferenciaResponse)(nil),         // 70: nfe.DeleteReferenciaResponse
+	(*AddDuplicataRequest)(nil),              // 71: nfe.AddDuplicataRequest
+	(*AddDuplicataResponse)(nil),             // 72: nfe.AddDuplicataResponse
+	(*UpdateDuplicataRequest)(nil),           // 73: nfe.UpdateDuplicataRequest
+	(*UpdateDuplicataResponse)(nil),          // 74: nfe.UpdateDuplicataResponse
+	(*DeleteDuplicataRequest)(nil),           // 75: nfe.DeleteDuplicataRequest
+	(*DeleteDuplicataResponse)(nil),          // 76: nfe.DeleteDuplicataResponse
+	(*AddVolumeRequest)(nil),                 // 77: nfe.AddVolumeRequest
+	(*AddVolumeResponse)(nil),                // 78: nfe.AddVolumeResponse
+	(*UpdateVolumeRequest)(nil),              // 79: nfe.UpdateVolumeRequest
+	(*UpdateVolumeResponse)(nil),             // 80: nfe.UpdateVolumeResponse
+	(*DeleteVolumeRequest)(nil),              // 81: nfe.DeleteVolumeRequest
+	(*DeleteVolumeResponse)(nil),             // 82: nfe.DeleteVolumeResponse
+	(*DuplicaRequest)(nil),                   // 83: nfe.DuplicaRequest
+	(*DuplicaResponse)(nil),                  // 84: nfe.DuplicaResponse
+	(*DanfeRequest)(nil),                     // 85: nfe.DanfeRequest
+	(*DanfeResponse)(nil),                    // 86: nfe.DanfeResponse
+	(*NfeImportaXmlRequest)(nil),             // 87: nfe.NfeImportaXmlRequest
+	(*NfeImportaXmlResponse)(nil),            // 88: nfe.NfeImportaXmlResponse
+	(*NfeEnviaXmlRequest)(nil),               // 89: nfe.NfeEnviaXmlRequest
+	(*NfeEnviaXmlResponse)(nil),              // 90: nfe.NfeEnviaXmlResponse
+	(*EnviaXmlsPeriodoRequest)(nil),          // 91: nfe.EnviaXmlsPeriodoRequest
+	(*EnviaXmlsPeriodoResponse)(nil),         // 92: nfe.EnviaXmlsPeriodoResponse
+	(*GerarNFeReimpressaoRequest)(nil),       // 93: nfe.GerarNFeReimpressaoRequest
+	(*GerarNFeReimpressaoResponse)(nil),      // 94: nfe.GerarNFeReimpressaoResponse
+	(*GetDownloadLinkXmlRequest)(nil),        // 95: nfe.GetDownloadLinkXmlRequest
+	(*GetDownloadLinkXmlResponse)(nil),       // 96: nfe.GetDownloadLinkXmlResponse
+	(*GetWsStatusRequest)(nil),               // 97: nfe.GetWsStatusRequest
+	(*GetWsStatusResponse)(nil),              // 98: nfe.GetWsStatusResponse
+	(*ReportRequest)(nil),                    // 99: nfe.ReportRequest
+	(*ReportResponse)(nil),                   // 100: nfe.ReportResponse
+	(*CorrecaoMovimentacaoRequest)(nil),      // 101: nfe.CorrecaoMovimentacaoRequest
+	(*CorrecaoMovimentacaoResponse)(nil),     // 102: nfe.CorrecaoMovimentacaoResponse
+	(*ExplainRejectionRequest)(nil),          // 103: nfe.ExplainRejectionRequest
+	(*ExplainRejectionResponse)(nil),         // 104: nfe.ExplainRejectionResponse
+	(*DanfeResponse_DanfeResponseList)(nil),  // 105: nfe.DanfeResponse.DanfeResponseList
+	(*metadata.FieldMask)(nil),               // 106: metadata.FieldMask
+	(*timestamppb.Timestamp)(nil),            // 107: google.protobuf.Timestamp
+	(*filter.Filter)(nil),                    // 108: Filter
+	(*metadata.BasicFields)(nil),             // 109: metadata.BasicFields
+	(*emitente.Emitente)(nil),                // 110: dfe.Emitente
+	(*Totais)(nil),                           // 111: nfe.Totais
+	(*ImpostoIs)(nil),                        // 112: nfe.ImpostoIs
+	(*ImpostoIbsCbs)(nil),                    // 113: nfe.ImpostoIbsCbs
+	(*report.Response)(nil),                  // 114: report.Response
 }
 var file_apps_dfe_nfe_nfe_proto_depIdxs = []int32{
 	12,  // 0: nfe.CreateNfeRequest.nfe:type_name -> nfe.Nfe
 	12,  // 1: nfe.CreateNfeResponse.nfe:type_name -> nfe.Nfe
 	12,  // 2: nfe.UpdateNfeRequest.nfe:type_name -> nfe.Nfe
-	105, // 3: nfe.UpdateNfeRequest.update_mask:type_name -> metadata.FieldMask
+	106, // 3: nfe.UpdateNfeRequest.update_mask:type_name -> metadata.FieldMask
 	12,  // 4: nfe.UpdateNfeResponse.nfe:type_name -> nfe.Nfe
 	12,  // 5: nfe.GetNfeResponse.nfe:type_name -> nfe.Nfe
-	106, // 6: nfe.ListNfeRequest.dataHoraEmissaoGte:type_name -> google.protobuf.Timestamp
-	106, // 7: nfe.ListNfeRequest.dataHoraEmissaoLte:type_name -> google.protobuf.Timestamp
-	106, // 8: nfe.ListNfeRequest.entradaDataHoraAceiteRejeicaoGte:type_name -> google.protobuf.Timestamp
-	106, // 9: nfe.ListNfeRequest.entradaDataHoraAceiteRejeicaoLte:type_name -> google.protobuf.Timestamp
-	107, // 10: nfe.ListNfeRequest.filter:type_name -> Filter
+	107, // 6: nfe.ListNfeRequest.dataHoraEmissaoGte:type_name -> google.protobuf.Timestamp
+	107, // 7: nfe.ListNfeRequest.dataHoraEmissaoLte:type_name -> google.protobuf.Timestamp
+	107, // 8: nfe.ListNfeRequest.entradaDataHoraAceiteRejeicaoGte:type_name -> google.protobuf.Timestamp
+	107, // 9: nfe.ListNfeRequest.entradaDataHoraAceiteRejeicaoLte:type_name -> google.protobuf.Timestamp
+	108, // 10: nfe.ListNfeRequest.filter:type_name -> Filter
 	0,   // 11: nfe.ListNfeRequest.tipos:type_name -> nfe.Tipo
 	12,  // 12: nfe.ListNfeResponse.nfeList:type_name -> nfe.Nfe
-	106, // 13: nfe.Nfe.created_at:type_name -> google.protobuf.Timestamp
-	106, // 14: nfe.Nfe.updated_at:type_name -> google.protobuf.Timestamp
-	108, // 15: nfe.Nfe.fields:type_name -> metadata.BasicFields
-	109, // 16: nfe.Nfe.emitente:type_name -> dfe.Emitente
+	107, // 13: nfe.Nfe.created_at:type_name -> google.protobuf.Timestamp
+	107, // 14: nfe.Nfe.updated_at:type_name -> google.protobuf.Timestamp
+	109, // 15: nfe.Nfe.fields:type_name -> metadata.BasicFields
+	110, // 16: nfe.Nfe.emitente:type_name -> dfe.Emitente
 	13,  // 17: nfe.Nfe.pessoa:type_name -> nfe.Pessoa
-	106, // 18: nfe.Nfe.entrada_data_hora_aceite_rejeicao:type_name -> google.protobuf.Timestamp
-	106, // 19: nfe.Nfe.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
-	106, // 20: nfe.Nfe.data_hora_emissao:type_name -> google.protobuf.Timestamp
-	106, // 21: nfe.Nfe.data_hora_saida:type_name -> google.protobuf.Timestamp
-	106, // 22: nfe.Nfe.data_hora_cancelamento:type_name -> google.protobuf.Timestamp
-	106, // 23: nfe.Nfe.contingencia_data_hora:type_name -> google.protobuf.Timestamp
-	106, // 24: nfe.Nfe.contingencia_processada_em:type_name -> google.protobuf.Timestamp
-	15,  // 25: nfe.Nfe.rejeicoes:type_name -> nfe.Rejeicao
-	16,  // 26: nfe.Nfe.transporte:type_name -> nfe.TranspDados
-	26,  // 27: nfe.Nfe.impostos:type_name -> nfe.Impostos
-	110, // 28: nfe.Nfe.totais:type_name -> nfe.Totais
-	19,  // 29: nfe.Nfe.produtos:type_name -> nfe.ItemModel
-	21,  // 30: nfe.Nfe.pagamentos:type_name -> nfe.PagamentoModel
-	22,  // 31: nfe.Nfe.duplicatas:type_name -> nfe.DuplicataModel
-	24,  // 32: nfe.Nfe.volumes:type_name -> nfe.VolumesModel
-	25,  // 33: nfe.Nfe.referencias:type_name -> nfe.ReferenciaModel
-	23,  // 34: nfe.Nfe.eventos:type_name -> nfe.Evento
-	106, // 35: nfe.Nfe.entrada_data_hora_consulta_sefaz:type_name -> google.protobuf.Timestamp
+	107, // 18: nfe.Nfe.entrada_data_hora_aceite_rejeicao:type_name -> google.protobuf.Timestamp
+	107, // 19: nfe.Nfe.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
+	107, // 20: nfe.Nfe.data_hora_emissao:type_name -> google.protobuf.Timestamp
+	107, // 21: nfe.Nfe.data_hora_saida:type_name -> google.protobuf.Timestamp
+	107, // 22: nfe.Nfe.data_hora_cancelamento:type_name -> google.protobuf.Timestamp
+	107, // 23: nfe.Nfe.contingencia_data_hora:type_name -> google.protobuf.Timestamp
+	107, // 24: nfe.Nfe.contingencia_processada_em:type_name -> google.protobuf.Timestamp
+	16,  // 25: nfe.Nfe.rejeicoes:type_name -> nfe.Rejeicao
+	17,  // 26: nfe.Nfe.transporte:type_name -> nfe.TranspDados
+	27,  // 27: nfe.Nfe.impostos:type_name -> nfe.Impostos
+	111, // 28: nfe.Nfe.totais:type_name -> nfe.Totais
+	20,  // 29: nfe.Nfe.produtos:type_name -> nfe.ItemModel
+	22,  // 30: nfe.Nfe.pagamentos:type_name -> nfe.PagamentoModel
+	23,  // 31: nfe.Nfe.duplicatas:type_name -> nfe.DuplicataModel
+	25,  // 32: nfe.Nfe.volumes:type_name -> nfe.VolumesModel
+	26,  // 33: nfe.Nfe.referencias:type_name -> nfe.ReferenciaModel
+	24,  // 34: nfe.Nfe.eventos:type_name -> nfe.Evento
+	107, // 35: nfe.Nfe.entrada_data_hora_consulta_sefaz:type_name -> google.protobuf.Timestamp
 	14,  // 36: nfe.Nfe.local_entrega:type_name -> nfe.Local
 	14,  // 37: nfe.Nfe.local_retirada:type_name -> nfe.Local
-	106, // 38: nfe.Rejeicao.dataHora:type_name -> google.protobuf.Timestamp
-	106, // 39: nfe.Rejeicao.dataHoraSituacaoDoc:type_name -> google.protobuf.Timestamp
-	106, // 40: nfe.BatchInfo.expiration_date:type_name -> google.protobuf.Timestamp
-	106, // 41: nfe.BatchInfo.manufacturing_date:type_name -> google.protobuf.Timestamp
-	106, // 42: nfe.ItemRastro.fabricacao:type_name -> google.protobuf.Timestamp
-	106, // 43: nfe.ItemRastro.validade:type_name -> google.protobuf.Timestamp
-	106, // 44: nfe.ItemModel.createdAt:type_name -> google.protobuf.Timestamp
-	106, // 45: nfe.ItemModel.updatedAt:type_name -> google.protobuf.Timestamp
-	20,  // 46: nfe.ItemModel.posto:type_name -> nfe.PostoDados
-	26,  // 47: nfe.ItemModel.impostos:type_name -> nfe.Impostos
-	17,  // 48: nfe.ItemModel.batch:type_name -> nfe.BatchInfo
-	18,  // 49: nfe.ItemModel.rastro:type_name -> nfe.ItemRastro
-	106, // 50: nfe.PagamentoModel.createdAt:type_name -> google.protobuf.Timestamp
-	106, // 51: nfe.PagamentoModel.updatedAt:type_name -> google.protobuf.Timestamp
-	106, // 52: nfe.DuplicataModel.createdAt:type_name -> google.protobuf.Timestamp
-	106, // 53: nfe.DuplicataModel.updatedAt:type_name -> google.protobuf.Timestamp
-	106, // 54: nfe.DuplicataModel.vencimento:type_name -> google.protobuf.Timestamp
-	106, // 55: nfe.Evento.created_at:type_name -> google.protobuf.Timestamp
-	106, // 56: nfe.Evento.data_hora_evento:type_name -> google.protobuf.Timestamp
-	106, // 57: nfe.VolumesModel.createdAt:type_name -> google.protobuf.Timestamp
-	106, // 58: nfe.VolumesModel.updatedAt:type_name -> google.protobuf.Timestamp
-	106, // 59: nfe.ReferenciaModel.createdAt:type_name -> google.protobuf.Timestamp
-	106, // 60: nfe.ReferenciaModel.updatedAt:type_name -> google.protobuf.Timestamp
-	27,  // 61: nfe.Impostos.icms:type_name -> nfe.ImpostoIcms
-	28,  // 62: nfe.Impostos.ipi:type_name -> nfe.ImpostoIpi
-	29,  // 63: nfe.Impostos.pis:type_name -> nfe.ImpostoPis
-	30,  // 64: nfe.Impostos.cofins:type_name -> nfe.ImpostoCofins
-	111, // 65: nfe.Impostos.is:type_name -> nfe.ImpostoIs
-	112, // 66: nfe.Impostos.ibsCbs:type_name -> nfe.ImpostoIbsCbs
-	31,  // 67: nfe.Impostos.aliquotasNacionais:type_name -> nfe.AliquotasNacionais
-	34,  // 68: nfe.EmitirNfeRequest.nota:type_name -> nfe.NfeEmissao
-	106, // 69: nfe.NfeEmissao.data_hora_saida:type_name -> google.protobuf.Timestamp
-	13,  // 70: nfe.NfeEmissao.pessoa:type_name -> nfe.Pessoa
-	38,  // 71: nfe.NfeEmissao.volumes:type_name -> nfe.NfeEmissaoVolume
-	35,  // 72: nfe.NfeEmissao.produtos:type_name -> nfe.NfeEmissaoItem
-	36,  // 73: nfe.NfeEmissao.pagamentos:type_name -> nfe.NfeEmissaoPagamento
-	37,  // 74: nfe.NfeEmissao.duplicatas:type_name -> nfe.NfeEmissaoDuplicata
-	39,  // 75: nfe.NfeEmissao.referencias:type_name -> nfe.NfeEmissaoReferencia
-	14,  // 76: nfe.NfeEmissao.local_entrega:type_name -> nfe.Local
-	14,  // 77: nfe.NfeEmissao.local_retirada:type_name -> nfe.Local
-	20,  // 78: nfe.NfeEmissaoItem.posto:type_name -> nfe.PostoDados
-	18,  // 79: nfe.NfeEmissaoItem.rastro:type_name -> nfe.ItemRastro
-	106, // 80: nfe.NfeEmissaoDuplicata.vencimento:type_name -> google.protobuf.Timestamp
-	106, // 81: nfe.EmitirNfeResponse.data_hora_emissao:type_name -> google.protobuf.Timestamp
-	106, // 82: nfe.EmitirNfeResponse.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
-	0,   // 83: nfe.ConsultaProtocoloByChaveRequest.tipo:type_name -> nfe.Tipo
-	12,  // 84: nfe.ConsultaProtocoloByChaveResponse.nfe:type_name -> nfe.Nfe
-	12,  // 85: nfe.CancelarNfeResponse.nfe:type_name -> nfe.Nfe
-	32,  // 86: nfe.GerarDevolucaoNfeRequest.itens_a_devolver:type_name -> nfe.ItemDevolucao
-	51,  // 87: nfe.GerarDevolucaoNfeRequest.tributacao_itens:type_name -> nfe.TributacaoItens
-	12,  // 88: nfe.GerarDevolucaoNfeResponse.nfe:type_name -> nfe.Nfe
-	12,  // 89: nfe.CancelaOuGeraDevolucaoResponse.nfe:type_name -> nfe.Nfe
-	19,  // 90: nfe.AddProdutoRequest.produto:type_name -> nfe.ItemModel
-	12,  // 91: nfe.AddProdutoResponse.nfe:type_name -> nfe.Nfe
-	19,  // 92: nfe.AddProdutoResponse.produto:type_name -> nfe.ItemModel
-	51,  // 93: nfe.AlteracaoConjuntaItensRequest.tributacao:type_name -> nfe.TributacaoItens
-	19,  // 94: nfe.UpdateProdutoRequest.produto:type_name -> nfe.ItemModel
-	19,  // 95: nfe.UpdateProdutoResponse.produto:type_name -> nfe.ItemModel
-	12,  // 96: nfe.UpdateProdutoResponse.nfe:type_name -> nfe.Nfe
-	12,  // 97: nfe.DeleteProdutoResponse.nfe:type_name -> nfe.Nfe
-	21,  // 98: nfe.AddPagamentoRequest.pagamentos:type_name -> nfe.PagamentoModel
-	12,  // 99: nfe.AddPagamentoResponse.nfe:type_name -> nfe.Nfe
-	21,  // 100: nfe.UpdatePagamentoRequest.pagamento:type_name -> nfe.PagamentoModel
-	21,  // 101: nfe.UpdatePagamentoResponse.pagamento:type_name -> nfe.PagamentoModel
-	12,  // 102: nfe.UpdatePagamentoResponse.nfe:type_name -> nfe.Nfe
-	12,  // 103: nfe.DeletePagamentoResponse.nfe:type_name -> nfe.Nfe
-	25,  // 104: nfe.AddReferenciaRequest.referencia:type_name -> nfe.ReferenciaModel
-	12,  // 105: nfe.AddReferenciaResponse.nfe:type_name -> nfe.Nfe
-	25,  // 106: nfe.UpdateReferenciaRequest.referencia:type_name -> nfe.ReferenciaModel
-	25,  // 107: nfe.UpdateReferenciaResponse.referencia:type_name -> nfe.ReferenciaModel
-	12,  // 108: nfe.UpdateReferenciaResponse.nfe:type_name -> nfe.Nfe
-	12,  // 109: nfe.DeleteReferenciaResponse.nfe:type_name -> nfe.Nfe
-	22,  // 110: nfe.AddDuplicataRequest.duplicata:type_name -> nfe.DuplicataModel
-	12,  // 111: nfe.AddDuplicataResponse.nfe:type_name -> nfe.Nfe
-	22,  // 112: nfe.UpdateDuplicataRequest.duplicata:type_name -> nfe.DuplicataModel
-	22,  // 113: nfe.UpdateDuplicataResponse.duplicata:type_name -> nfe.DuplicataModel
-	12,  // 114: nfe.UpdateDuplicataResponse.nfe:type_name -> nfe.Nfe
-	12,  // 115: nfe.DeleteDuplicataResponse.nfe:type_name -> nfe.Nfe
-	24,  // 116: nfe.AddVolumeRequest.volume:type_name -> nfe.VolumesModel
-	12,  // 117: nfe.AddVolumeResponse.nfe:type_name -> nfe.Nfe
-	24,  // 118: nfe.UpdateVolumeRequest.volume:type_name -> nfe.VolumesModel
-	24,  // 119: nfe.UpdateVolumeResponse.volume:type_name -> nfe.VolumesModel
-	12,  // 120: nfe.UpdateVolumeResponse.nfe:type_name -> nfe.Nfe
-	12,  // 121: nfe.DeleteVolumeResponse.nfe:type_name -> nfe.Nfe
-	12,  // 122: nfe.DuplicaResponse.nfe:type_name -> nfe.Nfe
-	1,   // 123: nfe.DanfeRequest.danfe_tipo:type_name -> nfe.DanfeTipo
-	1,   // 124: nfe.DanfeResponse.danfe_tipo:type_name -> nfe.DanfeTipo
-	104, // 125: nfe.DanfeResponse.danfeResponseList:type_name -> nfe.DanfeResponse.DanfeResponseList
-	12,  // 126: nfe.NfeImportaXmlResponse.nfe:type_name -> nfe.Nfe
-	106, // 127: nfe.EnviaXmlsPeriodoRequest.dataInicial:type_name -> google.protobuf.Timestamp
-	106, // 128: nfe.EnviaXmlsPeriodoRequest.dataFinal:type_name -> google.protobuf.Timestamp
-	12,  // 129: nfe.GerarNFeReimpressaoResponse.nfe:type_name -> nfe.Nfe
-	10,  // 130: nfe.ReportRequest.list_request:type_name -> nfe.ListNfeRequest
-	113, // 131: nfe.ReportResponse.response:type_name -> report.Response
-	33,  // 132: nfe.NfeService.EmitirNfe:input_type -> nfe.EmitirNfeRequest
-	41,  // 133: nfe.NfeService.ConsultaProtocoloByChave:input_type -> nfe.ConsultaProtocoloByChaveRequest
-	43,  // 134: nfe.NfeService.CancelarNfe:input_type -> nfe.CancelarNfeRequest
-	45,  // 135: nfe.NfeService.GerarDevolucaoNfe:input_type -> nfe.GerarDevolucaoNfeRequest
-	47,  // 136: nfe.NfeService.CancelaOuGeraDevolucao:input_type -> nfe.CancelaOuGeraDevolucaoRequest
-	2,   // 137: nfe.NfeService.Create:input_type -> nfe.CreateNfeRequest
-	4,   // 138: nfe.NfeService.Update:input_type -> nfe.UpdateNfeRequest
-	6,   // 139: nfe.NfeService.Delete:input_type -> nfe.DeleteNfeRequest
-	8,   // 140: nfe.NfeService.Get:input_type -> nfe.GetNfeRequest
-	10,  // 141: nfe.NfeService.List:input_type -> nfe.ListNfeRequest
-	49,  // 142: nfe.NfeService.AddProduto:input_type -> nfe.AddProdutoRequest
-	54,  // 143: nfe.NfeService.UpdateProduto:input_type -> nfe.UpdateProdutoRequest
-	56,  // 144: nfe.NfeService.DeleteProduto:input_type -> nfe.DeleteProdutoRequest
-	58,  // 145: nfe.NfeService.AddPagamentos:input_type -> nfe.AddPagamentoRequest
-	60,  // 146: nfe.NfeService.UpdatePagamento:input_type -> nfe.UpdatePagamentoRequest
-	62,  // 147: nfe.NfeService.DeletePagamento:input_type -> nfe.DeletePagamentoRequest
-	64,  // 148: nfe.NfeService.AddReferencia:input_type -> nfe.AddReferenciaRequest
-	66,  // 149: nfe.NfeService.UpdateReferencia:input_type -> nfe.UpdateReferenciaRequest
-	68,  // 150: nfe.NfeService.DeleteReferencia:input_type -> nfe.DeleteReferenciaRequest
-	70,  // 151: nfe.NfeService.AddDuplicata:input_type -> nfe.AddDuplicataRequest
-	72,  // 152: nfe.NfeService.UpdateDuplicata:input_type -> nfe.UpdateDuplicataRequest
-	74,  // 153: nfe.NfeService.DeleteDuplicata:input_type -> nfe.DeleteDuplicataRequest
-	76,  // 154: nfe.NfeService.AddVolume:input_type -> nfe.AddVolumeRequest
-	78,  // 155: nfe.NfeService.UpdateVolume:input_type -> nfe.UpdateVolumeRequest
-	80,  // 156: nfe.NfeService.DeleteVolume:input_type -> nfe.DeleteVolumeRequest
-	82,  // 157: nfe.NfeService.Duplica:input_type -> nfe.DuplicaRequest
-	52,  // 158: nfe.NfeService.AlteracaoConjuntaItens:input_type -> nfe.AlteracaoConjuntaItensRequest
-	86,  // 159: nfe.NfeService.NfeImportaXml:input_type -> nfe.NfeImportaXmlRequest
-	88,  // 160: nfe.NfeService.NfeEnviaXml:input_type -> nfe.NfeEnviaXmlRequest
-	90,  // 161: nfe.NfeService.EnviaXmlsPeriodo:input_type -> nfe.EnviaXmlsPeriodoRequest
-	92,  // 162: nfe.NfeService.GerarNFeReimpressao:input_type -> nfe.GerarNFeReimpressaoRequest
-	84,  // 163: nfe.NfeService.Danfe:input_type -> nfe.DanfeRequest
-	94,  // 164: nfe.NfeService.GetDownloadLinkXml:input_type -> nfe.GetDownloadLinkXmlRequest
-	96,  // 165: nfe.NfeService.GetWsStatus:input_type -> nfe.GetWsStatusRequest
-	98,  // 166: nfe.NfeService.Report:input_type -> nfe.ReportRequest
-	100, // 167: nfe.NfeService.CorrecaoMovimentacao:input_type -> nfe.CorrecaoMovimentacaoRequest
-	102, // 168: nfe.NfeService.ExplainRejection:input_type -> nfe.ExplainRejectionRequest
-	33,  // 169: nfe.NfceService.EmitirNfe:input_type -> nfe.EmitirNfeRequest
-	41,  // 170: nfe.NfceService.ConsultaProtocoloByChave:input_type -> nfe.ConsultaProtocoloByChaveRequest
-	43,  // 171: nfe.NfceService.CancelarNfe:input_type -> nfe.CancelarNfeRequest
-	45,  // 172: nfe.NfceService.GerarDevolucaoNfe:input_type -> nfe.GerarDevolucaoNfeRequest
-	47,  // 173: nfe.NfceService.CancelaOuGeraDevolucao:input_type -> nfe.CancelaOuGeraDevolucaoRequest
-	2,   // 174: nfe.NfceService.Create:input_type -> nfe.CreateNfeRequest
-	4,   // 175: nfe.NfceService.Update:input_type -> nfe.UpdateNfeRequest
-	6,   // 176: nfe.NfceService.Delete:input_type -> nfe.DeleteNfeRequest
-	8,   // 177: nfe.NfceService.Get:input_type -> nfe.GetNfeRequest
-	10,  // 178: nfe.NfceService.List:input_type -> nfe.ListNfeRequest
-	49,  // 179: nfe.NfceService.AddProduto:input_type -> nfe.AddProdutoRequest
-	54,  // 180: nfe.NfceService.UpdateProduto:input_type -> nfe.UpdateProdutoRequest
-	56,  // 181: nfe.NfceService.DeleteProduto:input_type -> nfe.DeleteProdutoRequest
-	58,  // 182: nfe.NfceService.AddPagamentos:input_type -> nfe.AddPagamentoRequest
-	60,  // 183: nfe.NfceService.UpdatePagamento:input_type -> nfe.UpdatePagamentoRequest
-	62,  // 184: nfe.NfceService.DeletePagamento:input_type -> nfe.DeletePagamentoRequest
-	64,  // 185: nfe.NfceService.AddReferencia:input_type -> nfe.AddReferenciaRequest
-	66,  // 186: nfe.NfceService.UpdateReferencia:input_type -> nfe.UpdateReferenciaRequest
-	68,  // 187: nfe.NfceService.DeleteReferencia:input_type -> nfe.DeleteReferenciaRequest
-	70,  // 188: nfe.NfceService.AddDuplicata:input_type -> nfe.AddDuplicataRequest
-	72,  // 189: nfe.NfceService.UpdateDuplicata:input_type -> nfe.UpdateDuplicataRequest
-	74,  // 190: nfe.NfceService.DeleteDuplicata:input_type -> nfe.DeleteDuplicataRequest
-	76,  // 191: nfe.NfceService.AddVolume:input_type -> nfe.AddVolumeRequest
-	78,  // 192: nfe.NfceService.UpdateVolume:input_type -> nfe.UpdateVolumeRequest
-	80,  // 193: nfe.NfceService.DeleteVolume:input_type -> nfe.DeleteVolumeRequest
-	82,  // 194: nfe.NfceService.Duplica:input_type -> nfe.DuplicaRequest
-	52,  // 195: nfe.NfceService.AlteracaoConjuntaItens:input_type -> nfe.AlteracaoConjuntaItensRequest
-	86,  // 196: nfe.NfceService.NfeImportaXml:input_type -> nfe.NfeImportaXmlRequest
-	88,  // 197: nfe.NfceService.NfeEnviaXml:input_type -> nfe.NfeEnviaXmlRequest
-	90,  // 198: nfe.NfceService.EnviaXmlsPeriodo:input_type -> nfe.EnviaXmlsPeriodoRequest
-	92,  // 199: nfe.NfceService.GerarNFeReimpressao:input_type -> nfe.GerarNFeReimpressaoRequest
-	84,  // 200: nfe.NfceService.Danfe:input_type -> nfe.DanfeRequest
-	94,  // 201: nfe.NfceService.GetDownloadLinkXml:input_type -> nfe.GetDownloadLinkXmlRequest
-	96,  // 202: nfe.NfceService.GetWsStatus:input_type -> nfe.GetWsStatusRequest
-	98,  // 203: nfe.NfceService.Report:input_type -> nfe.ReportRequest
-	100, // 204: nfe.NfceService.CorrecaoMovimentacao:input_type -> nfe.CorrecaoMovimentacaoRequest
-	102, // 205: nfe.NfceService.ExplainRejection:input_type -> nfe.ExplainRejectionRequest
-	40,  // 206: nfe.NfeService.EmitirNfe:output_type -> nfe.EmitirNfeResponse
-	42,  // 207: nfe.NfeService.ConsultaProtocoloByChave:output_type -> nfe.ConsultaProtocoloByChaveResponse
-	44,  // 208: nfe.NfeService.CancelarNfe:output_type -> nfe.CancelarNfeResponse
-	46,  // 209: nfe.NfeService.GerarDevolucaoNfe:output_type -> nfe.GerarDevolucaoNfeResponse
-	48,  // 210: nfe.NfeService.CancelaOuGeraDevolucao:output_type -> nfe.CancelaOuGeraDevolucaoResponse
-	3,   // 211: nfe.NfeService.Create:output_type -> nfe.CreateNfeResponse
-	5,   // 212: nfe.NfeService.Update:output_type -> nfe.UpdateNfeResponse
-	7,   // 213: nfe.NfeService.Delete:output_type -> nfe.DeleteNfeResponse
-	9,   // 214: nfe.NfeService.Get:output_type -> nfe.GetNfeResponse
-	11,  // 215: nfe.NfeService.List:output_type -> nfe.ListNfeResponse
-	50,  // 216: nfe.NfeService.AddProduto:output_type -> nfe.AddProdutoResponse
-	55,  // 217: nfe.NfeService.UpdateProduto:output_type -> nfe.UpdateProdutoResponse
-	57,  // 218: nfe.NfeService.DeleteProduto:output_type -> nfe.DeleteProdutoResponse
-	59,  // 219: nfe.NfeService.AddPagamentos:output_type -> nfe.AddPagamentoResponse
-	61,  // 220: nfe.NfeService.UpdatePagamento:output_type -> nfe.UpdatePagamentoResponse
-	63,  // 221: nfe.NfeService.DeletePagamento:output_type -> nfe.DeletePagamentoResponse
-	65,  // 222: nfe.NfeService.AddReferencia:output_type -> nfe.AddReferenciaResponse
-	67,  // 223: nfe.NfeService.UpdateReferencia:output_type -> nfe.UpdateReferenciaResponse
-	69,  // 224: nfe.NfeService.DeleteReferencia:output_type -> nfe.DeleteReferenciaResponse
-	71,  // 225: nfe.NfeService.AddDuplicata:output_type -> nfe.AddDuplicataResponse
-	73,  // 226: nfe.NfeService.UpdateDuplicata:output_type -> nfe.UpdateDuplicataResponse
-	75,  // 227: nfe.NfeService.DeleteDuplicata:output_type -> nfe.DeleteDuplicataResponse
-	77,  // 228: nfe.NfeService.AddVolume:output_type -> nfe.AddVolumeResponse
-	79,  // 229: nfe.NfeService.UpdateVolume:output_type -> nfe.UpdateVolumeResponse
-	81,  // 230: nfe.NfeService.DeleteVolume:output_type -> nfe.DeleteVolumeResponse
-	83,  // 231: nfe.NfeService.Duplica:output_type -> nfe.DuplicaResponse
-	53,  // 232: nfe.NfeService.AlteracaoConjuntaItens:output_type -> nfe.AlteracaoConjuntaItensResponse
-	87,  // 233: nfe.NfeService.NfeImportaXml:output_type -> nfe.NfeImportaXmlResponse
-	89,  // 234: nfe.NfeService.NfeEnviaXml:output_type -> nfe.NfeEnviaXmlResponse
-	91,  // 235: nfe.NfeService.EnviaXmlsPeriodo:output_type -> nfe.EnviaXmlsPeriodoResponse
-	93,  // 236: nfe.NfeService.GerarNFeReimpressao:output_type -> nfe.GerarNFeReimpressaoResponse
-	85,  // 237: nfe.NfeService.Danfe:output_type -> nfe.DanfeResponse
-	95,  // 238: nfe.NfeService.GetDownloadLinkXml:output_type -> nfe.GetDownloadLinkXmlResponse
-	97,  // 239: nfe.NfeService.GetWsStatus:output_type -> nfe.GetWsStatusResponse
-	99,  // 240: nfe.NfeService.Report:output_type -> nfe.ReportResponse
-	101, // 241: nfe.NfeService.CorrecaoMovimentacao:output_type -> nfe.CorrecaoMovimentacaoResponse
-	103, // 242: nfe.NfeService.ExplainRejection:output_type -> nfe.ExplainRejectionResponse
-	40,  // 243: nfe.NfceService.EmitirNfe:output_type -> nfe.EmitirNfeResponse
-	42,  // 244: nfe.NfceService.ConsultaProtocoloByChave:output_type -> nfe.ConsultaProtocoloByChaveResponse
-	44,  // 245: nfe.NfceService.CancelarNfe:output_type -> nfe.CancelarNfeResponse
-	46,  // 246: nfe.NfceService.GerarDevolucaoNfe:output_type -> nfe.GerarDevolucaoNfeResponse
-	48,  // 247: nfe.NfceService.CancelaOuGeraDevolucao:output_type -> nfe.CancelaOuGeraDevolucaoResponse
-	3,   // 248: nfe.NfceService.Create:output_type -> nfe.CreateNfeResponse
-	5,   // 249: nfe.NfceService.Update:output_type -> nfe.UpdateNfeResponse
-	7,   // 250: nfe.NfceService.Delete:output_type -> nfe.DeleteNfeResponse
-	9,   // 251: nfe.NfceService.Get:output_type -> nfe.GetNfeResponse
-	11,  // 252: nfe.NfceService.List:output_type -> nfe.ListNfeResponse
-	50,  // 253: nfe.NfceService.AddProduto:output_type -> nfe.AddProdutoResponse
-	55,  // 254: nfe.NfceService.UpdateProduto:output_type -> nfe.UpdateProdutoResponse
-	57,  // 255: nfe.NfceService.DeleteProduto:output_type -> nfe.DeleteProdutoResponse
-	59,  // 256: nfe.NfceService.AddPagamentos:output_type -> nfe.AddPagamentoResponse
-	61,  // 257: nfe.NfceService.UpdatePagamento:output_type -> nfe.UpdatePagamentoResponse
-	63,  // 258: nfe.NfceService.DeletePagamento:output_type -> nfe.DeletePagamentoResponse
-	65,  // 259: nfe.NfceService.AddReferencia:output_type -> nfe.AddReferenciaResponse
-	67,  // 260: nfe.NfceService.UpdateReferencia:output_type -> nfe.UpdateReferenciaResponse
-	69,  // 261: nfe.NfceService.DeleteReferencia:output_type -> nfe.DeleteReferenciaResponse
-	71,  // 262: nfe.NfceService.AddDuplicata:output_type -> nfe.AddDuplicataResponse
-	73,  // 263: nfe.NfceService.UpdateDuplicata:output_type -> nfe.UpdateDuplicataResponse
-	75,  // 264: nfe.NfceService.DeleteDuplicata:output_type -> nfe.DeleteDuplicataResponse
-	77,  // 265: nfe.NfceService.AddVolume:output_type -> nfe.AddVolumeResponse
-	79,  // 266: nfe.NfceService.UpdateVolume:output_type -> nfe.UpdateVolumeResponse
-	81,  // 267: nfe.NfceService.DeleteVolume:output_type -> nfe.DeleteVolumeResponse
-	83,  // 268: nfe.NfceService.Duplica:output_type -> nfe.DuplicaResponse
-	53,  // 269: nfe.NfceService.AlteracaoConjuntaItens:output_type -> nfe.AlteracaoConjuntaItensResponse
-	87,  // 270: nfe.NfceService.NfeImportaXml:output_type -> nfe.NfeImportaXmlResponse
-	89,  // 271: nfe.NfceService.NfeEnviaXml:output_type -> nfe.NfeEnviaXmlResponse
-	91,  // 272: nfe.NfceService.EnviaXmlsPeriodo:output_type -> nfe.EnviaXmlsPeriodoResponse
-	93,  // 273: nfe.NfceService.GerarNFeReimpressao:output_type -> nfe.GerarNFeReimpressaoResponse
-	85,  // 274: nfe.NfceService.Danfe:output_type -> nfe.DanfeResponse
-	95,  // 275: nfe.NfceService.GetDownloadLinkXml:output_type -> nfe.GetDownloadLinkXmlResponse
-	97,  // 276: nfe.NfceService.GetWsStatus:output_type -> nfe.GetWsStatusResponse
-	99,  // 277: nfe.NfceService.Report:output_type -> nfe.ReportResponse
-	101, // 278: nfe.NfceService.CorrecaoMovimentacao:output_type -> nfe.CorrecaoMovimentacaoResponse
-	103, // 279: nfe.NfceService.ExplainRejection:output_type -> nfe.ExplainRejectionResponse
-	206, // [206:280] is the sub-list for method output_type
-	132, // [132:206] is the sub-list for method input_type
-	132, // [132:132] is the sub-list for extension type_name
-	132, // [132:132] is the sub-list for extension extendee
-	0,   // [0:132] is the sub-list for field type_name
+	15,  // 38: nfe.Nfe.compra:type_name -> nfe.Compra
+	107, // 39: nfe.Rejeicao.dataHora:type_name -> google.protobuf.Timestamp
+	107, // 40: nfe.Rejeicao.dataHoraSituacaoDoc:type_name -> google.protobuf.Timestamp
+	107, // 41: nfe.BatchInfo.expiration_date:type_name -> google.protobuf.Timestamp
+	107, // 42: nfe.BatchInfo.manufacturing_date:type_name -> google.protobuf.Timestamp
+	107, // 43: nfe.ItemRastro.fabricacao:type_name -> google.protobuf.Timestamp
+	107, // 44: nfe.ItemRastro.validade:type_name -> google.protobuf.Timestamp
+	107, // 45: nfe.ItemModel.createdAt:type_name -> google.protobuf.Timestamp
+	107, // 46: nfe.ItemModel.updatedAt:type_name -> google.protobuf.Timestamp
+	21,  // 47: nfe.ItemModel.posto:type_name -> nfe.PostoDados
+	27,  // 48: nfe.ItemModel.impostos:type_name -> nfe.Impostos
+	18,  // 49: nfe.ItemModel.batch:type_name -> nfe.BatchInfo
+	19,  // 50: nfe.ItemModel.rastro:type_name -> nfe.ItemRastro
+	107, // 51: nfe.PagamentoModel.createdAt:type_name -> google.protobuf.Timestamp
+	107, // 52: nfe.PagamentoModel.updatedAt:type_name -> google.protobuf.Timestamp
+	107, // 53: nfe.DuplicataModel.createdAt:type_name -> google.protobuf.Timestamp
+	107, // 54: nfe.DuplicataModel.updatedAt:type_name -> google.protobuf.Timestamp
+	107, // 55: nfe.DuplicataModel.vencimento:type_name -> google.protobuf.Timestamp
+	107, // 56: nfe.Evento.created_at:type_name -> google.protobuf.Timestamp
+	107, // 57: nfe.Evento.data_hora_evento:type_name -> google.protobuf.Timestamp
+	107, // 58: nfe.VolumesModel.createdAt:type_name -> google.protobuf.Timestamp
+	107, // 59: nfe.VolumesModel.updatedAt:type_name -> google.protobuf.Timestamp
+	107, // 60: nfe.ReferenciaModel.createdAt:type_name -> google.protobuf.Timestamp
+	107, // 61: nfe.ReferenciaModel.updatedAt:type_name -> google.protobuf.Timestamp
+	28,  // 62: nfe.Impostos.icms:type_name -> nfe.ImpostoIcms
+	29,  // 63: nfe.Impostos.ipi:type_name -> nfe.ImpostoIpi
+	30,  // 64: nfe.Impostos.pis:type_name -> nfe.ImpostoPis
+	31,  // 65: nfe.Impostos.cofins:type_name -> nfe.ImpostoCofins
+	112, // 66: nfe.Impostos.is:type_name -> nfe.ImpostoIs
+	113, // 67: nfe.Impostos.ibsCbs:type_name -> nfe.ImpostoIbsCbs
+	32,  // 68: nfe.Impostos.aliquotasNacionais:type_name -> nfe.AliquotasNacionais
+	35,  // 69: nfe.EmitirNfeRequest.nota:type_name -> nfe.NfeEmissao
+	107, // 70: nfe.NfeEmissao.data_hora_saida:type_name -> google.protobuf.Timestamp
+	13,  // 71: nfe.NfeEmissao.pessoa:type_name -> nfe.Pessoa
+	39,  // 72: nfe.NfeEmissao.volumes:type_name -> nfe.NfeEmissaoVolume
+	36,  // 73: nfe.NfeEmissao.produtos:type_name -> nfe.NfeEmissaoItem
+	37,  // 74: nfe.NfeEmissao.pagamentos:type_name -> nfe.NfeEmissaoPagamento
+	38,  // 75: nfe.NfeEmissao.duplicatas:type_name -> nfe.NfeEmissaoDuplicata
+	40,  // 76: nfe.NfeEmissao.referencias:type_name -> nfe.NfeEmissaoReferencia
+	14,  // 77: nfe.NfeEmissao.local_entrega:type_name -> nfe.Local
+	14,  // 78: nfe.NfeEmissao.local_retirada:type_name -> nfe.Local
+	15,  // 79: nfe.NfeEmissao.compra:type_name -> nfe.Compra
+	21,  // 80: nfe.NfeEmissaoItem.posto:type_name -> nfe.PostoDados
+	19,  // 81: nfe.NfeEmissaoItem.rastro:type_name -> nfe.ItemRastro
+	107, // 82: nfe.NfeEmissaoDuplicata.vencimento:type_name -> google.protobuf.Timestamp
+	107, // 83: nfe.EmitirNfeResponse.data_hora_emissao:type_name -> google.protobuf.Timestamp
+	107, // 84: nfe.EmitirNfeResponse.data_hora_autorizacao:type_name -> google.protobuf.Timestamp
+	0,   // 85: nfe.ConsultaProtocoloByChaveRequest.tipo:type_name -> nfe.Tipo
+	12,  // 86: nfe.ConsultaProtocoloByChaveResponse.nfe:type_name -> nfe.Nfe
+	12,  // 87: nfe.CancelarNfeResponse.nfe:type_name -> nfe.Nfe
+	33,  // 88: nfe.GerarDevolucaoNfeRequest.itens_a_devolver:type_name -> nfe.ItemDevolucao
+	52,  // 89: nfe.GerarDevolucaoNfeRequest.tributacao_itens:type_name -> nfe.TributacaoItens
+	12,  // 90: nfe.GerarDevolucaoNfeResponse.nfe:type_name -> nfe.Nfe
+	12,  // 91: nfe.CancelaOuGeraDevolucaoResponse.nfe:type_name -> nfe.Nfe
+	20,  // 92: nfe.AddProdutoRequest.produto:type_name -> nfe.ItemModel
+	12,  // 93: nfe.AddProdutoResponse.nfe:type_name -> nfe.Nfe
+	20,  // 94: nfe.AddProdutoResponse.produto:type_name -> nfe.ItemModel
+	52,  // 95: nfe.AlteracaoConjuntaItensRequest.tributacao:type_name -> nfe.TributacaoItens
+	20,  // 96: nfe.UpdateProdutoRequest.produto:type_name -> nfe.ItemModel
+	20,  // 97: nfe.UpdateProdutoResponse.produto:type_name -> nfe.ItemModel
+	12,  // 98: nfe.UpdateProdutoResponse.nfe:type_name -> nfe.Nfe
+	12,  // 99: nfe.DeleteProdutoResponse.nfe:type_name -> nfe.Nfe
+	22,  // 100: nfe.AddPagamentoRequest.pagamentos:type_name -> nfe.PagamentoModel
+	12,  // 101: nfe.AddPagamentoResponse.nfe:type_name -> nfe.Nfe
+	22,  // 102: nfe.UpdatePagamentoRequest.pagamento:type_name -> nfe.PagamentoModel
+	22,  // 103: nfe.UpdatePagamentoResponse.pagamento:type_name -> nfe.PagamentoModel
+	12,  // 104: nfe.UpdatePagamentoResponse.nfe:type_name -> nfe.Nfe
+	12,  // 105: nfe.DeletePagamentoResponse.nfe:type_name -> nfe.Nfe
+	26,  // 106: nfe.AddReferenciaRequest.referencia:type_name -> nfe.ReferenciaModel
+	12,  // 107: nfe.AddReferenciaResponse.nfe:type_name -> nfe.Nfe
+	26,  // 108: nfe.UpdateReferenciaRequest.referencia:type_name -> nfe.ReferenciaModel
+	26,  // 109: nfe.UpdateReferenciaResponse.referencia:type_name -> nfe.ReferenciaModel
+	12,  // 110: nfe.UpdateReferenciaResponse.nfe:type_name -> nfe.Nfe
+	12,  // 111: nfe.DeleteReferenciaResponse.nfe:type_name -> nfe.Nfe
+	23,  // 112: nfe.AddDuplicataRequest.duplicata:type_name -> nfe.DuplicataModel
+	12,  // 113: nfe.AddDuplicataResponse.nfe:type_name -> nfe.Nfe
+	23,  // 114: nfe.UpdateDuplicataRequest.duplicata:type_name -> nfe.DuplicataModel
+	23,  // 115: nfe.UpdateDuplicataResponse.duplicata:type_name -> nfe.DuplicataModel
+	12,  // 116: nfe.UpdateDuplicataResponse.nfe:type_name -> nfe.Nfe
+	12,  // 117: nfe.DeleteDuplicataResponse.nfe:type_name -> nfe.Nfe
+	25,  // 118: nfe.AddVolumeRequest.volume:type_name -> nfe.VolumesModel
+	12,  // 119: nfe.AddVolumeResponse.nfe:type_name -> nfe.Nfe
+	25,  // 120: nfe.UpdateVolumeRequest.volume:type_name -> nfe.VolumesModel
+	25,  // 121: nfe.UpdateVolumeResponse.volume:type_name -> nfe.VolumesModel
+	12,  // 122: nfe.UpdateVolumeResponse.nfe:type_name -> nfe.Nfe
+	12,  // 123: nfe.DeleteVolumeResponse.nfe:type_name -> nfe.Nfe
+	12,  // 124: nfe.DuplicaResponse.nfe:type_name -> nfe.Nfe
+	1,   // 125: nfe.DanfeRequest.danfe_tipo:type_name -> nfe.DanfeTipo
+	1,   // 126: nfe.DanfeResponse.danfe_tipo:type_name -> nfe.DanfeTipo
+	105, // 127: nfe.DanfeResponse.danfeResponseList:type_name -> nfe.DanfeResponse.DanfeResponseList
+	12,  // 128: nfe.NfeImportaXmlResponse.nfe:type_name -> nfe.Nfe
+	107, // 129: nfe.EnviaXmlsPeriodoRequest.dataInicial:type_name -> google.protobuf.Timestamp
+	107, // 130: nfe.EnviaXmlsPeriodoRequest.dataFinal:type_name -> google.protobuf.Timestamp
+	12,  // 131: nfe.GerarNFeReimpressaoResponse.nfe:type_name -> nfe.Nfe
+	10,  // 132: nfe.ReportRequest.list_request:type_name -> nfe.ListNfeRequest
+	114, // 133: nfe.ReportResponse.response:type_name -> report.Response
+	34,  // 134: nfe.NfeService.EmitirNfe:input_type -> nfe.EmitirNfeRequest
+	42,  // 135: nfe.NfeService.ConsultaProtocoloByChave:input_type -> nfe.ConsultaProtocoloByChaveRequest
+	44,  // 136: nfe.NfeService.CancelarNfe:input_type -> nfe.CancelarNfeRequest
+	46,  // 137: nfe.NfeService.GerarDevolucaoNfe:input_type -> nfe.GerarDevolucaoNfeRequest
+	48,  // 138: nfe.NfeService.CancelaOuGeraDevolucao:input_type -> nfe.CancelaOuGeraDevolucaoRequest
+	2,   // 139: nfe.NfeService.Create:input_type -> nfe.CreateNfeRequest
+	4,   // 140: nfe.NfeService.Update:input_type -> nfe.UpdateNfeRequest
+	6,   // 141: nfe.NfeService.Delete:input_type -> nfe.DeleteNfeRequest
+	8,   // 142: nfe.NfeService.Get:input_type -> nfe.GetNfeRequest
+	10,  // 143: nfe.NfeService.List:input_type -> nfe.ListNfeRequest
+	50,  // 144: nfe.NfeService.AddProduto:input_type -> nfe.AddProdutoRequest
+	55,  // 145: nfe.NfeService.UpdateProduto:input_type -> nfe.UpdateProdutoRequest
+	57,  // 146: nfe.NfeService.DeleteProduto:input_type -> nfe.DeleteProdutoRequest
+	59,  // 147: nfe.NfeService.AddPagamentos:input_type -> nfe.AddPagamentoRequest
+	61,  // 148: nfe.NfeService.UpdatePagamento:input_type -> nfe.UpdatePagamentoRequest
+	63,  // 149: nfe.NfeService.DeletePagamento:input_type -> nfe.DeletePagamentoRequest
+	65,  // 150: nfe.NfeService.AddReferencia:input_type -> nfe.AddReferenciaRequest
+	67,  // 151: nfe.NfeService.UpdateReferencia:input_type -> nfe.UpdateReferenciaRequest
+	69,  // 152: nfe.NfeService.DeleteReferencia:input_type -> nfe.DeleteReferenciaRequest
+	71,  // 153: nfe.NfeService.AddDuplicata:input_type -> nfe.AddDuplicataRequest
+	73,  // 154: nfe.NfeService.UpdateDuplicata:input_type -> nfe.UpdateDuplicataRequest
+	75,  // 155: nfe.NfeService.DeleteDuplicata:input_type -> nfe.DeleteDuplicataRequest
+	77,  // 156: nfe.NfeService.AddVolume:input_type -> nfe.AddVolumeRequest
+	79,  // 157: nfe.NfeService.UpdateVolume:input_type -> nfe.UpdateVolumeRequest
+	81,  // 158: nfe.NfeService.DeleteVolume:input_type -> nfe.DeleteVolumeRequest
+	83,  // 159: nfe.NfeService.Duplica:input_type -> nfe.DuplicaRequest
+	53,  // 160: nfe.NfeService.AlteracaoConjuntaItens:input_type -> nfe.AlteracaoConjuntaItensRequest
+	87,  // 161: nfe.NfeService.NfeImportaXml:input_type -> nfe.NfeImportaXmlRequest
+	89,  // 162: nfe.NfeService.NfeEnviaXml:input_type -> nfe.NfeEnviaXmlRequest
+	91,  // 163: nfe.NfeService.EnviaXmlsPeriodo:input_type -> nfe.EnviaXmlsPeriodoRequest
+	93,  // 164: nfe.NfeService.GerarNFeReimpressao:input_type -> nfe.GerarNFeReimpressaoRequest
+	85,  // 165: nfe.NfeService.Danfe:input_type -> nfe.DanfeRequest
+	95,  // 166: nfe.NfeService.GetDownloadLinkXml:input_type -> nfe.GetDownloadLinkXmlRequest
+	97,  // 167: nfe.NfeService.GetWsStatus:input_type -> nfe.GetWsStatusRequest
+	99,  // 168: nfe.NfeService.Report:input_type -> nfe.ReportRequest
+	101, // 169: nfe.NfeService.CorrecaoMovimentacao:input_type -> nfe.CorrecaoMovimentacaoRequest
+	103, // 170: nfe.NfeService.ExplainRejection:input_type -> nfe.ExplainRejectionRequest
+	34,  // 171: nfe.NfceService.EmitirNfe:input_type -> nfe.EmitirNfeRequest
+	42,  // 172: nfe.NfceService.ConsultaProtocoloByChave:input_type -> nfe.ConsultaProtocoloByChaveRequest
+	44,  // 173: nfe.NfceService.CancelarNfe:input_type -> nfe.CancelarNfeRequest
+	46,  // 174: nfe.NfceService.GerarDevolucaoNfe:input_type -> nfe.GerarDevolucaoNfeRequest
+	48,  // 175: nfe.NfceService.CancelaOuGeraDevolucao:input_type -> nfe.CancelaOuGeraDevolucaoRequest
+	2,   // 176: nfe.NfceService.Create:input_type -> nfe.CreateNfeRequest
+	4,   // 177: nfe.NfceService.Update:input_type -> nfe.UpdateNfeRequest
+	6,   // 178: nfe.NfceService.Delete:input_type -> nfe.DeleteNfeRequest
+	8,   // 179: nfe.NfceService.Get:input_type -> nfe.GetNfeRequest
+	10,  // 180: nfe.NfceService.List:input_type -> nfe.ListNfeRequest
+	50,  // 181: nfe.NfceService.AddProduto:input_type -> nfe.AddProdutoRequest
+	55,  // 182: nfe.NfceService.UpdateProduto:input_type -> nfe.UpdateProdutoRequest
+	57,  // 183: nfe.NfceService.DeleteProduto:input_type -> nfe.DeleteProdutoRequest
+	59,  // 184: nfe.NfceService.AddPagamentos:input_type -> nfe.AddPagamentoRequest
+	61,  // 185: nfe.NfceService.UpdatePagamento:input_type -> nfe.UpdatePagamentoRequest
+	63,  // 186: nfe.NfceService.DeletePagamento:input_type -> nfe.DeletePagamentoRequest
+	65,  // 187: nfe.NfceService.AddReferencia:input_type -> nfe.AddReferenciaRequest
+	67,  // 188: nfe.NfceService.UpdateReferencia:input_type -> nfe.UpdateReferenciaRequest
+	69,  // 189: nfe.NfceService.DeleteReferencia:input_type -> nfe.DeleteReferenciaRequest
+	71,  // 190: nfe.NfceService.AddDuplicata:input_type -> nfe.AddDuplicataRequest
+	73,  // 191: nfe.NfceService.UpdateDuplicata:input_type -> nfe.UpdateDuplicataRequest
+	75,  // 192: nfe.NfceService.DeleteDuplicata:input_type -> nfe.DeleteDuplicataRequest
+	77,  // 193: nfe.NfceService.AddVolume:input_type -> nfe.AddVolumeRequest
+	79,  // 194: nfe.NfceService.UpdateVolume:input_type -> nfe.UpdateVolumeRequest
+	81,  // 195: nfe.NfceService.DeleteVolume:input_type -> nfe.DeleteVolumeRequest
+	83,  // 196: nfe.NfceService.Duplica:input_type -> nfe.DuplicaRequest
+	53,  // 197: nfe.NfceService.AlteracaoConjuntaItens:input_type -> nfe.AlteracaoConjuntaItensRequest
+	87,  // 198: nfe.NfceService.NfeImportaXml:input_type -> nfe.NfeImportaXmlRequest
+	89,  // 199: nfe.NfceService.NfeEnviaXml:input_type -> nfe.NfeEnviaXmlRequest
+	91,  // 200: nfe.NfceService.EnviaXmlsPeriodo:input_type -> nfe.EnviaXmlsPeriodoRequest
+	93,  // 201: nfe.NfceService.GerarNFeReimpressao:input_type -> nfe.GerarNFeReimpressaoRequest
+	85,  // 202: nfe.NfceService.Danfe:input_type -> nfe.DanfeRequest
+	95,  // 203: nfe.NfceService.GetDownloadLinkXml:input_type -> nfe.GetDownloadLinkXmlRequest
+	97,  // 204: nfe.NfceService.GetWsStatus:input_type -> nfe.GetWsStatusRequest
+	99,  // 205: nfe.NfceService.Report:input_type -> nfe.ReportRequest
+	101, // 206: nfe.NfceService.CorrecaoMovimentacao:input_type -> nfe.CorrecaoMovimentacaoRequest
+	103, // 207: nfe.NfceService.ExplainRejection:input_type -> nfe.ExplainRejectionRequest
+	41,  // 208: nfe.NfeService.EmitirNfe:output_type -> nfe.EmitirNfeResponse
+	43,  // 209: nfe.NfeService.ConsultaProtocoloByChave:output_type -> nfe.ConsultaProtocoloByChaveResponse
+	45,  // 210: nfe.NfeService.CancelarNfe:output_type -> nfe.CancelarNfeResponse
+	47,  // 211: nfe.NfeService.GerarDevolucaoNfe:output_type -> nfe.GerarDevolucaoNfeResponse
+	49,  // 212: nfe.NfeService.CancelaOuGeraDevolucao:output_type -> nfe.CancelaOuGeraDevolucaoResponse
+	3,   // 213: nfe.NfeService.Create:output_type -> nfe.CreateNfeResponse
+	5,   // 214: nfe.NfeService.Update:output_type -> nfe.UpdateNfeResponse
+	7,   // 215: nfe.NfeService.Delete:output_type -> nfe.DeleteNfeResponse
+	9,   // 216: nfe.NfeService.Get:output_type -> nfe.GetNfeResponse
+	11,  // 217: nfe.NfeService.List:output_type -> nfe.ListNfeResponse
+	51,  // 218: nfe.NfeService.AddProduto:output_type -> nfe.AddProdutoResponse
+	56,  // 219: nfe.NfeService.UpdateProduto:output_type -> nfe.UpdateProdutoResponse
+	58,  // 220: nfe.NfeService.DeleteProduto:output_type -> nfe.DeleteProdutoResponse
+	60,  // 221: nfe.NfeService.AddPagamentos:output_type -> nfe.AddPagamentoResponse
+	62,  // 222: nfe.NfeService.UpdatePagamento:output_type -> nfe.UpdatePagamentoResponse
+	64,  // 223: nfe.NfeService.DeletePagamento:output_type -> nfe.DeletePagamentoResponse
+	66,  // 224: nfe.NfeService.AddReferencia:output_type -> nfe.AddReferenciaResponse
+	68,  // 225: nfe.NfeService.UpdateReferencia:output_type -> nfe.UpdateReferenciaResponse
+	70,  // 226: nfe.NfeService.DeleteReferencia:output_type -> nfe.DeleteReferenciaResponse
+	72,  // 227: nfe.NfeService.AddDuplicata:output_type -> nfe.AddDuplicataResponse
+	74,  // 228: nfe.NfeService.UpdateDuplicata:output_type -> nfe.UpdateDuplicataResponse
+	76,  // 229: nfe.NfeService.DeleteDuplicata:output_type -> nfe.DeleteDuplicataResponse
+	78,  // 230: nfe.NfeService.AddVolume:output_type -> nfe.AddVolumeResponse
+	80,  // 231: nfe.NfeService.UpdateVolume:output_type -> nfe.UpdateVolumeResponse
+	82,  // 232: nfe.NfeService.DeleteVolume:output_type -> nfe.DeleteVolumeResponse
+	84,  // 233: nfe.NfeService.Duplica:output_type -> nfe.DuplicaResponse
+	54,  // 234: nfe.NfeService.AlteracaoConjuntaItens:output_type -> nfe.AlteracaoConjuntaItensResponse
+	88,  // 235: nfe.NfeService.NfeImportaXml:output_type -> nfe.NfeImportaXmlResponse
+	90,  // 236: nfe.NfeService.NfeEnviaXml:output_type -> nfe.NfeEnviaXmlResponse
+	92,  // 237: nfe.NfeService.EnviaXmlsPeriodo:output_type -> nfe.EnviaXmlsPeriodoResponse
+	94,  // 238: nfe.NfeService.GerarNFeReimpressao:output_type -> nfe.GerarNFeReimpressaoResponse
+	86,  // 239: nfe.NfeService.Danfe:output_type -> nfe.DanfeResponse
+	96,  // 240: nfe.NfeService.GetDownloadLinkXml:output_type -> nfe.GetDownloadLinkXmlResponse
+	98,  // 241: nfe.NfeService.GetWsStatus:output_type -> nfe.GetWsStatusResponse
+	100, // 242: nfe.NfeService.Report:output_type -> nfe.ReportResponse
+	102, // 243: nfe.NfeService.CorrecaoMovimentacao:output_type -> nfe.CorrecaoMovimentacaoResponse
+	104, // 244: nfe.NfeService.ExplainRejection:output_type -> nfe.ExplainRejectionResponse
+	41,  // 245: nfe.NfceService.EmitirNfe:output_type -> nfe.EmitirNfeResponse
+	43,  // 246: nfe.NfceService.ConsultaProtocoloByChave:output_type -> nfe.ConsultaProtocoloByChaveResponse
+	45,  // 247: nfe.NfceService.CancelarNfe:output_type -> nfe.CancelarNfeResponse
+	47,  // 248: nfe.NfceService.GerarDevolucaoNfe:output_type -> nfe.GerarDevolucaoNfeResponse
+	49,  // 249: nfe.NfceService.CancelaOuGeraDevolucao:output_type -> nfe.CancelaOuGeraDevolucaoResponse
+	3,   // 250: nfe.NfceService.Create:output_type -> nfe.CreateNfeResponse
+	5,   // 251: nfe.NfceService.Update:output_type -> nfe.UpdateNfeResponse
+	7,   // 252: nfe.NfceService.Delete:output_type -> nfe.DeleteNfeResponse
+	9,   // 253: nfe.NfceService.Get:output_type -> nfe.GetNfeResponse
+	11,  // 254: nfe.NfceService.List:output_type -> nfe.ListNfeResponse
+	51,  // 255: nfe.NfceService.AddProduto:output_type -> nfe.AddProdutoResponse
+	56,  // 256: nfe.NfceService.UpdateProduto:output_type -> nfe.UpdateProdutoResponse
+	58,  // 257: nfe.NfceService.DeleteProduto:output_type -> nfe.DeleteProdutoResponse
+	60,  // 258: nfe.NfceService.AddPagamentos:output_type -> nfe.AddPagamentoResponse
+	62,  // 259: nfe.NfceService.UpdatePagamento:output_type -> nfe.UpdatePagamentoResponse
+	64,  // 260: nfe.NfceService.DeletePagamento:output_type -> nfe.DeletePagamentoResponse
+	66,  // 261: nfe.NfceService.AddReferencia:output_type -> nfe.AddReferenciaResponse
+	68,  // 262: nfe.NfceService.UpdateReferencia:output_type -> nfe.UpdateReferenciaResponse
+	70,  // 263: nfe.NfceService.DeleteReferencia:output_type -> nfe.DeleteReferenciaResponse
+	72,  // 264: nfe.NfceService.AddDuplicata:output_type -> nfe.AddDuplicataResponse
+	74,  // 265: nfe.NfceService.UpdateDuplicata:output_type -> nfe.UpdateDuplicataResponse
+	76,  // 266: nfe.NfceService.DeleteDuplicata:output_type -> nfe.DeleteDuplicataResponse
+	78,  // 267: nfe.NfceService.AddVolume:output_type -> nfe.AddVolumeResponse
+	80,  // 268: nfe.NfceService.UpdateVolume:output_type -> nfe.UpdateVolumeResponse
+	82,  // 269: nfe.NfceService.DeleteVolume:output_type -> nfe.DeleteVolumeResponse
+	84,  // 270: nfe.NfceService.Duplica:output_type -> nfe.DuplicaResponse
+	54,  // 271: nfe.NfceService.AlteracaoConjuntaItens:output_type -> nfe.AlteracaoConjuntaItensResponse
+	88,  // 272: nfe.NfceService.NfeImportaXml:output_type -> nfe.NfeImportaXmlResponse
+	90,  // 273: nfe.NfceService.NfeEnviaXml:output_type -> nfe.NfeEnviaXmlResponse
+	92,  // 274: nfe.NfceService.EnviaXmlsPeriodo:output_type -> nfe.EnviaXmlsPeriodoResponse
+	94,  // 275: nfe.NfceService.GerarNFeReimpressao:output_type -> nfe.GerarNFeReimpressaoResponse
+	86,  // 276: nfe.NfceService.Danfe:output_type -> nfe.DanfeResponse
+	96,  // 277: nfe.NfceService.GetDownloadLinkXml:output_type -> nfe.GetDownloadLinkXmlResponse
+	98,  // 278: nfe.NfceService.GetWsStatus:output_type -> nfe.GetWsStatusResponse
+	100, // 279: nfe.NfceService.Report:output_type -> nfe.ReportResponse
+	102, // 280: nfe.NfceService.CorrecaoMovimentacao:output_type -> nfe.CorrecaoMovimentacaoResponse
+	104, // 281: nfe.NfceService.ExplainRejection:output_type -> nfe.ExplainRejectionResponse
+	208, // [208:282] is the sub-list for method output_type
+	134, // [134:208] is the sub-list for method input_type
+	134, // [134:134] is the sub-list for extension type_name
+	134, // [134:134] is the sub-list for extension extendee
+	0,   // [0:134] is the sub-list for field type_name
 }
 
 func init() { file_apps_dfe_nfe_nfe_proto_init() }
@@ -10835,14 +10922,14 @@ func file_apps_dfe_nfe_nfe_proto_init() {
 		return
 	}
 	file_apps_dfe_nfe_impostos_proto_init()
-	file_apps_dfe_nfe_nfe_proto_msgTypes[49].OneofWrappers = []any{}
+	file_apps_dfe_nfe_nfe_proto_msgTypes[50].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_dfe_nfe_nfe_proto_rawDesc), len(file_apps_dfe_nfe_nfe_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   103,
+			NumMessages:   104,
 			NumExtensions: 0,
 			NumServices:   2,
 		},
