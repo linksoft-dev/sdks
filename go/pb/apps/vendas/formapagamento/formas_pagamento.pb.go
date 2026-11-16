@@ -767,8 +767,11 @@ type Integration struct {
 	ConvenioCobranca         string `protobuf:"bytes,14,opt,name=convenio_cobranca,json=convenioCobranca,proto3" json:"convenio_cobranca,omitempty"`
 	CarteiraCobranca         string `protobuf:"bytes,15,opt,name=carteira_cobranca,json=carteiraCobranca,proto3" json:"carteira_cobranca,omitempty"`
 	VariacaoCarteiraCobranca string `protobuf:"bytes,16,opt,name=variacao_carteira_cobranca,json=variacaoCarteiraCobranca,proto3" json:"variacao_carteira_cobranca,omitempty"`
-	unknownFields            protoimpl.UnknownFields
-	sizeCache                protoimpl.SizeCache
+	// Boleto que vence em sábado, domingo ou feriado e é pago depois do primeiro dia útil
+	// seguinte: true conta os dias de juros a partir desse dia útil; false, desde o vencimento
+	DelayFromBusinessDay bool `protobuf:"varint,17,opt,name=delay_from_business_day,json=delayFromBusinessDay,proto3" json:"delay_from_business_day,omitempty"`
+	unknownFields        protoimpl.UnknownFields
+	sizeCache            protoimpl.SizeCache
 }
 
 func (x *Integration) Reset() {
@@ -904,6 +907,13 @@ func (x *Integration) GetVariacaoCarteiraCobranca() string {
 		return x.VariacaoCarteiraCobranca
 	}
 	return ""
+}
+
+func (x *Integration) GetDelayFromBusinessDay() bool {
+	if x != nil {
+		return x.DelayFromBusinessDay
+	}
+	return false
 }
 
 type GatewayPix struct {
@@ -1931,7 +1941,7 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"min_amount\x18\x04 \x01(\x01R\tminAmount\x12)\n" +
 	"\x10min_installments\x18\x05 \x01(\x05R\x0fminInstallments\x12\x1f\n" +
 	"\vreason_hint\x18\x06 \x01(\tR\n" +
-	"reasonHint\"\xdb\x05\n" +
+	"reasonHint\"\x92\x06\n" +
 	"\vIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
@@ -1949,7 +1959,8 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x1edias_pagamento_apos_vencimento\x18\r \x01(\x05R\x1bdiasPagamentoAposVencimento\x12+\n" +
 	"\x11convenio_cobranca\x18\x0e \x01(\tR\x10convenioCobranca\x12+\n" +
 	"\x11carteira_cobranca\x18\x0f \x01(\tR\x10carteiraCobranca\x12<\n" +
-	"\x1avariacao_carteira_cobranca\x18\x10 \x01(\tR\x18variacaoCarteiraCobranca\"\xcd\x01\n" +
+	"\x1avariacao_carteira_cobranca\x18\x10 \x01(\tR\x18variacaoCarteiraCobranca\x125\n" +
+	"\x17delay_from_business_day\x18\x11 \x01(\bR\x14delayFromBusinessDay\"\xcd\x01\n" +
 	"\n" +
 	"GatewayPix\x12)\n" +
 	"\x10segundos_validos\x18\x01 \x01(\x05R\x0fsegundosValidos\x12\x1b\n" +
