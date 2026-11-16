@@ -32,7 +32,7 @@ class LoginRequest(_message.Message):
     def __init__(self, username: _Optional[str] = ..., password: _Optional[str] = ..., device_id: _Optional[str] = ..., captcha_token: _Optional[str] = ..., org_id: _Optional[str] = ..., machine_id: _Optional[str] = ..., without_session: _Optional[bool] = ...) -> None: ...
 
 class LoginResponse(_message.Message):
-    __slots__ = ("user_id", "name", "email", "current_org", "token", "orgs", "avatar_link", "settings")
+    __slots__ = ("user_id", "name", "email", "current_org", "token", "orgs", "avatar_link", "settings", "password_change_required")
     USER_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
@@ -41,6 +41,7 @@ class LoginResponse(_message.Message):
     ORGS_FIELD_NUMBER: _ClassVar[int]
     AVATAR_LINK_FIELD_NUMBER: _ClassVar[int]
     SETTINGS_FIELD_NUMBER: _ClassVar[int]
+    PASSWORD_CHANGE_REQUIRED_FIELD_NUMBER: _ClassVar[int]
     user_id: str
     name: str
     email: str
@@ -49,7 +50,8 @@ class LoginResponse(_message.Message):
     orgs: _containers.RepeatedCompositeFieldContainer[orgLoginModel]
     avatar_link: str
     settings: _user_pb2.UserSettings
-    def __init__(self, user_id: _Optional[str] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., current_org: _Optional[_Union[orgLoginModel, _Mapping]] = ..., token: _Optional[str] = ..., orgs: _Optional[_Iterable[_Union[orgLoginModel, _Mapping]]] = ..., avatar_link: _Optional[str] = ..., settings: _Optional[_Union[_user_pb2.UserSettings, _Mapping]] = ...) -> None: ...
+    password_change_required: bool
+    def __init__(self, user_id: _Optional[str] = ..., name: _Optional[str] = ..., email: _Optional[str] = ..., current_org: _Optional[_Union[orgLoginModel, _Mapping]] = ..., token: _Optional[str] = ..., orgs: _Optional[_Iterable[_Union[orgLoginModel, _Mapping]]] = ..., avatar_link: _Optional[str] = ..., settings: _Optional[_Union[_user_pb2.UserSettings, _Mapping]] = ..., password_change_required: _Optional[bool] = ...) -> None: ...
 
 class orgLoginModel(_message.Message):
     __slots__ = ("id", "name", "cpf_cnpj", "org_codinome", "licenciamento", "chat_javascript_code", "dados_suporte", "revenda_id", "permissoes", "permissoes_by_key", "revenda_at", "white_label", "is_linksoft", "identification", "portal_slug", "group_id", "group_name")

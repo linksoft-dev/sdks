@@ -125,17 +125,19 @@ func (x *LoginRequest) GetWithoutSession() bool {
 }
 
 type LoginResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
-	CurrentOrg    *OrgLoginModel         `protobuf:"bytes,5,opt,name=current_org,json=currentOrg,proto3" json:"current_org,omitempty"`
-	Token         string                 `protobuf:"bytes,6,opt,name=token,proto3" json:"token,omitempty"`
-	Orgs          []*OrgLoginModel       `protobuf:"bytes,7,rep,name=orgs,proto3" json:"orgs,omitempty"`
-	AvatarLink    string                 `protobuf:"bytes,8,opt,name=avatar_link,json=avatarLink,proto3" json:"avatar_link,omitempty"`
-	Settings      *user.UserSettings     `protobuf:"bytes,9,opt,name=settings,proto3" json:"settings,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	UserId     string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name       string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Email      string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
+	CurrentOrg *OrgLoginModel         `protobuf:"bytes,5,opt,name=current_org,json=currentOrg,proto3" json:"current_org,omitempty"`
+	Token      string                 `protobuf:"bytes,6,opt,name=token,proto3" json:"token,omitempty"`
+	Orgs       []*OrgLoginModel       `protobuf:"bytes,7,rep,name=orgs,proto3" json:"orgs,omitempty"`
+	AvatarLink string                 `protobuf:"bytes,8,opt,name=avatar_link,json=avatarLink,proto3" json:"avatar_link,omitempty"`
+	Settings   *user.UserSettings     `protobuf:"bytes,9,opt,name=settings,proto3" json:"settings,omitempty"`
+	// A senha da conta é comum demais: a troca é exigida antes de entrar no sistema
+	PasswordChangeRequired bool `protobuf:"varint,10,opt,name=password_change_required,json=passwordChangeRequired,proto3" json:"password_change_required,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *LoginResponse) Reset() {
@@ -222,6 +224,13 @@ func (x *LoginResponse) GetSettings() *user.UserSettings {
 		return x.Settings
 	}
 	return nil
+}
+
+func (x *LoginResponse) GetPasswordChangeRequired() bool {
+	if x != nil {
+		return x.PasswordChangeRequired
+	}
+	return false
 }
 
 // Definição da mensagem orgLoginModel
@@ -410,7 +419,7 @@ const file_apps_auth_v1_auth_proto_rawDesc = "" +
 	"\x06org_id\x18\x04 \x01(\tR\x05orgId\x12\x1d\n" +
 	"\n" +
 	"machine_id\x18\x05 \x01(\tR\tmachineId\x12'\n" +
-	"\x0fwithout_session\x18\x06 \x01(\bR\x0ewithoutSession\"\x8e\x02\n" +
+	"\x0fwithout_session\x18\x06 \x01(\bR\x0ewithoutSession\"\xc8\x02\n" +
 	"\rLoginResponse\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12\x14\n" +
@@ -421,7 +430,9 @@ const file_apps_auth_v1_auth_proto_rawDesc = "" +
 	"\x04orgs\x18\a \x03(\v2\x0e.orgLoginModelR\x04orgs\x12\x1f\n" +
 	"\vavatar_link\x18\b \x01(\tR\n" +
 	"avatarLink\x12.\n" +
-	"\bsettings\x18\t \x01(\v2\x12.user.UserSettingsR\bsettings\"\xed\x05\n" +
+	"\bsettings\x18\t \x01(\v2\x12.user.UserSettingsR\bsettings\x128\n" +
+	"\x18password_change_required\x18\n" +
+	" \x01(\bR\x16passwordChangeRequired\"\xed\x05\n" +
 	"\rorgLoginModel\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x19\n" +
