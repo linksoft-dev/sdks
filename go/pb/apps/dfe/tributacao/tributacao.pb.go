@@ -26,8 +26,8 @@ type PerfilMonofasico int32
 const (
 	PerfilMonofasico_PERFIL_MONOFASICO_UNSPECIFIED PerfilMonofasico = 0 // Sem perfil - Não ha destaque de nenhum dos grupos monofasicos, apenas do total
 	PerfilMonofasico_PERFIL_MONOFASICO_PADRAO      PerfilMonofasico = 1 // gMonoPadrao - Faz o destaque padrao do imposto monofasico
-	PerfilMonofasico_PERFIL_MONOFASICO_SUBSTITUIDO PerfilMonofasico = 2 // gMonoReten - Quando o emissor é substituído, e quem já reteve foi alguém anterior.
-	PerfilMonofasico_PERFIL_MONOFASICO_SUBSTITUTO  PerfilMonofasico = 3 // gMonoRet - Quando o emissor é o responsável por reter IBS/CBS de terceiros.
+	PerfilMonofasico_PERFIL_MONOFASICO_SUBSTITUIDO PerfilMonofasico = 2 // gMonoRet - Quando o emissor é substituído, e quem já reteve foi alguém anterior.
+	PerfilMonofasico_PERFIL_MONOFASICO_SUBSTITUTO  PerfilMonofasico = 3 // gMonoReten - Quando o emissor é o responsável por reter IBS/CBS de terceiros.
 	PerfilMonofasico_PERFIL_MONOFASICO_DIFERIMENTO PerfilMonofasico = 4 // gMonoDif - Quando há diferimento do IBS/CBS monofásico. o recolhimento ocorrerá em etapa futura
 )
 
