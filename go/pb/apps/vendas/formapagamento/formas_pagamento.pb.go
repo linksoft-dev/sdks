@@ -132,8 +132,11 @@ type PaymentMethod struct {
 	// Percentual de desconto concedido ao cliente que paga com esta forma, aplicado sobre o
 	// valor a quitar do pedido.
 	DescontoPercentual float64 `protobuf:"fixed64,50,opt,name=desconto_percentual,json=descontoPercentual,proto3" json:"desconto_percentual,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// Posição da forma na tela de pagamento da venda, em ordem crescente. Zero não define posição:
+	// a forma vem depois das numeradas. O mesmo número não se repete entre as formas da empresa.
+	OrdemExibicao int32 `protobuf:"varint,51,opt,name=ordem_exibicao,json=ordemExibicao,proto3" json:"ordem_exibicao,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PaymentMethod) Reset() {
@@ -428,6 +431,13 @@ func (x *PaymentMethod) GetBandeira() string {
 func (x *PaymentMethod) GetDescontoPercentual() float64 {
 	if x != nil {
 		return x.DescontoPercentual
+	}
+	return 0
+}
+
+func (x *PaymentMethod) GetOrdemExibicao() int32 {
+	if x != nil {
+		return x.OrdemExibicao
 	}
 	return 0
 }
@@ -1869,7 +1879,7 @@ var File_apps_vendas_formapagamento_formas_pagamento_proto protoreflect.FileDesc
 
 const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\n" +
-	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xc8\r\n" +
+	"1apps/vendas/formapagamento/formas_pagamento.proto\x12\rPaymentMethod\x1a\x1cgoogle/api/annotations.proto\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1dplugins/service/service.proto\x1a\x13filter/filter.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xf8\r\n" +
 	"\rPaymentMethod\x129\n" +
 	"\n" +
 	"created_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1912,7 +1922,8 @@ const file_apps_vendas_formapagamento_formas_pagamento_proto_rawDesc = "" +
 	"\x0enao_emite_nfce\x18/ \x01(\bR\fnaoEmiteNfce\x12#\n" +
 	"\radquirente_id\x180 \x01(\tR\fadquirenteId\x12\x1a\n" +
 	"\bbandeira\x181 \x01(\tR\bbandeira\x12H\n" +
-	"\x13desconto_percentual\x182 \x01(\x01B\x17\xfaB\x14\x12\x12\x19\x00\x00\x00\x00\x00\x00Y@)\x00\x00\x00\x00\x00\x00\x00\x00R\x12descontoPercentual:\x03\xc0>\x01J\x04\b\b\x10\t\"t\n" +
+	"\x13desconto_percentual\x182 \x01(\x01B\x17\xfaB\x14\x12\x12\x19\x00\x00\x00\x00\x00\x00Y@)\x00\x00\x00\x00\x00\x00\x00\x00R\x12descontoPercentual\x12.\n" +
+	"\x0eordem_exibicao\x183 \x01(\x05B\a\xfaB\x04\x1a\x02(\x00R\rordemExibicao:\x03\xc0>\x01J\x04\b\b\x10\t\"t\n" +
 	"\x10FraudIntegration\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1a\n" +
