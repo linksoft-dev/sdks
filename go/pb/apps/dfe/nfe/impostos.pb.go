@@ -68,14 +68,16 @@ func (x *IsTotal) GetValor() float64 {
 }
 
 type IbsCbsTotal struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	ValorBase      float64                `protobuf:"fixed64,1,opt,name=valor_base,json=valorBase,proto3" json:"valor_base,omitempty"`              // Valor da base de cálculo IBS e CBS
-	Ibs            *IbsTotal              `protobuf:"bytes,2,opt,name=ibs,proto3" json:"ibs,omitempty"`                                             // Totalização do IBS
-	Cbs            *CbsTotal              `protobuf:"bytes,3,opt,name=cbs,proto3" json:"cbs,omitempty"`                                             // Totalização da CBS
-	Monofasia      *MonofasiaTotal        `protobuf:"bytes,4,opt,name=monofasia,proto3" json:"monofasia,omitempty"`                                 // Monofasia
-	EstornoCredito *EstornoCredito        `protobuf:"bytes,5,opt,name=estorno_credito,json=estornoCredito,proto3" json:"estorno_credito,omitempty"` // Totalização do estorno de crédito
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	ValorBase       float64                `protobuf:"fixed64,1,opt,name=valor_base,json=valorBase,proto3" json:"valor_base,omitempty"`                     // Valor da base de cálculo IBS e CBS
+	Ibs             *IbsTotal              `protobuf:"bytes,2,opt,name=ibs,proto3" json:"ibs,omitempty"`                                                    // Totalização do IBS
+	Cbs             *CbsTotal              `protobuf:"bytes,3,opt,name=cbs,proto3" json:"cbs,omitempty"`                                                    // Totalização da CBS
+	Monofasia       *MonofasiaTotal        `protobuf:"bytes,4,opt,name=monofasia,proto3" json:"monofasia,omitempty"`                                        // Monofasia
+	EstornoCredito  *EstornoCredito        `protobuf:"bytes,5,opt,name=estorno_credito,json=estornoCredito,proto3" json:"estorno_credito,omitempty"`        // Totalização do estorno de crédito
+	ValorIbsSimples float64                `protobuf:"fixed64,6,opt,name=valor_ibs_simples,json=valorIbsSimples,proto3" json:"valor_ibs_simples,omitempty"` // Valor total do IBS apurado pelo Simples Nacional
+	ValorCbsSimples float64                `protobuf:"fixed64,7,opt,name=valor_cbs_simples,json=valorCbsSimples,proto3" json:"valor_cbs_simples,omitempty"` // Valor total da CBS apurada pelo Simples Nacional
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *IbsCbsTotal) Reset() {
@@ -141,6 +143,20 @@ func (x *IbsCbsTotal) GetEstornoCredito() *EstornoCredito {
 		return x.EstornoCredito
 	}
 	return nil
+}
+
+func (x *IbsCbsTotal) GetValorIbsSimples() float64 {
+	if x != nil {
+		return x.ValorIbsSimples
+	}
+	return 0
+}
+
+func (x *IbsCbsTotal) GetValorCbsSimples() float64 {
+	if x != nil {
+		return x.ValorCbsSimples
+	}
+	return 0
 }
 
 // Estorno do crédito de IBS e CBS apropriado na aquisição
@@ -885,6 +901,10 @@ type ImpostoIbsCbs struct {
 	CalculoManualBc            bool            `protobuf:"varint,17,opt,name=calculo_manual_bc,json=calculoManualBc,proto3" json:"calculo_manual_bc,omitempty"`                                  // Cálculo Manual da Base de Cálculo
 	EstornoCredito             *EstornoCredito `protobuf:"bytes,18,opt,name=estorno_credito,json=estornoCredito,proto3" json:"estorno_credito,omitempty"`                                        // Grupo de Estorno de Crédito - obrigatório na nota de débito de perda em estoque
 	CompetenciaApuracao        string          `protobuf:"bytes,19,opt,name=competencia_apuracao,json=competenciaApuracao,proto3" json:"competencia_apuracao,omitempty"`                         // Ano e mês (AAAA-MM) do período de apuração ajustado - grupo gAjusteCompet
+	CodigoAtividadeSimples     string          `protobuf:"bytes,20,opt,name=codigo_atividade_simples,json=codigoAtividadeSimples,proto3" json:"codigo_atividade_simples,omitempty"`              // Código de atividade do Simples Nacional (cAtivSN)
+	AliquotaIbsSimples         float64         `protobuf:"fixed64,22,opt,name=aliquota_ibs_simples,json=aliquotaIbsSimples,proto3" json:"aliquota_ibs_simples,omitempty"`                        // Alíquota efetiva do IBS no Simples Nacional cadastrada para o item
+	AliquotaCbsSimples         float64         `protobuf:"fixed64,23,opt,name=aliquota_cbs_simples,json=aliquotaCbsSimples,proto3" json:"aliquota_cbs_simples,omitempty"`                        // Alíquota efetiva da CBS no Simples Nacional cadastrada para o item
+	Simples                    *IbsCbsSimples  `protobuf:"bytes,21,opt,name=simples,proto3" json:"simples,omitempty"`                                                                            // IBS e CBS apurados pelo Simples Nacional (gTribSN); presente, o item não leva os valores do regime regular
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -1038,6 +1058,103 @@ func (x *ImpostoIbsCbs) GetCompetenciaApuracao() string {
 	return ""
 }
 
+func (x *ImpostoIbsCbs) GetCodigoAtividadeSimples() string {
+	if x != nil {
+		return x.CodigoAtividadeSimples
+	}
+	return ""
+}
+
+func (x *ImpostoIbsCbs) GetAliquotaIbsSimples() float64 {
+	if x != nil {
+		return x.AliquotaIbsSimples
+	}
+	return 0
+}
+
+func (x *ImpostoIbsCbs) GetAliquotaCbsSimples() float64 {
+	if x != nil {
+		return x.AliquotaCbsSimples
+	}
+	return 0
+}
+
+func (x *ImpostoIbsCbs) GetSimples() *IbsCbsSimples {
+	if x != nil {
+		return x.Simples
+	}
+	return nil
+}
+
+// IBS e CBS do item apurados pelo Simples Nacional
+type IbsCbsSimples struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AliquotaIbs   float64                `protobuf:"fixed64,1,opt,name=aliquota_ibs,json=aliquotaIbs,proto3" json:"aliquota_ibs,omitempty"` // Alíquota efetiva do IBS aplicada na nota
+	ValorIbs      float64                `protobuf:"fixed64,2,opt,name=valor_ibs,json=valorIbs,proto3" json:"valor_ibs,omitempty"`          // Valor do IBS apurado pelo Simples Nacional
+	AliquotaCbs   float64                `protobuf:"fixed64,3,opt,name=aliquota_cbs,json=aliquotaCbs,proto3" json:"aliquota_cbs,omitempty"` // Alíquota efetiva da CBS aplicada na nota
+	ValorCbs      float64                `protobuf:"fixed64,4,opt,name=valor_cbs,json=valorCbs,proto3" json:"valor_cbs,omitempty"`          // Valor da CBS apurada pelo Simples Nacional
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IbsCbsSimples) Reset() {
+	*x = IbsCbsSimples{}
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IbsCbsSimples) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IbsCbsSimples) ProtoMessage() {}
+
+func (x *IbsCbsSimples) ProtoReflect() protoreflect.Message {
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IbsCbsSimples.ProtoReflect.Descriptor instead.
+func (*IbsCbsSimples) Descriptor() ([]byte, []int) {
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *IbsCbsSimples) GetAliquotaIbs() float64 {
+	if x != nil {
+		return x.AliquotaIbs
+	}
+	return 0
+}
+
+func (x *IbsCbsSimples) GetValorIbs() float64 {
+	if x != nil {
+		return x.ValorIbs
+	}
+	return 0
+}
+
+func (x *IbsCbsSimples) GetAliquotaCbs() float64 {
+	if x != nil {
+		return x.AliquotaCbs
+	}
+	return 0
+}
+
+func (x *IbsCbsSimples) GetValorCbs() float64 {
+	if x != nil {
+		return x.ValorCbs
+	}
+	return 0
+}
+
 // Monofasia por Item
 type Monofasia struct {
 	state                    protoimpl.MessageState      `protogen:"open.v1"`
@@ -1058,7 +1175,7 @@ type Monofasia struct {
 
 func (x *Monofasia) Reset() {
 	*x = Monofasia{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[14]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1070,7 +1187,7 @@ func (x *Monofasia) String() string {
 func (*Monofasia) ProtoMessage() {}
 
 func (x *Monofasia) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[14]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1083,7 +1200,7 @@ func (x *Monofasia) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Monofasia.ProtoReflect.Descriptor instead.
 func (*Monofasia) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{14}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *Monofasia) GetPerfilMonofasico() tributacao.PerfilMonofasico {
@@ -1174,7 +1291,7 @@ type MonofasiaPadrao struct {
 
 func (x *MonofasiaPadrao) Reset() {
 	*x = MonofasiaPadrao{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[15]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1186,7 +1303,7 @@ func (x *MonofasiaPadrao) String() string {
 func (*MonofasiaPadrao) ProtoMessage() {}
 
 func (x *MonofasiaPadrao) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[15]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1199,7 +1316,7 @@ func (x *MonofasiaPadrao) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonofasiaPadrao.ProtoReflect.Descriptor instead.
 func (*MonofasiaPadrao) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{15}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *MonofasiaPadrao) GetValorIbs() float64 {
@@ -1227,7 +1344,7 @@ type MonofasiaReten struct {
 
 func (x *MonofasiaReten) Reset() {
 	*x = MonofasiaReten{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[16]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1239,7 +1356,7 @@ func (x *MonofasiaReten) String() string {
 func (*MonofasiaReten) ProtoMessage() {}
 
 func (x *MonofasiaReten) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[16]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1252,7 +1369,7 @@ func (x *MonofasiaReten) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonofasiaReten.ProtoReflect.Descriptor instead.
 func (*MonofasiaReten) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{16}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *MonofasiaReten) GetValorIbs() float64 {
@@ -1280,7 +1397,7 @@ type MonofasiaRet struct {
 
 func (x *MonofasiaRet) Reset() {
 	*x = MonofasiaRet{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[17]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1292,7 +1409,7 @@ func (x *MonofasiaRet) String() string {
 func (*MonofasiaRet) ProtoMessage() {}
 
 func (x *MonofasiaRet) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[17]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1305,7 +1422,7 @@ func (x *MonofasiaRet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonofasiaRet.ProtoReflect.Descriptor instead.
 func (*MonofasiaRet) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{17}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *MonofasiaRet) GetValorIbs() float64 {
@@ -1335,7 +1452,7 @@ type MonofasiaDif struct {
 
 func (x *MonofasiaDif) Reset() {
 	*x = MonofasiaDif{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[18]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1347,7 +1464,7 @@ func (x *MonofasiaDif) String() string {
 func (*MonofasiaDif) ProtoMessage() {}
 
 func (x *MonofasiaDif) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[18]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1360,7 +1477,7 @@ func (x *MonofasiaDif) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MonofasiaDif.ProtoReflect.Descriptor instead.
 func (*MonofasiaDif) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{18}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *MonofasiaDif) GetPercentualIbs() float64 {
@@ -1406,7 +1523,7 @@ type IbsUf struct {
 
 func (x *IbsUf) Reset() {
 	*x = IbsUf{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[19]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1418,7 +1535,7 @@ func (x *IbsUf) String() string {
 func (*IbsUf) ProtoMessage() {}
 
 func (x *IbsUf) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[19]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1431,7 +1548,7 @@ func (x *IbsUf) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IbsUf.ProtoReflect.Descriptor instead.
 func (*IbsUf) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{19}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *IbsUf) GetAliquota() float64 {
@@ -1491,7 +1608,7 @@ type IbsMunicipio struct {
 
 func (x *IbsMunicipio) Reset() {
 	*x = IbsMunicipio{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[20]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1503,7 +1620,7 @@ func (x *IbsMunicipio) String() string {
 func (*IbsMunicipio) ProtoMessage() {}
 
 func (x *IbsMunicipio) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[20]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1516,7 +1633,7 @@ func (x *IbsMunicipio) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IbsMunicipio.ProtoReflect.Descriptor instead.
 func (*IbsMunicipio) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{20}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *IbsMunicipio) GetAliquota() float64 {
@@ -1576,7 +1693,7 @@ type Cbs struct {
 
 func (x *Cbs) Reset() {
 	*x = Cbs{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[21]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1588,7 +1705,7 @@ func (x *Cbs) String() string {
 func (*Cbs) ProtoMessage() {}
 
 func (x *Cbs) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[21]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1601,7 +1718,7 @@ func (x *Cbs) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Cbs.ProtoReflect.Descriptor instead.
 func (*Cbs) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{21}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *Cbs) GetAliquota() float64 {
@@ -1657,7 +1774,7 @@ type Dif struct {
 
 func (x *Dif) Reset() {
 	*x = Dif{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[22]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1669,7 +1786,7 @@ func (x *Dif) String() string {
 func (*Dif) ProtoMessage() {}
 
 func (x *Dif) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[22]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1682,7 +1799,7 @@ func (x *Dif) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Dif.ProtoReflect.Descriptor instead.
 func (*Dif) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{22}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *Dif) GetValor() float64 {
@@ -1710,7 +1827,7 @@ type DevTrib struct {
 
 func (x *DevTrib) Reset() {
 	*x = DevTrib{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[23]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1722,7 +1839,7 @@ func (x *DevTrib) String() string {
 func (*DevTrib) ProtoMessage() {}
 
 func (x *DevTrib) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[23]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1735,7 +1852,7 @@ func (x *DevTrib) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DevTrib.ProtoReflect.Descriptor instead.
 func (*DevTrib) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{23}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *DevTrib) GetValor() float64 {
@@ -1764,7 +1881,7 @@ type Red struct {
 
 func (x *Red) Reset() {
 	*x = Red{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[24]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1776,7 +1893,7 @@ func (x *Red) String() string {
 func (*Red) ProtoMessage() {}
 
 func (x *Red) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[24]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1789,7 +1906,7 @@ func (x *Red) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Red.ProtoReflect.Descriptor instead.
 func (*Red) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{24}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *Red) GetValor() float64 {
@@ -1830,7 +1947,7 @@ type TribRegular struct {
 
 func (x *TribRegular) Reset() {
 	*x = TribRegular{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[25]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1842,7 +1959,7 @@ func (x *TribRegular) String() string {
 func (*TribRegular) ProtoMessage() {}
 
 func (x *TribRegular) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[25]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1855,7 +1972,7 @@ func (x *TribRegular) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TribRegular.ProtoReflect.Descriptor instead.
 func (*TribRegular) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{25}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *TribRegular) GetCst() string {
@@ -1925,7 +2042,7 @@ type CredPresIbs struct {
 
 func (x *CredPresIbs) Reset() {
 	*x = CredPresIbs{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[26]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1937,7 +2054,7 @@ func (x *CredPresIbs) String() string {
 func (*CredPresIbs) ProtoMessage() {}
 
 func (x *CredPresIbs) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[26]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1950,7 +2067,7 @@ func (x *CredPresIbs) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CredPresIbs.ProtoReflect.Descriptor instead.
 func (*CredPresIbs) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{26}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *CredPresIbs) GetValor() float64 {
@@ -1978,7 +2095,7 @@ type CredPresCbs struct {
 
 func (x *CredPresCbs) Reset() {
 	*x = CredPresCbs{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[27]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1990,7 +2107,7 @@ func (x *CredPresCbs) String() string {
 func (*CredPresCbs) ProtoMessage() {}
 
 func (x *CredPresCbs) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[27]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2003,7 +2120,7 @@ func (x *CredPresCbs) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CredPresCbs.ProtoReflect.Descriptor instead.
 func (*CredPresCbs) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{27}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *CredPresCbs) GetValor() float64 {
@@ -2031,7 +2148,7 @@ type TribCompraGov struct {
 
 func (x *TribCompraGov) Reset() {
 	*x = TribCompraGov{}
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[28]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2043,7 +2160,7 @@ func (x *TribCompraGov) String() string {
 func (*TribCompraGov) ProtoMessage() {}
 
 func (x *TribCompraGov) ProtoReflect() protoreflect.Message {
-	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[28]
+	mi := &file_apps_dfe_nfe_impostos_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2056,7 +2173,7 @@ func (x *TribCompraGov) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TribCompraGov.ProtoReflect.Descriptor instead.
 func (*TribCompraGov) Descriptor() ([]byte, []int) {
-	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{28}
+	return file_apps_dfe_nfe_impostos_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *TribCompraGov) GetValorIbs() float64 {
@@ -2079,14 +2196,16 @@ const file_apps_dfe_nfe_impostos_proto_rawDesc = "" +
 	"\n" +
 	"\x1bapps/dfe/nfe/impostos.proto\x12\x03nfe\x1a$apps/dfe/tributacao/tributacao.proto\"\x1f\n" +
 	"\aIsTotal\x12\x14\n" +
-	"\x05valor\x18\x01 \x01(\x01R\x05valor\"\xdf\x01\n" +
+	"\x05valor\x18\x01 \x01(\x01R\x05valor\"\xb7\x02\n" +
 	"\vIbsCbsTotal\x12\x1d\n" +
 	"\n" +
 	"valor_base\x18\x01 \x01(\x01R\tvalorBase\x12\x1f\n" +
 	"\x03ibs\x18\x02 \x01(\v2\r.nfe.IbsTotalR\x03ibs\x12\x1f\n" +
 	"\x03cbs\x18\x03 \x01(\v2\r.nfe.CbsTotalR\x03cbs\x121\n" +
 	"\tmonofasia\x18\x04 \x01(\v2\x13.nfe.MonofasiaTotalR\tmonofasia\x12<\n" +
-	"\x0festorno_credito\x18\x05 \x01(\v2\x13.nfe.EstornoCreditoR\x0eestornoCredito\"J\n" +
+	"\x0festorno_credito\x18\x05 \x01(\v2\x13.nfe.EstornoCreditoR\x0eestornoCredito\x12*\n" +
+	"\x11valor_ibs_simples\x18\x06 \x01(\x01R\x0fvalorIbsSimples\x12*\n" +
+	"\x11valor_cbs_simples\x18\a \x01(\x01R\x0fvalorCbsSimples\"J\n" +
 	"\x0eEstornoCredito\x12\x1b\n" +
 	"\tvalor_ibs\x18\x01 \x01(\x01R\bvalorIbs\x12\x1b\n" +
 	"\tvalor_cbs\x18\x02 \x01(\x01R\bvalorCbs\"\xb2\x02\n" +
@@ -2140,7 +2259,7 @@ const file_apps_dfe_nfe_impostos_proto_rawDesc = "" +
 	"\x13aliquota_especifica\x18\x05 \x01(\x01R\x12aliquotaEspecifica\x12-\n" +
 	"\x12unidade_tributaria\x18\x06 \x01(\tR\x11unidadeTributaria\x121\n" +
 	"\x14quantidade_tributada\x18\a \x01(\x01R\x13quantidadeTributada\x12\x14\n" +
-	"\x05valor\x18\b \x01(\x01R\x05valor\"\x85\x06\n" +
+	"\x05valor\x18\b \x01(\x01R\x05valor\"\xd1\a\n" +
 	"\rImpostoIbsCbs\x12\x10\n" +
 	"\x03cst\x18\x01 \x01(\tR\x03cst\x12 \n" +
 	"\fc_class_trib\x18\x02 \x01(\tR\n" +
@@ -2162,7 +2281,16 @@ const file_apps_dfe_nfe_impostos_proto_rawDesc = "" +
 	"\tmonofasia\x18\x10 \x01(\v2\x0e.nfe.MonofasiaR\tmonofasia\x12*\n" +
 	"\x11calculo_manual_bc\x18\x11 \x01(\bR\x0fcalculoManualBc\x12<\n" +
 	"\x0festorno_credito\x18\x12 \x01(\v2\x13.nfe.EstornoCreditoR\x0eestornoCredito\x121\n" +
-	"\x14competencia_apuracao\x18\x13 \x01(\tR\x13competenciaApuracao\"\xd1\x04\n" +
+	"\x14competencia_apuracao\x18\x13 \x01(\tR\x13competenciaApuracao\x128\n" +
+	"\x18codigo_atividade_simples\x18\x14 \x01(\tR\x16codigoAtividadeSimples\x120\n" +
+	"\x14aliquota_ibs_simples\x18\x16 \x01(\x01R\x12aliquotaIbsSimples\x120\n" +
+	"\x14aliquota_cbs_simples\x18\x17 \x01(\x01R\x12aliquotaCbsSimples\x12,\n" +
+	"\asimples\x18\x15 \x01(\v2\x12.nfe.IbsCbsSimplesR\asimples\"\x8f\x01\n" +
+	"\rIbsCbsSimples\x12!\n" +
+	"\faliquota_ibs\x18\x01 \x01(\x01R\valiquotaIbs\x12\x1b\n" +
+	"\tvalor_ibs\x18\x02 \x01(\x01R\bvalorIbs\x12!\n" +
+	"\faliquota_cbs\x18\x03 \x01(\x01R\valiquotaCbs\x12\x1b\n" +
+	"\tvalor_cbs\x18\x04 \x01(\x01R\bvalorCbs\"\xd1\x04\n" +
 	"\tMonofasia\x12I\n" +
 	"\x11perfil_monofasico\x18\x01 \x01(\x0e2\x1c.tributacao.PerfilMonofasicoR\x10perfilMonofasico\x12<\n" +
 	"\x1afator_conversao_monofasico\x18\x02 \x01(\x01R\x18fatorConversaoMonofasico\x126\n" +
@@ -2265,7 +2393,7 @@ func file_apps_dfe_nfe_impostos_proto_rawDescGZIP() []byte {
 	return file_apps_dfe_nfe_impostos_proto_rawDescData
 }
 
-var file_apps_dfe_nfe_impostos_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
+var file_apps_dfe_nfe_impostos_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_apps_dfe_nfe_impostos_proto_goTypes = []any{
 	(*IsTotal)(nil),                  // 0: nfe.IsTotal
 	(*IbsCbsTotal)(nil),              // 1: nfe.IbsCbsTotal
@@ -2281,22 +2409,23 @@ var file_apps_dfe_nfe_impostos_proto_goTypes = []any{
 	(*DevolucaoTributosTotal)(nil),   // 11: nfe.DevolucaoTributosTotal
 	(*ImpostoIs)(nil),                // 12: nfe.ImpostoIs
 	(*ImpostoIbsCbs)(nil),            // 13: nfe.ImpostoIbsCbs
-	(*Monofasia)(nil),                // 14: nfe.Monofasia
-	(*MonofasiaPadrao)(nil),          // 15: nfe.MonofasiaPadrao
-	(*MonofasiaReten)(nil),           // 16: nfe.MonofasiaReten
-	(*MonofasiaRet)(nil),             // 17: nfe.MonofasiaRet
-	(*MonofasiaDif)(nil),             // 18: nfe.MonofasiaDif
-	(*IbsUf)(nil),                    // 19: nfe.IbsUf
-	(*IbsMunicipio)(nil),             // 20: nfe.IbsMunicipio
-	(*Cbs)(nil),                      // 21: nfe.Cbs
-	(*Dif)(nil),                      // 22: nfe.Dif
-	(*DevTrib)(nil),                  // 23: nfe.DevTrib
-	(*Red)(nil),                      // 24: nfe.Red
-	(*TribRegular)(nil),              // 25: nfe.TribRegular
-	(*CredPresIbs)(nil),              // 26: nfe.CredPresIbs
-	(*CredPresCbs)(nil),              // 27: nfe.CredPresCbs
-	(*TribCompraGov)(nil),            // 28: nfe.TribCompraGov
-	(tributacao.PerfilMonofasico)(0), // 29: tributacao.PerfilMonofasico
+	(*IbsCbsSimples)(nil),            // 14: nfe.IbsCbsSimples
+	(*Monofasia)(nil),                // 15: nfe.Monofasia
+	(*MonofasiaPadrao)(nil),          // 16: nfe.MonofasiaPadrao
+	(*MonofasiaReten)(nil),           // 17: nfe.MonofasiaReten
+	(*MonofasiaRet)(nil),             // 18: nfe.MonofasiaRet
+	(*MonofasiaDif)(nil),             // 19: nfe.MonofasiaDif
+	(*IbsUf)(nil),                    // 20: nfe.IbsUf
+	(*IbsMunicipio)(nil),             // 21: nfe.IbsMunicipio
+	(*Cbs)(nil),                      // 22: nfe.Cbs
+	(*Dif)(nil),                      // 23: nfe.Dif
+	(*DevTrib)(nil),                  // 24: nfe.DevTrib
+	(*Red)(nil),                      // 25: nfe.Red
+	(*TribRegular)(nil),              // 26: nfe.TribRegular
+	(*CredPresIbs)(nil),              // 27: nfe.CredPresIbs
+	(*CredPresCbs)(nil),              // 28: nfe.CredPresCbs
+	(*TribCompraGov)(nil),            // 29: nfe.TribCompraGov
+	(tributacao.PerfilMonofasico)(0), // 30: tributacao.PerfilMonofasico
 }
 var file_apps_dfe_nfe_impostos_proto_depIdxs = []int32{
 	3,  // 0: nfe.IbsCbsTotal.ibs:type_name -> nfe.IbsTotal
@@ -2313,34 +2442,35 @@ var file_apps_dfe_nfe_impostos_proto_depIdxs = []int32{
 	8,  // 11: nfe.MonofasiaTotal.cbs:type_name -> nfe.MonofasiaCbsTotal
 	0,  // 12: nfe.Totais.is:type_name -> nfe.IsTotal
 	1,  // 13: nfe.Totais.ibs_cbs_total:type_name -> nfe.IbsCbsTotal
-	19, // 14: nfe.ImpostoIbsCbs.ibs_uf:type_name -> nfe.IbsUf
-	20, // 15: nfe.ImpostoIbsCbs.ibs_municipio:type_name -> nfe.IbsMunicipio
-	21, // 16: nfe.ImpostoIbsCbs.cbs:type_name -> nfe.Cbs
-	25, // 17: nfe.ImpostoIbsCbs.trib_regular:type_name -> nfe.TribRegular
-	26, // 18: nfe.ImpostoIbsCbs.cred_pres_ibs:type_name -> nfe.CredPresIbs
-	27, // 19: nfe.ImpostoIbsCbs.cred_pres_cbs:type_name -> nfe.CredPresCbs
-	28, // 20: nfe.ImpostoIbsCbs.trib_compra_gov:type_name -> nfe.TribCompraGov
-	14, // 21: nfe.ImpostoIbsCbs.monofasia:type_name -> nfe.Monofasia
+	20, // 14: nfe.ImpostoIbsCbs.ibs_uf:type_name -> nfe.IbsUf
+	21, // 15: nfe.ImpostoIbsCbs.ibs_municipio:type_name -> nfe.IbsMunicipio
+	22, // 16: nfe.ImpostoIbsCbs.cbs:type_name -> nfe.Cbs
+	26, // 17: nfe.ImpostoIbsCbs.trib_regular:type_name -> nfe.TribRegular
+	27, // 18: nfe.ImpostoIbsCbs.cred_pres_ibs:type_name -> nfe.CredPresIbs
+	28, // 19: nfe.ImpostoIbsCbs.cred_pres_cbs:type_name -> nfe.CredPresCbs
+	29, // 20: nfe.ImpostoIbsCbs.trib_compra_gov:type_name -> nfe.TribCompraGov
+	15, // 21: nfe.ImpostoIbsCbs.monofasia:type_name -> nfe.Monofasia
 	2,  // 22: nfe.ImpostoIbsCbs.estorno_credito:type_name -> nfe.EstornoCredito
-	29, // 23: nfe.Monofasia.perfil_monofasico:type_name -> tributacao.PerfilMonofasico
-	15, // 24: nfe.Monofasia.monofasia_padrao:type_name -> nfe.MonofasiaPadrao
-	16, // 25: nfe.Monofasia.monofasia_reten:type_name -> nfe.MonofasiaReten
-	17, // 26: nfe.Monofasia.monofasia_ret:type_name -> nfe.MonofasiaRet
-	18, // 27: nfe.Monofasia.monofasia_dif:type_name -> nfe.MonofasiaDif
-	22, // 28: nfe.IbsUf.diferimento:type_name -> nfe.Dif
-	23, // 29: nfe.IbsUf.devolucao_tributos:type_name -> nfe.DevTrib
-	24, // 30: nfe.IbsUf.reducao:type_name -> nfe.Red
-	22, // 31: nfe.IbsMunicipio.diferimento:type_name -> nfe.Dif
-	23, // 32: nfe.IbsMunicipio.devolucao_tributos:type_name -> nfe.DevTrib
-	24, // 33: nfe.IbsMunicipio.reducao:type_name -> nfe.Red
-	22, // 34: nfe.Cbs.diferimento:type_name -> nfe.Dif
-	23, // 35: nfe.Cbs.devolucao_tributos:type_name -> nfe.DevTrib
-	24, // 36: nfe.Cbs.reducao:type_name -> nfe.Red
-	37, // [37:37] is the sub-list for method output_type
-	37, // [37:37] is the sub-list for method input_type
-	37, // [37:37] is the sub-list for extension type_name
-	37, // [37:37] is the sub-list for extension extendee
-	0,  // [0:37] is the sub-list for field type_name
+	14, // 23: nfe.ImpostoIbsCbs.simples:type_name -> nfe.IbsCbsSimples
+	30, // 24: nfe.Monofasia.perfil_monofasico:type_name -> tributacao.PerfilMonofasico
+	16, // 25: nfe.Monofasia.monofasia_padrao:type_name -> nfe.MonofasiaPadrao
+	17, // 26: nfe.Monofasia.monofasia_reten:type_name -> nfe.MonofasiaReten
+	18, // 27: nfe.Monofasia.monofasia_ret:type_name -> nfe.MonofasiaRet
+	19, // 28: nfe.Monofasia.monofasia_dif:type_name -> nfe.MonofasiaDif
+	23, // 29: nfe.IbsUf.diferimento:type_name -> nfe.Dif
+	24, // 30: nfe.IbsUf.devolucao_tributos:type_name -> nfe.DevTrib
+	25, // 31: nfe.IbsUf.reducao:type_name -> nfe.Red
+	23, // 32: nfe.IbsMunicipio.diferimento:type_name -> nfe.Dif
+	24, // 33: nfe.IbsMunicipio.devolucao_tributos:type_name -> nfe.DevTrib
+	25, // 34: nfe.IbsMunicipio.reducao:type_name -> nfe.Red
+	23, // 35: nfe.Cbs.diferimento:type_name -> nfe.Dif
+	24, // 36: nfe.Cbs.devolucao_tributos:type_name -> nfe.DevTrib
+	25, // 37: nfe.Cbs.reducao:type_name -> nfe.Red
+	38, // [38:38] is the sub-list for method output_type
+	38, // [38:38] is the sub-list for method input_type
+	38, // [38:38] is the sub-list for extension type_name
+	38, // [38:38] is the sub-list for extension extendee
+	0,  // [0:38] is the sub-list for field type_name
 }
 
 func init() { file_apps_dfe_nfe_impostos_proto_init() }
@@ -2354,7 +2484,7 @@ func file_apps_dfe_nfe_impostos_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apps_dfe_nfe_impostos_proto_rawDesc), len(file_apps_dfe_nfe_impostos_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   29,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
