@@ -13,22 +13,18 @@ class IsTotal(_message.Message):
     def __init__(self, valor: _Optional[float] = ...) -> None: ...
 
 class IbsCbsTotal(_message.Message):
-    __slots__ = ("valor_base", "ibs", "cbs", "monofasia", "estorno_credito", "valor_ibs_simples", "valor_cbs_simples")
+    __slots__ = ("valor_base", "ibs", "cbs", "monofasia", "estorno_credito")
     VALOR_BASE_FIELD_NUMBER: _ClassVar[int]
     IBS_FIELD_NUMBER: _ClassVar[int]
     CBS_FIELD_NUMBER: _ClassVar[int]
     MONOFASIA_FIELD_NUMBER: _ClassVar[int]
     ESTORNO_CREDITO_FIELD_NUMBER: _ClassVar[int]
-    VALOR_IBS_SIMPLES_FIELD_NUMBER: _ClassVar[int]
-    VALOR_CBS_SIMPLES_FIELD_NUMBER: _ClassVar[int]
     valor_base: float
     ibs: IbsTotal
     cbs: CbsTotal
     monofasia: MonofasiaTotal
     estorno_credito: EstornoCredito
-    valor_ibs_simples: float
-    valor_cbs_simples: float
-    def __init__(self, valor_base: _Optional[float] = ..., ibs: _Optional[_Union[IbsTotal, _Mapping]] = ..., cbs: _Optional[_Union[CbsTotal, _Mapping]] = ..., monofasia: _Optional[_Union[MonofasiaTotal, _Mapping]] = ..., estorno_credito: _Optional[_Union[EstornoCredito, _Mapping]] = ..., valor_ibs_simples: _Optional[float] = ..., valor_cbs_simples: _Optional[float] = ...) -> None: ...
+    def __init__(self, valor_base: _Optional[float] = ..., ibs: _Optional[_Union[IbsTotal, _Mapping]] = ..., cbs: _Optional[_Union[CbsTotal, _Mapping]] = ..., monofasia: _Optional[_Union[MonofasiaTotal, _Mapping]] = ..., estorno_credito: _Optional[_Union[EstornoCredito, _Mapping]] = ...) -> None: ...
 
 class EstornoCredito(_message.Message):
     __slots__ = ("valor_ibs", "valor_cbs")
@@ -152,7 +148,7 @@ class ImpostoIs(_message.Message):
     def __init__(self, cst_is: _Optional[str] = ..., c_class_trib_is: _Optional[str] = ..., base_valor: _Optional[float] = ..., aliquota: _Optional[float] = ..., aliquota_especifica: _Optional[float] = ..., unidade_tributaria: _Optional[str] = ..., quantidade_tributada: _Optional[float] = ..., valor: _Optional[float] = ...) -> None: ...
 
 class ImpostoIbsCbs(_message.Message):
-    __slots__ = ("cst", "c_class_trib", "base_valor", "exclusao_base", "fator_conversao_proporcional", "ibs_uf", "ibs_municipio", "valor_ibs", "cbs", "trib_regular", "cred_pres_ibs", "cred_pres_cbs", "trib_compra_gov", "monofasia", "calculo_manual_bc", "estorno_credito", "competencia_apuracao", "codigo_atividade_simples", "aliquota_ibs_simples", "aliquota_cbs_simples", "simples")
+    __slots__ = ("cst", "c_class_trib", "base_valor", "exclusao_base", "fator_conversao_proporcional", "ibs_uf", "ibs_municipio", "valor_ibs", "cbs", "trib_regular", "cred_pres_ibs", "cred_pres_cbs", "trib_compra_gov", "monofasia", "calculo_manual_bc", "estorno_credito", "competencia_apuracao")
     CST_FIELD_NUMBER: _ClassVar[int]
     C_CLASS_TRIB_FIELD_NUMBER: _ClassVar[int]
     BASE_VALOR_FIELD_NUMBER: _ClassVar[int]
@@ -170,10 +166,6 @@ class ImpostoIbsCbs(_message.Message):
     CALCULO_MANUAL_BC_FIELD_NUMBER: _ClassVar[int]
     ESTORNO_CREDITO_FIELD_NUMBER: _ClassVar[int]
     COMPETENCIA_APURACAO_FIELD_NUMBER: _ClassVar[int]
-    CODIGO_ATIVIDADE_SIMPLES_FIELD_NUMBER: _ClassVar[int]
-    ALIQUOTA_IBS_SIMPLES_FIELD_NUMBER: _ClassVar[int]
-    ALIQUOTA_CBS_SIMPLES_FIELD_NUMBER: _ClassVar[int]
-    SIMPLES_FIELD_NUMBER: _ClassVar[int]
     cst: str
     c_class_trib: str
     base_valor: float
@@ -191,23 +183,7 @@ class ImpostoIbsCbs(_message.Message):
     calculo_manual_bc: bool
     estorno_credito: EstornoCredito
     competencia_apuracao: str
-    codigo_atividade_simples: str
-    aliquota_ibs_simples: float
-    aliquota_cbs_simples: float
-    simples: IbsCbsSimples
-    def __init__(self, cst: _Optional[str] = ..., c_class_trib: _Optional[str] = ..., base_valor: _Optional[float] = ..., exclusao_base: _Optional[float] = ..., fator_conversao_proporcional: _Optional[float] = ..., ibs_uf: _Optional[_Union[IbsUf, _Mapping]] = ..., ibs_municipio: _Optional[_Union[IbsMunicipio, _Mapping]] = ..., valor_ibs: _Optional[float] = ..., cbs: _Optional[_Union[Cbs, _Mapping]] = ..., trib_regular: _Optional[_Union[TribRegular, _Mapping]] = ..., cred_pres_ibs: _Optional[_Union[CredPresIbs, _Mapping]] = ..., cred_pres_cbs: _Optional[_Union[CredPresCbs, _Mapping]] = ..., trib_compra_gov: _Optional[_Union[TribCompraGov, _Mapping]] = ..., monofasia: _Optional[_Union[Monofasia, _Mapping]] = ..., calculo_manual_bc: _Optional[bool] = ..., estorno_credito: _Optional[_Union[EstornoCredito, _Mapping]] = ..., competencia_apuracao: _Optional[str] = ..., codigo_atividade_simples: _Optional[str] = ..., aliquota_ibs_simples: _Optional[float] = ..., aliquota_cbs_simples: _Optional[float] = ..., simples: _Optional[_Union[IbsCbsSimples, _Mapping]] = ...) -> None: ...
-
-class IbsCbsSimples(_message.Message):
-    __slots__ = ("aliquota_ibs", "valor_ibs", "aliquota_cbs", "valor_cbs")
-    ALIQUOTA_IBS_FIELD_NUMBER: _ClassVar[int]
-    VALOR_IBS_FIELD_NUMBER: _ClassVar[int]
-    ALIQUOTA_CBS_FIELD_NUMBER: _ClassVar[int]
-    VALOR_CBS_FIELD_NUMBER: _ClassVar[int]
-    aliquota_ibs: float
-    valor_ibs: float
-    aliquota_cbs: float
-    valor_cbs: float
-    def __init__(self, aliquota_ibs: _Optional[float] = ..., valor_ibs: _Optional[float] = ..., aliquota_cbs: _Optional[float] = ..., valor_cbs: _Optional[float] = ...) -> None: ...
+    def __init__(self, cst: _Optional[str] = ..., c_class_trib: _Optional[str] = ..., base_valor: _Optional[float] = ..., exclusao_base: _Optional[float] = ..., fator_conversao_proporcional: _Optional[float] = ..., ibs_uf: _Optional[_Union[IbsUf, _Mapping]] = ..., ibs_municipio: _Optional[_Union[IbsMunicipio, _Mapping]] = ..., valor_ibs: _Optional[float] = ..., cbs: _Optional[_Union[Cbs, _Mapping]] = ..., trib_regular: _Optional[_Union[TribRegular, _Mapping]] = ..., cred_pres_ibs: _Optional[_Union[CredPresIbs, _Mapping]] = ..., cred_pres_cbs: _Optional[_Union[CredPresCbs, _Mapping]] = ..., trib_compra_gov: _Optional[_Union[TribCompraGov, _Mapping]] = ..., monofasia: _Optional[_Union[Monofasia, _Mapping]] = ..., calculo_manual_bc: _Optional[bool] = ..., estorno_credito: _Optional[_Union[EstornoCredito, _Mapping]] = ..., competencia_apuracao: _Optional[str] = ...) -> None: ...
 
 class Monofasia(_message.Message):
     __slots__ = ("perfil_monofasico", "fator_conversao_monofasico", "quantidade_base_calculo", "aliquota_adrem_ibs", "aliquota_adrem_cbs", "monofasia_padrao", "monofasia_reten", "monofasia_ret", "monofasia_dif", "total_ibs", "total_cbs")
