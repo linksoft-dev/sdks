@@ -96,6 +96,8 @@ const (
 	VehicleType_TYPE_SPORTS      VehicleType = 8
 	VehicleType_TYPE_ELECTRIC    VehicleType = 9
 	VehicleType_TYPE_HYBRID      VehicleType = 10
+	VehicleType_TYPE_MACHINE     VehicleType = 11 // máquina: medida pelo horímetro, sem placa obrigatória
+	VehicleType_TYPE_EQUIPMENT   VehicleType = 12 // equipamento sem placa nem medidor
 )
 
 // Enum value maps for VehicleType.
@@ -112,6 +114,8 @@ var (
 		8:  "TYPE_SPORTS",
 		9:  "TYPE_ELECTRIC",
 		10: "TYPE_HYBRID",
+		11: "TYPE_MACHINE",
+		12: "TYPE_EQUIPMENT",
 	}
 	VehicleType_value = map[string]int32{
 		"TYPE_UNSPECIFIED": 0,
@@ -125,6 +129,8 @@ var (
 		"TYPE_SPORTS":      8,
 		"TYPE_ELECTRIC":    9,
 		"TYPE_HYBRID":      10,
+		"TYPE_MACHINE":     11,
+		"TYPE_EQUIPMENT":   12,
 	}
 )
 
@@ -313,6 +319,7 @@ type VehicleData struct {
 	MaintenanceHistory       []*Maintenance         `protobuf:"bytes,32,rep,name=maintenance_history,json=maintenanceHistory,proto3" json:"maintenance_history,omitempty"`
 	HqRentalId               string                 `protobuf:"bytes,33,opt,name=hq_rental_id,json=hqRentalId,proto3" json:"hq_rental_id,omitempty"`
 	LastSyncAt               *timestamppb.Timestamp `protobuf:"bytes,34,opt,name=last_sync_at,json=lastSyncAt,proto3" json:"last_sync_at,omitempty"`
+	HourMeter                float64                `protobuf:"fixed64,35,opt,name=hour_meter,json=hourMeter,proto3" json:"hour_meter,omitempty"` // horímetro atual, em horas
 	unknownFields            protoimpl.UnknownFields
 	sizeCache                protoimpl.SizeCache
 }
@@ -585,6 +592,13 @@ func (x *VehicleData) GetLastSyncAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *VehicleData) GetHourMeter() float64 {
+	if x != nil {
+		return x.HourMeter
+	}
+	return 0
+}
+
 type Maintenance struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -729,7 +743,7 @@ var File_apps_estoque_produto_vehicle_proto protoreflect.FileDescriptor
 
 const file_apps_estoque_produto_vehicle_proto_rawDesc = "" +
 	"\n" +
-	"\"apps/estoque/produto/vehicle.proto\x12\aproduto\x1a\x1fplugins/validate/validate.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x90\n" +
+	"\"apps/estoque/produto/vehicle.proto\x12\aproduto\x1a\x1fplugins/validate/validate.proto\x1a\x1ecommon/metadata/metadata.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xaf\n" +
 	"\n" +
 	"\vVehicleData\x129\n" +
 	"\n" +
@@ -774,7 +788,9 @@ const file_apps_estoque_produto_vehicle_proto_rawDesc = "" +
 	"\fhq_rental_id\x18! \x01(\tR\n" +
 	"hqRentalId\x12<\n" +
 	"\flast_sync_at\x18\" \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"lastSyncAt\"\x83\x04\n" +
+	"lastSyncAt\x12\x1d\n" +
+	"\n" +
+	"hour_meter\x18# \x01(\x01R\thourMeter\"\x83\x04\n" +
 	"\vMaintenance\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x129\n" +
 	"\n" +
@@ -799,7 +815,7 @@ const file_apps_estoque_produto_vehicle_proto_rawDesc = "" +
 	"\x0fSTATUS_RESERVED\x10\x02\x12\x11\n" +
 	"\rSTATUS_RENTED\x10\x03\x12\x16\n" +
 	"\x12STATUS_MAINTENANCE\x10\x04\x12\x13\n" +
-	"\x0fSTATUS_INACTIVE\x10\x05*\xcd\x01\n" +
+	"\x0fSTATUS_INACTIVE\x10\x05*\xf3\x01\n" +
 	"\vVehicleType\x12\x14\n" +
 	"\x10TYPE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fTYPE_COMPACT\x10\x01\x12\x0e\n" +
@@ -814,7 +830,9 @@ const file_apps_estoque_produto_vehicle_proto_rawDesc = "" +
 	"\vTYPE_SPORTS\x10\b\x12\x11\n" +
 	"\rTYPE_ELECTRIC\x10\t\x12\x0f\n" +
 	"\vTYPE_HYBRID\x10\n" +
-	"*\xbf\x01\n" +
+	"\x12\x10\n" +
+	"\fTYPE_MACHINE\x10\v\x12\x12\n" +
+	"\x0eTYPE_EQUIPMENT\x10\f*\xbf\x01\n" +
 	"\bFuelType\x12\x19\n" +
 	"\x15FUEL_TYPE_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12FUEL_TYPE_GASOLINE\x10\x01\x12\x14\n" +

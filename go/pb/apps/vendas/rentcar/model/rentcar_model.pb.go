@@ -56,8 +56,22 @@ type Reservation struct {
 	Extras  []*Extra  `protobuf:"bytes,21,rep,name=extras,proto3" json:"extras,omitempty"`
 	Charges []*Charge `protobuf:"bytes,22,rep,name=charges,proto3" json:"charges,omitempty"`
 	// Campos de integração com HQ Rental
-	HqRentalId    string                 `protobuf:"bytes,23,opt,name=hq_rental_id,json=hqRentalId,proto3" json:"hq_rental_id,omitempty"`
-	LastSyncAt    *timestamppb.Timestamp `protobuf:"bytes,24,opt,name=last_sync_at,json=lastSyncAt,proto3" json:"last_sync_at,omitempty"`
+	HqRentalId string                 `protobuf:"bytes,23,opt,name=hq_rental_id,json=hqRentalId,proto3" json:"hq_rental_id,omitempty"`
+	LastSyncAt *timestamppb.Timestamp `protobuf:"bytes,24,opt,name=last_sync_at,json=lastSyncAt,proto3" json:"last_sync_at,omitempty"`
+	// Valor combinado da locação do bem no período. Zero = tabela do cadastro do bem (diária, semanal e mensal).
+	AgreedAmount float64 `protobuf:"fixed64,25,opt,name=agreed_amount,json=agreedAmount,proto3" json:"agreed_amount,omitempty"`
+	// Diárias do período, da retirada à devolução prevista.
+	RentalDays int32 `protobuf:"varint,26,opt,name=rental_days,json=rentalDays,proto3" json:"rental_days,omitempty"`
+	// Horímetro do bem na retirada, em horas.
+	VehicleHourMeter float64 `protobuf:"fixed64,27,opt,name=vehicle_hour_meter,json=vehicleHourMeter,proto3" json:"vehicle_hour_meter,omitempty"`
+	// Devolução do bem: preenchida ao finalizar a locação.
+	ReturnedAt      *timestamppb.Timestamp `protobuf:"bytes,28,opt,name=returned_at,json=returnedAt,proto3" json:"returned_at,omitempty"`
+	ReturnOdometer  int32                  `protobuf:"varint,29,opt,name=return_odometer,json=returnOdometer,proto3" json:"return_odometer,omitempty"`
+	ReturnHourMeter float64                `protobuf:"fixed64,30,opt,name=return_hour_meter,json=returnHourMeter,proto3" json:"return_hour_meter,omitempty"`
+	ReturnFuelLevel string                 `protobuf:"bytes,31,opt,name=return_fuel_level,json=returnFuelLevel,proto3" json:"return_fuel_level,omitempty"`
+	ReturnNotes     string                 `protobuf:"bytes,32,opt,name=return_notes,json=returnNotes,proto3" json:"return_notes,omitempty"`
+	// Valor cobrado pela locação do bem: o combinado ou, sem ele, o da tabela.
+	RentalAmount  float64 `protobuf:"fixed64,33,opt,name=rental_amount,json=rentalAmount,proto3" json:"rental_amount,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -260,6 +274,69 @@ func (x *Reservation) GetLastSyncAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *Reservation) GetAgreedAmount() float64 {
+	if x != nil {
+		return x.AgreedAmount
+	}
+	return 0
+}
+
+func (x *Reservation) GetRentalDays() int32 {
+	if x != nil {
+		return x.RentalDays
+	}
+	return 0
+}
+
+func (x *Reservation) GetVehicleHourMeter() float64 {
+	if x != nil {
+		return x.VehicleHourMeter
+	}
+	return 0
+}
+
+func (x *Reservation) GetReturnedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ReturnedAt
+	}
+	return nil
+}
+
+func (x *Reservation) GetReturnOdometer() int32 {
+	if x != nil {
+		return x.ReturnOdometer
+	}
+	return 0
+}
+
+func (x *Reservation) GetReturnHourMeter() float64 {
+	if x != nil {
+		return x.ReturnHourMeter
+	}
+	return 0
+}
+
+func (x *Reservation) GetReturnFuelLevel() string {
+	if x != nil {
+		return x.ReturnFuelLevel
+	}
+	return ""
+}
+
+func (x *Reservation) GetReturnNotes() string {
+	if x != nil {
+		return x.ReturnNotes
+	}
+	return ""
+}
+
+func (x *Reservation) GetRentalAmount() float64 {
+	if x != nil {
+		return x.RentalAmount
+	}
+	return 0
+}
+
 type Extra struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -432,7 +509,7 @@ var File_apps_vendas_rentcar_model_rentcar_model_proto protoreflect.FileDescript
 
 const file_apps_vendas_rentcar_model_rentcar_model_proto_rawDesc = "" +
 	"\n" +
-	"-apps/vendas/rentcar/model/rentcar_model.proto\x12\frentcarmodel\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc0\t\n" +
+	"-apps/vendas/rentcar/model/rentcar_model.proto\x12\frentcarmodel\x1a\x1fplugins/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf3\f\n" +
 	"\vReservation\x126\n" +
 	"\x12reservation_number\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x182R\x11reservationNumber\x12%\n" +
 	"\treference\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x18dR\treference\x129\n" +
@@ -467,7 +544,18 @@ const file_apps_vendas_rentcar_model_rentcar_model_proto_rawDesc = "" +
 	"\fhq_rental_id\x18\x17 \x01(\tR\n" +
 	"hqRentalId\x12<\n" +
 	"\flast_sync_at\x18\x18 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"lastSyncAt\"\xb5\x01\n" +
+	"lastSyncAt\x12#\n" +
+	"\ragreed_amount\x18\x19 \x01(\x01R\fagreedAmount\x12%\n" +
+	"\vrental_days\x18\x1a \x01(\x05B\x04\xe2A\x01\x03R\n" +
+	"rentalDays\x12,\n" +
+	"\x12vehicle_hour_meter\x18\x1b \x01(\x01R\x10vehicleHourMeter\x12A\n" +
+	"\vreturned_at\x18\x1c \x01(\v2\x1a.google.protobuf.TimestampB\x04\xe2A\x01\x03R\n" +
+	"returnedAt\x12-\n" +
+	"\x0freturn_odometer\x18\x1d \x01(\x05B\x04\xe2A\x01\x03R\x0ereturnOdometer\x120\n" +
+	"\x11return_hour_meter\x18\x1e \x01(\x01B\x04\xe2A\x01\x03R\x0freturnHourMeter\x127\n" +
+	"\x11return_fuel_level\x18\x1f \x01(\tB\v\xe2A\x01\x03\xfaB\x04r\x02\x18\x14R\x0freturnFuelLevel\x12/\n" +
+	"\freturn_notes\x18  \x01(\tB\f\xe2A\x01\x03\xfaB\x05r\x03\x18\xe8\aR\vreturnNotes\x12)\n" +
+	"\rrental_amount\x18! \x01(\x01B\x04\xe2A\x01\x03R\frentalAmount\"\xb5\x01\n" +
 	"\x05Extra\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
 	"\x04name\x18\x02 \x01(\tB\a\xfaB\x04r\x02\x18dR\x04name\x12*\n" +
@@ -512,12 +600,13 @@ var file_apps_vendas_rentcar_model_rentcar_model_proto_depIdxs = []int32{
 	1, // 4: rentcarmodel.Reservation.extras:type_name -> rentcarmodel.Extra
 	2, // 5: rentcarmodel.Reservation.charges:type_name -> rentcarmodel.Charge
 	3, // 6: rentcarmodel.Reservation.last_sync_at:type_name -> google.protobuf.Timestamp
-	3, // 7: rentcarmodel.Charge.created_at:type_name -> google.protobuf.Timestamp
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	3, // 7: rentcarmodel.Reservation.returned_at:type_name -> google.protobuf.Timestamp
+	3, // 8: rentcarmodel.Charge.created_at:type_name -> google.protobuf.Timestamp
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_apps_vendas_rentcar_model_rentcar_model_proto_init() }

@@ -34,6 +34,8 @@ class VehicleType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     TYPE_SPORTS: _ClassVar[VehicleType]
     TYPE_ELECTRIC: _ClassVar[VehicleType]
     TYPE_HYBRID: _ClassVar[VehicleType]
+    TYPE_MACHINE: _ClassVar[VehicleType]
+    TYPE_EQUIPMENT: _ClassVar[VehicleType]
 
 class FuelType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -71,6 +73,8 @@ TYPE_CONVERTIBLE: VehicleType
 TYPE_SPORTS: VehicleType
 TYPE_ELECTRIC: VehicleType
 TYPE_HYBRID: VehicleType
+TYPE_MACHINE: VehicleType
+TYPE_EQUIPMENT: VehicleType
 FUEL_TYPE_UNSPECIFIED: FuelType
 FUEL_TYPE_GASOLINE: FuelType
 FUEL_TYPE_DIESEL: FuelType
@@ -87,7 +91,7 @@ MAINTENANCE_TYPE_CLEANING: MaintenanceType
 MAINTENANCE_TYPE_ACCIDENT: MaintenanceType
 
 class VehicleData(_message.Message):
-    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "make", "model", "year", "type", "color", "license_plate", "vin", "odometer", "fuel_type", "fuel_level", "seats", "doors", "has_air_conditioning", "has_gps", "has_bluetooth", "has_automatic_transmission", "status", "location", "daily_rate", "weekly_rate", "monthly_rate", "currency", "features", "image_url", "notes", "maintenance_history", "hq_rental_id", "last_sync_at")
+    __slots__ = ("created_at", "updated_at", "user_id", "user_name", "id", "fields", "make", "model", "year", "type", "color", "license_plate", "vin", "odometer", "fuel_type", "fuel_level", "seats", "doors", "has_air_conditioning", "has_gps", "has_bluetooth", "has_automatic_transmission", "status", "location", "daily_rate", "weekly_rate", "monthly_rate", "currency", "features", "image_url", "notes", "maintenance_history", "hq_rental_id", "last_sync_at", "hour_meter")
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     UPDATED_AT_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]
@@ -122,6 +126,7 @@ class VehicleData(_message.Message):
     MAINTENANCE_HISTORY_FIELD_NUMBER: _ClassVar[int]
     HQ_RENTAL_ID_FIELD_NUMBER: _ClassVar[int]
     LAST_SYNC_AT_FIELD_NUMBER: _ClassVar[int]
+    HOUR_METER_FIELD_NUMBER: _ClassVar[int]
     created_at: _timestamp_pb2.Timestamp
     updated_at: _timestamp_pb2.Timestamp
     user_id: str
@@ -156,7 +161,8 @@ class VehicleData(_message.Message):
     maintenance_history: _containers.RepeatedCompositeFieldContainer[Maintenance]
     hq_rental_id: str
     last_sync_at: _timestamp_pb2.Timestamp
-    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., make: _Optional[str] = ..., model: _Optional[str] = ..., year: _Optional[int] = ..., type: _Optional[_Union[VehicleType, str]] = ..., color: _Optional[str] = ..., license_plate: _Optional[str] = ..., vin: _Optional[str] = ..., odometer: _Optional[int] = ..., fuel_type: _Optional[_Union[FuelType, str]] = ..., fuel_level: _Optional[str] = ..., seats: _Optional[int] = ..., doors: _Optional[int] = ..., has_air_conditioning: _Optional[bool] = ..., has_gps: _Optional[bool] = ..., has_bluetooth: _Optional[bool] = ..., has_automatic_transmission: _Optional[bool] = ..., status: _Optional[_Union[VehicleStatus, str]] = ..., location: _Optional[str] = ..., daily_rate: _Optional[float] = ..., weekly_rate: _Optional[float] = ..., monthly_rate: _Optional[float] = ..., currency: _Optional[str] = ..., features: _Optional[_Iterable[str]] = ..., image_url: _Optional[str] = ..., notes: _Optional[str] = ..., maintenance_history: _Optional[_Iterable[_Union[Maintenance, _Mapping]]] = ..., hq_rental_id: _Optional[str] = ..., last_sync_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    hour_meter: float
+    def __init__(self, created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., updated_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., user_id: _Optional[str] = ..., user_name: _Optional[str] = ..., id: _Optional[str] = ..., fields: _Optional[_Union[_metadata_pb2.BasicFields, _Mapping]] = ..., make: _Optional[str] = ..., model: _Optional[str] = ..., year: _Optional[int] = ..., type: _Optional[_Union[VehicleType, str]] = ..., color: _Optional[str] = ..., license_plate: _Optional[str] = ..., vin: _Optional[str] = ..., odometer: _Optional[int] = ..., fuel_type: _Optional[_Union[FuelType, str]] = ..., fuel_level: _Optional[str] = ..., seats: _Optional[int] = ..., doors: _Optional[int] = ..., has_air_conditioning: _Optional[bool] = ..., has_gps: _Optional[bool] = ..., has_bluetooth: _Optional[bool] = ..., has_automatic_transmission: _Optional[bool] = ..., status: _Optional[_Union[VehicleStatus, str]] = ..., location: _Optional[str] = ..., daily_rate: _Optional[float] = ..., weekly_rate: _Optional[float] = ..., monthly_rate: _Optional[float] = ..., currency: _Optional[str] = ..., features: _Optional[_Iterable[str]] = ..., image_url: _Optional[str] = ..., notes: _Optional[str] = ..., maintenance_history: _Optional[_Iterable[_Union[Maintenance, _Mapping]]] = ..., hq_rental_id: _Optional[str] = ..., last_sync_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., hour_meter: _Optional[float] = ...) -> None: ...
 
 class Maintenance(_message.Message):
     __slots__ = ("id", "created_at", "updated_at", "user_id", "user_name", "type", "description", "start_date", "end_date", "completed", "cost", "notes", "odometer")

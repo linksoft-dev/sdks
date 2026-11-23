@@ -11,7 +11,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Reservation(_message.Message):
-    __slots__ = ("reservation_number", "reference", "start_date", "end_date", "pickup_time", "return_time", "pickup_location", "return_location", "customer_license_num", "customer_license_exp", "customer_date_of_birth", "vehicle_id", "vehicle_make", "vehicle_model", "vehicle_year", "vehicle_type", "vehicle_license_plate", "vehicle_vin", "vehicle_odometer", "vehicle_fuel_level", "extras", "charges", "hq_rental_id", "last_sync_at")
+    __slots__ = ("reservation_number", "reference", "start_date", "end_date", "pickup_time", "return_time", "pickup_location", "return_location", "customer_license_num", "customer_license_exp", "customer_date_of_birth", "vehicle_id", "vehicle_make", "vehicle_model", "vehicle_year", "vehicle_type", "vehicle_license_plate", "vehicle_vin", "vehicle_odometer", "vehicle_fuel_level", "extras", "charges", "hq_rental_id", "last_sync_at", "agreed_amount", "rental_days", "vehicle_hour_meter", "returned_at", "return_odometer", "return_hour_meter", "return_fuel_level", "return_notes", "rental_amount")
     RESERVATION_NUMBER_FIELD_NUMBER: _ClassVar[int]
     REFERENCE_FIELD_NUMBER: _ClassVar[int]
     START_DATE_FIELD_NUMBER: _ClassVar[int]
@@ -36,6 +36,15 @@ class Reservation(_message.Message):
     CHARGES_FIELD_NUMBER: _ClassVar[int]
     HQ_RENTAL_ID_FIELD_NUMBER: _ClassVar[int]
     LAST_SYNC_AT_FIELD_NUMBER: _ClassVar[int]
+    AGREED_AMOUNT_FIELD_NUMBER: _ClassVar[int]
+    RENTAL_DAYS_FIELD_NUMBER: _ClassVar[int]
+    VEHICLE_HOUR_METER_FIELD_NUMBER: _ClassVar[int]
+    RETURNED_AT_FIELD_NUMBER: _ClassVar[int]
+    RETURN_ODOMETER_FIELD_NUMBER: _ClassVar[int]
+    RETURN_HOUR_METER_FIELD_NUMBER: _ClassVar[int]
+    RETURN_FUEL_LEVEL_FIELD_NUMBER: _ClassVar[int]
+    RETURN_NOTES_FIELD_NUMBER: _ClassVar[int]
+    RENTAL_AMOUNT_FIELD_NUMBER: _ClassVar[int]
     reservation_number: str
     reference: str
     start_date: _timestamp_pb2.Timestamp
@@ -60,7 +69,16 @@ class Reservation(_message.Message):
     charges: _containers.RepeatedCompositeFieldContainer[Charge]
     hq_rental_id: str
     last_sync_at: _timestamp_pb2.Timestamp
-    def __init__(self, reservation_number: _Optional[str] = ..., reference: _Optional[str] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., end_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., pickup_time: _Optional[str] = ..., return_time: _Optional[str] = ..., pickup_location: _Optional[str] = ..., return_location: _Optional[str] = ..., customer_license_num: _Optional[str] = ..., customer_license_exp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., customer_date_of_birth: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., vehicle_id: _Optional[str] = ..., vehicle_make: _Optional[str] = ..., vehicle_model: _Optional[str] = ..., vehicle_year: _Optional[int] = ..., vehicle_type: _Optional[str] = ..., vehicle_license_plate: _Optional[str] = ..., vehicle_vin: _Optional[str] = ..., vehicle_odometer: _Optional[int] = ..., vehicle_fuel_level: _Optional[str] = ..., extras: _Optional[_Iterable[_Union[Extra, _Mapping]]] = ..., charges: _Optional[_Iterable[_Union[Charge, _Mapping]]] = ..., hq_rental_id: _Optional[str] = ..., last_sync_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    agreed_amount: float
+    rental_days: int
+    vehicle_hour_meter: float
+    returned_at: _timestamp_pb2.Timestamp
+    return_odometer: int
+    return_hour_meter: float
+    return_fuel_level: str
+    return_notes: str
+    rental_amount: float
+    def __init__(self, reservation_number: _Optional[str] = ..., reference: _Optional[str] = ..., start_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., end_date: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., pickup_time: _Optional[str] = ..., return_time: _Optional[str] = ..., pickup_location: _Optional[str] = ..., return_location: _Optional[str] = ..., customer_license_num: _Optional[str] = ..., customer_license_exp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., customer_date_of_birth: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., vehicle_id: _Optional[str] = ..., vehicle_make: _Optional[str] = ..., vehicle_model: _Optional[str] = ..., vehicle_year: _Optional[int] = ..., vehicle_type: _Optional[str] = ..., vehicle_license_plate: _Optional[str] = ..., vehicle_vin: _Optional[str] = ..., vehicle_odometer: _Optional[int] = ..., vehicle_fuel_level: _Optional[str] = ..., extras: _Optional[_Iterable[_Union[Extra, _Mapping]]] = ..., charges: _Optional[_Iterable[_Union[Charge, _Mapping]]] = ..., hq_rental_id: _Optional[str] = ..., last_sync_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., agreed_amount: _Optional[float] = ..., rental_days: _Optional[int] = ..., vehicle_hour_meter: _Optional[float] = ..., returned_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., return_odometer: _Optional[int] = ..., return_hour_meter: _Optional[float] = ..., return_fuel_level: _Optional[str] = ..., return_notes: _Optional[str] = ..., rental_amount: _Optional[float] = ...) -> None: ...
 
 class Extra(_message.Message):
     __slots__ = ("id", "name", "description", "price", "quantity", "total_amount")
